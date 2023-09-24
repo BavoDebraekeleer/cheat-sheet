@@ -11,6 +11,7 @@ language: c#
 - [C# 9: Pattern Matching in Switch Expressions by Thomas Claudius Huber](https://www.thomasclaudiushuber.com/2021/02/25/c-9-0-pattern-matching-in-switch-expressions/)
 - [C# Foreach: what it is, How it works, Syntax and Example Code by Ravikiran A S](https://www.simplilearn.com/tutorials/asp-dot-net-tutorial/csharp-foreach)
 
+---
 
 ## Introduction
 
@@ -22,8 +23,13 @@ language: c#
 -   **Auto-garbage collection.** A significant feature of the C# language is automatic garbage collection, meaning that you will not have to worry about freeing memory, unlike in C++.
 [Source](https://www.sam-solutions.com/blog/dot-net-vs-c/)
 
+---
+
+
 ## Glossary
 
+
+---
 
 ## Naming Conventions
 
@@ -37,6 +43,9 @@ language: c#
 - Avoid using abbreviations, unless they are widely accepted and understood.
 
 Examples: `CustomerOrder`, `ShoppingCart`, `HttpRequest`, `XmlDocument`.
+
+---
+
 
 ## Datatypes
 
@@ -830,7 +839,34 @@ Syntax: `datatype[] arrayName = {value1, value2};`
 
 *Example:*
 ```c#
-string[] myColors;
-myColors = {"red", "green", "yellow", "orange", "blue"};
+string[] myColors; // myColors holds the reference
+myColors = {"red", "green", "yellow", "orange", "blue"}; // length set to 5.
 ```
 
+`datatype[] arrayName;` only reserves a reference in memory without a length.
+`datatype[] arrayName = new datatype[length];` provides a length so the values are filled with the default values of the chosen datatype.
+
+Once the length of the array is set, it can't change any more.
+The array variable works by reference. Meaning, it is a pointer that stores the memory address to the start of the array. The elements of the array are stored by value at the memory address to which the pointer points + their index.
+So, if you assign an array to another `array1 = array2` it only copies the address.
+To copy the values, use `.Copy` method of the Array library (different with objects!).
+### Array accessor
+
+The value in an array can be read/write using the array accessor with the index of the value: `[index]`. Index start counting from `0`.
+
+*Example:*
+```c#
+myColors[2]; //element with index 2
+```
+
+*Looping example:*
+```c#
+for(int indexCounter = 0; indexCounter < numbers.Length; indexCounter++)
+{
+    numbers[indexCounter] += 5;
+}
+```
+
+### System.Array Library
+
+https://apwt.gitbook.io/zie-scherp-scherper/programming-principles/h8-arrays/systemarray
