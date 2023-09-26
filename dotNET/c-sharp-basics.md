@@ -1,7 +1,7 @@
 ---
 language: c#
 ---
-# C\# Basics
+# C# Basics
 
 ## Courses and References
 

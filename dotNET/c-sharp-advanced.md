@@ -1,7 +1,7 @@
 ---
 language: c#
 ---
-# C\# Advanced
+# C# Advanced
 
 ## Courses
 

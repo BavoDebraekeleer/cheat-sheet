@@ -30,4 +30,41 @@ TDD is reiterating through the TDD Cycle to drive implementation.
 4. Repeat steps for the next requirement.
 
 
-##
+## Unit Test
+
+A small automated test, coded by a programmer, that verifies whether or not a small piece of production code – a unit – works as expected in isolation.
+A unit typically implements a single feature.
+
+![[Pasted image 20230925215324.png]]
+
+Three testing frameworks available:
+- MSTest by Microsoft
+- NUnit: a version of JUnit for Java, written now for .NET
+- xUnit: basically NUnit v2, so the latest as of writing.
+
+Steps to start testing:
+1. Add xUnit Test Project
+2. 
+## C# Record
+
+A class that only describes what data an object stores, that is immutable and read-only, can be written as a `record` instead of a `class`.
+This makes the code more compact and readable.
+
+*Example class:*
+```c#
+public class MachineDataItem
+{
+	public MachineDataItem(string CoffeeType, DateTime CreatedAt)
+	{
+		CoffeeType = CoffeeType;
+		CreatedAt = CreatedAt;
+	}
+	public string CoffeeType { get; } // Only getters, so read-only
+	public DateTime CreatedAt { get; }
+}
+```
+
+*Same example as a record:*
+```c#
+public record MachineDataItem(string CoffeeType, DateTime CreatedAt);
+```
