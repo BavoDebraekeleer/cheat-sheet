@@ -195,6 +195,24 @@ Optionally, there's a boolean parameter to make the input case-sensitive.
 Syntax: `EnumName userInput = Enum.Parse<EnumName>(Console.ReadLine(), true);`
 
 
+### [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime?view=net-7.0)
+
+[Parse DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=net-7.0) for US format:
+`DateTime.Parse("10/27/2022 8:07:34 AM", CultureInfo.CreateSpecificCulture("en-US"))`
+
+```c#
+string[] formats = new[] { "MM/dd/yyyy h:m:s tt" };
+
+DateTime.TryParseExact(
+	lineItems[1], 
+	formats, 
+	CultureInfo.CreateSpecificCulture("en-US"), 
+	DateTimeStyles.None, 
+	out DateTime dateTime))
+```
+
+[Custom date and time format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings)
+
 ### [Environment Library](https://learn.microsoft.com/nl-be/dotnet/api/system.environment?view=net-7.0)
 
 ```c#
@@ -329,6 +347,32 @@ double decimal1 = randomGenerator.NextDouble() * 10.0; // Between 0.0 and 10.0
 double decimal2 = 5.0 + (randomGenerator.NextDouble() * 7.5); // 5.0 and 12.5
 // Random decimal between 0.0 and 1.0 is first multiplied to extend the range to 7.5 and then shifting it by 5.0 => between (0.0 + 5.0 = 5.0) and (7.5 + 5.0 = 12.5).
 ```
+
+
+### C# Record
+
+A class that only describes what data an object stores, that is immutable and read-only, can be written as a `record` instead of a `class`.
+This makes the code more compact and readable.
+
+*Example class:*
+```c#
+public class MachineDataItem
+{
+	public MachineDataItem(string CoffeeType, DateTime CreatedAt)
+	{
+		CoffeeType = CoffeeType;
+		CreatedAt = CreatedAt;
+	}
+	public string CoffeeType { get; } // Only getters, so read-only
+	public DateTime CreatedAt { get; }
+}
+```
+
+*Same example as a record:*
+```c#
+public record MachineDataItem(string CoffeeType, DateTime CreatedAt);
+```
+
 
 ---
 
@@ -870,3 +914,43 @@ for(int indexCounter = 0; indexCounter < numbers.Length; indexCounter++)
 ### System.Array Library
 
 https://apwt.gitbook.io/zie-scherp-scherper/programming-principles/h8-arrays/systemarray
+
+---
+
+## Namespace
+
+The Namespace is the environment in which references are available.
+You can use the same namespace in different files and project to make the functionalities available to each other.
+
+### Project namespace
+
+Right Click on Project > Properties > Default namespace: (write the namespace you want to use) > Save.
+
+### File-scoped namespace
+
+Have the complete file have the same namespace without the need for `{}`, for example:
+```c#
+namespace WiredBrainCoffee.DataProcessor.Parsing
+
+public class CsvLineParserTests
+{
+	// code
+}
+```
+
+### Multiple namespaces in the same file
+
+If you want to use multiple namespaces in the same file using `{}`, example:
+```c#
+namespace WiredBrainCoffee.DataProcessor.Parsing
+{
+    public class CsvLineParserTests
+    {
+        // code
+    }
+}
+```
+
+---
+
+
