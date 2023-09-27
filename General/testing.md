@@ -4,13 +4,13 @@
 
 dotNet:
 - [Pluralsight: Implementing C# 9 Unit Testing Using Visual Studio 2019 and .NET 5 by Paul D. Sheriff](https://app.pluralsight.com/library/courses/basic-unit-testing-csharp-developers/table-of-contents)
-- [Test Driven Development in C# 8 by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/csharp-test-driven-development/table-of-contents)
-- [C# 10 Unit Testing by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/c-sharp-10-unit-testing/table-of-contents?aid=7010a000001xAKZAA2) - [My course files](https://github.com/BavoDebraekeleer/dotnet-unit-testing.git)
+- [Pluralsight: Test Driven Development in C# 8 by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/csharp-test-driven-development/table-of-contents)
+- [Pluralsight: C# 10 Unit Testing by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/c-sharp-10-unit-testing/table-of-contents?aid=7010a000001xAKZAA2) - [My course files](https://github.com/BavoDebraekeleer/dotnet-unit-testing.git)
 
 JavaScript:
-- [Introduction To Testing In JavaScript With Jest by Web Dev Simplified](https://www.youtube.com/watch?v=FgnxcUQ5vho)
-- [JavaScript testing: Jest mocks by Codete](https://www.youtube.com/watch?v=OS5mVVM5vAg)
-- [REACT Testing Crash Course by Traversy Media](https://www.youtube.com/watch?v=OVNjsIto9xM)
+- [YouTube: Introduction To Testing In JavaScript With Jest by Web Dev Simplified](https://www.youtube.com/watch?v=FgnxcUQ5vho)
+- [YouTube: JavaScript testing: Jest mocks by Codete](https://www.youtube.com/watch?v=OS5mVVM5vAg)
+- [YouTube: REACT Testing Crash Course by Traversy Media](https://www.youtube.com/watch?v=OVNjsIto9xM)
 
 ---
 

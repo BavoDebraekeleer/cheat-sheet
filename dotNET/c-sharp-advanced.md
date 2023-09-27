@@ -5,7 +5,7 @@ language: c#
 
 ## Courses
 
-- [# Advanced C# Programming Course by @GavinLon and freeCodeCamp.org](https://www.youtube.com/watch?v=YT8s-90oDC0)
+- [Advanced C# Programming Course by @GavinLon and freeCodeCamp.org](https://www.youtube.com/watch?v=YT8s-90oDC0)
 
 ## Glossary
 
