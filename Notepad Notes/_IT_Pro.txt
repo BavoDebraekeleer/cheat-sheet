@@ -1,0 +1,364 @@
+IT Professional
+---------------
+
+27/09 Gastcollege digitale inclusie (door SAAMO)
+------------------------------------------------
+46% digitaal kwetsbaar (totale Belgische bevolking)
+7% nog nooit internet gebruikt
+20% (1/5) enkel internet via smartphone
+45% van laag geschoolde jongeren lage digitale vaardigheden
+
+Trein gemist, niet me met de digitale kennis
+angst voor technologie, 
+
+1/7 laaggeletterd, taal maar ook te maken met omgaan met cijfers en grafische gegevens
+kunnen omgaan en gebruik maken van multimedia en ICT.
+	vb. uur tabellen interpreteren, gebruiksaanwijzingen, wisselgeld controleren, ...
+	
+Laaggeletterd niet hetzelfde als laaggeschoold.
+	vb. hoog geschoolde mensen kunnen achterop geraken en nu laaggeletterd zijn
+	
+Cursisten voor geletterdheid heel divers:
+	Ouders die moeilijkheden hebben met schooldocumenten en smartschool (digitale platformen met info)
+	Jongeren en ouderen
+	Anderstaligen, taal-drempel
+
+Weinig zelfvertrouwen, dit gaat mij niet lukken
+Gevoel van uitgesloten te zijn, anderen kunnen dit wel
+
+Knoppen-kennis: ze hebben zich aangeleerd met iets te werken adhv de knop,
+	of volgorde van knoppen, maar niet de functies die ze uitvoeren.
+	Als er dan een update is en een knop verandert van kleur of plaats kan het al mislopen.
+	
+1 op 1 ondersteuning:
+	Eigen laptop of lenen ter plaatsen
+	Mss is in sommige gevallen, vb nog nooit computer gebruikt, doorgeven aan medewerker voor workshop
+	Phishing doorgeven aan medewerker!
+	
+Aandachtspunten:
+	Gezelligheid, geduldig, niet opjagen, sabr, goed luisteren, glimlach, respectvol
+	
+Basishouding:
+	1) tijd nemen, op tempo van bezoeker
+	2) onbevoordeeld
+	3) versterken (en niet overnemen)
+	4)
+	5)
+	6) discretieplicht
+	7) eigen grenzen afbakenen
+	8) doorgeven noden van bezoeker (geen laptop of internet thuis)
+	9) medewerker aanspreken bij vragen en idëen
+	10) jezelf blijven
+	
+Niet doen!
+	Geen geld aannemen (alles gratis), niet thuis langsgaan
+	
+Digi-tafel:
+	4 buurtwerkingen: Kiel, Deurne Noord, Borgerhout, Antwerpen Noord
+	
+Ligo:
+	OLC = Open Leer Centrum
+	Cursussen voor laaggeletterde volwassenen
+	-> woensdag 9-12u in 2000 Antwerpen
+	
+Digidak
+	Ondersteuning in computerlokaal
+	samen met vertaalvrijwilliger
+	
+Mening sessie:
+Interessant en verrassend om de cijfers te horen in het begin rond digitale kwetsbaarheid.
+Goede afwisseling tussen slides, filmpjes en mentimeter om de studenten te betrekken en aandacht te houden.
+Ik heb zelf ook al wel wat kennis rond dit onderwerp omdat ik verkoper en hulp was voor IT en smartphones in Media Markt voor enkele jaren.
+Deze hulp was meestal het installeren van laptops en smartphones en samen met de klant het toestel gebruiksklaar maken.
+Maar ook kleine problemen of tips om iets specifieks te doen.
+Dit was gedeeltelijk hetzelfde publiek als tijdens de presentatie aanbod komt, mensen die laag geletterd zijn in IT.
+Ik weet dus al wel hoe het is om met dit publiek om te gaan en wat veel voorkomende moeilijkheden zijn.
+Ik had wel geen idee dat dit ook om deze manier en gratis gedaan werd door vrijwilligers. Wel de cursussen, maar niet de individuele hulp met specifieke kleine problemen.
+
+Mening spreker:
+Duidelijke sprekers. Hebben natuurlijk veel ervaring met het onderwerp dus weten waarover ze praten.
+Zijn natuurlijk sociaal betrokken personen en ik denk dat het zeer aangenaam zal zijn met hun samen te werken. 
+
+Het verslag moet het volgende bevatten:
+Een gestructureerde samenvatting van het gastcollege (voorzie alineanummering,...)
+Mening van elke student over de inhoud van het gastcollege
+Mening van elke student over de spreker
+
+
+04/10 Gastsessie: Microservices (door Delen Private Bank)
+---------------------------------------------------------
+Wat en wie?
+	- geen grote standaard bank
+	- kleine onderneming
+	- vermogen management, discretionary asset management
+	- beheren 40 miljard
+	- 150 IT medewerkers
+	- familie bedrijf, begonnen als wisselagent
+	- best digitale private bank, heel efficiënte werking
+	
+	- levenslang bijleren, in-house sessies, individuele of groepsopleidingen
+	- job crafting: job omschrijving verandert continu en kan je zelf sturen, geen hokjes mentaliteit
+	
+1. Architecture
+	Er is altijd de specifieke situatie, it depends ...
+	
+	Nu alles web apps met Cordova. Front-end gemoderniseerd
+	
+	Back-end nog oud in COBOL. Moeilijk developers voor te vinden en stijgende kosten.
+	3 miljoen lijnen code.
+	Volledige rewrite van aan de gang.
+	
+	1 - Agility in software delivery
+	Moet even vlot zijn als COBOL zodat kleine zaken kunnen worden geïmplementeerd.
+	
+	2 - Agility in technological evolution
+	
+	3 - High availability.
+	Geen downtime meer in de nacht om te deployen.
+	Updates moeten tijdens de werkuren kunnen gebeuren.
+	Coninueous delivery
+	Multiple instances
+	
+	-> oplossing: Microservices
+		modulair systeem, maar alles passeert via de API gateway
+		alles opdelen in verschillende services
+		meerdere machines, code bases, databases, front-ends
+		zo weinig mogelijk afhankelijkheid van andere services
+		
+	Modulair, hoe opdelen in services?
+	-> Domain driven design: heel functioneel, wat doet je bedrijf? hier services aan koppelen
+		Module per functionaliteit
+		automatisering belangrijk
+		
+	Authentication, netwerk, firewall en services control is apart.
+	
+	Mogelijkheden
+		- MS ServiceFabric
+		- Docker Swarm
+		- Cloud (AWS, Google Cloud Run)
+		- HashiCorp Nomad
+		
+		-> gekozen voor docker + kubernetes
+	
+		
+
+2. Technology Stack
+
+	VM vs container:
+		- container moet geen OS voorzien
+		- libraries 
+		- werkt op elke machine (Linux en WIndows)
+		
+	Container orchestration, zoals Kubernetes of Docker-compose:
+		- scheduling
+		- scaling
+		- self-healing (automatische restarting containers)
+		- automation
+		
+	Kubernetes:
+		- Master node die alle scheduling doet en netwerk tussen containers en naar buiten toe
+		- Containers draaien in Nodes, nodes kunnen op verschillende servers
+		- Pod is verzameling van containers binnen Nodes (meerdere pods binnen de zelfde applicatie mogelijk)
+		
+		-> docker-compose is simpelere versie hiervan
+
+3. Developer Journey (DEMO)
+
+	Bij update maakt Kubernetes eerst nieuwe container met service vooraleer een oude wordt gestopt.
+	Adhv health checks kan je na gaan of de service bijvoorbeeld levend is. 
+	Indien niet moet deze worden heropgestart of is er een bug.
+	Prometheus, Grafada
+	YAML files voor configuratie
+	CRON jobs voor scheduling op bepaalde tijden.
+	Kibana dashboard (elastic) voor loggings te filteren en gestructureerd weer te geven (JSON files)
+	
+	Overstap naar Azure binnekort.
+	Draaien nu 310 services
+	14 milljoen logs
+	
+
+4. Challenges
+
+	1) No Transactions across technologies
+		voorbeeld geen gedeelde database
+		verschillende soorten databases
+		
+		Geen mogelijkheid voorzien om aanpassingen op meerdere services tegelijkertijd te doen.
+		
+		Werken nu met SQL en RabbitMQ
+		
+		-> Mogelijke oplossingen:
+			- WCF (Windows Communication Foundation
+			- Two Phase commit (twee services die tegelijkertijd de databanken aanpassen) vb IBM MQ en IBM DB2
+			- Saga pattern
+			- Transaction Log Tailing
+			- Transactional Outbox pattern (gekozen):
+				1. transactional outbox zegt SQL database het event bij te houden
+				2. background service van TO vraagt SQL of ze event heeft
+				3. ...
+				
+				Automatisch of Ad-hoc
+				
+	2) Distributed Locks en High availability
+		Microservices moeten altijd beschikbaar zijn
+		hiervoor kunnen vb 3 containers met dezelfde applicatie draaiende zijn tegelijkertijd
+		Soms mag er maar één service zijn die iets uitvoert, zoals een update, en moet er één service zijn
+		die een lock krijgt om als enige de update uit te voeren.
+		Eens de taak uitgevoerd is wordt de lock gereleased en wordt de lock terug gegeven aan redis 
+		en kan een andere container met dezelfde service de lock krijgen.
+		
+		redis om locks in weg te schrijven
+		automatic lock refresh for lifecycle of the app
+		
+	3) Automatische documentatie en client credentials
+		Apps hebben labels of annotaties
+		zoals service naam, service domein, code repo location, branch, commit
+		
+		-> ServicePoller, kijkt naar de K8S cluster
+			elke deployement verandering  met metadata en annotaties worden uitgelezen
+			-> Service Documentation Generator
+				- auto list apps
+				- omschrijft apps + details uit de annotaties
+				- genereert markdown website
+		
+		-> client credentials generator
+		
+
+Extra: Training
+	- Learning Management System
+	
+	- Classroom trainings:
+		Docker, Kubernetes, Helm
+		Identity & Access Management
+		RabbitMQ & NServiceBus
+		Domain Driven Design
+		Database technologies
+		Workflow engine
+		
+		
+
+Gastsessie 3 - 11/10 - Professionalisering (NMBS)
+-------------------------------------------------
+Wie ben ik?
+	Stijn Van Engelgem, AP alumni
+	
+Wat doe ik?
+	1e Technicus Elektromechanicien in de industriële elektronica
+	
+Stage
+	TW Antwerpen
+	Loadbank log meetsysteem gemaakt voor HLD 62 en internationale trein Class 66
+	Veiligheid belangrijk.
+	Diesel locomotieven
+	Stagebegeleider ook AP alumni
+	
+	Testen vermogen dieselgenerator
+	Verderzetten masterstage van een masterstudent, theoretisch perfect.
+	Praktisch levensgevaarlijk want werd super warm.
+	Herdesign heeft hij gedaan.
+	
+Consultant bij exellys voor Port of Antwerp
+
+Aanwerving NMBS
+	Solicitatie bij WIE = Werf Industriële Elektronica te CW Mechelen
+	Digitaal gesocliciteerd, werf bezoek binnen de week
+	Aanwerving binnen de 2 weken
+	
+NMBS/SNCB
+	20k werknemers
+	550+ stations
+	21+ verschillende soorten treinen in dienst
+	9% van totaal verbruik elektriciteitsnet Belgïe
+	
+Twee grote taken:
+	1. Transport (NMBS)
+
+	2. Herstelling/onderhoud (NMBS Technicus)
+		
+		Onderhoud van de treinen = de volledige rtein
+		
+		CW Mechelen doet:
+			onderhoud, kleine en grote revisies, toelevering, uitzonderlijke werken (TGV, Eurostar, ongevallen)
+			
+		WIE doet:
+			elektronische componenten, blokken, subsystemen en sturingen, testers maken
+			ongeveer 100 werkenemers, 7200m² oppervlakte werkruimtes
+			elektronica van 1960 tot nu
+			
+			Hoofdtaken:
+				Onderhoud: controle, bevestiging correcte functie, veiligheid
+					Oude collegas tot 70+ jaar oud die de oude elektronica nog kennen
+				
+				Reparatie:
+					Reparatie op bekabeling, PCB niveau, software niveau
+					Vervangingen als nodig
+					Productie van nieuwe subcomponenten
+					
+				Preventie:
+					Voorkomen van repetitieve defecten (vb fout in schermen waarbij een spoel zichzelf desoldeerd als deze boven de 200° wordt)
+					Preventie aanpassingen: aanvragen, voorbereiden en uitvoeren.
+					
+				Productie:
+					PCB ontwikkeling (soms ook voor derden)
+					?
+					
+			Ondersteund door:
+				Menselijk:
+					Logistiek, planners, teamleiding, aankopers
+				
+				Machinaal:
+					Simulators, hersteldatabase (intern ontwikkeld), SAP (database management)
+					
+Hij zit in Team 5:
+	Onderhoud (om de 5, 10 en 20 jaar), reparatie, preventie
+	
+	Veiligheid kritisch materiaal:
+		ABS, snelheidsmeters, lampen, deursturingen, alarmen, ...
+		
+Studentenbegeleiding:
+	In een team
+	Stage en jobstudenten
+	Begeleiding op de werkvloer
+	planning
+	geneoeg brandblussers aanwezig voor als er lichtshows zijn.
+	
+Common components:
+	interne opslagplaats
+	...
+	
+Development:
+	Bouwen van simulators voor team en externe werven
+	Development van nieuwe gestandardiseerde simulator elementen/systeem
+	
+	Gebruik van Node-red, Python, RPi's
+	
+Voorbeelden:
+	Grote weerstanden voor verwarming
+	Lampen met afwater gaatje die omgekeerd gemonteerd worden waardoor er water in de lamp komt in combinatie met kuisproducten
+	
+	mmfl58.be -> elke trein die ooit voor NMBS gereden heeft
+	
+	Deense neus (rijd enkel nog in Denemarken), rubberband €120k, PLC uit productie
+	
+	Relais die constant schakeld snel kapot, reparatie maar een 2 a 3 keer mogelijk, daarna is de printplaat kapot.
+	Opgelost door pin headers op te solderen en werken met dochterbordje met solid state relais die 40x langer mee gaan.
+	
+	Luchtsolderen omdat er gaten in printplaten gebrand zijn, maar nieuwe printplaat is veel te duur.
+	Enkele plaats in België waar nog met lood mag gesoldeerd worden.
+	
+	ABS systeem voor treinassen. Metingen op snelheid van de as
+	
+Stage plaatsen voor hardware en software:
+	Simulators ontwikkelen
+	Frontend voor database systeem
+
+----------
+Mening sessie:
+Dit was tot nu toe al de interessantste presentatie. Door dat het voornamelijk over hardware gaat is het veel tastbaarder over wat bet gaat.
+Interessante en soms grappige verhalen bij het onderwerp.
+Doordat het werken is met heel oude electronica en op hoogspanning gaat het over heel specifieke toepassingen.
+Het is vaak behelpen met wat je hebt, wat het heel interessant maakt.
+
+Mening spreker:
+Hij was wat zenuwachtig in het begin, maar daarna ging het zeer vlot. Hij heeft duidelijk veel kennis over treinen.
+					

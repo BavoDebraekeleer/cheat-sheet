@@ -1,0 +1,460 @@
+  _______  ___       _______   ______  ___________  _______     ______    _____  ___    __     ______    ________ 
+ /"     "||"  |     /"     "| /" _  "\("     _   ")/"      \   /    " \  (\"   \|"  \  |" \   /" _  "\  /"       )
+(: ______)||  |    (: ______)(: ( \___))__/  \\__/|:        | // ____  \ |.\\   \    | ||  | (: ( \___)(:   \___/  
+ \/    |  |:  |     \/    |   \/ \        \\_ /   |_____/   )/  /    ) :)|: \.   \\  | |:  |  \/ \      \___  \       
+ // ___)_  \  |___  // ___)_  //  \ _     |.  |    //      /(: (____/ // |.  \    \. | |.  |  //  \ _    __/  \\      
+(:      "|( \_|:  \(:      "|(:   _) \    \:  |   |:  __   \ \        /  |    \    \ | /\  |\(:   _) \  /" \   :) 
+ \_______) \_______)\_______) \_______)    \__|   |__|  \___) \"_____/    \___|\____\)(__\_|_)\_______)(_______/  
+ 
+ THEORIE
+
+-- THEMA 1.1: Systemen, hoeveelheden en éénheden/grootheden ------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+Onthouden:
+	1.1.1 Intro elektronische systemen
+	--------------------------------
+		- Beschrijving attributen systeem
+		- Definitie systeem
+		- Nut blok-/basisschema & flow diagram + hoe interpreteren
+		- Voorbeeld transfertfunctie toegepast op een blok binnen elektronisch systeem			
+		
+	1.1.2 Soorten schakelingen
+	------------------------
+		- De beschrijving van schakelingen in algemene termen
+		- Het verschil tussen actieve en passieve ccomponenten
+		- Een aantal toepassingen voor ACC en DCC circcuits in de elektrische stroomverdeling.
+		- Een vergelijk tussen digitale en analoge elektronische schakelingen.
+		- Definitie van een transducer.
+		
+Q&A:
+	• Input en output digitale thermometer:
+		- Input = temperatuur sensor
+		- Output = digitaal display
+			
+	• Doel blokschema:
+		Vereenvoudigde weergave van een systeem in blokken zodat je het kan begrijpen
+		zonder de specifieke onderdelen te kennen,
+		EN het signaal pad aantonen.
+			
+	• Grafiek of functie die de verhouding weergeeft tussen in- en uitgang van een gegeven blok:
+		Transfertfunctie
+			
+	• Verschil passief en actief component?
+		Zie 1.2
+					
+	• Waarom is DC belangerijk voor actieve componenten/schakelingen? vb.: opamp, transistor, FET
+		DC hebben we nodig om de actieve componenten in te stellen.
+		Hiermee kunnen we aangeven wat het instelpunt is.
+		Het instelpunt hebben we nodig om een gewenste versterking van het signaal te bekomen.
+		Actieve componenten werken niet zonder DC-instelling
+			
+	• Waarom batterij geen elektronisch apparaat/device?
+		Levert wel energie in de keten, maar verhoogt het vermogen van het signaal niet.
+			
+	• Transducer:
+		Omzetter die een fysische grootheid kan omzetten naar een andere grootheid. vb.: motor: elektrische energie → kracht
+			
+	• Verliesstroomschakelaar = differentieelschakelaar:
+		Schakelaar die detecteert of er stroom van de nul-geleider naar de aarding vloeit → verschil in spanning
+			→ Reden: aarding kan via menselijk lichaam gaan!
+			
+			- lijn/Line(L)/"hot"	+rood (of zwart)
+			- neuter/Neutraal(N)	-blauw (of wit)
+			- aarding				geel/groen (of enkel groen)
+
+1.1.1 Intro elektronische systemen
+--------------------------------
+
+	• Systeem:
+		Groep van onderling verbonden onderdelen die een specifieke functie voorstellen.
+		
+		vb.: garagedeuropener, complex radarsysteem
+		→ parameters en realtie met omgeving
+		→ systeem communiceert met de buitenwereld via input en output
+		
+	• Attributen v/e systeem:
+		- Grens met omgeving
+		- Input
+		- Output
+		
+			- Grens:
+				Scheidingslijn tussen wat deel uitmaakt v/h systeem en wat erbuiten ligt/zijn omgeving/environment.
+				→ Geen enkel systeem is volledig geïsoleerd van zijn omgeving.
+			
+			- Input:
+				Wordt verkregen door spanning, stroom of vermogen dat wordt toegevoerd aan een elektrisch circuit
+				om gewenst resultaat te bereiken.
+				
+			- Output:
+				Het resultaat verkregen uit het systeem na verwerking van één of meer ingangen.
+
+	• Elektrische systemen/installaties:
+		Werken met elektrisch vermogen
+		→ Kunnen zowel DC = gelijkstroom, als AC = wisselstroom, zijn.
+			vb.: een woning/huis:
+				→ grens = buitenmuren
+				→ input = aansluiting op het elektriciteitsnet
+				→ outputs = specifieke punten waar belasting wordt aangesloten
+				→ eventuele subsystemen, bvb. de keuken die aparte bedrading heeft
+				
+	• Elektronische systemen:
+		Gaan om met signalen (ipv met vermogen)
+			→ Signaal = een veranderende elektrische of elektromagnetische hoeveelheid die informatie draagt.
+				→ Als de invoer nooit verandert = voorspelbaar → GEEN signaal want geen informatie.
+			→ Gegevens doorsturen om er bewerkingen mee te doen.
+			→ Kan niet werken zonder de voeding van een elektrisch subsysteem.
+			→ Elektrische systemen hebben vaak elektronische componenten voor de regeling.
+			
+	• Blokdiagram/schema: → flow v/h signal
+		Logische volgorde van processen in een elektronisch systeem
+		weergegeven in grafisch formaat als blokken.
+		→ Gebruik: illustruurt hoe de signaalflow verloopt voor het totale systeem.
+		→ Toont de belangerijkste onderdelen v/h systeem en de signaalstroom zonder in detail te gaan over de circuits.
+		→ Definitie slides:
+			Een blokdiagram is een model van een systeem dat zijn structuur weergeeft in een grafisch formaat met behulp van blokken
+			(waarin zich functies en verbindingslijnen bevinden) om de signaalflow weer te geven.
+				=> vereenvoudiging ingewikkelde systemen en duidt volgorde aan van verwerking signalen. 
+		
+		→ ADC = Analoog naar Digitaal Converter (Illustraties 31:00)
+			→ Successive Approximation ADC:
+				adhv S/H schakeling moment opnames maken van een input analoog signaal → nu sampled analog signal
+				dit opmeten met de ADC en omzetten in een digitaal signaal → digitized signal = getal
+			→ S/H = Sample & Hold schakeling:
+				Schakelaar en condensator om moment opnames te maken van de amplitude van een analoog input signaal.
+				De schakelaar gaat toe en terug open met een bepaald tijdsinterval.
+				Wanneer hoe toe gaat wordt de condensator opgeladen met de spanning van het analoog signaal.
+				Wanneer de schakelaar terug open gaat wordt de spanning in de condensator vast gehouden om opgemeten te worden (door de ADC).
+				
+		→ DAC = Digitaal naar Analoog Converter
+		
+		→ Comparator:
+			Compares two voltages or currents and outputs a digital signal indicating which is larger
+		 
+	• Stroomdiagram/schema of Flowchart: → logica signaal verwerking
+		→ Gebruik: Logisch proces weergeven dat het besturingslogicablok moet uitvoeren
+			→ Volgorde van code
+		→ Data acquisitie:
+			Het proces waarbij analoge signalen, afkomstig uit de werkelijke wereld,
+			omgevormd worden tot digitale numerieke waarden die gemanipuleerd kunnen worden door een computer.
+				→ ADC belangerijk onderdeel hierin.
+			
+	• Transfert functie (curve)/overdracht curve/respons curve:
+		Grafiek verhouding uitgang op ingang.
+		Beschrijft hoe het systeem zich gedraagt voor een bepaalde input.
+			→ transfert = uitgangssignaal / ingangssignaal
+			
+			→ gelijke eenheden aan in- en uitvoer → dimensieloze transfert curve
+				→ bij verscchillende eenheden wordt iets bepaalds uitgedrukt (vb.: een weerstandsverandering)
+		
+		→ Gebruik: illustreert gedrag van een bepaald blok of groep blokken (uit een blokdiagram)
+
+
+1.1.2 Soorten schakelingen
+------------------------
+
+	• Transducer:
+		Omzetter die een fysische grootheid kan omzetten naar een andere grootheid. vb.: motor: elektrische energie → kracht
+		
+	• Circuit = schakeling:
+		Start vanaf een bron, bevat een belasting (= load), eindigt terug bij de bron.
+		→ Volledig pad = gesloten circuit.
+		
+	• Componenten:
+		Apparaat (= device) dat de elektrische eigenschappen van de schakeling verandert.
+		→ Twee soorten:
+			- Passief:
+				Geen bepaaldd elektrisch vermogen nodig om te functioneren.
+				Kan de stroom in een signaal niet verhogen.
+					vb.: LED, weerstand, condensator, spoelen, diode, batterij, transformator, motor
+			
+			- Actief:
+				Bepaalde bron van vermogen nodig om te functioneren.
+				Kan de stroom in een signaal verhogen.
+					vb.: transistor, operationele versterker, microprocessor
+				
+				→ Soms geen signaal als input in het systeem, maar intern geproduceerd = actief apparaat
+					vb.: Elektronische oscillator schakeling, genereert continue ouptut → sinusvorm, blokvorm, zaagtandvorm
+							→ in telecommunicatie, computers, testinstrumenten
+							
+	• 47:34
+	
+	• Round-to-even: Indien het meest significante cijfer van de te laten vallen cijfers gelijk is aan 5,
+						verhoog het laatste behouden cijfer enkel met 1 als het verhogen maakt
+						dat dit cijfer een even getal wordt. Anders niet.
+	
+
+-- THEMA 1.2: Verwerking van analoge signalen --------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+	• Constante = Hoofdletter, momentopnname = kleine letter
+	
+	• Upp = Peak-to-peak spanning. Volledige sinusgolf, zowel positief als negatief gedeelte, van AC-signaal
+	• Umax = Topwaarde. Enkel de positieve gedeelte van de sinusgolf.
+	• Ueff = Urms = 70.7% v/d topwaarde, root minus square value.
+		Het gemmiddelde die hetzelfde vermogen dispieert alsof het een gelijkspanning is.
+		Om te vergelijken met gelijkspanningen.
+		
+		Ueff = Umax / √(2) → √(2) ≈ 1.414
+		
+	• u = tijdopname op tijdsmoment t1. Is veranderlijk, varieert in de tijd, dus kleine letter u.
+	
+		u = Umax . sin(φω.τ) → φ = ω.τ
+
+
+-- THEMA 1.3: Complexe weerstanden en reactanties ----------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+Toepassingen Condensatoren:
+	- Stockeren van elektrische ladingen: Back-up spanningsbron voor laagvermogensschakelingen		vb.: halfgeleidersgeheugens in computers (S66)
+	- Power Supply filtering (afvlakcondensator)	vb.: met diode wisselspanning omzetten in pulserende gelijkspanning, vervolgens met condensator afvlakken tot een meer gelijke gelijkspanning dmv filtering.
+	- DC blocking en AC coupling (S67)
+	- Signaalfilters:	Specifieke frequenties scheiden van breed spectrum van frequenties.	vb.: radio- en TV-ontvangst, toonregeling audioversterkers
+	- Timing Circuits:	Timer, tijdsvertraging	vb.: trapverlichting, richtingaanwijzers auto (tijdsduur ann en uit)
+	- Computer geheugens: MOSFET-transistors
+	
+
+-- THEMA 1.4: Principe magnetisme & Elektromagnetisme ------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+
+
+-- THEMA 1.4: Spoelen --------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+
+-- THEMA 1.5: OPMAP's --------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+→ Terugkoppeling naar de + ingang = Comparator
+→ Terugkoppeling naar de - ingang = Versterker
+
+Onthouden en kunnen:
+
+  Deel 1: OPAMP als Operiationele versterker:
+  -------------------------------------------
+	- Basisopmap en zijn karakteristieken:
+		Gelijkstroom (DC) versterker met een zeer grote versterking van 50k, 100k of 200k.
+		→ Transfertkarakteristiek: overgangskarakteristiek tussen in- en uitgang.
+	
+	- Opamp-symbool herkennen en tekennen:
+		Driehoek met + & - / niet-inverterende & inverterende inputs aan linkerkant,
+		Output in punt aan rechterkant,
+		en Vcc en Vee aansluitingen en bovenn- en onderkant → Dubbele voeding +U & -U → Meestal niet op schema!
+		
+	- Betekenis herkennen aansluitklemmen opamp aan IC
+		→ Aflezen op schema
+	
+	- Omschrijving werkingsprincipe verschilversterking opamp:
+		De niet-geïnverteerde input en geïnverteerde input worden bij elkaar opgeteld.
+		→ Twee signalen in tegenfase levert een versterkt signaal op
+		→ Twee signalen in fase aangelegd gaan elkaar neutraliseren → 0V
+	
+	- Beschrijving ideale opamp:
+		→ u_diff tussen de ingangsklemmen + & - is U+ - U-
+		→ Ingangsimpedantie Z_in = oneindig
+		→ A_ol = Open-lus versterking = oneindig
+	
+	- Beschrijving praktische opamp:
+		→ Ingangsimpedantie Z_in = 1 MΩ
+		→ Uitgangsimpedantie Z_out = 300 Ω
+		→ A_ol = Open-lus versterking = 50k, 100k of 200k
+	
+	- CMRR = Common mode rejection ratio:
+		Verhouding van verschilversterking aan de ingang tov twee signalen die gelijk zijn aan de ingang.
+			CMRR = A_u(diff) / A_cm
+			CMRR' = 20.log(A_u(diff) / A_cm)
+			
+		Goeie waarden voor OPAMP's zijn CMRR' = 90 tot 100 dB, of meer
+	
+	- Slew rate S in V/µs: 
+		De mate van traagheid/vertraging dat een verandering van de ingang aan de uitgang wordt gegeven.
+		→ reactiesnelheid van de OPAMP, vooral belangerijk bij hoge frequenties.
+	
+	
+	
+  Deel 2: OPAMP als Comparator
+  ----------------------------
+	- Comparator vergelijkt de twee inputs.
+	
+	- Verschillende types comparators:
+		• zero-level detector
+		• non-zero-level detector
+		• inverterende level detector
+	
+	- Werking zero-level detector:
+		Telkens als het 0V-punt overschreiden wordt aan de input verandert de output.
+		→ U_in op + niet-inverterende input, massa of 0V op - input             
+		→ De output wisseld tussen +U_max en -U_max → De spanning van de aangesloten dubbele voeding Vcc en Vee
+		
+	- Werking non-zero-level detector:
+		Zelfde als zero-level, maar het referentiepunt is NIET 0V, maar bvb U_ref = 3V
+		→ Inverterende level-detector geeft een inverse output 
+	
+	- Hoe beïnvloed input-ruis de werking v/e OPAMP:
+	
+	- Hysteresis-lus:	https://riverglennapts.com/nl/electromagnetism/367-hysteresis-loop.html
+		Vierkwadrant B-H-grafiek van waaruit het hystereseverlies, de coërcitiekracht en de retentie van s magnetisch materiaal worden verkregen.
+		
+		→ Hysteresis-verlies is een soort van IJzerverliezen: https://nl.wikipedia.org/wiki/IJzerverliezen
+			IJzerverliezen of kernverliezen is een vorm van energieverlies die ontstaat in de kern van een elektromagneet wanneer deze door een wisselende elektrische stroom wordt gemagnetiseerd. 
+	
+	- Hoe vermindert de hysteresis ruis-invloed:
+	
+	- Schmitt-triggerschakeling (beschrijving):
+	
+	- Werking Venster-/Window comparator:
+	
+	- Werkingsprincipe comparators in systemen zoals analoog naar digitaal omzetting (verklaring):
+	
+	
+
+  Deel 3: Verschilversterking met OPAMP
+  -------------------------------------
+	- Spanningsdeler:
+		Schakeling met twee weerstanden in serie,
+		waarvan R1 verbonden is met de massa, R2 met de input, en de output tussen de weerstanden in,
+		die de spanning verlaagt van in- naar output.
+		
+		U_in = (R2 / (R1 + R2) ) * U_out
+		
+		Bij OPAMP:
+			U_ref = (R2 / (R1 + R2) ) * U_bron
+				→ waarbij:	U_ref = referentiespanning	→ output spanning uit de OPAMP
+							U_ref = U_R2				
+	
+	- Spanningsvolgers:
+		Zorgen voor een hoge ingangs-Impedantie Z_in van de schakeling.
+		→ DOEL: er voor zorgen dat de verschilversterker geen belasting vormt voor de voorgaande schakeling.
+		 
+		Z'in = Zin . ((1 + A_ol.B) 	 	
+			→ A = versterkinng v/d opamp
+				→ A_cl = closed loop → met terugkoppeling
+				→ A_ol = open loop/lus → zonder terugkoppeling
+			→ B = terugkoppeling/backloop (eventuele verzwakking)
+				B = 1/A_cl
+				→ Bij spanningsdeler met input op +ingang → B = 1/((R2/R1)+1)
+				→ Bij spanningsdeler met input op -ingang → B = 1/-(R2/R1)
+				→ Bij spanningsvolger (geen spaaningsddeler/weerstanden) → B = 1 → Z'in = Zin . (1 + A_op)
+		
+	- Nulpuntcorrectie adhv Bias-regeling (of Offsetregeling) S39:
+		Beide ingangen aan massa, met potentiometer regelen (die aan negatieve en positieve voedingsbron hangt) tot uitgang 0V is.
+		
+	- Proportionele of P regelaar:
+		Vergelijkt een gewenste waarde met de processwaarde. vb.: thermostaat
+		
+	- Instrumentatieversterker:	 	→ verkrijgbaar in een IC zoals de AD620
+		Gebruikt oa voor versterking signaal brug van Wheatstone
+		
+		u_uit = u_in2 - u_in1 + 2.I.R1
+		I = (u_in2 - u_in1) / R2
+		U_R2 = U_B - U_A						→ U_B = U_in2; U_A = u_in1
+		
+		CRekenvoorbeeld 40:50, slide 45
+
+-- THEMA 1.6: Niet lineaire weerstanden - Thermistoren NTC ------------------------------------------- https://nl.wikipedia.org/wiki/NTC-weerstand
+------------------------------------------------------------------------------------------------------
+• Thermistor:
+	Elektrische weerstand (component) waarvan de elektrische weerstand afhankelijk is van de temperatuur (thermal resistor).
+	
+	- 2 types:
+		1) NTC = Negatieve TemperatuursCoëfficiënt / Positive Temperature Coefficient OF Niet-lineaire weerstand:
+			Lage weerstand R bij hoge temperatuur T 
+		
+		2) PTC = Positieve Temperatuurscoëfficiënt / Negative Temperature Coefficient:
+			Hoge weerstand R bij hoge temperatuur T
+			
+	- Werktemperatuur:
+		-55° C tot +125° C
+		
+	- Temperatuurbereik afhankelijk van de basisweerstand
+	
+• NTC:
+	- Samengesteld uit oxiden vann de ijzergroep.
+		In zuivere toestand zeer hoge weerstand.
+		Door toevoeging van vreemde ionen met een verschillende valenntie dan de oxiden verkrijgen deze haflgeleidende eigenschappen.
+	
+	- Karakteristieken:	
+		•  R-T karakteristiek (Weerstand tov Temperatuur):
+			→ Om te weten bij welke temperatuur welke weerstand hoort
+				en zo de spanning berekennen
+			
+			→ Naamgeving is obv R-T
+				vb.: TTC05085
+						TTC05 	→ algemene kenmerk
+						085 	→ R_25° = 85 Ω bij 25° C of 298 K
+						B = 3200 K
+						
+				→ Bestaat van TTC05005 tot TTC05681	
+				→ B of β = Materiaal constante 
+			
+		•  I-U karakteristiek (Stroom tov Spanning)
+	
+	- NTC-coëfficiënten tussen -2%/K tot -6%/K
+	
+	- Temperatuurs-afhankelijkheid v/d NTC:
+		R = R_25° . e^(B . ((T0 - T)/(T0 . T)))
+		
+	- Kenmerken:
+		• Dissipatieconstante (= maat voor eigen opwarming):
+			Het vermogen om dde NTC met 1° C te doen stijgen. 
+			
+			→ Dient zo laag mogelijk gehouden te worden.
+			→ Typische waarden:
+				- gewone NTC: 0,4 à 0,7 mW/°C 
+				- Temperatuuropnemers: 7 à 10 mW/°C
+				
+		• Hersteltijd:
+			Tijd in seconden waarmee de weerstand in maximale belasting terugkeert naar R_25°C
+			bij een omgevingstemperatuur van 25°C.
+		
+		• (Thermische) Tijdsconstante:
+			De tijd nodig om van de huidige temperatuur naar een nieuwe temperatuur over te gaan
+			tot er 38% verschil is.
+			
+			→ Hoelang het duurt tot je een betrouwbaar meetresultaat hebt.
+			
+			T - T_eind = (T_begin - T_eind) . e^-(t/τ)
+			
+				→ waarbij:	T = Temperatuur
+							T_eind = Eindtemperatuur
+							T_begin = Begintemperatuur
+							τ = K/C 
+							K = Warmtecapaciteit v/d weerstand  in J/°CMRR
+							C = Warmtedissipatiecoëfficiënt
+		
+		• Toepassingen:
+			- Beveiliging gloeidraden:
+				→ Groot aantal gloeilampen in serie,
+				→ Aanzetstroom kan zeer groot worden = PTC-effect gloeidraad
+				
+			- Temperatuurmetingen:
+				→ Thermometersondes
+				
+			- Compensatie positieve temperatuurcoëfficiënten
+				vb.: Toepassing in halfgeleidertechniek
+				vb.: Vermogenversterkers en temperatuur van transistoren in de gaten te houden en te beperken.
+				
+			- Temperatuurcontrole in koelwater
+				→ bij ontploffingsmotoren enn huishoudelijke apparaten.
+					R_25°C van 270Ω tot 2,2 kΩ 
+					Eindwaarde R tussen 10Ω en 60Ω
+			
+			- Diepvriezer thermistor voor lage temperaturen (wat bij ons kapot was)
+				R_-30°C : 50kΩ
+				R_-20°C : 27kΩ
+				R_-10°C : 15kΩ
+				Eindwaarde R tussen 10Ω en 60Ω
+					
+			- Piekstroombegrenzende NTC-weerstanden
+				→ Bescherming dioden en schakelaars
+				vb.: piekstroom van condensatoren tegen te gaan.
+						De koude NTC moet eerst opwarmen om tot de werkings-stroom van het geheel te komen.
+				
+			- Indirecte verhitte NTC-weerstanden = Thermokoppel
+				→ Glazen omhulsel
+				R_25°C van 3300Ω tot 330kΩ
+				B van 2775 tot 4175
+
+-- THEMA 1.:  ----------------------------------------------------
+------------------------------------------------------------------------------------------------------

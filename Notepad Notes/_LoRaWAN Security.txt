@@ -1,0 +1,149 @@
+  _           _____    __          __     _   _ 
+ | |         |  __ \   \ \        / /\   | \ | |		• 
+ | |     ___ | |__) |__ \ \  /\  / /  \  |  \| |		→ 
+ | |    / _ \|  _  // _` \ \/  \/ / /\ \ | . ` |
+ | |___| (_) | | \ \ (_| |\  /\  / ____ \| |\  |
+ |______\___/|_|  \_\__,_| \/  \/_/    \_\_| \_|
+                                                
+       
+Source: https://smartmakers.io/en/security-in-lorawan-applications/
+-------------------------------------------------------------------	   
+• In IoT moet een security analysis niet enkel kijken naar individuele toestellen, maar naar het gehele systeem waarin ze werken.
+	De communicatie gebeurt vaak M2M = machine-to-machine.
+	
+• IoTSF = Internet of Things Security Foundation: https://www.iotsecurityfoundation.org/
+
+• IoT devices staan altijd op standby en blijven dus aan, waarbij ze enkel bij toevoeging aan het systeem worden geauthenticeerd.
+• Some IoT products have outdated embedded operating systems. 
+
+• LoRaWAN is one of the few IoT networks implementing end-to-end encryption. https://lora-alliance.org/wp-content/uploads/2020/11/lorawan_security_whitepaper.pdf
+
+• Implementation Matters (not part of the specifications but recommendations)
+	Enhanced security of the end-devices and server platforms by means of using hardware
+	security (e.g., Secure Elements or Hardware Security Modules) are implementation
+	matters and not related to protocol interoperability aimed by telecommunication
+	specifications, including LoRaWAN. Nevertheless, use of such techniques are compatible
+	with the LoRaWAN specifications and should be implemented by the developer as
+	required by the application.
+	
+• The missing puzzle pieces of LoRaWAN Security - by Johan Stokking - TTN YouTube Channel https://www.youtube.com/watch?v=6IDaUxhEgaI
+	- Symmetric security
+	
+	- Keys should be stored in een HSM or Secure Element, not hardcoded in code or anywhere in plain text (emails)
+	- 
+	
+• What is new in LoRaWAN 1.1? - by Johan Stokking - TTN YouTube Channel https://www.youtube.com/watch?v=ewsXKc3bk1U
+	- LoRaWAN specificaties uitgebracht op 17 oktober 2017 omvat 3 documenten:
+		• LoRaWAN 1.1
+		• LoRaWAN Backend Interfaces 1.0 (BEI)
+		• LoRaWAN 1.1 Regional Parameters rev. A
+		
+	- End devices need persistent memory, for both ABP and OTAA, with a Hardware Secure Module (HSM)
+		to store the keys (ABP only),
+		the frame counters, which may not be reused within the same security session, and are now 32-bit
+		DevNonce and JoinNonce (previously AppNonce), which should be incrementing numbers used once, instead of random
+		
+	- Downlink ACK now uses FCntUp (Frame Counter Uplink) as part of the MIC (Message Integrity Code),
+		before the end device didn't know what message the ACK was for
+		
+		the FCntDown is now seperated into NFCntDown (network) and AFCntDown (application)
+		
+	- Shared secret NwkKey (network key) (next to AppKey) is introduced
+		Three sessions keys derived from NwkKey, one encryption and two for integrity:
+			• NwkSEncKey = Network Session Encryption Key: for encrypting MAC commands
+			• SNwkSIntKey = Serving Network Session Integrity Key: for calculating half the MIC, part for the serving network server
+			• FNwkSIntKey = Forwarding Network Session Integrity Key: for calculating the other half of the MIC, part for the forwarding network server
+			
+		AppSKey (application session key) is derived from AppKey,
+			used for encryption of the application payload
+			
+		On LoRaWAN 1.0.x network servers all keys are derived from NwkKey,
+			only one NwkSKey,
+			does not use the AppKey
+			
+	- Class B now specified (before only experimental)
+	
+		Class A: end device initiated = the end device chooses when to send, low power, only listens for ACK messages
+		Class C: network initiated = app ask something in downlink message, end devices always listen for these, high power consumption
+		
+		Class B: synchronized receive windows = end devices only listen during specified times, time synced with a beacon,
+			for a moving end device, this can inform the network which gateway it has a good cennection with for downlink messages
+			
+			Bi-directional with scheduled receive slots
+			
+	- Join Procedure:
+		In 1.0:
+			• DevEUI
+			• AppEUI
+			• AppKey
+			
+		In 1.1:
+			• DevEUI
+			• JoinEUI (renaming of AppEUI)
+			• AppKey
+			• NwkKey
+			
+			JoinEUI used to look up the Join Server through DNS
+				Join Server derives the session keys (using a Hardware Secure Module = HSM)
+				Allows changing Network Servers when roaming by reconfiguring the Join Server that the specific device is using a different NS
+				
+				Join Server needs to be trusted (trusted third party or set up yourself)
+				
+	- 1.0 end devices need a 1.0 Stack, not compatible with 1.1 directly
+				
+• From LoRaWAN 1.0 to 1.1: Security Enhancements - Renaud Lifchitz - The Things Conference 2019 https://www.youtube.com/watch?v=FsO5zxYHfKw
+	- Authentication can be moved outside of the network by being able to use a third party Join Server
+	
+	1.0.2 changes:
+		- FCntUp encrypted and included in ACK downlink, against replay attacks
+		
+	1.0.3 changes:
+		- unicast and multicast support for Class B
+		- time synchronisation
+		
+	1.1 changes:
+		- allows network and server decomposition, instead of one Network Server (NS) there are:
+			Join Server (JS), can be independent from LoRaWAN network, managed by third party
+			Network Server (NS)
+			Application Server (AS)
+			
+		- MAC commands are always encrypted
+		- Session security split in two
+		- Frame counters can't be reset (even in ABP mode)
+		- DevNonce is counter, not random anymore, different every time, protects against forced keystream reuse attacks
+		
+		- Rejoin requests:
+			activated end devices can periodically send rejoin requests aling with its normal application traffic
+			allows backend to initialize a new session context for the end device
+			ensures frame counters never exhaust, rejoin freshens session context along with the frame counters
+			
+			Can be used to hand over traffic to different network
+			
+		Better
+			Availability:
+				- better protection against active denial of service attacks
+				- device reconfigurable during roaming (handover roaming)
+				- no more time drifts for class B en devices
+				
+			Confidentiality: avoids keystream reuses
+			
+			Authentication and confidentiality: third party or own Join Server
+			
+	1.0.4 changes:
+		- 32-bit FCnt, persistent
+		- Monotonically incrementing DevNonce, tegen replay attacks
+			
+	Vulnerabilities still present:
+		- Lack of secure standard for backend networks, eg. Semtech Gateway to Server Interface Definition v1.0 (plaintext and UDP, vulnerable to spoofing), better use encrypted and authenticated protocols like TLS
+		- No message padding enforced, cipher text is same size as plain text, better use fixed size with padding
+		- Complex set of MAC commmands prone to implementation errors and device DoS
+
+	
+• LoRaWAN Security in 5 Minutes - TTN YouTube 2022 https://www.youtube.com/watch?v=UIu-2zTs8dM
+
+• Johan Stokking on LoRaWAN Security - TTN YouTube 2020 https://www.youtube.com/watch?v=uBTjsB4DQoM
+	- Four pillars:
+		• Secure boot: end device should check if the firmware is signed by the device maker
+		• Firmware update verification: incoming firmware updates should also be checked if the firmware is signed by the device maker
+		• LoRaWAN root key storage
+		• LoRaWAN cryptographic operations

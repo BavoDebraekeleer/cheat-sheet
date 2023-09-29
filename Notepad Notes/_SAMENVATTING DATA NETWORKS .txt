@@ -1,0 +1,374 @@
+------------------------------------------------------------------------------------------------------------------------------------------------
+-- THEORIE -------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+TERMINOLOGIE
+************
+
+- Encapsulatie: toevoegen van headers op elke netwerk-laag bij het verzenden van data.
+- Decapsulatie: het verwijderen van headers bij de ontvanger, gewoonlijk door de bijhorende protocollen na het lezen.
+- Frame: het volledige te verzenden data paket, inclusief de headers voor elke netwerk-laag.
+- Payload: informatie die verstuurd wordt door een netwerkprotocol.	
+- Overhead: informatie die aan de de data (payload) werd toegevoegd en die gebruikt wordt om de data correct op de bestemming te krijgen.
+
+- PDU = Protocol Data Unit: a single unit of information transmitted among peer entities of a computer network.
+- ARP = Address Resolution Protocol
+	→ PDU's van ARP-proces: ARP Request & ARP Reply
+- ICMP = Internet Control Message Protocol
+- IANA = Internet Assigned Numbers Authority
+- RIR = Regional Internet registries
+- VLSM = Variable Length SubnetMask
+
+- Cisco IOS = Cisco Internetwork Operating System
+- GUI = Graphical User Interface
+- CLI = Command Line Interface
+- SSH = Secure SHell-connectie
+
+- Protocol: beschrijft hoe een "dienst" door een bepaalde technologie geleverd wordt, zodat een fabrikant die deze technologie wilt produceren weet welke eigenschappen zijn product moet hebben.
+- RFC = Request For Comments: documenten die de protocollen en andere aspecten van het internet beschrijven, zoals:
+	- HTTP = HyperText Transfer Protocol (Application laag)
+	- TCP = Transmission Control Protocol (Transport laag)
+	- IP = Internet Protocol (Internet laag)
+	
+- Host / End device: elk toestel aan het uiteinde van een netwerk.
+- Nodes: hosts en routers op het netwerk zijn netwerk nodes.
+- Link = router poort → kan bedraad of draadloos zijn
+
+- Fysische netwerk-topologie: (common) bus, star, ring, mesh, fully connected
+- Logische netwerk-topologie: signaalpad en hoe toegang wordt geregeld.
+	→ 2 soorten:	- Broadcast: shared medium, iedereen verbondden met het medium ontvangt het signaal, gebruik op voorwaarde dat het medium vrij is. vb.: bij bus netwerk
+					- Token passing: een "token" reist over het medium van node naar node. De node die het token heeft mag het medium gebruiken. vb.: bij ring netwerk
+					
+- Switching: hoe connecties worden gemaakt tussen nodes.
+	→ 3 soorten:	- Circuit switching networks:	- vóór de communicatie fysieke verbinding tussen zender en ontvanger vb.: telefonienetwerk
+													- alle datapaketten volgen zelfde route met volledige bandbreedte
+													- geen headers, niet foutentolerant
+													
+					- Message switching networks:	- datastroom wordt in packets gesegmenteerd
+													- shared medium, gebruik van headers, gebruikt as-needed, foutentolerant
+													- geen garantie over performantie, packets arriveren mogelijks in andere volgorde
+													
+												→ Contention: zenders moeten wedijveren voor het gebruik van het medium
+												→ Congestion: medium kan overvol geraken → vertraging en data verlies
+												
+					- Packet switching networks: 	- Bericht wordt in zijn geheel verstuurd met headers
+													- mogelijks verschillende paden voor zelfde bestemming
+													- bericht wordt opgeslagen voor verder gestuurd te worden, foutentolerant
+													- ontvanger hoeft niet online te zijn vb.: local e-mail client
+													
+- LAN = Local Area Network: multi-access, korte afstanden, intern beheer
+- WAN = Wide Area Network: point-to-point of multi-access met weinig verbindingen, grote afstanden, beheerd door service provider
+- Internet: wereldwijd verbonden LAN's en WAN's, van niemand eigendom
+	→ Organisaties die de structuur op internet onderhouden: IETF, ICANN & IAB
+	
+- Netwerkarchitectuur: technologieën gebruikt in het netwerk
+	→ Betrouwbaar netwerk:	- Fouttolerantie: impact beperken van falende netwerkcomponenten door meerdere paden te voorzien en te werken met packet switching.
+							- Schaalbaarheid: snel en eenvoudig uitbreidbaar zonder prestaties van services voor bestaande gebruikers te bëinvloeden door geaccepteerde standaarden en protocollen te gebruiken.
+							- QoS = Quality of Service: verschil maken tussen type dataverkeer: die geen/moeilijk vertraging verdragen en wel. Als er een congestion ontstaat worden de frames van degene die het wel kunnen verdragen gedropt.
+							- Veiligheid: fysiek beveiligen van netwerkapparaten, ongeautoriseerde toegang te voorkomen, en informatiebeveiliging van info of gegevens die via het netwerk worden verzonden.
+								→ Doel: confidentiality, integrity & authentication
+								
+- Duplex:	- Half duplex: nodes kunnen enkel of data versturen, of ontvangen
+			- Full duplex: nodes kunnen gelijktijdig data versturen als ontvangen
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+ONDERDELEN VAN EEN NETWERK
+**************************
+- Host / End device: elk toestel aan het uiteinde van een netwerk
+	→ Server: computers die info verstrekken aan End devices vb.: email server, webserver, file server
+	→ Clients: computers die requests sturen naar server(s) om info op te halen vb.: e-mail, webpagina, bestand
+
+- Intermediary Network Devices: verbinden End devices met elkaar vb.: switch, wireless accesspoint, router, firewall
+	→ verschillende functies:	- data singals versterken
+								- info bewaren over de paden in het netwerk
+								- andere appararten informeren over eventuele fouten en communicatiestoringen
+- Media (zie verder)
+
+- Distributed Applications: zijn actief op verschillende hosts en communiceren met elkaar over het netrwerk
+	→ 2 modellen:	- Client/server model	→ vb.: e-mail client app stuurt request naar e-mail server app die continue wacht op requests
+					- Peer-to-peer model	→ vb.: torrents, BitCoin kluis, Plex
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+OSI- en TCP/IP-model
+********************
+- OSI-model (7-lagig): designbasis voor communicatestandaards die niet afhankelijk zijn van fabrikanten. Abstracte vorm van welke operaties waar moeten worden geregeld opdat de communicatie via een netwerk functioneert.
+- TCP/IP-model (4-lagig): Transmission Control & Internet Protocol model
+- Headers: metadata voor de verschillende lagen om de data naar de juiste Application te krijgen
+- PDU = Protoccol Data Unit: header data
+
+	Ezelsbrugetje	OSI-model lagen		TCP/IP-model lagen	TCP/IP Protocol Suite		Naam & Samenstelling data
+	-------------	---------------		------------------	---------------------		-------------------------
+	All				Application			Application			HTTP, DNS, DHCP, FTP		App Data = App/HTTP-header + Data/payload
+	People			Presentation		(mee in ^ )			
+	Seem			Session				(mee in ^ )
+	To				Transport			Transport			TCP, UDP					Segment = Transport/TCP-header + App Data/upper layer payload
+	Need			Network				Internet			IPv4, IPv6, ICMPv4, ICMPv6	Packet = Network/Internet/IP-header + Segment/upper layer payload		→ IP adresses worden toegevoegd
+	Data			Data Link			Network Access		PPP, Frame Relay, Ethernet	Frame = Frame Header + Frame Data/upper layer payload + Frame Trailer 	→ MAC adresses worden toegevoegd
+	Processing		Physical			(mee in ^ )										Bits 	→ Voegt geen info toe, maar zet de Frame om naar en signaal dat kan getransporteerd worden over het medium
+																								→ medium = via wat het signaal getransporteerd wordt, bekabeld of draadloos vb.: netwerkkabel, wi-fi
+																								→ Frame = Frame header + IP header + TCP header + HTTP header + Data/payload + Frame Trailer
+																									→ overhead = alles behalve de Data / alle (meta)data die wordt toegevoegd om de verzending mogelijk te maken
+																									→ payload = de Data die verzonden wordt
+																									→ een Frame is "medium dependent" → wordt op niveau v/d Physical laag omgezet naar een signaal afhankelijk van medium
+- Physical layer standaarden:
+	- fysische onderdelen: hardware, media & connectoren
+	- codering: encoder & decoder: frame omzetten naar bits en bits terug omzetten naar een begrijpbaar frame
+	- gebruikte signalen: hoe de bits worden weergegeven op het fysieke medium, afhankelijk van medium
+
+- Toestellen lezen enkel de labels/headers die voor hen bestemd zijn:
+	- Switch: leest het MAC-address in de Data Link laag header
+	- Router: lesst het IP-address in de Network laag header
+
+- Segmenteren: data opsplitsen in segmenten om deze gemakkelijker en sneller te verzenden. Als er iets mis gaat moeten enkel de getroffen segmenten opnieuw verzonden worden ipv van alle data.
+	→ nadeel: meer overhead → elk segment moet van de protocolvelden voorzien worden en gecontroleerd worden.
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+DATA LINK LAAG
+**************
+- Error detection: grove controle die niet alle fouten detecteert, maar performant.
+	→ detecteerd fouten in frames die hebben plaats gevonden tijdens verzending → ontvanger dropt frames
+
+- Media Access Control: toegangsprotocol die bepaald welke node het netwerk kan gebruiken
+	→ Media Access Control Methods:	- Contention-based access vb.: CSMA/CD = Carrier sense multiple access with collision detection vb.: Ethernet HUB
+																of CSMA/CA = Carrier sense media access with collision avoidance → 1) luisteren of kanaal vrij is, 2) RTS, 3) CTS, 4) zenden + voor hoelang vb.: 802.11
+									- Controlled access = Deterministic access waarbij elke node om de beurt het netwerk mag gebruiken vb.: Token (=logisch) Ring (fysisch)
+	→ Bij multi-access networks die gebruik maken van een shared medium moet de toegang tot het netwerk georganiseerd worden om’botsingen’ te vermijden.
+	→ RTS = Ready To Send
+	→ CTS = Clear To Send
+
+- LLC = Logical Link Control: verbindt netwerk protocollen met network interfaces, van Data Link-laag naar Network laag
+	→ Type Field: bevat aan welk protocol op de Network laag de Data Link laag het frame moet doorgeven na verwerking
+
+- NIC = Network Interface Card = netwerk kaart
+- MAC address = Physical address = ID/adres van de netwerk-kaart: 48-bits in 12 hexadecimale cijfers (= 6 bytes)
+	→ OUI = Organisationally Unique Identifier: de eerste 6 v/d 12 hexadecimale cijfers in een MAC-adres duiden de fabrikant aan (= 24-bits = 3-bytes)
+	→ SA = Source Address → MAC adres van de verzender → wordt gebruikt om reply te sturen
+	→ DA = Destination Address → MAC adres van de ontvanger
+	→ Verschillende types:	- Unicast: voor één enkele interface
+							- Multicast: om naar meerdere hosts tegelijk te sturen, moet specifiek op deze hosts (= multicast group) geconfigureerd worden → start met: 01-00-5E
+							- Broadcast: adres naar iedereen binnen het broadcast domain / router link (→ afgebakend door routers) → Ethernet broadcast address = FF-FF-FF-FF-FF-FF
+	
+- PDU = Protocol Data Unit: a single unit of information transmitted among peer entities of a computer network.
+- ARP = Address Resolution Protocol (IPv4): proces dat IP-adres vertaald naar MAC-adres
+	→ Neighbor Discovery bij IPv6
+	→ PDU's van ARP-proces: ARP Request & ARP Reply
+	
+FCS = Frame Check Sequence: error detection die wordt toegevoegd op de Data Link laag en wordt berekend obv frame data
+	→ de otvanger doet dezelfde berekenning, komt dit niet overeen is er iets mis gegeaan en wordt de frame gedropt bij de ontvanger en opnieuw verzonden door de zender.
+	
+Ethernet HUB = signaalversterker: stuurt elektrisch versterkt signaal door op alle andere poorten.
+	→ Collision Domain: daarin zitten hosts die verbonden zijn via een HUB. Bij gelijktijdig verzenden krijg je een collision
+Ethern Switch: 'leert' welke MAC-addresses met welke poort verbonden zijn → MAC-address-table
+	→ Bij ontvangst frame, leest SA & DA in Data Link laag header en stuurt adhv MAC-address-table het frame door enkel op de juiste poort (= port filtering)
+		→ Kent hij het MAC-address nog niet → zend broadcast op alle poorten (= flooding) waarop enkel de host met het DA replied → komt zo juiste poort te weten  
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+MEDIA
+*****
+- Koperen bekabeling:	- UTP = Unshielded Twisted Pair
+						- STP = Shielded Twisted Pair
+						- S/UTP = Shielded of Screened Unschielded Twisted Pair = F/UTP = Foiled Unschielded Twisted Pair
+						- S/FTP = Shielded and Foiled Twisted Pair
+	→ connector: RJ45 (Straight og crossed? → Theorie 4 Slide 17)
+		- straight/straight-through (standaard): PC → HUB: PC-kant bedrading: white-orange, orange, white-green, blue, white-blue, green, white-brown, brown → HB-kant bedrading: zelfde
+		- crossed/crossover: PC → PC of HUB → HUB:  Kant 1: zelfde als straight → Kant 2: white-green, green, white-orange, white-brown, brown, orange, blue, white-blue
+	→ categoriën: CAT1, CAT2, CAT3, CAT4, CAT5, CAT5e, CAT6, CAT6a, CAT7
+
+- Fiber-Optics:	- duurder dan UTP, flexibele dunne zeer zuivere strengen glas, laser of LED om bits te coderen
+				- ideaal voor grote afstanden, EMI, ...
+	→ 2 soorten:	- multimode: kan meerdere licht frequencies aan, voor korte afstand, gebruikt in LAN'secret
+					- single mode: kan maar in één frequentie sturen, voor lange afstanden, gebruikt voor telefoon en kabel tv
+	→ gebruik: backbone bedrijfsnetwerken, FTTH = Fiber-To-The-Home, Long-Haul Newtsorks, onderzeese kabelnetwerken
+	→ connectoren:	- ST = Straight-Tip connectors
+					- SC = Subscriber Connector connectors
+					- LC = Lucent Connector Simplex connectors
+					- Duplex Multimode LC connectors
+					
+- Wireless: Mobilitiet, maar beperkte dekking, gevoelige interface, beveiliging noodzakelijk want shared media
+	→ Types afhankelijk van: 	•	Coderingsmethoden voor gegevens naar radiosignalen
+								•	Frequentie en vermogen van transmissie
+								•	Signaalontvangst en decoderingsvereisten
+								•	Antenne-ontwerp en constructie
+	→ Standaarden zijn:		•	Wi-Fi (IEEE 802.11
+							•	Bluetooth (IEEE 802.15
+							•	WiMAX (IEEE 802.16)
+							•	Zigbee (IEEE 802.15.4)
+							
+------------------------------------------------------------------------------------------------------------------------------------------------
+IPv4 ADDRESSES
+**************
+- IP-address: 	Combinatie van Netwerk-id en Host-id → 32-bits binair → opgedeeld in groepjes van 8-bits = octet → elk octet weergegeven als decimaal getal
+				vb.: 1100 000.1010 1000.0000 0000.0000 0001 = 192.168.0.1
+
+- Netmask:		Identificatie mask → waar 1'tjes staan is het netwerk gedeelte, waao 0'tjes staan het host gedeelte → zelfde schrijfwijze als IP-address
+				vb.: 1111 1111.1111 1111.1111 1111.0000 0000 = 255.255.255.0 → Korte notatie: /24 → getal = aantal 1'tjes in de netmask = lengte van het Netwerk-id
+					→ Network-id = 192.168.0.0
+					→ Host-id = 1
+
+- Default Gateway = het IP-address van de Link / Router-poort waarop het subnet is aangesloten.
+
+- Routeren = packets doorsturen tussen verschillende broadcast domains
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+CLASSFUL ADRESSING
+******************
+Klasse	Begin	1e octet	Standaard netmask	#Network ID bits	# Host bits		Voorbeeld IP-adres + Netmask
+------	-----	min-max		-----------------	----------------	-----------		----------------------------
+A 		0		  1-126		255.  0.  0.  0		/8  (1 + 7)			24				 10.  2.  0.  1		255.254.  0.  0
+B 		10		128-191		255.255.  0.  0		/16 (2 + 14)		16				172. 16. 95.254		255.255.224.  0
+C 		110		192-223		255.255.255.  0		/24 (3 + 21)		8				192.168.  0.126		255.255.255.192
+D 		1110	224-239		28-bits MulticastID	(Geen mask)							224.  0.  0.  1 (signifies every system on a subnet), 224.  0.  0.  2 (signifies every router on a subnet)
+E 		1111	240-255		28-bits Gereserveerde naamruimte (Geen mask)  Range van 240.  0.  0.  0 tot 255.255.255.254 
+
+Netwerkadres: adres waar het volledige Host-id gedeelte 0'tjes zijn.
+Directed broadcast address: adres waar het volledige Host-id gedeelte 1'tjes zijn.
+	→ -2 mogelijkheden bij het berekennen van het Host-id
+
+Range van speciale IP adressen:
+-------------------------------
+169.254.  0.  0 tot 169.254.  0. 16	Link local addresses
+127.  0.  0.  0 tot 127.  0.  0.  8	Loop-back addresses → voor testdoeleinden, 127.0.0.1 verwijst naar eigen Network Interface
+  0.  0.  0.  0 tot   0.  0.  0.  8	Used to communicate within the current network
+  
+------------------------------------------------------------------------------------------------------------------------------------------------
+SUBNETTEN
+*********
+Doel: één classful netwerkadres opdelen in meerdere netwerkadressen in functie van de fysische topologie van het netwerk.
+1.	Plaatsing van routers deelt het netwerk op in kleinere broadcast domains.
+2.	Aan de fysische broadcast domains, worden logische netwerk-adressen toegekend.
+3.	De fysische broadcast domains worden gebruikt om computers (nodes) met elkaar te verbinden.
+4.	Elke node die we met het netwerk verbinden, moet een geldig adres krijgen in dit netwerk
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+-- LABO / PRAKTIJK -----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+SWITCH CLI (COMMAND LINE INTERFACE) TERMINAL COMMANDO'S
+*******************************************************
+- Switch Console instellingen:
+	Port: (Poort waarop het is aangesloten)
+	Speed: 9600
+	Data: 8 bit
+	Parity: None
+	Stop bits: 1
+	Flow control: None
+	
+- Command modes: 	Mode naam							Weergave in CLI				Gebruik
+					---------							---------------				-------
+					1) User EXEC Mode 					ToestelNaam>				Voor Monitoring = werking van het toestel te controleren met beperkt aantal opdrachten.
+					2) Priviledged EXEC Mode 			ToestelNaam#				Toegang tot alle opdrachten en functies.
+					3) Global Configuration Mode		ToestelNaam(config)#		Toegang tot configuratie opties.
+					4) Line Configuration Mode			ToestelNaam(config-line)#	Configuratie van Console-, SSH-, Telnet-, of AUX-toegang vb.: wachtwoord op Console-toegang zetten.
+					5) Interfacce Configuration Mode	ToestelNaam(config-if)#		Netwerkpoort configuratie vb.: IP address instellen.
+					
+- Basis structuut commando's: 	Prompt + Command + Space + Keyword or Argument
+								ToestelNaam>Commando[SPATIE]Keyword or Argument
+							vb.:Switch>show ip protocols
+							vb.:Router>ping 192.168.10.5
+					
+- Priviliged EXEC(ute) mode: > enable / en
+	> Global configuration mode: # configure terminal / config t / conf t
+	> Hoe uit een modus gaan: (eender welke modus) exit
+
+- Naam van de switch instellen: (config)# hostname _(hostnaam opgeven) (omdat je niet altijd fysiek kan zien met welk toestel je verbonden bent.)
+	> Verwijderen:				(config)# no hostname
+
+- Toon huidige/actieve configuratie: # show running-config / show run / sh run
+	> Deze wissen: # reload
+	> Deze oplsaan (in NVRAM): # copy running-config startup-config / copy run start
+	> Opgeslagen config tonen: # show startup-config / show start / sh start
+	> Opgelsagen config wissen: # erase startup-config / erase start
+	
+- Klok instellen: # clock set hh:mm:ss <1-31>(day) MONTH(maand afkorting vb sept) <1993-2035>(year)
+
+- Console Wachtwoord instellen: (config)# line console 0 / line con 0 (de "line" die je wilt configureren in dit geval console poort 0)
+								(config-line)# password _(wachtwoord in geven)
+								(config-line)# login
+								(config-line)# end (exit uit config mode = 2x exit)
+- Toegang tot User EXEC mode via een IP-sessie (Telnet of SSH) met een passwoord beveiligen:
+								(config)# line vty 0 15
+								(config-line)# password _(wachtwoord in geven)
+								(config-line)# login
+								(config-line)# end (exit uit config mode = 2x exit)
+								
+- Passwoorden encrypteren: 		(config)# service password-encryption (alle wachtwoorden die leesbaar zijn in de config file worden geëncrypteerd)
+								(config)# exit
+
+- Priv EXEC mode wachtwoord
+			> Zonder encryptie: (config)# enable password _(wachtwoord in geven)
+			> Met encryptie: 	(config)# enable secret _(wachtwoord in geven) (betere encryptie met rijkere character set, en dus veiliger/moelijker te kraken, dan het commando "service password-encryption")
+
+- MOTD Banner: (config)# banner motd "_" (_tekst die moet getoond worden, "" alles tussen deze zelfde characters wordt getoond, maakt niet uit welke)
+	(Gebruikt om bvb expleciet te verbieden de switch binnen te dringen en het wachtwoord te kraken.)
+
+- IP-adres instellen op Switch: (config)# interface / int _(poort naam, voor Switch standaard 'Vlan 1')
+								(config-if)# ip address _(IP-adres invullen) _(Subnet Mask invullen)
+								(config-if)# no shutdown ("no" verwijdert het shutdown commando waardoor je het ip address kan instellen)
+								(config-if)# exit
+								(config)# end
+
+- Ethernet poorten afkortingen: > Fast (100mbit) = Fa0/# (# = nr van de poort, vb. 4)
+								> Gigabit (1000mbit) = Ga0/#
+								
+- Beschikbare poorten: # show ip interface brief
+
+- MAC-address-table:
+	- Tonen:	# show mac-address-table
+	- Wissen: 	# clear mac-address-table
+
+- Hulp:
+	- ? 		Alle beschikbare commando's, of te? om alle commando's te tonen dat starten met deze letters, in dit geval dus "te"
+	- TAB 		Vult commando aan
+	- SPATIE 	Verder bladeren in tekst
+	- SPATIE? 	Volgend woord in commando zoeken
+	- UP ARROW of CTRL+P 		Geeft vorig ingegeven commando's
+	- LEFT ARROW of CTRL+B 		Beweegt cursor naar links
+	- RIGHT ARROW of CTRL+F 	Beweegt cursor naar rechts
+
+- Oefeningen:
+	1) Stel switch naam in en verwijder ze weer
+	2) Stel switch opstart wachtwoord in + encryptie
+	3) Stel priv exec wachtwoord in encrypted
+	4) Stel opstart tekst in
+	5) Toon de huidige configuratie
+	6) Sla de configuratie op en herstart
+	7) Stel ip adres 172.16.0.1 255.255.255.192 in
+	8) Toon de beschikbare poorten
+	9) Toon de mac adres tabel
+
+------------------------------------------------------------------------------------------------------------------------------------------------	
+WIN CMD (WINDOWS COMMAND CONSOLE)
+*********************************
+- Toestel netwerk configuratie zien: ipconfig /all
+- Ping andere host adhv IP-adres: ping _(IP-adres)
+- ARP cash:
+	> Tonen: 	arp -a OF arp -g
+	> Wissen: 	arp -d* (* wist alles, anders specifiëren welke inet_addr (=internet address) je wilt verwijderen))
+
+- Hulp:
+	> Commando /? geeft mogelijke opties voor het commando
+	
+------------------------------------------------------------------------------------------------------------------------------------------------
+CLASSFUL ADRESSING / IP
+***********************
+Klasse	Begin	1e octet	Standaard netmask	#Network ID bits	# Host bits		Voorbeeld IP-adres + Netmask
+------	-----	min-max		-----------------	----------------	-----------		----------------------------
+A 		0		  1-126		255.  0.  0.  0		/8  (1 + 7)			24				 10.  2.  0.  1		255.254.  0.  0
+B 		10		128-191		255.255.  0.  0		/16 (2 + 14)		16				172. 16. 95.254		255.255.224.  0
+C 		110		192-223		255.255.255.  0		/24 (3 + 21)		8				192.168.  0.126		255.255.255.192
+D 		1110	224-239		28-bits MulticastID	(Geen mask)							224.  0.  0.  1 (signifies every system on a subnet), 224.  0.  0.  2 (signifies every router on a subnet)
+E 		1111	240-255		28-bits Gereserveerde naamruimte (Geen mask)  Range van 240.  0.  0.  0 tot 255.255.255.254 
+
+Range van speciale IP adressen:
+169.254.  0.  0 tot 169.254.  0. 16	Link local addresses
+127.  0.  0.  0 tot 127.  0.  0.  8	Loop-back addresses
+  0.  0.  0.  0 tot   0.  0.  0.  8	Used to communicate within the current network
+  
+Default Gateway = het IP address van de Router poort waarop het subnet is aangesloten
+
+VLSM:
+Router poort > 1e IP address
+Switch poort > 2e IP address
+PC > laatste IP address
+
+In oefeningen:
+- Point-to-point netwerken → routers die rechtstreeks met elkaar verbonden zijn → 2 hosts
+- Multi-access netwerken → netwerken met meer dan 2 hosts → waar een switch is

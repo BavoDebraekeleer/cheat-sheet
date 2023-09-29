@@ -1,0 +1,767 @@
+------------------
+-- IoT Security --	• 
+------------------	→ 
+Theorie: 	50% examen, gesloten boek, digitaal
+Labo: 		20% project herhaalbaar + 30% project niet herhaalbaar, permanente evaluatie met verplichte aanwezigheid!!
+
+Informatiebeveiligheid & privacy
+Infosec professionals
+Enkel defensief, nooit offensief als professional!
+Virtueel werken
+Toestemming op papier
+
+-- H1: Geschiedenis (Week 1 & 2) --
+  -------------------------------
+→ Datums moet je niet kennen!
+  
+• Voor 2010:
+	Enkel computers besmet
+	vb. I Love You virus, mails versturen, bestanden verwijderen
+	
+• 2010: Stuxnet, Land → Land
+	PLC (Siemens) sturen fysieke dingen aan, vb. liften, kerncentrales, waterzuiveringsinstallaties
+	vanaf een computer.
+	
+	Doel: uranium vereiking Iran plat leggen door Amerikaanse en Israelische intelligentiediensten, gericht op centrifuge machines
+	Werking: verspreiding via internet,
+				Zich zetten tussen de operator (computer) en de PLC.
+				PLC iets laten doen dat niet de bedoeling is maar aan de operator vertellen dat alles in orde is.
+				
+	→ Air-gapped system = niet met internet verbonden
+		→ kan fysiek gehacked worden via USB-stick
+		
+• 2013: Wikileaks door Snowden en Asange
+	PRISM Collection: NSA installeerde fibertaps op websites om data te verzamelen, ettelijke terabytes per jaar
+	Privacy als recht wordt heel belangrijk
+	
+	→ taps = tool op een server geplaatst die de trafiek op die server kunnen zien en statistieken over kunnen genereren
+	
+• 2014: Fappening, apple security iCloud lek van privé foto's, vb Jennifer Lawrence
+	Cloud opslag != veilig
+	→ Security Questions: info celebrities staat online dus opzoekbaar om deze vragen te beantwoorden
+		→ Als je deze vragen invuld, lieg of vul enkel in wat niet geweten kan zijn, vb Wat was je eerste auto? → Fiets
+		
+	→ Elcomsoft EPBR software tool
+	
+	→ Biometrische beveiliging in opkomst
+	
+• 2014: Sony Pictures hacked by North Korea, Land → Bedrijf
+	→ Act of war???
+	
+• 2015:
+	- Industroyer: Oekraïne zonder stroom door hackers
+		→ training voor Russische cyber aanvallen
+		
+	- Madison Ashley data breach
+		Platform om affaire te hebben, geresulteerd in zelfmoorden, echtscheidingen, ontslagen, public shaming
+		→ grootschallige data breach van privé gegevens
+		
+	- Shellshock and Heartbleed
+		→ megaexploits
+		
+		- Heartbleed = major vulnerability in OpenSSL library
+		- Shellshock: family of bugs in Linux Bash Shell resulting in ability to execute any command whatsoever
+		
+• 2016:
+	- Social Engineering:
+		Manipulatie van gebruikers dmv misbruik van vertrouwen, bc there is no patch for human stupidity
+		
+	- IoT flaws incoming:
+		→ Botnet: groep van besmette computers om als aanvallers te dienen, vb. denial of service veroorzaken
+			→ cmd: netstat → om eigen netwerk poorten te zien
+		
+		→ Shodan.io: searche engine om aparaten te vinden die op internet zijn aangesloten en security informatie
+		
+		- Mirai Botnet:
+			Dyn DDoS attacker used a huge Mirai botnet of unprotected IoT devices
+			IoT devices zijn vaak minder beveiligd en meerdere aanwezig per netwerk die in één keer besmet kunnen worden.
+			
+		- Shadow Brokers - NSA gehacked
+			→ Cyber Warfare, vermoedelijk vanuit Rusland of China
+			
+		- Ransomware
+			vb. WannaCry & Petya
+			→ gebasseerd op NSA tools
+			
+			→ slachtoffers: Renault, Maersk, Mondelez, banken, ziekenhuizen
+			
+	- Make America Great Again, door Rusland
+	
+• ...AANVULLEN
+
+• 2020:
+	- Maze Ransomware, Garmin
+	
+• 2021:
+	- Stuxnet nachtmerie bijna gelukt, hacker geprobeerd om water zuivering te vergiftigen in Florida
+	
+	- Log4j JNDI attack, kleine bug in log library waardoor Appache servers remote konden worden overgenomen
+	
+-- H2: Fundamenten van security (Week 3, 4 & 5) --
+  ----------------------------------------------
+	
+• Definition Security:
+	- NIST definition: ...AANVULLEN
+	- Security is a state of freedom from a danger of risk
+	
+!!	- The CIA Triad:
+		• Confidentiality = enkel wie de data mag zien kan het lezen
+			- Data confidentiality
+			- Privacy
+			
+			→ Encryption, Authorisation
+			
+		• Integrity = correctheid van data
+			- Data integrity
+			- System integrity
+			
+			→ Correctheid controle van data om integriteit te bewaren
+		
+		• Availability = beschikbaarheid van data
+			Ensuring timely and reliable access to data.
+			
+	→ Slides ook bekijken!
+	
+• Information Security Model: McCumber Cube:
+	- Information Security Properties = CIA:
+		• Confidentiality
+		• Integrity = correctheid van data
+		• Availability
+		
+	- Information States:
+		• Processing
+		• Storage
+		• Transmission
+	
+	- Security Measures:
+		• Policy and Procedures
+		• Education, Training and Awareness
+		• Technology
+		
+• Canary Tokens:
+	https://canarytokens.org/generate
+	
+	Token die je ergens in kan verstoppen.
+	Als dit bestand/URL wordt geopend wordt er een bericht gestuurd.
+	Zo kan je tracken wanneer het bestand/URL wordt geopend.
+	
+• Veilig Master wachtwoord:
+	- Zin kiezen				vb. Ik ga elke ochtend naar de bakker
+	- CamelCasing toepassen		vb. IkGaElkeDagNaarDeBakker
+	- Getal toevoegen, 1337		vb. 1981IkGa31k3DagNaarD3Bakk3r
+	- Symbolen toevoegen		vb.	?1981IkG@31k3D@gN@@rD3B@kk3r!
+	
+	→ Zo wordt het moeilijker om met Dictionary aanvallen je wachtwoord te kraken.
+		→ Dictionary aanval gaat lijst met woorden af om je wachtwoord te achterhalen.
+	→ How secure is my password? https://www.security.org/how-secure-is-my-password/
+	→ Have I been pwned? https://haveibeenpwned.com/ 
+	
+• Moeilijkheden bij bescherming tegen aanvallen.
+	- Speed of attacks
+	- Greater sophistication of attacks
+	- Simplicity of attack tools
+	- Detect vulnerabilities more quickly
+	- Delay in patching
+	- Distributed attacks
+	- User confusion
+	
+	→ Patching: om vulnerabilities te dichten riskeer je bugs toe te voegen.
+	
+• Types of Security Attacks:
+	- Passive
+	- Active
+	
+	- Passive = Observeren:
+		• Eavesdropping, sniffing:
+			berichten/bestanden uitlezen/bekijken
+		• Traffic analysis: 
+			sidde-channel aanval
+			patronen observeren en afleidingen maken hiermee om tot info te bekomen
+			
+	- Active:
+		• Masquerade, impersonation:
+			aanvaller doet alsof dat ze iemand met authorisatie is
+		• Replay:
+			bericht onderscheppen (capture), en op ander moment verder sturen (replay), vb. pass the hash
+		• Man-in-the-middle = modification of messages:
+			aanvaller staat tussenin en kan dus alles zien en kan de integriteit van berichten aanpassen
+		• Dos = Denial of Service:
+			availability uitschakelen, server platleggen
+			
+• Wie zijn de aanvallers:
+	- Hackers
+	- Script kiddies
+	- Spies
+	- Employees
+	- Cybercriminals
+	- Governments
+	
+	- Hackers
+		Iemand die een systeem probeert aan te passen voor andere doeleinden dan bedoeld.
+		
+		• White Hat = Ethical Hackers
+			Goede bedoelingen, met toestemming van de eigenaar(s)
+			Cyber Security professional
+
+		• Grey Hat
+			Goede bedoelingen, maar niet altijd met toestemming = illegaal
+			vb. Th3j35t3r: Hacktivist for Good, beweert ex-militair te zijn, deed DoS door social engineering door aanvallen aan te kondigen op Twitter
+
+		• Black Hat
+			Crackers
+			Voor eigen geldgewin, zonder toestemming, illegaal
+			
+	- Script kiddies:
+		Unskilled users, downloaden scripts/tools die beschikbaar zijn op internet
+		vb. Low Orbit Ion Canon, als wraak op kredietkaart bedrijven die betalingen naar Wikileaks blokkeerde.
+		
+	- Spies:
+		Excellent computer skills
+		
+	- Employees:
+		Largest information security threat
+		vb. wraak van ontslagen of slecht gezinde werknemer, stomme fouten, security zwakheid aantonen
+		
+	- Cybercriminals:
+		Doen het voor het geld.
+		• Identity thieves, financial fraude
+		• 
+		• 
+		• 
+		
+		vb. Max Butler aka Iceman, beheerde alle gestolen kredietkaart gegevens (Vanuit appartement in San Fransisco)
+		vb. Phishing en Money mule's, zie slides
+		
+	- Governments:
+		• 2005, Titan Rain: China attacking US military computers
+		• 2007, Estland attacked door Rusland als politiek statement
+			DDos met botnets (DDoS = Distributed Denial of Service
+		• Operation Aurora
+
+• Attacks and defenses:
+	
+	Het wordt steeds gemakkelijker voor aanvallers om complexe aanvallen uit te voeren door stijgende complexiteit van de tools.
+	Als verdediger wordt het moeilijker door het breeder worden van de verbondenheid, maar ook hier krachtigere tools voor bescherming.
+
+	- Attack phases, 5 stappen:
+		1) Reconnaissance
+		2) Scanning
+		3) Gaining access
+		4) Maintaining access
+		5) Clearing
+		
+		1) Reconnaissance: 
+			Probe for information
+			• Port scanning
+			• Dumpster diving
+			• GitHub repos scannen op wachtwoorden
+			• Ping
+			• Checking public records
+			• Call the office/Helpdesk and ask questions to staff/as employee
+			• Social Engineering
+			• Facebook/LinkedIn page, vacatures, bedrijfsstructuur
+			• "WayBackMachine" gebruiken
+			• ...
+	
+		2) Scanning: 
+			Penetrate any defenses
+			• ID systems
+			• Vulnerabilities zoeken
+			
+			adhv Port & Vulnerability Scanners,
+				→ welke services draaien er achter de poorten die open staan.
+				
+			→ Beschermen met IDS/IPS, die detectie doet en bevindingen doorgeeft aan de firewall
+				IDS = Intrusion Detection Service
+				IPS = Intrusion Protection Service, deze gaat ook zelf IP's blokkeren
+		
+		3) Gaining access: 
+			Modify security settings
+			• Path:
+				via netwerk/OS/app
+			• Goal: to escalate privileges, admin rechten verkrijgen
+			
+			→ Remote shell opzetten: commando's naar systeem kunnen sturen van buitenaf
+				→ Detecteren adhv openstaande poorten en verkeer, cmd: netstat
+				→ Op poort 443 met HTTPS shell opzetten, dit is altijd toegelaten, bestaande standaard protocollen gebruiken
+				→ Voorkomen door MIM Proxy opzetten die HTTPS verkeer kan zien die buiten het bedrijfsnetwerk gaan
+			
+		4) Maintaining access: 
+			Spreading to different devices
+			• PWNing the sytem
+			• Use system as launch pad
+			• Inject Backdoor/Trojans
+				→ used to revisit, sniff/monitor network
+			• Use resources
+			• Harden up
+			
+		5) Clear tracks
+			• Destroy proof
+			• Hide my stuff
+			• Cyber blind
+			• Clear logs
+
+	- Defense, 4+1 sytematieken:
+		• Layering
+		• Limiting
+		• Diversity
+		• Obscurity
+		
+		• Layering:
+			Meerdere lagen om aanvallen tegen te gaan.
+			Als één laag doorbroken wordt zijn er nog andere.
+			Protocollen, firewalls, policies, afspraken
+			
+		• Limiting:
+			Toegang limiteren.
+			Standaard zijn firewalls nu volledig toe. De sysadmin moet openzetten wat nodig is.
+			Zelfde met rechten voor gebruikers.
+		
+		• Diversity:
+			De lagen die je inbouwt moeten gevarieerd zijn, verschillende soorten.
+			vb.: verschillende merken van firewalls, anders ingesteld, policies, enz
+			
+			→ Oude protocollen waar geen security aanwezig is upgegrade met encryptie en autenticatie
+				DNS → DNSsec
+				HTTP → HTTPS
+				
+		• Obscurity:
+			Het mag niet te duidelijk zijn wat voor security je gebruikt.
+			→ Voor en nadelen
+		
+		• Simplicity:
+			KISS = Keep It Simple Stupid
+			Als verdedigers niet weten hoe de security werkt kunnen ze het niet verdedigen of worden er dingen vergeten.
+			
+			→ Saltzer en Schroeder's design principles, zie slides.
+			
+-- Week 5, deel 3
+	
+	- Type aanvallen:
+		• Software gebasseerd
+		• Hardware gebasseerd
+		• Netwerk gebasseerd
+		
+		• Software gebasseerd:
+			- Malware = Malicious Software:
+				Wordt mee gedownload met iets anders.
+				vb. Adware, Backdoor, Exploits → uitleg zie lijst uit slides
+				
+			- Viruses:
+				..aanvullen
+				Viruses source code repository: https://github.com/ytisf/theZoo
+				
+			- Worms:
+				Verspreiden zichzelf automatisch over het netwerk.
+				
+			- Trojans:
+				Software dat geadverteerd wordt om één ding te doen,
+				maar eigenlijk iets anders, of ook iets anders, doet.
+				
+			- Rootkits:
+				Zit op niveau van het OS Kernel en kan Malware processen verbergen voor een Virus Scanner.
+				Kunnen allerhande info aanpassen in het OS.
+				Zeer moeilijk te schrijven. Kunnen zich in re-install files nestelen.
+				
+			- Privilege Escalation:
+				Admin rechten krijgen,
+				of de rechten van een andere gebruiker.
+				vb. Dirty Pipe
+				
+			- Spam:
+				Scams over e-mail.
+				Bevat tegenwoordig vaak Malware.
+				
+			- Botnets:
+				Zombie computers geïnfecteerd en onder controle van een aanvaller.
+				Wanneer de aanvaller een commando stuurt ontwaken de zombies en worden ze op een bepaald doel afgestuurd.
+				vb. DDoS attack, Zeus
+				
+			- Bitsquating
+			
+		• Hardware gebasseerd:
+			- USB-stick:
+				vb. USB PocketKnife
+				
+			- Hardware Keylogger:
+				Small device between keyboard connector and keyboard port.
+				Records every keystroke.
+				
+			- MalDuino
+			
+- Week 6, deel 4
+
+	• Side-channel / inference aanval:
+		vb. energie verbruik CPU,
+			met microfoon naar CPU luisteren om encryptie te kraken
+			
+		- Heartbleed en Spectre = hardware + side-channel attack:
+			Heartbeat protocol, om verbinding met server te checken, kan meer chars terug geven dan de bedoeling is.
+			Zo kan je het geheugen uitlezen van alles wat na de secret voor de Heartbeat komt.
+			
+		- Rowhammer attack:
+			DRAM aanval waardoor je data kan uitlezen van geheugen rows waar je geen toegang tot hebt 
+			door heel snel te blijven schrijven naar aanligende rows.
+			
+	• Zero Days (2016): STUXnet aka Olympic Games/OG documentaire
+		Took weeks to find the payload.
+		Contains 4 zero-days.
+		Uses 2 Microsoft certificates from 2 Taiwanese companies.
+		Targets very specific PHILIPS PLC.
+		Probes for specific hardware with 20 checks, if even 1 fails the attack doesn't happen.
+		Includes a cut-off date, stops working after end of the Bush administration.
+		Joint effort between CIA, NSA, Cyber Command, Israeli 8200.
+		Completely autonomous, can run on it's own.
+		
+		There were successful attacks.
+		
+		Werking:
+			1) Records normal activity.
+			2) Spins up super fast way over what it can handle.
+			3) Slows down fast so it begins to wobble and break apart.
+			
+			In the meantime sends recorded data back to the system so it seems everything was fine.
+			If shutdown was initiated by personal the code was intercepted.
+			
+			
+-- H3: Cryptografie --
+  -------------------------------
+
+- Deel 1:
+	• CIA van toepassing:
+		Confidentiality → Cryptography
+			vb. DES, 3DES, AES, SEAL, RC (RC2, RC4, RC5 en RC6)
+		Integrity: geïmplementeerd met hashes, CRC, etc (deel van crypto)
+			vb. MD5, SHA
+		Availability (niet van toepassing bij crypto)
+		
+	• Terminologie:
+		- plaintext 	= originele message
+		- ciphertext	= coded message
+		- cipher 		= algorithm for transforming plaintext to ciphertext
+		- key			= info used in cipher known only to sender/receiver
+		- encipher 		= encrypt = converting plaintext to ciphertext
+		- decipher		= decrypt = recovering ciphertext from plaintext
+		- cryptography 	= study of encryption principles/methods
+		- cryptanalysis	= codebreaking = study of principles/methods of deciphering ciphertext without knowing the key
+		- cryptology	= field of both
+		
+	• Characterize cryptographic systems by:
+		- type of encryption operations used:
+			• substitution
+			• transposition
+			• product
+		- number of keys used
+			• single key or private
+			• two-key or public
+		- way in which plaintext is processed:
+			• block
+			• stream
+			
+		- type of encryption operations used:
+			• substitution
+				vb. Caesar Cipher: character vervangen door een ander character van zelfde of ander alphabet, vb 3 opschuiven in alphabet
+				→ Vigenere cipher = combinatie van Caesar ciphers
+				
+			• transposition
+				vb. Scytale tool = rail fence cipher: verschuiving van letters volgens patroon
+	
+	• Cryptanalysis:
+		- objectief om key te vinden, niet enkel messages
+		- type aanvallen:
+			cryptoanalytic attack & brute-force attack
+			
+			• Cryptoanalytic attack:
+				- ciphertext only: attacker only has acces to collection of ciphertexts
+				- known plaintext: attacker has set of ciphertext with corresponding plaintext
+				- chosen plaintext: attacker can obtain ciphertext corresponding with their own chosen set op plaintext
+				- chosen ciphertext: reverse of above
+				
+				vb.			QIK DNQ NEO QIK OHS MKJK LYSIQYES YE QIK IHACK
+				oplossing	The	cat and the dog were fighting in the house
+				
+			• Brute-force attack:
+!!! 			- Brute Forece Searchs
+					→ EXAMEN VRAAG! Wat is de gemiddelde tijd die je nodig hebt om een sleutel van 32-bit te brute-forcen?
+						De helft van de tijd die nodig is om alle combinaties (in het schem, zie slides) af te lopen → 2.15 ms / 2 = 1.075 ms
+						→ 50% kans om de juiste sleutel te vinden bij elke test.
+				
+				- "Store now, break later":
+					Nu computers niet sterk genoeg, dus bijhouden voor later, wanneer computers snel genoeg zijn.
+					→ Quantum computers!
+						
+			• Social Engineering:
+				Because there is no patch for human stupidity.
+				
+			
+
+- Deel 2:
+!!	• Kerckhoff's principle:
+		Strength of encryption algorithm = Secrecy of the KEY!!
+		NOT de secrecy of the algorithm.
+		
+		→ Compare traditional lock and key, deursloten zijn overal zichtbaar met merk, maar de sleutel geeft toegang.
+
+	• Symmetric encryption:
+		1. Select key and encrypt.
+		2. Give key and ciphertext to receiver separately.
+		3. Use the key to decrypt ciphertext.
+		
+		→ Probleem: key naar andere kant brengen.
+		→ Encryption key = decryption key
+		
+		• Requirements:
+			- strong encryption algorithm
+			- secret key known ONLY to sender and receiver
+			
+			- mathematically have:
+				Y = E(K, X)		waarbij Y=Ciphertext, E=Encyrption functie, K=Key, X=Plaintext
+				X = D(K, Y)		waarbij X=Plaintext,  D=Decryption functie, K=Key, Y=Ciphertext
+				
+			- assumes encryption algorithm is known
+			- implies a secure channel to distribute key
+			
+		• 2 manieren:
+			- Stream cipher = Bit-wise: 	RC4
+			- Block cipher  = Block-wise: 	AES, DES/3DES
+			
+			- Stream cipher = Bit-wise: 	RC4
+				→ zie diagram slides!
+				
+				1. Plaintext ingeven
+				2. Encryptie: Secret Key + Pseudorandom keystream generator + XOR
+				3. Ciphertext doorgeven + Secret Key doorgeven
+				4. Decryptie: Secret Key + Pseudorandom keystream generator + XOR
+				5. Plaintext verkregen
+				
+				→ Pseudorandom keystream generator:
+					- Pseudo = schijn, lijkt random
+					- De key bepaald het patroon, is de seed
+					- Keystream even lang als plaintext
+					
+				→ XOR Binary data:		vb.
+					plaintext			11001100
+					keystream			01101100
+					--------- XOR		--------
+					ciphertext			10100000
+			
+			- Block cipher  = Block-wise: 	AES, DES/3DES
+				→ zie diagram slides!
+			
+	
+	• Asymmetric encryption:
+		1. Give your public key to sender.
+		2. Sender uses your public key to encrypt the plaintext.
+		3. Sender gives the ciphertext to you.
+		4. Use your private key (and passphrase) to decrypt the ciphertext.
+		
+		→ Encryption key ANDERS dan decryption key
+		→ Trager, niet ideaal voor realtime communicatie
+		→ Secrecy van de key is verantwoordelijkheid van één partij ipv beide!
+		
+	• Combinatie symmetrisch en asymmetrisch:
+		Geeft beveiligingsvoordeel van asymmetrisch of verbinding op te zetten
+		en verwijdert nadeel van traagheid door daarna symmetrische te gebruiken,
+		dat sneller is.
+	
+		vb. HTTPS, SSH
+		
+	• Random numbers:
+		- TRNG = True Random Number Generator
+			Hardware gebaseerd, door computers gegenereerd:
+				- door flip-flop start waarde te lezen,
+				- electrical activity measurments,
+				-instantaneous values of the system clock (time)
+			en die om te zetten in binary
+			
+			→ Niet bruikbaar voor keystream generation,
+				maar WEL voor het aanmaken van de Secret Key!
+			
+		- PRNG = Pseudo-Random Number Generator
+			Voor bepaalde doelen moet het random getal reproduceerbaar zijn, vb. symmetrische encryptie
+			werkt met deterministic algorithm met Seed
+			
+			vb. Von Neumman (1946) "middle-square methode"
+				random seed nemer → kwadrateren → middelste digits nemen uit resultaat → kwadrateren → ...
+				
+  
+!!!	• RC4 → XOR	!!!
+		- RC4 = Ron's Code v4
+		- Standaard symmetrische encryptie methode
+		- Veel gebruikt, vb. web SSL/TLS, wireless WEP/WPA
+		- Genereert bitstream die continu verandert
+		- variable key size, byte-oriented stream cipher
+		- key forms random permutation of all 8-bit values
+			uses that permutation to scramble input info processed a byte at a time
+			
+!!!		→ zie schema slides!!
+
+		Methode (niet exact kunnen, maar begrijpen wat er gebeurt!):
+			1. KSA = Key Scheduling Algorithm
+				
+				Generate a RC4 compatible key S based on the user key T:
+				1) Fill array 256 with the key, repeat if needed
+					vb. "pwd12" = 112 119 100 49 50 (decimaal)
+				2) Permute key array T with array S using formula (zie slides)
+				
+				→ GEEN enkele byte van de 256 is identiek/komt meerdere keren voor
+			
+			2. PRGA = Pseudo-Random Generation Algorithm
+			3. XOR plaintext with keystream
+			
+  
+-- H4: WiFi Security --
+  -------------------------------
+ 
+- Deel 1:
+	• War-driving: onbeveiligde of slecht beveiligde WiFi-netwerken zoeken en hacken door rond te reiden.
+		- eavesdropping
+		- invasion
+		- min-in-the-middle attack
+		- backdoor
+		- DoS attacks
+		
+	• IEEE 802.11 security:
+		- origineel = WEP
+		- tussenoplossing = WAP
+		- WPA-2/3
+		
+		- WEP = Wired Equivalent Privacy:
+			Data needs encryption/integrity
+			WEP is optioneel (WEP-bit in MAC-header)
+			"Security should happen higher up the OSI stack"
+			
+			802.11 layers:
+				- LLC
+				- MAC met WEP
+				- Physical
+				
+!!!			→ Zie slides voor schema: WEP overview!! → Tekening sowieso op examen!! Om WEP uit te leggen, maar ook RC4!!!
+			
+				- CRC-32 met ICV, Integrity Check Value (security check, checksum zoals bij bankrekeningnr.)
+				- RC4 met Initialisatie Vector IV (24-bits) als seed
+					→ IV moet meegestuurd worden in IV Header samen met key-id (tot 4 WEP-keys mogelijk)
+					→ WEP key + IV als Seed voor RC4
+					
+			→ Problemen:
+				- RC4 niet bedoeld voor datagram environment, disallows key re-use
+				- IV collisions = packets with same IV = encrypted with same keystream = key niet meer nodig
+					Random IV: birthday paradox = 50% chance of collision after 4820 packets
+				- Inject known plaintext
+				
+		- WPA (802.11i RSN werkgroep)
+			→ moet in firmware patch mogelijk zijn, meest gebruikte consumer CPU al zwaar belast
+			
+			• Interim solution WPA1:
+				- TKIP: data encapsulation 					C	
+				- MIC: data integrity 						I
+				- 802.1x: authentication and key management A
+				
+				- TKIP fixes WEP:
+					- gebruikt nog WEP met extra stappen ervoor
+					- IV sequencing met replay detection
+					- ...
+					
+				- MIC = Message Integrity Check
+					- fixes CRC-32 flaw
+					- hashing
+					- detects forgeries
+					
+				- Key-mixing
+					
+				
+			• Final solution WPA2
+				- AES:
+				- CBC-MAC:
+				- 802.1x:
+			
+		
+	• 4 stappen voor verbinding:
+		1) Scanning					= Looking for targets
+		2) Joining					= Aiming
+		3) Authentication
+		4) Association
+		5) Actual data-connection
+		
+		1) Scanning
+		
+		2) Joining
+		
+		3) Authentication
+			3 manieren:
+				1) IEEE mode: Open-system
+				2) IEEE mode: Shared-key
+				3) MAC-address based (non-standardised)
+				
+				1) IEEE mode: Open-system
+					1 aanvraag en antwoord. Heel eenvoudig.
+					Voor publieke hotspots.
+					Low power, voor IoT.
+				
+				2) IEEE mode: Shared-key
+					1. Client aanvraag tot verbinding
+					2. AP stuurt tekst om te encrypteren
+					3. Client encrypteert de tekst en stuurt terug
+					4. Als encryptie klopt volgens de sleutel wordt de Client toegelaten
+				
+				3) MAC-address based (non-standardised)
+		
+		4) Association
+			"Plug cable in socket"
+			Access Points mannages frames
+		
+		5) Actual data-connection
+			Nu CIA nodig!
+				Confidentiality
+				Integrity
+				Authentication
+				
+	• Abuse Management Frames:
+		Management frames are sent unprotected (no CIA), vb. DNS requests
+		
+		- Disassociate frame, om verbinding te verbreken met client, en aanvaller kan sessie overnemen door het MAC adres van de client over te nemen.
+		- MIM attack, met AirSnarf
+		- Response Attack
+			→ Shared key authentication geeft plain text + cipher text → XOR → geeft keystream
+			
+		- FMS attack:
+			• sommige IV's geven zwakke keystreams die gedeelte van secret key lekken
+			• door de eerste 2 bytes van plain text van een hoop pakketjes te weten, kan uit zwakke keystreams de secret key geherconstrueerd worden
+				→ bij IP zijn de eerste twee bytes altijd 0xAA in het OSI-model, dus de plaintext bij cipher text vinden moet niet eens
+				→ AirSnort en WEPCrack gebruiken deze aanval voor WEP
+				
+		- CRC flawed:
+			→ geen replay detection in WEP
+			→ bit-flip attack possible → CRC fail response uit layer 3 Receiver
+			
+		- No key management
+		
+	• DES = Data Encryption Standard
+		- Versie 1:
+			• origineel hardware matig
+			• most used block cipher
+			• encrypts 64-bit data using 56-bit key
+				→ gebasseerd op Lucifer cipher die met 128-bit keys werkte, door NSA is dat (§-bit geworden zodat zij het konden kraken met hun computer kracht
+				
+			→ DES Cracker circuit board kan key brute forcen
+			
+		- Triple-DES:
+			• Gebruikt 3 keys ipv 1
+			• Op zelfde hardware als DES, enkel paar draadjes versteken
+		
+	• AES = Advanced Encryption Standard
+		- Rijndael algorithm → Belgisch! 
+		
+	• Modes of operation:
+		Principes die toepasbaar zijn op elke encryptie manier.
+		- ECB = Electronic CodeBook
+			• blokken afzonderlijk van elkaar → streamen
+			• fouten hebben enkel effect op één block
+			
+		- CBC = Cyber Block Chaining
+			• IV needed as 'salt'
+			• fout in één block gaat voort naar het volgende
+			• veiliger want elk blok is afhankelijk van elkaar
+			
+		- CTR = Counter
+			• Blokken individueel encrypteren met teller

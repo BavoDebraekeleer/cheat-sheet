@@ -1,0 +1,553 @@
+--------------------------------------------------------------------------------------------------------
+**** DATABASES SAMENVATTING ****************************************************************************
+--------------------------------------------------------------------------------------------------------
+________________________________________________________________________________________________________
+TERMINOLOGIE: ------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+- Database: plaats waar informatie gestructureerd wordt opgeslagen.
+- DBMS = DataBase Management Software
+- Database server = database + DBMS
+- SQL = Structured Query Language: instructietaal voor een DBMS
+- DML = Data Manipulation Language: raadplegen en wijzigen van tabel inhoud.
+- DDL = Data Definition Language: beïnvloeden structuur van database objecten
+- DCL = Data Control Language: gegevens beveiliging vb.: gebruikersrechten
+
+Database architecturen:
+- Monolitische: alles op 1 machine vb.: MS Access
+- Client/Server: scheiding van instructies en DBMS. Je stuurt instructie naar de server en krijgt een resultaat terug.
+- Internet: Device/Server. Http request & response. Server kan één of meerdere machines zijn.
+
+- ERD = Entity Relationship Diagram
+- Relaties: Parent/Child → Child ID verwijst naar gegevens in Parent ID.
+- Kardinaliteit: bepaald verhouding parent/child 	→ 1to1: 1 parent → 1 child
+													→ 1toMany:	1 parent → meerdere childs, 1 child → 1 parent
+	→ Garanderen data integriteit. Geen verwijzingen mogelijk naar data dat niet bestaat
+	
+- Cascade: als parent waarde gewijzigt wordt, wordt ook de child waarde gewijzigd.
+- Restrict: parent kan niet gewijzigd worden als er een child bestaat.
+
+Contraints/Integriteitsregels:
+- Kandidaatsleutel: unieke waarde of combinatie van waardes die maar 1x voorkomt in een kolom en dus een rij uniek kan identificeren.
+	→ Logische sleutel: alternatieve sleutel in data
+	→ Fysische sleutel: Id oplopend cijfer → gemakkelijker te verwerken dan vaak complexe en grote logische sleutels
+- Primaire sleutel/Primary Key = PK: kandidaatsleutel die gekozen is als ID.
+- Alternatieve sleutel: kandidaatsleutel die ggen PK is, maar wel uniek wordt toegepast.
+- Refererende sleutel/Foreign Key = FK: verwijzing naar PK van andere tabel → implementatie relaties
+________________________________________________________________________________________________________
+GEBRUIKTE DATABASES: -----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+Database	→	Tables				→	Columns				→	Relationship
+--------		------					-------					------------
+gamemania 	→ 	tblconsoles			→	id					→	PK
+									→	naam
+									→	fabrikant
+									→	releasedatum
+									→	eindproduktie
+									→	prijs
+									
+			→	tblgamedefinitions	→	id					→	PK
+									→	naam
+									→	uitgever
+									→	releasedatum
+									
+			→	tblgames			→	gamedefinitionsid	→	FK & PK
+									→	consoleid			→	FK & PK
+									→	gametypeid			→	FK & PK
+									→	price
+									→	btw_percentage
+									
+			→ 	tblgametypes		→	id					→	PK
+									→	gametype
+									
+			→	tbluitgevers		→	id					→	PK
+									→	naam
+									
+tennis		→	bestuursleden		→	SPELERSNR			→	PK & FK
+									→	BEGIN_DATUM
+									→	EIND_DATUM
+									→	FUNCTIE
+									
+			→	boetes				→	BETALINGSNR			→	PK
+									→	SPELERSNR			→	FK
+									→	DATUM
+									→ 	BEDRAG
+									
+			→	spelers				→	SPELERSNR			→	PK
+									→	NAAM
+									→	VOORLETTERS
+									→	GEB_DATUM
+									→	GESLACHT
+									→	JAARTOE
+									→	STRAAT
+									→	HUISNR
+									→	POSTCODE
+									→	PLAATS
+									→	TELEFOON
+									→	BONDSNR
+									
+			→	teams				→	TEAMNR				→	PK
+									→	SPELERSNR			→	FK, Aanvoerder van het team
+									→	DIVISIE
+									
+			→	wedstrijden			→	WEDSTRIJDNR			→	PK
+									→	TEAMNR				→	FK
+									→	SPELERSNR			→	FK
+									→	GEWONNEN
+									→	VERLOREN
+									
+
+
+
+
+
+________________________________________________________________________________________________________
+SQL: ---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+!! EXAMEN: starten van vers geïnstalleerde databases.
+!! Alles in één document, met commentaar lijn voor de oefeningen aan te duiden. vb.: -- Vraag 1
+--------------------------------------------------------------------------------------------------------
+Commentaar:
+-----------
+Meerdere regels: /* ... */
+Eén regel: 		 -- ...
+--------------------------------------------------------------------------------------------------------
+Syntax:
+-------
+Keywords & datatypes			→ UPPERCASE
+Andere elementen in instructies	→ lowercase
+Namen van objecten				→ `...` → VERPLICHT als je met spaties werkt!!
+
+[ ... ]			→ Optioneel
+  ... | ...		→ Scheidingsteken alternatieven
+{ ... | ... }	→ Verplicht 1 alternatief te gebruiken
+[ ... | ... ]	→ Optioneel 1 alternatief te gebruiken
+< ... >			→ Moet vervangen worden door naam of extra instructies
+	
+	→ Haken en <> niet in code schrijven
+	
+Alfanumerieke waarden tussen '' vb.: 'Wat tekst'
+Getallen gewoon zonder iets		vb.: 8
+
+--------------------------------------------------------------------------------------------------------
+Basis instructies:
+------------------
+- Database aanmaken:
+	CREATE {DATABASES|SCHEMA} [IF NOT EXISTS] `Database_Name`
+	[create_specification];
+	
+		→ CREATE: maakt object aan
+		→ {DATABASES|SCHEMA}: type database
+		→ IF NOT EXISTS: enkel aanmaken als het nog niet bestaat, anders error als het al bestaat
+		→ `Database_Name`: altijd Engels gebruiken voor naamgeving, liefst geen spaties, maar underscore _ !
+		→ [create_specification]: Specifieert database eigenschappen met betrekking tot karaktersets:
+			[[DEFAULT] CHARACTER SET/CHARSET <charset name>] [COLLATE <collation rules>];
+	
+		vb.: CREATE DATABASE IF NOT EXISTS `AP`
+			 DEFAULT CHARACTER SET latin2 COLLATE latin2_czech_ci; 	→ DEFAULT is optioneel
+																	→ CHARSET kan ook ipv CHARACTER SET vb.: CREATE DATABASE `AP` CHASRET utf8mb4;
+- Database verwijderen:
+	DROP {DATABASES|SCHEMA} [IF EXISTS] `Database_Name`;
+	
+		vb.: DROP DATABASE IF EXISTS `AP`;
+		
+- Database actief maken:
+	USE `Database_Naam`;
+
+- Tabel aanmaken:
+	CREATE TABLE <tabelspecificatie> <tabelschema> [create_specification];
+		
+		→ <tabelspecificatie>: naam van de tabel (in Engels), moet uniek zijn binnen de database
+		→ [`Database_Name`.]: om aan te geven over welke database het gaat. Anders wordt de actieve database gebruikt.
+		→ <tabelschema>: ( <kolomdefinitie1>, <kolomdefinitie2>, ... <kolomdefinitieN> );
+			→ <kolomdefinitie>: kolom naam + 1 of meer integriteitsregels
+				→ integriteitsregels: Datatype (= verplicht), NULL/NOT NULL, DEFAULT waarde, Unique, PK (= sowieso uniek)
+		→ [create_specification]: extra specs zoals AUTO_INCREMENT start waarde, en/of CHARSET op kolomniveau instellen
+		
+		vb.: CREATE TABLE `AP`.`tblStudent`
+			 (
+				id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT, → Als FK in een andere tabel: StudentId
+				firstname VARCHAR(50) CHASRET Latin1 COLLATE latin1_bin NOT NULL,
+				amount DECIMAL(6,4)
+			 ) DEFAULT CHARSET utf8mb4 COLLATE uft8mb4_bin;
+			 
+- Tabel mutaties:
+	1) RENAME TABLE `tblName` TO `tblNewName`;
+	
+	2) ALTER TABLE `tblName` [<alter option> [, <alter option>] ... ];
+	
+			→ <alter option>:	ADD		→ Kolom toevoegen + AFTER om specifieke start plaats aan te geven
+								DROP	→ Kolom verwijderen
+								CHANGE	→ Kolom naam of/en datatype wijzigen → altijd naam datatype en constraints allemaal opnieuw opgeven, anders wordt wat niet opgegeven wordt verwijdert
+								ADD CONSTRAINT	→ Gevolgd door defenitie van de constraint die je wilt toevoegen
+								DROP	→ Gevolgd door de constraint die je wilt verwijderen
+								
+			
+			vb.: ALTER TABLE `tblBooks`
+				 ADD CONSTRAINT `FK_AuthorId`
+				 FOREIGN KEY (`AuthorId`) REFERENCES `tblAuthors`(`Id`),
+				 DROP PRIMARY KEY;
+				 
+			vb.: ALTER TABLE `tblBooks` CHANGE
+				 (
+					`Titel` `Title` VARCHAR(100),	→ kolomnaam wordt gewijzigd
+					`Plot` `Plot`	MEDIUMTEXT		→ kolomnaam is hetzelfde, dus dataype wordt (wss) gewijzigd
+				 );
+								
+	3) INSERT INTO <tabelspecificatie> [(<kolomopsomming>)]
+	   {{VALUES | VALUE}(<waarde(s)>) | <tabelexpressie>};
+		
+			→ Zelfde volgorde als de kolomopsomming, of als aan alle kolommen wordt toegevoegd in volgorde van de kolommen en geen kolomopsomming.
+			→ Kolomen die geen waarde krijgen wordt NULL toegekend. → error als NOT NULL kolom is!
+	
+			vb.: INSERT INTO `AP`.`tblAfdeling` (`Afdnr`, `Budget`, `Locatie`, `Isactief`, `Gempunten`) → Kolom opsomming hoeft er niet bij in dit geval want in elke kolom komt een waarde én het is in volgorde.
+				 VALUES (12345, 2000.25, 'Campus Ellermansstraat', FALSE, 12.43);	
+				 
+			→ <tabelexpressie>: Aantal kolommen en datatypes van de INSERT INTO-component moeten gelijk zijn aan die in de tabel expressie
+			
+			vb.: INSERT INTO `tblRetiredPlatforms`
+				 SELECT * FROM `tblPlatforms` WHERE RIGHT(`Name`,1) < '3';
+				 
+	4) UPDATE <table reference>
+	   SET <assignment list>
+	   [WHERE <where conditie>];	→ Als filter
+	   
+			vb.: UPDATE `tblPlatforms` SET `name` = 'PS6' WHERE `Id` = 1;
+			
+	5) DELETE FROM <table reference>	→ Rekening houden met CASCADE en RESTRICT 
+	   [WHERE <where conditie>];		→ Meestal waarde van PK
+										→ Geen filter conditie = alles verwijderen. Alernatief om tabel leeg te maken is TRUNCATE
+	   
+			vb.: DELETE FROM `tblPlatforms` WHERE `Id` = 1;
+			 
+- Alle beschikbare charactersets tonen:
+	SHOW CHARACTER SET;
+
+--------------------------------------------------------------------------------------------------------
+Expressies: uitdrukking die volgens bepaalde regels verwerkt wordt en tot een WARDE leidt. (IN SLIDES DEEL 4)
+----------
+	→	- scalaire waarde: waarde die niet verder te splitsen is
+		- rijwaarde: 1 of meerdere scalaire waarden die een rij vormen
+		- tabelwaarde: 0 of meer rijwaarden
+	
+- CASE expressie: (→ zoals switch met cases in C#, ELSE is zelfde als default)
+	CASE [<case value>]
+		WHEN {<when value> | <search condition>} THEN <statement list> 		→ <statement list> kan een nieuwe CASE zijn binnen de CASE
+		[WHEN {<when value> | <search condition>} THEN <statement list>]
+		[ELSE <statement list>]
+	END [CASE] [AS <klom naam>];
+		
+		→ geen waarde geeft NULL!
+	
+	vb.: SELECT									SELECT
+			CASE YEAR(`releasedatum`)				CASE
+				WHEN 2020 THEN 'Nieuwste'				WHEN YEAR(`releasedatum`) >= 2020 THEN 'Nieuwste'
+				ELSE 'Niet nieuwste'					WHEN TEAR(`releasedatum`)  > 2010 THEN 'Ouder'
+			END AS `Status`								ELSE 'Verouderd'
+		FROM										END AS `Status`
+			`tblConsoles`;						FROM 
+													`tblConsoles`;
+
+--------------------------------------------------------------------------------------------------------
+Query (= vraag): !! Volgorde van verwerking NIET hetzelfde als schrijfvolgorde (IN SLIDES DEEL 4)
+----------------
+	5) SELECT [DISTINCT] <select expressie>	[AS] → bepaald welke kolommen geselecteerd worden
+	1) [FROM <table references>]				 → bepaald de brontabel → eventueel subquery of view (= tijdelijke query)
+	2) [WHERE <where condition>]				 → condities om te filteren
+	3) [GROUP BY {<kolom naam> | <position>}	 → opdelen in groepen, aggregaties per groep
+	 4)  [HAVING <where condition>]				  → Groepen filteren
+	6) [ORDER BY {<kolom naam> | <position>}	 → sorteren op basis van opgegeven kolommen
+	   [ASC | DESC, ...]
+		→ Elke stap geeft een tijdelijk resultaat die naar de volgende stap gaat.
+		
+SUB QUERIES → DEEL 7
+--------------------------------------------------------------------------------------------------------
+Vraag stelling:
+---------------
+-- WHERE -- (DEEL 5)
+Toon ... waarvan → WHERE
+Toon ... die in ... en/of in ... → WHERE ... AND/OR ...
+	→ in reeks/meerdere waarden uit zelfde kolom → WHERE ... [NOT] IN (.., ...)
+Alles behalve/niet in ... → WHERE ... <> ...
+Tussen/vanaf ... tot → WHERE ... [NOT] BETWEEN ... AND ...
+... eindigt met ... → WHERE ... [NOT] LIKE '%...'
+... begint met ... → WHERE ... [NOT] LIKE '...%'
+... bevat ... → WHERE ... [NOT] LIKE '%...%'
+... 2e letter ... → WHERE ... [NOT] LIKE '_<letter>%'
+					→ of WHERE LEFT(...,2) [NOT] LIKE '_<letter>'
+Geen/een waarde bestaat/is ingevuld → WHERE ... IS [NOT] NULL
+
+-- !IM!PLICIETE OUTER JOIN → in WHERE -- (DEEL 6.1)
+Toon ... voor ... , alle info uit meerdere tabellen en deze filteren in WHERE
+	
+	FROM
+		<table> a, <table> b 
+	WHERE
+		a.<kolom> = b.<kolom>[, ...]
+															
+	→ Combineren met andere WHERE dingen zoals in het stukje WHERE hierboven: eerst de JOIN, dan AND ... (de rest)
+	
+-- !EX!PLICIETE INNER JOIN → in FROM -- (DEEL 6.2)
+Alle info uit meerdere tabellen, maar enkel de info overhouden voor een bepaald ID uit één tabel die ook gerefereerd is in de andere. Deze kan nog verder gefilterd worden in WHERE
+ → Enkel de nodige info opvragen uit andere tabellen adhv een ID/PK/FK uit de eerste tabel
+	
+	FROM
+		<tabel> a 											→ waar de ID van komt vb.: team aanvoerder met spelersnr uit teams
+		INNER JOIN <table> b ON a.<kolomID> = b.<kolomID> 	→ vb.: waar de spelersnr overeenkomt, dus enkel de info overhouden uit beide tabellen voor de spelersnr in teams
+	[WHERE
+		...]
+		
+-- !EX!PLICIETE LEFT JOIN → in FROM -- (DEEL 6.3)
+JOIN met behoudt van alle info in de eerste tabel, die aan de linker kant staat → LEFT
+	→ Info uit andere tabel ophalen adhv van bepaald ID waarvoor er niet persé info is
+	vb.: We willen weten of een spelers al dan niet een wedstrijd heeft gespeeld → speler KAN een wedstrijd gespeeld hebben, maar hoeft niet, optionele relatie
+
+	FROM
+		<tabel> a 
+		LEFT JOIN <table> b ON a.<kolomID> = b.<kolomID>
+	[WHERE
+		...]
+
+--------------------------------------------------------------------------------------------------------
+Agregatiefuncties: geven RIJEN als resultaat = alle cellen van een kolom (IN SLIDES DEEL 4)
+------------------
+	→ Tussen () de `tableName` van het juiste datatype aangegeven hieronder tussen de ()
+	
+SUM(cijfers)							→ Telt alle waarden in de kolom op tot één enkele waarde
+MIN(cijfers), MAX()						→ Geeft laagste of hoogste waarde in de kolom
+AVG(cijfers)							→ Geeft gemiddelde van alle waarden in de kolom
+COUNT(alles)							→ Telt het aantal rijen in de tabel. Alle kolommen binnen een tabel hebben hetzelfde aantal rijen.
+
+--------------------------------------------------------------------------------------------------------
+Scalaire functies: geven SCALAIRE/ENKELVOUDIGE waarden = 1 cel (IN SLIDES DEEL 4)
+------------------
+	→ Tussen () de `tableName` van het juiste datatype aangegeven hieronder tussen de () 
+	
+FUNCTIE								Beschrijving											Voorbeelden
+-------								------------											-----------
+UCASE/LCASE(alfanr)					Zet om in UPPERCASE of LOWERCASE						Zie Deel 4 slide 63
+LTRIM/RTRIM(alfanr)					Trimmed spaties te beginnen van Links of Rechts
+LEFT/RIGHT(alfanr, <lengte>)		Geeft string met het aantal characters van lengte te beginnen van Links of Rechts
+LENGTH(alfanr)						Geeft aantal characters als een cijfer
+CONCAT(alfanr, alfanr, ...)			Plakt waardes aan elkaar in de opgegeven volgorde
+REPLACE(alfanr, char1, char2)		Vervangt char1 in alfanr door char2
+SUBSTRING(alfanr, index, lengte)	Geeft string van characters uit alfanr vanaf index, aantal chars = lengte
+INSTR(alfanr, char)					Op welke index komt het char voor in alfanr
+COALESCE(waarde, waarde ...)		Returned de eerste NOT NULL waarde. vb.: COALESCE(kolomNaam, 0) → als de kolom NULL bevat krijg je 0, anders krijg je de waarde in de kolom
+DISTINCT(kolom) from tabel			Haalt alle dubbels weg
+
+YEAR/MONTH/DAY(date)				Deel uit datum halen									Zie Deel 4 slide 64
+	→ CURRENT_DATE() 						Voor huidige datum te gebruiken
+HOUR/MINUTE/SECOND(datetime/time)	Deel uit uur halen
+	→ CURRENT_TIME() 						Voor huidige tijd te gebruiken
+DAY-/MONTHNAME(date)				Geeft vb.: tuesday of november
+DAYOFYEAR(date)						Geeft cijfer voor hoeveelste dag in het jaar het is
+DATEDIFF(date, date)				Geeft het aantal dagen verschil tussen de twee datums
+			 
+--------------------------------------------------------------------------------------------------------
+Datatypes: (IN SLIDES DEEL 2)
+----------
+- GEHELE GETALLEN --------------------------------------------------------------------------------------
+Type		# Bytes		Bereik Signed						Bereik Unsigned				Voorbeeld
+----		-------		-------------						---------------				---------
+TINYINT		1			-128 → 127							0 → 255						TINYINT UNSIGNED
+SMALLINT	2			-32 768 → 32 767					0 → 65 535					SMALLINT
+MEDIUMINT	3			-8 388 608 → 8 388 607				16 777 215
+INT			4			-2 147 483 648 → 2 147 483 647		4 294 967 295
+BIGINT		8			-9 223 372  036  854 775 808 → ""7	18 446 744 073 709 551 615
+
+- KOMMAGETALLEN ----------------------------------------------------------------------------------------
+Type		Precisie	# Bytes		Syntax 						Gebruik									Voorbeeld
+----		--------	-------		------						-------									---------
+DECIMAL		65			1?			DECIMAL(precisie,schaal)	Exacte waarde, zoals geld.				DECIMAL(6,4) → 6 cijfers in totaal, waarvan 4 gereserveerd na de komma, dus er kunnen maar 2 cijfers voor de komma!
+FLOAT		 0-23		4			FLOAT(precisie)				Heel grote of heel kleine getallen		FLOAT(53) → Wetenschapelijke notatie: 43210 = 4,321*10^4 = 4,321E4
+			24-53		8 → 15 cijfers achter de komma	→ Eigenlijk DOUBLE achter de schermen
+			
+- ALFANUMERIEKE GEGEVENS (= alle characters van de gebruikte characterset) -----------------------------
+Type		Lengte		Syntax				Gebruik				Voorbeeld		Geuheugen ruimte
+----		------		------				-------				---------		----------------
+CHAR		255			CHAR(lengte)		Vaste lengte*		CHAR(13) 		Altijd hetzelfde adhv lengte	→ lengte niet langer dan nodig maken
+VARCHAR		65 535		VARCHAR(maxlengte)	Variërend			VARCHAR(100) 	Afhankelijk van waarde die er wordt ingestoken, maar altijd + 1 of 2 bytes overhead
+	*Ook voor codes met enkel cijfers maar die een vaste lengte moeten hebben vb.: EAN of postcodes. Als je voor deze INT zou gebruiken zouden verloopnullen vanvoor wegvallen.
+
+	→ UUID/GUID: Gegenereerd door algoritme, "altijd" uniek, geen native datatype in MySQL, implementeren als CHAR
+		vb.: CHAR(32) → 4A5E05D9-9AF74C50B41C93EF9995DE64
+			 CHAR(36) → 4A5E05D9-9AF7-4C50-B41C-93EF9995DE64
+		→ Te gebruiken om een record uniek te identificeren ongeacht waar het zich bevindt
+		
+		vb.: CHAR(36) CHARSET latin1 NOT NULL UNIQUE
+
+- TEXT -------------------------------------------------------------------------------------------------
+Type		Geheugen gebruik 
+----		----------------
+TINYTEXT	255 bytes (255 karakters) → bruikbaar voor kolom met variabele lengte
+TEXT		64 KB (65 535 karakters) → te gebruiken voor langere teksten vb.: recensie
+MEDIUMTEXT	16 MB
+LONGTEXT	4 GB
+	→ Performance penalties als je hierop zoekt.
+	→ Vast geheugen gebruik, niet instelbaar t.o.v. VARCHAR.
+	
+- TEMPORAL ---------------------------------------------------------------------------------------------
+Type		Gebruik			Bereik
+----		-------			------
+DATE		Enkel datum		1000-01-01 → 9999-12-31						→ YEAR(`tableName`), MONTH(), DAY() om waarde te filteren uit DATE
+DATETIME	Datum en tijd	1000-01-01 00:00:00 → 9999-12-31 23:59:59
+TIMESTAMP	Datum en tijd	1970-01-01 00:00:001 → 2038-01-19 03:14:07
+TIME 		Elapsed time	-838:59:59 → 838:59:59
+
+	! → "Duur" is GEEN datum, maar een geheel getal TINYINT UNSIGNED
+	! → Datum in UNIX-formaat als BIGINT UNSIGNED
+
+- BOOLEAN ----------------------------------------------------------------------------------------------
+Geen specifiek datatypoe in MySQL → Gebruik TINYINT UNSIGNED → 0 of constante FALSE = onwaar
+															 → Niet 0 of constante TRUE = waar
+															 
+--------------------------------------------------------------------------------------------------------
+Integriteitsregels: (IN SLIDES DEEL 2)
+-------------------
+Instructie			Beschrijving																Voorbeeld
+----------			------------																---------
+NULL / NOT NULL		Mag wel of niet leeg zijn.
+DEFAULT				Default waarde instellen wanneer bij INSERT geen waarde wordt opgegeven		CREATE TABLE `tblTasks` (`Status` VARCHAR(15) DEFAULT 'To do');
+PRIMARY KEY			Unieke identificatie, ineens ook UNIQUE en NOT NULL							CREATE TABLE `tblTasks` (`Id` INT UNSIGNED, ... , PRIMARY KEY(`Id`, ... ) );
+	AUTO_INCREMENT		In combinatie met PK om automatisch Id's aan te maken						CREATE TABLE `tblTasks` (`Id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT ) AUTO_INCREMENT = 10; → Startwaarde expleciet 10 ipv 1
+UNIQUE				Vaak logische primaire sleutel, geen dubbels afdwingen						CREATE TABLE `tblPlayers` (`FederationNr` VARCHAR(10) UNIQUE); of ""(`FederationNr` VARCHAR(10), ... , UNIQUE(`FederationNr`) );
+FOREIGN KEY			Relatie tussen 2 tabellen aanduiden met PK van de andere tabel (mag NULL)	CREATE TABLE `tblSales` (`ProductId` INT UNSIGNED, FOREIGN KEY (`ProductId`) REFERENCES `tblProducts`(`Id`) );
+	REFERENCES			Om de relatie van de FK aan te geven										→ `ProductId` verwijst naar de kolom `Id` van de tabel `tblProducts`
+	ON UPDATE/DELETE	Wat er moet gebeuren met relaties											
+	CASCADE				Wijzigingen laten doorstromen naar refererende records						... REFERENCES ... ON UPDATE CASCADE ); → Als er wijzigingen zijn wordt referentie ook gewijzigd
+	RESTRICT			Wijzigingen tegenhouden als er refererende records zijn						... REFERENCES ... ON DELETE RESTRICT ); → Delete wordt tegengehouden als referentie bestaat
+
+--------------------------------------------------------------------------------------------------------
+Charactersets: (IN SLIDES DEEL 3)
+--------------
+Naam:		# characters:	Beschrijving:
+-----		-------------	-------------
+ASCII		128				American Standard Code for Information Interchange
+Latin1		256				ASCII uitgebreid voor West-Europeese talen
+UTF-8		100 000			Unicode Transformation Format, om zoveel mogelijk talen te ondersteunen
+
+SHOW CHARACTER SET;		→	Toont alle beschikbare charactersets
+
+Collation: regelsets afhankelijk van characterset
+	→ _ci = case insensitive: vergelijking niet hoofdlettergevoelig
+	→ _bin = binair = case sensitive: vergelijking van de binaire code
+	
+Als specificatie gebruiken:
+	[[DEFAULT] CHARACTER SET/CHARSET <charset name>] [COLLATE <collation rules>];
+
+--------------------------------------------------------------------------------------------------------
+Voorbeeldoefeningen:
+--------------------
+-- Deel 2 Oefening 7 -----------------------------------------------------------------------------------
+-- 1
+CREATE DATABASE IF NOT EXISTS `Planes`; -- IF NOT EXISTS moet niet, maar voor de zekerheid om errors te vermijden
+
+-- 2
+CREATE TABLE IF NOT EXISTS `Planes`.`tblManufacturers` -- `Planes`. moet niet want is normaal actief omdat je het juist hebt aangemaakt
+(
+	`Id`	SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    `Name`	VARCHAR(70) NOT NULL UNIQUE
+) AUTO_INCREMENT = 101;
+
+CREATE TABLE IF NOT EXISTS `Planes`.`tblPlaneDefinitions`
+(
+	`Id`				MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT, -- PK kan eventueel ook hieronder zoals aangegeven
+    `ManufacturerId`	SMALLINT UNSIGNED NOT NULL, -- NOT NULL want nodig voor de UNIQUE combinatie! FK is niet automatisch NOT NULL zoals PK
+    `Name`				VARCHAR(100) NOT NULL,
+    `DesignDate`		DATE NOT NULL, -- NOT NULL want nodig voor de UNIQUE combinatie!
+    `IsMilitary`		TINYINT UNSIGNED, -- Boolean
+    `NumberOfEngines`	TINYINT UNSIGNED,
+    `Weight`			DECIMAL(5,2),
+    -- PRIMARY KEY (`Id`), -- Kan eventueel ook hier
+    UNIQUE (`Name`, `ManufacturerId`, `DesignDate`), -- Logische sleutel, deze combinaties moet volgens de opgave uniek zijn, deze kolommen moeten dus ook NOT NULL zijn !!OPGAVE GOED LEZEN!!
+    FOREIGN KEY (`ManufacturerId`)
+    REFERENCES `Planes`.`tblManufacterers`(`Id`)
+    ON DELETE RESTRICT
+);
+-- -----------------------------------------------------------------------------------------------------
+	
+__________
+
+
+
+
+______________________________________________________________________________________________
+NORMALISATIE: ------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
+Normalisatie process is de methodiek om via welbepaalde stappen "platte" gegevenssets om te zetten naar een genormaliseerd datamodel waarbij elke rij in elke tabel uniek & ondubbelzinnig is.
+--------------------------------------------------------------------------------------------------------
+!! EXAMEN: starten van neiuw & leeg diagram.
+!! Te gebruiken elementen onder: Entiteitsrelatie
+!! Alles in één document, elke opgave in een andere tab (onderaan zoals in Excel) met vraag aanduiding. vb.: Vraag 1 
+!! GEEN SLIDES BESCHIKBAAR VOOR DIT DEEL !!
+--------------------------------------------------------------------------------------------------------
+Entiteit 	(tabel) = definieerbaar iets van belang in het domein waarvoor we informatie bijhouden 
+						→ 3 soortern: sterke/independen [], zwakke/dependent () en associatieve/relatie <>
+Attribuut 	(kolom)	= eigenschappen van entitieten
+Identifier			= Primary Key
+--------------------------------------------------------------------------------------------------------
+Soorten gegevens:
+-----------------
+- Samengestelde gegeven: Gecombineerde atomaire gegevens
+	→ Atomair = op zich staand
+
+- Procesgegeven: Gegeven dat van andere gegevens geconstrueerd of afgeleid kan worden dmv een formule/berekenning
+	→ Wanneer een wijziging in 1 gegeven een wijziging veroorzaakt in een 2e gegeven → 2e gegeven = procesgegeven
+	vb.: totaal prijs op factuur = aantal * éénheidsprijs * btw ...
+
+- Sleutelgegeven: kandidaat Primary Key
+	→ Samengestelde sleutel: combinatie van atomaire gegevens als sleutel = meerdere kolommen
+	→ 2 voorwaarden: uniciteit & minimaliteit
+	→ 1 kandidaat sleutel wordt Primary Key, de andere worden Alternate Keys en moeten UNIQUE blijven
+
+- Elementair gegeven: op zich staand / alleenstaand / atomair gegeven die GEEN sleutelgegeven of procesgegeven is
+
+--------------------------------------------------------------------------------------------------------
+Stappen in normaalvormen:
+-------------------------
+-- 0NF : ongestructureerde verzameling van relevante gegevens ------------------------------------------
+   ----------------------------------------------------------
+Alle relevante gegevens verzamelen.
+
+-- 1NF : de zich herhalende deelverzamelingen verwijderen ----------------------------------------------
+   ------------------------------------------------------
+Berekende gegevens weglaten, samengestelde gegevens splitsen en entiteiten (=tabellen) herkennen & lostrekken op basis van gevonden herhalende gegevens.
+
+1.1) Inventariseer alle elementaire gegevens (= attributen)
+1.2) Verwijder alle procesgegevens
+1.3) Loop volgende stappen totdat er geen nieuwe groepen meer ontstaan
+ 1.4) Geef PK van de groep aan	→ PK aanduiden door te onderlijnen, afhankelijk hiervan al dan niet geneste deelverzameling, (PK) naast elk attribuut dat deel uitmaakt van de PK
+ 1.5) Geef deelverzameling/groepen aan die herhaaldelijk voorkomt vb.: meerdere spelers per wedstrijd
+ 1.6) Kopiëer deze attrtibuten + sleutels naar nieuwe groep
+ 1.7) Verwijder herhaalende deelverzamelingen uit de oorspronkelijke groep
+ 
+	→ Bereikt:	- Elke groep / tabel heeft een Primary Key
+				- Alle attributen zijn atomair & NIET herhalend (sleutels niet meegerekend)
+				- Foreign Keys aanwezig om verbanden te behouden tussen tabellen
+			   (- Elk attribuut heeft een datatype)
+			   
+-- 2NF : attributen die functioneel afhankelijk zijn van DEEL PK verwijderen → gewone attributen die NIET afhankelijk zijn van de VOLLEDIGE sleutel in andere tabel
+   -----------------------------------------------------------------------------------------------------
+Entiteiten herkennen & lostrekken obv afhankelijkheden v/e deel v/d sleutel.
+   
+2.1) Geef attributen aan die NIET functioneel afhankelijk zijn v/d VOLLEDIGE sleutel →  Welk sleutelgegeven (of combinatie) identificeert dit attribuut op unieke wijze?
+2.2) Vorm aparte groep voor ieder deel v/d sleutel waarvan attributen functioneel afhankelijk zijn
+2.3) Neem in iedere groep de attributen met het bijhorende sleuteldeel op
+	→ Herhaal voor elke groep de 1NF stappen! + onderlijnen en aanduiden (PK) & (FK)
+2.4) Verwijder deze attributen uit de oorspronkelijke groep
+
+-- 3NF : attributen die ook functioneel afhankelijk zijn van andere attributen verwijderen --------------
+   ---------------------------------------------------------------------------------------
+Entiteiten herkennen & lostrekken obv afhankelijkheden van andere gegevens.
+	→ Alleen groepen / tabellen met meerdere attributen komen in aanmerking!
+	→ Transitieve afhankelijkheden = functionele afhankelijkheden tussen attributen 
+	
+3.1) Geef attributen aan die nog functioneel afhankelijk zijn van andere attributen → Welke NIET slutelgegeven (of combinatie) identificeert dit attribuut op unieke wijze?
+3.2) Vorm aparte groep voor deze
+3.3) Neem in iedere groep de attributen met bijhorende sleutel op
+	→ Herhaal voor elke nieuwe groep 1NF → 2NF → 3NF
+3.4) Verwijder attributen uit originele groep
+
+-- BCNF (3.5NF) : sleutelvelden verwijderen die afhankelijk zijn v/e attribuut --------------------------
+-- 4NF : verwijdderen van onafhankelijke deelverzamelingen → Minstens 3 attributen in tabel) ------------
+-- 5NF : sleutelvelden verwijderen die afhankelijk zijn v/e attribuut

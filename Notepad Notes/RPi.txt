@@ -1,0 +1,86 @@
+Raspberry Pi
+------------
+-- Algemeen --
+sudo apt-get update && sudo apt-get -y upgrade
+
+nano .bashrc
+onder more aliases: alias py=”python3”
+. ~/.bashrc
+
+-- Netwerk --
+ifconfig
+	
+-- Wifi --
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+	
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=BE
+
+network={
+        ssid=""
+        psk=""
+        scan_ssid=1
+}
+
+network={
+        ssid="AP wifi"
+        proto=RSN
+        pairwise=CCMP
+        eap=PEAP
+        identity="@ap.be"
+        password=""
+        key_mgmt=WPA-EAP
+}
+
+wpa_cli -i wlan0 reconfigure
+
+Iwconfig wlan0
+
+route -n
+
+sudo nano /etc/dhcpcd.conf
+
+onderaan:
+interface wlan0
+metric 200;
+interface eth0
+metric 300;
+
+-- Python & pip --
+https://raspberrytips.com/install-latest-python-raspberry-pi/
+
+sudo apt update && sudo apt -y upgrade
+sudo apt install python3 -y
+python3 --version
+
+ls /usr/bin/python*
+nano .bashrc
+onder more aliases:
+	alias py=”python3” (standaard voor python3 gebruiken)
+	alias py="/usr/bin/python3.9" (specifieke versie gebruiken)
+. ~/.bashrc
+
+sudo apt-get install python3-pip
+pip --version
+
+
+-- MQTT --
+sudo apt-get install mosquitto mosquitto-clients
+python3 -m pip install paho-mqtt
+
+https://randomnerdtutorials.com/testing-mosquitto-broker-and-client-on-raspbbery-pi/
+
+Start deamon:		mosquitto -d
+Subscribe to topic:	mosquitto_sub -d -t testTopic
+Publish to topic:	mosquitto_pub -d -t testTopic -m "Hello world!"	
+
+
+-- I2C --
+https://pi3g.com/nl/2021/05/20/enabling-and-checking-i2c-on-the-raspberry-pi-using-the-command-line-for-your-own-scripts/
+https://dronebotworkshop.com/i2c-arduino-raspberry-pi/#:~:text=Both%20the%20Arduino%20and%20the,use%20of%205%2Dvolt%20logic.
+https://www.aranacorp.com/en/communication-between-raspberry-pi-and-arduino-with-i2c/
+
+aanzetten in:		sudo raspi-config nonint do_i2c 0
+uitschakellen:		sudo raspi-config nonint do_i2c 1
+checken of aan met:	sudo raspi-config nonint get_i2c	(0 is aan, 1 is uit)

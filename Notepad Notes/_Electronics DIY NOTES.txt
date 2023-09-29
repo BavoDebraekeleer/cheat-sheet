@@ -1,0 +1,84 @@
+  _______  ___       _______   ______  ___________  _______     ______    _____  ___    __     ______    ________ 
+ /"     "||"  |     /"     "| /" _  "\("     _   ")/"      \   /    " \  (\"   \|"  \  |" \   /" _  "\  /"       )
+(: ______)||  |    (: ______)(: ( \___))__/  \\__/|:        | // ____  \ |.\\   \    | ||  | (: ( \___)(:   \___/  
+ \/    |  |:  |     \/    |   \/ \        \\_ /   |_____/   )/  /    ) :)|: \.   \\  | |:  |  \/ \      \___  \       
+ // ___)_  \  |___  // ___)_  //  \ _     |.  |    //      /(: (____/ // |.  \    \. | |.  |  //  \ _    __/  \\      
+(:      "|( \_|:  \(:      "|(:   _) \    \:  |   |:  __   \ \        /  |    \    \ | /\  |\(:   _) \  /" \   :) 
+ \_______) \_______)\_______) \_______)    \__|   |__|  \___) \"_____/    \___|\____\)(__\_|_)\_______)(_______/  
+ 
+DIY
+
+BATTERIES
+---------
+https://learn.adafruit.com/all-about-batteries/power-capacity-and-power-capability
+
+Wh = U(in V) x I (in A) x Time (in h)
+Wh = V x Ah		
+
+C = Capability
+	→ C = Ah / 1h
+	→ The amount of current a battery 'likes' to have drawn from it is measured in C.
+		The higher the C the more current you can draw from the battery without exhausting it prematurely.
+		
+Battery Types:
+	→ (R) = Rehcargeable, (RN) = Non-rechargeable
+	
+	• Lead Acid (R)
+		Voltage: 2V cells → 2V, 6V, 12V, 24V
+		Pros: Cheap, powerful, easily rechargeable, high power output capability.
+		Cons: Very heavy, batteries tend to be very large bricks because power density is very low.
+		Prices: A 12V lead acid battery with 7Ah of charge should run about $25.
+		Power Density: 7 Wh/kg.
+			vb.: car battery
+		
+	• Alkaline (NR)
+		Voltage: 1.5V cells → 1.5V, 6V, 9V
+		Sizes: coin cells to AAAA to D cells
+		Prices: AA size battery costs about $1 and has up to 3000 mAh of charge capacity.
+		Power density: 100 Wh/kg
+		Pros: Popular, well known, safe, long shelf life
+		Cons: Non-rechargeable, low-capability
+			vb.: "regular batteries"
+		
+	• Ni-Cad = Nickel Cadmium (R)
+		Voltage: 1.2V cells → 1.2V, 3.6V
+		Sizes: AA, AAA, C as well as rectangular shapes that make them easier to embed in an enclosure
+		Pros: Inexpensive, rugged, come in "standard" sizes, easy to recharge.
+		Cons: Lower power density, requires "full discharge/recharge" cycles every once in a while to reduce
+				'memory effect' (the growth of crystals on the battery plates), contains toxic metal.
+		Prices: AA size battery costs around $1 and has up to 1000mAh of charge capacity.
+		Power Density: 60 Wh/kg
+			vb.: old regular rechargable batteries
+	
+	• Ni-MH = Nickel Metal Hydride (R)
+		Voltage: 1.25V cells
+		Disccharge: 0.2C → chargeing: 0.1C
+		Sizes: AAA to C
+		Pros: Good alternative to Alkalines in most situations, high power density, "standard" size,
+				better capability than alkalines, pretty easy to recharge but not as rugged.
+		Cons: More expensive than Ni-Cads, service life isn't as long, self-discharges quickly.
+		Prices: AA size battery costs around $2 and has up to 2500mAh of charge capacity.
+		Power Density: 100 Wh/kg
+			vb.: newer regular rechargable batteries
+	
+	• Li-Ion = Lithium-Ion & LiPoly = Lithium Polymer (R)
+		→ https://learn.adafruit.com/li-ion-and-lipoly-batteries
+		Voltages: 3.6V cells → 3.6V, 7.2V
+		Disccharge: 1-10C
+		Sizes: All sorts
+		Pros: Ultra-light, high power, high capability, high cell voltage.
+		Cons: Expensive, delicate, can explode if misused!
+		Prices: replacement "cell phone" batteries cost around $10 and have ~750mAh charge capacity.
+		Power Density: 126 Wh/kg for lithium ion, 185 Wh/kg for lithium polymer
+			vb.: camera, phone, laptop
+	
+	• Lithium Batteries & Coin Cells
+		Voltages: 3V Lithium cells & 1.5V Alkaline, zinc air, manganese
+		Discharge: 0.005C continuous current, pulsed 10% higher current
+		Sizes: CR2032, CR123
+		Pros: Light, high-density, small, inexpensive, high cell voltage, easy to stack for higher voltages, long shelf-life.
+		Cons: Non-reusable, low current draw capability, needs a special holder.
+		Prices: CR2032 are around $0.35 (220mAh) CR123's are $1.50 (1300Ah).
+		Power density: 270 Wh/kg
+	
+→ Home to choose: https://learn.adafruit.com/all-about-batteries/how-to-pick-the-right-battery-for-your-project

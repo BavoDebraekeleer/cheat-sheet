@@ -1,0 +1,116 @@
+Applied IoT Project - Flexible LoRaWAN Sensor Board (FLWSB)
+-----------------------------------------------------------
+PCB = SAMDaaNo21
+Front-end = TammScript
+Back-end = BaaVend
+
+Docker back-end
+	- Dockerfile voor deployment vertrekkende van basis image en alle nodige apps
+	- The Things Network applicatie opzetten
+	- Node-RED (BaaVend):
+		- Data via MQTT uit TTN en weerstation
+		- Data formatteren en in MongoDB
+			-> data formatteren onderzoeken voor modulair systeem, max aantal bits LoRaWAN
+		- Data uit MongoDB opvraagbaar via API
+			-> Welke endpoints? Welke data?
+				- Elk inkomend msg wordt een document in de FLWSB collection
+	- MongoDB
+	
+	-> Op remote server? Beschikbaar via school?
+		Op VM via Bletchley via "ssh bavo@10.150.195.89" avob2022
+	
+	-> Welke data?
+		Gevraagd door studenten AI minor:
+			Vochtigheid
+			Regen
+			Luchtdruk
+			Windsnelheid	
+			windrichting
+			
+		+ alle andere zaken de BME280 nog meet zoals:
+			temperatuur
+			TVOC
+			... ?
+			
+		-> uitwerken zoals voor Zanzibar
+		
+	-> Hoeveel bits over LoRaWAN (TTN)?
+		max. 51 bytes
+		
+	-> Hoe formateren?
+		Aan de hand van SIS (Sensor Identification System)
+		Omdat dit een modulair systeem is zal de data die doorgestuurd wordt variëren naargelang
+		welke sensoren op het board zijn aangesloten.
+		Elke bit die verstuurd moet worden kost extra stroom. Dit is een toepassing op batterij dus stroomverbruik moet
+		overal geminimaliseerd worden. Verder ook hoe meer bits hoe meer potentiële fouten die kunnen optreden.
+		De in dit project ontwikkelde sensoren die met I²C werken kunnen automatisch herkend worden.
+		Andere sensoren en die met andere protocollen werken zullen in de database moeten worden opgenomen.
+		Voor elke sensor wordt een sensor-id toegekend, welke metingen het bevat als
+		grootheid en eenheid (vb "temperatuur" in "°C"), hoeveel bytes per meting, en eventuele omzetting die moet gebeuren
+		Hierbij wordt rekening gehouden met sensoren die meerdere metingen uitvoeren (vb. BME280).
+		
+		Doorgestuurde data heeft eerst een sensor-id dat aangeeft over welke data het gaat.
+		Gevolgd door de meting waarde.
+		
+		Sensor-id kan één of twee bytes zijn. Is de eerste bit een "1" dan bestaat het adres uit twee bytes.
+		Is de eerste bit een "0" dan is er maar éé byte gebruikt voor het sensor-id.
+		Zo kan er eerst gewerkt worden met maar één byte, maar kan er ook voldoende uitgebreid worden indien nodig.
+		
+	
+	-> Hoe opslagen in database?
+		JSON per meting in collection van dat board
+	
+	-> Welke API endpoints?
+		Per collection:
+			SIS (Sensor Identification System): GET en PUT
+			boardn: GET
+		
+	
+	FLWSB (MQTT via TTN)
+	Weerstation (MQTT)
+	
+	-> Diagram backend uitleggen
+		aanpassingen: SIS put bij API, SIS document (zie uitleg hierboven)
+		
+	
+SAMDaaNo21:
+	- Form factor
+	
+	-> Welke pin headers bestellen via AliExpress? 1x15
+	
+	-> Meetpunten voor testing, test points op PCB
+	
+-> Wat verwacht je op te leveren voor een succesvol project?
+
+	PCB's:
+		Main-board SAMDaaNo21:
+			Bevat de SAMD21 MCU en USB interface met meerderheid van pinnen naar buiten gebracht.
+			Arduino Nano/RPi Pico form-factor die op een breadboard geplaatst kan worden.
+			
+		LoRaWAN comm-board:
+			Bevat LoRaWAN radio module en antenne.
+			Compact form-factor te verbinden via UART kabel.
+			Moet eenvoudig kunnen geplaatst worden in een behuizing los van het main-board.
+			
+		Expansion-board:
+			Bevat allerhande aansluitingen voor sensoren en batterij.
+			(Welke aansluitingen juist?)
+			HAT form-factor die op de SAMDaaNo21 past en langs weerszijde uitbreid (zie RPi Pico HAT)
+			Bevat bekabelde aansluitingen zowel als toegang voor eventuele verdere HAT's.
+			
+	Back-end:
+		Applicatie opgezet in The Thongs Stack van The Things Network.
+		Node-RED en MongoDB containers draaiende in Docker op VM van AP Hogeschool.
+		Voor beveiliging beide applicaties wachtwoord beveiligd (en liefst TLS voor MQTT en HTTPS voor Node-RED).
+		API om sensor metingen te kunnen opvragen uit de db en SIS data toe te voegen aan de db (met API key).
+		
+	Front-end;
+		Web app met Angular.
+		SIS data toevoegen/wijzigen in db via API.
+		Sensor metingen opvragen uit db via API.
+		(Hoe data filteren en visualiseren?)
+		
+	Documentatie van het totale project.
+	
+
+alias mdt='mongosh "D:\Electronica-ICT\3IT_IOT\Applied_IoT_Project\mongosh-1.6.0-win32-x64\bin\mongosh.exe"'

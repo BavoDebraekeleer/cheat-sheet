@@ -1,0 +1,1334 @@
+Microcontrollers
+
+_________________________________________________________________________________________________________________
+-- Algemeen --
+--------------
+
+(Libraries kunnen maken is algemene kennis. Ook kennen voor examen.)
+
+Set a bit, met OR op 1				byte |=  (0x1 << n)
+Clear a bit, met AND inverse op 0 	byte &= ~(0x1 << n)
+Toggle a bit, met XOR				byte ^=  (0x1 << n)
+Test a bit, uitlezen met &			byte &   (0x1 << n)
+
+	→ n is de positie die je wilt wijzigen of uitlezen
+	→ 0x1 = het aantal bits, kan ook binair met 0b1
+		vb. 0x1  = 0b1
+			0x3  = 0b11
+			0x7  = 0b111
+			0xF  = 0b1111
+			0xF1 = 0b1111 1
+			0xF3 = 0b1111 11
+			0xF7 = 0b1111 111
+			0xFF = 0b1111 1111
+
+_________________________________________________________________________________________________________________
+-- Arduino --
+-------------
+- ATMEGA328p (zeer kleine microcontroller)
+	We gaan de hardware bekijken, geen blackbox meer, uiteindelijk zelf Arduino bordje maken.
+	
+	Groot voordeel bij programmeren, je gaat begrijpen hoe de hardware werkt.
+	
+- PWM = Pulse Width Modulation
+	aan- en uitschakelen om pulsen te maken
+	periode/duration-time = één cyclus = aan + uit
+	
+- duty-cycle: hoelang het "aan" tegenover de periode
+	LED op 100% duty-cycle: brandt op volledige intensiteit
+	LED op 50% duty-cycle: brandt maar de helft van de tijd effectief
+
+- analogWrite:
+	geen analoge spanning, maar een PWM signaal,
+	wel omzetbaar, met een low-pass filter (tau = R.C, 5tau = volledig opgeladen), naar een echte analoge spanning.
+	
+- Settling time:
+	de tijd de uitgang nodig heeft om van 0% tot 90% van de gemiddelde uitgangsspanning te komen.
+
+- Peak-to-peak settle voltage:
+	de rimpel spanning op het uitgangs-signaal
+
+- C++ ref: http://www.cplusplus.com/doc/tutorial/
+
+- Library keywords: https://github.com/arduino/Arduino/blob/master/build/shared/lib/keywords.txt
+
+- ATtiny:
+	Bij branden bootloader naar ATtiny condensator 10µF van RST Arduino → GND
+		→ Daarna moet deze weg, bij het gewoon schrijven naar de Arduino.
+
+_________________________________________________________________________________________________________________
+-- Seriële Communicatie --
+--------------------------
+- Wat?
+	Informatie halen uit, of delen met de buitenwereld, adhv een protocol.
+	Serieel = bit na bit versturen, na elkaar.
+		→ Buitenwereld = alles wat buiten de microcontroller chip zit.
+		→ Tegenovergestelde van Serieel is Parallel = bits tegelijkertijd over verschillende verbindingen
+		
+- UART = Universal Asynchronous Receiver-Transmitter:
+	chip om de digitale data in een serieel signaal om te zetten volgens het gebruikte protocol.
+	
+	Clock met bepaalde snelheid = baud-rate
+	Berekend parity-bit en voegt deze toe aan de bit-stroom
+	Voegt start- en stop-bits toe
+	
+	Instellingen notatie:
+		[Baud rate] [# Data bits][No/Even/Odd parity][1/2 Stop bits]
+		
+		vb.: 9600 8N1 = 9600 Baud, 8 Data bits, No parity, 1 Stop bit
+	
+	16550: losse UART-chip van NationalSemiconductors
+	ATMega328p heeft 8 ingebouwde UART's
+	
+- Driver = Signal Driver = Driver/Receiver
+	Zet spanning om van TTL logische niveaus, 0V = "0", 5V = "1"
+	naar de juiste spanningen voor het protocol.
+	vb. MAX232 driver voor RS232, omzetting naar +3 tot +15V, en -15 tot -3V
+	
+- GND/Ground nodig als referentiepunt bij communicatie.
+	Voor 8-bit signaal → 9 draden nodig!
+	
+- Synchrone vs Asynchrone synchronisatie:
+	Synchroon = adhv clock-signal, extra draad voor nodig om deze te delen
+	Asynchroon = adhv start- en stop-bits, kijken naar de tijd gedeeld door het aantal bits om de data correct op te splitsen.
+
+- Protocol = afspraken rond communicatie tussen zender en ontvanger van een signaal.
+	Verschillende niveaus: hoe start/stopt comm, wat betekenen de signalen, ...
+	
+	RS232, RS422, RS485, I²C, ...
+	DMX (licht bediening concerten), CAN-bus (intern in auto/vrachtwagen), Microwire, One-Wire Interface, USB, ...
+	Bluetooth, Zigbee, ...
+	
+	- RS232:
+		één van de oudste en populairste data comm protocol
+		Arduino terminal, verbinding Cisco routers
+		Asynchroon
+		parity-bit, even or odd = doorgestuurde bits moeten altijd even of oneven zijn afhankelijk van wat afgesproken is
+		11-bits voor elke 7-bits informatie: 1 start-bit, 7 info-bits, 1 parity-bit, 2 stop-bits
+		Digitale "0" =  +3 tot +15V = positieve spanning
+		Digitale "1" = -15 tot -3V  = negatieve spanning
+		
+		Betrouwbaar tot max. 15m kabels bij 9600 baud, TX en RX lijn
+		Point-to-point protocol
+		Driver: MAX232
+		
+	- RS422:
+		Betrouwbaar tot max. 1200m, 4 draden twisted-pair kabel bij 9600 baud
+			→ twisted-pair zorgt voor een gelijke verdeling van storingen op de twee kabels,
+				waardoor er geen verschil in storing is tussen de twee en de storing dus niet meer voor verkeerde data zorgt.
+	
+		Point-to-point protocol
+		Driver: MAX1485 (UART kunnen we behouden van RS232)
+		
+	- RS485:
+		Point-to-multipoint protocol → Master en slave aanduidingen,
+			maar slaves zijn niet adresseerbaar, geen beschrijving in protocol hoe slave-devices te identificeren.
+			Maser kan niet weten van welke slave het antwoord komt. (Wel mogelijk met extra bovenliggend comm-protocol.)
+		Max 32 slave devices
+			
+	- I²C:
+		Ontwikkeld door Philips in 1982 voor televisies, om op PCB's te comm tussen verschillende chips met één draadje ipv twee.
+		Betrouwbaar tot max. 1m aan 100kbps, of 10m aan 10kbps.
+		Synchroon
+		Multi-master-slave operations protocol: meerdere masters die met meerdere slaves praten.
+		
+		Twee lijnen/draden:
+			SCL = Serial CLock	= gedeeld clock signaal
+			SDA = Serial DAta	= data lijn in beide richtingen
+			→ zijn open-collector uitgangen = geen weerstand, enkel 1 weerstand aan de voeding
+				beide lijnen hebben wel een pull-up weerstand nodig, GEEN meerdere parallel weerstanden
+				(die soms op bordjes zit ingebouwd zodat je ze niet kapot maakt, maar kan voor problemen zorgen),
+				vaak gebruikte pull-up weerstand: 4K7, exact berekennen kan ook, maar niet kritisch
+		
+		Communicatie stappen:
+			1. Idle State
+			2. Start Signal
+			3. Clock Signal
+			4. Send Address
+			5. Read / Write
+			6. Acknowledge
+			7. Data Transfer
+			8. Acknowledge
+			9. Stop Signal
+					
+			1) Idle state, 1-1:
+				SCL wordt permanent hoog gehouden
+				SDA is ook hoog
+				
+			2) Start signal, 1-0:
+				SCL blijft hoog
+				SDA wordt laag
+				
+			3) Clock signal, komt van de master, 0-0:
+				SCL wordt laag
+				terwijl SDA laag blijft
+				
+			4) Receiving address
+			
+			5) Read/write:
+				Write = 0	master → slave
+				Read = 1	slave  → master
+				
+			6) ACK = Acknowledge Clock of NAC = Not Acknowledge
+			
+			7) Data Transfer
+				Data frame, altijd 8 bits
+				
+			8) ACK/NAC
+			
+			9) Stop signal:
+				SDA wordt hoog op de clock flank dat de SCL ook hoog wordt.
+				
+			Vormen samen 29-32 bits:
+				1 bit		Start Condition
+				7-10 bits 	Address Frame
+				1 bit		Read/Write
+				1 bit		Acknowledge/Not acknowledge
+				8 bits		Data Frame 1
+				1 bit		Acknowledge/Not acknowledge
+				8 bits		DData Frame 2
+				1 bit		Acknowledge/Not acknowledge
+				1 bit		Stop Condition
+				
+			
+		→ PCA9685: chip met 16 PWM uitgangen, adres instelbaar via 6 adres-ingangen
+			vb.: om veel LED's in één keer van intensiteit te veranderen.
+			
+		→ 24LC512-I/P is 512kbps EEPROM geheugen chip adhv I²C. Adres kan gekozen worden uit 8 beschikbare adressen.
+		
+		→ PCF8574A Remote 8-bit I/O Expander, 3 adreslijn ingangen uit 8 adressen startende vanaf 0x40 of 0x70
+			vb. Sainsmart 2004LCD maakt gebruik van deze chip om het display aan te sturen.
+			
+		→ MCP23017 I/O expander, 16 digitiale in-/uitgangen, 3 adreslijn ingangen uit 8 vaste adressen
+		
+		→ ADS1000-Q1 low-power 12-bit analog-to-digital converter
+		
+		→ TC74 temperatuur sensor, vast adres
+		
+		Adressen vaak een probleem, oplossingen:
+			- meerdere I²C bussen
+			- adres-translation chips → single en multi channel translation
+				Single channel:
+					Kleine chip tussen de SCL en SDA lijnen plaatsen, tussen de I²C-bus en het device waarvan het adres getransponeerd dient te worden.
+					Meerdere chips voor meerdere devices nodig
+					vb. LTC4316
+				Multi channel/multiplexer:
+					één chip voor meerdere devices, elk device krijgt een eigen nieuwe SCL en SDA lijn.
+					nadeel is verlies van de "single-bus"
+					
+		→ TWI = Two Wires Interface, is een I²C protocol dat zo goed als hetzelfde is om de trademark te omzeilen.
+		
+	- SPI = Serial Peripheral Interface:
+		- full-duplex communicatie, beide richtingen tegelijkertijd.
+		- synchroon, met clock
+		- Master/slave, één master, meerdere slaves, chip select nodig
+		- adressering v/d slaves is hardware matig, waar dat bij I²C met software adressen is = geen adres conflicten.
+		- 4 lijnen communicatie
+			SCLK = Serial CLoK (=CLK of SCK)
+			MOSI = Master Out Slave In
+			MISO = Master In Slave Out
+			SS   = Slave Select, meestal active-low, nakijken op datasheet
+			
+			GND  = GrouND, en altijd een common ground natuurlijk!
+			
+		- Daisy-chain config om meerdere slaves op één lijn aan te sluiten:
+			Master MOSI → MOSI Slave 1 → Slave 1 MISO → MOSI Slave 2 → Slave 2 MISO → MISO Master
+			24 CLK-pulsen nodig, telkens 8 per device want hebben shift-register van 8-bits
+			
+		- Geen vaste snelheid, kiezen obv de slave devices, 10-20 Mbps
+		- Ring-topologie van shift-registers, gesloten ring
+			Master MSB (Most Significant Bit) van het shift-reg wordt de carry-out/MOSI-out → MOSI-in naar LSB (Least Significant Bit) van de Slave
+			→ mogelijk probleem: CLK signaal is verstoord en dus niet gelijk
+			
+			tri-state logica: poort met 3 mogelijke toestanden: laag, hoog of hoog impedant
+		
+		- Data lezen op 4 mogelijke manieren, benoemt als modi:
+			- Variatie op de CLK fase, non-inverted clock polarity:
+				Mode 0: sample op rising edge, shift out op falling edge
+					Data gelezen/geschreven begin klok-cyclus
+						→ clock-phase/cpha = 0
+				
+				Mode 1: sample op falling eddge, shift out op rising edge
+					Data gelezen/geschreven midden in klok-cyclus, tussen opgaande en neergaande flank
+						→ clock-phase/cpha = 1
+			
+			- Variatie op polariteit, inverted clock-polarity:
+				Mode 2: sample op falling eddge, shift out op rising edge
+					gelezen direct bij opgaande flank = rising edge
+						→ clock-polarity/cpol = 0
+				
+				Mode 3: sample op rising edge, shift out op falling edge
+					of pas bij de neergaande flank = falling edge
+						→ clock-polarity = 1
+			
+		- 3wire vs 4wire SPI:
+			3wire heeft SISO = Slave In, Slave Out. Dit is MISO en MOSI op één enkele lijn, data in twee richtingen.
+			3wire is Half-duplex: comm in beide richtingen, maar niet tegelijkertijd.
+			
+	→ Keuze tussen SPI en I²C:
+		- snelheid
+		- adressering
+		- beschikbaarheid van devices, wat ondersteunen ze
+
+
+_________________________________________________________________________________________________________________
+-- MCU Bootloader --
+--------------------
+• Barefoot = lege losse micocontroller
+• Programmer: hardware om de MCU te programmeren
+	ISP = In System Programmer of ICSP In-Circuit System Programmer
+		→ JTAG = Joint Test Action Group, serieel protocol bedacht door de gelijknamige groep.
+			→ origineel gemaakt om PCB's te verifiëren en testen
+			→ 10-pin connector, 4 typische TAP = Test Access Port:
+				TMS = Test Mode Select
+				TCK = Test CLock
+				TDI = Test Data Input
+				TDO = Test Data Output
+				
+				GND = common ground
+				
+• Bootloader = stuk programma geprogrammeerd op de MCU die functioneert als een Programmer
+	→ MCU moet hier support voor hebben = "bootloader-support"
+		vb.: ATmega328p: Read-While-Write Self-Programming ...
+			→ Flash geheugen opgedeeld in twee stukken: bootlaoder gedeelte + applicatie gedeelte
+			→ Na een reset-pulse, of bij het sturen van een bepaalde code, kan de MCU in programming mode gaan.
+
+_________________________________________________________________________________________________________________
+-- MCU Architectuur --
+----------------------
+• Interne opbouw:
+	- Geheugen
+	- CPU = Central Processing Unit
+	- I/O
+	- Timers
+	- Communicatie
+	- ADC
+	
+	- Data bus
+	- Mem bus
+	- I/O bus
+		→ Bus = path on the PCB or wire, or group of wires, that connects different components.
+
+• AVR = Alf and Vegard's RISC processor, aka Advanced Virtual RISC
+	AVR was developed in the year 1996 by Atmel Corporation
+	by two students at the Norwegian Institute of Technology (NTH), Alf-Egil Bogen and Vegard Wollan.
+	
+	
+• RISC = Reduced Instruction Set Computing:
+	Slechts klein aantal instructies/bewerkingen intern in de CPU, maar super snel.
+	
+	→ Instructie set: de bewerkingen die de CPU kan doen
+		- opcode: instructies in de vorm van een hexadecimaal getal, vb. 0x5F
+		- mnemonic: aliasen voor opcode/instructies, vb. and = bitwise AND of two integral numbers, add, jmp
+			→ Assembler-code is in mnemonics
+			
+		- LD instructie = load data from certain location to memory register
+		- ST instructie = store data from memory register to certain location
+			
+_________________________________________________________________________________________________________________
+-- ALU = Aritmethic Logic Unit --
+---------------------------------
+• Onderdelen:
+	- Dip-switches: data ingangen
+	- Program Counter, aangestuurd door de CLK
+	- Geheugen:
+		1) Instructie geheugen FF (is de software), adres + data
+		2) Data geheugen FF
+	- Multiplexer en Demultiplexer met aantal uit-/ingangen gelijk aan de hoeveelheid instructies in de instructie-set van de CPU
+	
+	vb. 6 dip-switches → 6-bits → ondersteund 64 instructies
+	
+• Geheugen
+	- (Kan) Gedeeld in één geheugen blok voor zowel instructies als data.
+		Voordeel: geheugen is opdeelbaar waar nodig
+		Nadeel: niet on-the-fly aanpasbaar
+	
+	- Flip-flop = 1 bit geheugen
+	- Register = 1 byte = 1 getal
+		→ Register size depends on the CPU
+			8-bit  = 1 byte  
+			16-bit = 2 bytes = word/WORD
+			32-bit = 4 bytes = doubleword/DWORD	→ can access 2^32 bytes = ~4 gigabyte of RAM
+			64-bit = 8 bytes = quadword/QWORD	→ can access 2^64 bytes = ~16 exabyte/gigabyte^9 of RAM
+	
+	- Flag/Status register: om carry in/out & borrow in/out bij te houden
+	
+	- ACU = Acumulator: register waar uitkomsten van bewerkingen in worden bijgehouden.
+	
+	- PC = Program Counter
+	- SP = Stack Pointer
+	
+	- Control bus:
+		R/W & Enable
+		Lees van geheugen of Schrijf naar geheugen
+	
+	- Geheugen opbouw:
+		• Flash: 	Program Memory	16 bits breed	Bepaald met hoeveel geheugen je kan werken (Moderne computer 64 bits breed)
+		• RAM: 		Data Memory 	8 bits breed
+		• EEPROM: 	Data Memory 	8 bits breed
+		
+		• Flash:
+			- Adres 0x0000 tot F_END
+			- Secties:
+				Application Flash section = CSEG
+				Optional Bootloader/Boot section
+			
+		• RAM:
+			- Secties:
+				32 General Purpose registers					→ Adres: 0x0000 tot 0x0020
+				64 I/O registers										 0x0020 tot 0x0060
+				160 Ext. I/O											 0x0060 tot 0x0100 (of 0x0200 afhankelijk van het aantal)
+				Internal RAM = DSEG = Data Segment (Stack)				 0x0100 tot RAMEND
+				
+				Extended RAM (los van andere delen)						 RAMEND+1 tot 0xFFFF
+				
+			- 64 I/O registers: input/output v/d microcontroller
+				GPIO = General Purpose Inputs and Outputs:
+					- poort = verzameling van "pinnen" (voor de buiten wereld)
+						is intern een register van 1 byte (voor de CPU zelf)
+						- PUD = Pull-Up Disable (code inschakelbare Pull-up weerstand)
+						- uitgang ligt aan de ingang, zo kan je verifiëren via lezen van de pin of wat je gestuurd hebt ook effectief zo is,
+							en er geen kortsluiting is opgetreden.
+						- Three State Logic (Buffer met twee switches/MOSFETS in)
+					- 3 uitgangspoort registers: PortB, PortC, PortD
+					- 3 ingangspoort registers:	 PinB,  PinC,  PinD
+					- GPIO poorten (fysieke pinnen naar buiten): PB, PC, PD
+					- DDR = Digital Direction Register: alle besturingspinnen van de richtingsschakelaars: DDRB, DDRC, DDRD
+						Hiermee kan je in één keer (één lijn code) 8 bits, dus 8 pinnen programmeren.
+						
+					- Commando's:
+						- DDRn	= Direction Register
+						- PORTn	= Output Register
+						- PINn	= Input Register
+							→ waarbij n = B, C of D
+							
+				→ Toggling the Pin: Writing a '1' to PINxn toggles the value of PORTxn
+		
+		• EEPROM:
+			- ESEG
+			- Adres 0x0000 tot E_END
+	
+
+_________________________________________________________________________________________________________________
+-- Bitwise Operations --
+------------------------
+• 1 bit overschrijven in een byte (8 bits):
+	Met een OR operator
+	
+• Bitwise Operators:
+	&	bitwise AND		1 & 1 = 1, rest 0 → voor op 0 zetten of om te weten te komen wat de 1 (=true) in een register is, 0-len wordt niet naar gekeken.
+	|	bitwise OR		0 & 0 = 0, rest 1 → voor op 1 zetten
+	^	bitwise XOR		1 & 0 = 1, rest 0
+	<<	left shift
+	>>	right shift
+	~	bitwise NOT (one's compliment) (unary)
+	
+	&=	→ 1: origineel behouden, 0: wordt 0
+	|=	→ 0: origineel behouden, 1: wordt 1
+	^=
+	<<=
+	>>=
+	
+	Bit order:	(MSB)  Bit7  6  5  4  3  2  1  0  (LSB)
+	
+	Set a bit 	(op 1):		byte |=  (0x1 << n)	 → n is de positie die je wilt wijzigen.
+	Clear a bit (op 0): 	byte &= ~(0x1 << n)
+	Toggle a bit (XOR):		byte ^=  (0x1 << n)
+	
+	oef.:	1100 1011 & 1111 0000 = 1100 0000
+			0000 0000 ^ 1010 1010 = 1010 1010
+			1 << 4 = 0000 1000
+			0xA3 & 0xF = 1010 0011 & 0000 1111 = 0000 0011
+			0x4C & 0xB = 0100 1100 ^ 0000 1011 = 0100 0111
+			0x6 << 4 = 0000 0110 << 4 = 0110 0000
+			
+			Toggle bit 3 & 4: byte ^= (0x3 << 3)
+			
+_________________________________________________________________________________________________________________
+-- ADC = Analoog Digitaal Converter (Theorie 4) --
+--------------------------------------------------
+• 1 analoog-digitaal converter, aangestuurd door een MUX die de analoge inputs switched.
+
+	Bestaande uit:
+		- V_ref op 10-bit DAC → met switches en weerstanden om verschillende spanningen te bekomen
+		- Conversion Logic component: stuurt de switches in de DAC aan, vermeerderd of verminderd steeds met de helft.
+		- Sample & Hold Comparator: vergelijkt de uitgang v/d DAC met de ingangs-spanning uit de MUX, uitgang gaat naar de Conversion Logic
+		
+	→ V_ref verschillende opties:
+		Internal 1,1V reference → altijd stabiel
+		V_bron MCU
+		3,3 V (metingen moeten vaak niet hoger zijn als dit)
+	
+• Features:
+	- 10-bit Resolution
+	- 13 - 260μs Conversion Time
+	- Optional Left Adjustment for ADC Result Readout
+	- 0 - VCC ADC Input Voltage Range
+	- Selectable 1.1V ADC Reference Voltage
+	- Free Running or Single Conversion Mode
+	- Interrupt on ADC Conversion Complete
+	- Sleep Mode Noise Canceler
+		
+• ADMUX register:
+	2 REFS-bits		V_ref opgeven
+	
+	ADCH + ADCL registers
+	
+	10-bit = 0 .. 1023
+	waarbij >> = /2 of *2
+	
+	ADCSRA = ADC Control and Status Register
+		ADEN: ADC aan of uit (uitschakellen wanneer niet gebruikt om stroom te besparen.
+		ADATE: manueel of auto meting → Conversie manueel starten: ADCSRA |= (1<<ADSC);
+		ADSC: start conversion
+		ADIF: interrupt flag, set when conversion completes (4e bit of Bit5) → while(!(ADCSRA & (1<<ADIF))) {..}
+		ADIE: interrupt enable
+		
+	ADCSRB:
+		ACME: MUX aansturen, moet 0 zijn
+		ADTS: 00
+		→ om ADC te gebruiken 0x00
+		
+	!GPIO richting vb. ADC5 = PC5 (input) → DDRC &= ~(1<<PC5);
+	
+	→ Als resultaat lezen, eerst ADCL byte, dan ADCH byte:
+		int adc_result = (L + (H << 8));
+		
+	N = ADC Prescaler Select = deelfactor voor de clock
+		De ADC conversie werkt optimaal bij een kloksignaal tussen de 50 kHz en 200 kHz, hoger meetresultaten mogelijks niet correct.
+		Bij 16 MHz → N = 64 of hoger
+		
+• Praktische:
+	In SETUP
+	- instellen mux
+		bvb: ADC5 = ADC MUX op 0101
+		ADMUX &= ~(1 << MUX3);
+		ADMUX |= (1 << MUX2);
+		ADMUX &= ~(1 << MUX1);
+		ADMUX |= (1 << MUX0);
+		
+	- left / right adjust
+		bvb: 10 bit’s gebruiken → right adjust d.w.z. adlar=0
+		ADMUX &= ~(1 << ADLAR);
+		
+	- kloksnelheid adc conversie
+		bvb: adc prescaler N=128 → ADPS = 000
+		ADCSRA |= (1 << ADPS0);
+		ADCSRA |= (1 << ADPS1);
+		ADCSRA |= (1 << ADPS2);
+		
+	- referentie spanning
+		bvb: Vref = Vcc
+		ADMUX |= (1 << REFS0);
+		ADMUX &= ~(1 << REFS1);
+		
+	- conversie start manueel / automatisch
+		bvb: auto trigger off
+		ADCSRA &= ~(1 << ADATE);
+		
+	- adc activeren ..
+		= ADC enable
+		ADCSRA |= (1 << ADEN);
+		
+	- NIET VERGETEN! GPIO richting !
+		ADC5 = PC5 → input
+		DDRC &= ~(1 << PC5);
+		
+	In LOOP
+	- Manueel starten conversie
+		ADCSRA |= (1 << ADSC);
+	
+	- Wachten tot de conversie klaar is
+		while ( ! ( ADCSRA & (1 << ADIF ) ) ) { }
+		
+	- Lezen resultaat en samenstellen bytes
+		byte L = ADCL; → eerst “L” ...
+		byte H = ADCH; → dan pas “H”
+		int adcresult = (L + (H << 8));
+		
+• Oefening ADC instellen:
+	Gegeven:	1) Ref = 1.1V
+				2) ADC3
+				3) N = 64
+				4) Manuele start
+				5) Resultaat op poort B
+				
+	Oplossing:
+		1) Referentie spanning instellen:	ADMUX |= (1 << REFS1);
+			op internal 1.1V → 11:			ADMUX |= (1 << REFS0);
+		
+		2) ADC3 selecteren:	MUX 0011:		ADMUX |= (1 << MUX0);
+											ADMUX |= (1 << MUX1);
+											ADMUX &= ~(1 << MUX2);
+											ADMUX &= ~(1 << MUX3);
+											
+		3) N instellen:		ADPS 110:		ADCSRA &= ~(1 << ADPS0);
+											ADCSRA |= (1 << ADPS1);
+											ADCSRA |= (1 << ADPS2);
+											
+		5.1) 8-bit resultaat in ADCH:		ADMUX |= (1 << ADLAR);
+											
+		4) Manuele start:		ADATE:		ADCSRA &= ~(1 << ADATE);
+								ADSC loop:	ADCSRA |= (1 << ADSC);
+								while:		(!(ADCSRA &(1 << ADIF));
+	
+		5.2) Register ADCL lezen om weg:	byte x = ADCL;
+			 ADCH lezen naar poort B:		PORTB = ADCH;
+			 
+_________________________________________________________________________________________________________________
+-- Interrupts (Theorie 5) --
+----------------------------
+In Arduino code:
+	attachInterrupt ( digitalPinToInterrupt(pin), mijnISR, mode ); → Werkt enkel met pin D2 & D3
+	dettachInterrupt ( ); → int pin terug ‘losmaken’
+		
+• SREG = Status Register	
+	Alle interupts inschakelen:		interrupt();	=	sei(); = enable  = bit7/I op 1 in SREG
+	Alle iterupts uitschakelen:		nointerrupt();	=	cli(); = disable = bit7/I op 0 in SREG
+
+• Interrupt:
+	Interrupts instellen door de I-bit in het SREG te setten,
+	en de juiste Interrupt Vector, INT0 of INT1, in EIMSK = External Interrupt Mask Register te setten.
+	
+	De Program Counter gaat, op tempo van de clock, alle adressen van een programma af.
+	
+	Als een interrupt PIN actief wordt, volgens de wijze die ingesteldd is in het EICRA = External Interrupt Control Register A,
+	zal de overeenkomstige Flag geset worden in het EIFR = External Interrupt Flag Register.
+	Eerst zal de Program Counter het huidige adres, van waar het programma op dat moment zit, bewaren in het geheugen.
+	Uit de Interrupt Vector wordt via een demux het juist adres opgehaald gekoppeld aan de int pin die getriggered is.
+	De Program Counter leest nu het ontvangen adres waar een ISR = Interrupt Sub-Routine zich bevind.
+	
+	Na de interrupt wordt met het commando ret (=return) het opgeslagen adres, van waar het programma was gebleven, terug uit het geheugen gehaald
+	en gaat de Program Counter verder vanaf dit adres.
+	
+	vb.: 	“pin2” = PD2 = int0 → ISR ( INT0_vect ) { … }
+				→ Om te werken: SREG |= (0x1 << 7);	EIMSK |= (0x1 << INT0);	
+					→ nu wordt PD2, pin 2 van port D, intern doorverbonden met INT0
+			
+			“pin3” = PD3 = int1 → ISR ( INT1_vect ) { … }
+				→ Om te werken: SREG |= (0x1 << I);	EIMSK |= (0x1 << INT1);
+					→ SREG |= (0x1 << I); doet hetzelfde als SREG |= (0x1 << 7);
+
+• Interrupt Vector (demux: int pin naar de vector nr):
+	Stuk geheugen waar de hardware interrupt pinnen op aangesloten zijn en die aanduiden welk interrupt adres moet gelezen worden
+	in het geval van een interrupt.
+	
+• EIMSK = External Interrupt Mask Register
+• EICRA = External Interrupt Control Register A
+	Bevat Interrupt Sense Control 0 en 1
+	Om in te stellen wanneer er juist een interrupt moet geflagged worden.
+	
+	ISC00 & 01 voor INT0
+	ISC10 & 11 voor INT1
+	
+	→ Code voorbeeld:
+		void setup ( ) {
+									// DDRD : Port D Data Direction Register
+			DDRD &= ~(1 << DDD2); 	// bit DDD2 op “0” → pin2 = input
+									// EICRA : Ext. Interrupt Control Register A
+			EICRA |= (1 << ISC00); 	// mode bit’s ISC00 en 01 op “1”
+			EICRA |= (1 << ISC01); 	// => int0 = ‘rising’
+									// EIMSK : External Interrupt Mask Register
+			EIMSK |= (1 << INT0); 	// bit INT0 op “1”
+									// → int0 verbinden met pin2
+		}
+		ISR ( INT0_vect ) {..}
+
+• EIFR = External Interrupt Flag Register:
+	hierin kun je zien of een interrupt is binnengekomen, zelfs als Interrupts uitgeschakeld zijn.
+	EIFR & (0x1 << INTF0); voor INT0
+	EIFR & (0x1 << INTF1); voor INT1
+	
+• Pin Change Interrupt:
+	PCINT0_vect = PCINT[7:0]		in PCMSK0 = Pin Change Mask Register 0
+	PCINT1_vect = PCINT[8:14]		in PCMSK1 = Pin Change Mask Register 1
+	PCINT2_vect = PCINT[16:23]		in PCMSK2 = Pin Change Mask Register 2
+	
+	PCICR = Pin Change Interrupt Control Register	→ 1 bit per vector, enige opties zijn enable/disbale op "change"
+	PCIFR = Pin Change Interrupt Flag Register
+	
+	→ Poort lezen om te weten welke PIN de interrupt veroorzaakt heeft:
+		ISR(PCINT2_vect){
+			byte intpin = PIND;	// Direct als eerste doen
+		}
+	
+	→ Code voorbeeld voor PCint21:
+		void setup ( ) {
+										// DDRD : Port D Data Direction Register
+			DDRD &= ~(1 << DDD5); 		// bit DDD5 op “0” → pin5 = input
+										// PCICR : Pin Change Interrupt Control Reg.
+			PCICR |= (1 << PCIE2); 		// bit PCIE2=“1” → PCint2 = enable
+										// PCMSK2 : Pin Change Mask Register 2
+			PCMSK2 |= (1 << PCINT21); 	// bit PCINT21=”1” → pin PCint21
+										// zal PCINT2-vector activeren
+		}
+		ISR ( PCINT2_vect ) { // PCINT2-vector is aangeroepen
+			byte status = PIND;					// Altijd als eerste doen!
+			if ( status & B00010000 ) {..}		// was het bit5 m.a.w PCint21? ja: run dan interrupt code
+		}
+	
+	Oefening: LED aansturen met flag register, met interrupt op twee knoppen op PCINT0 en PCINT1:
+		Setup(){
+			DDRD |= (1 << 3);			// Pin D3 op uitgang voor LED
+			DDRC &= ~(1 << 0);			// Pin 8/D8/PB0/PCINT0 op input voor knop 1
+			DDRB &= ~(1 << 0);			// Pin 14/A0/PC0/PCINT8 op input voor knop 2
+			
+			SREG |= (1 << I);			// Interrupts aan, niet perse nodig, want flag wordt sowieso gezet.
+			PCICR |= (1 << PCIE0);		// PCINT0 vector  enable
+			PCICR |= (1 << PCIE1);		// PCINT1 vector enable
+			PCMSK0 |= (1 << PCINT0);	// PCINT0 pin enable
+			PCMSK1 |= (1 << PCINT8);	// PCINT8 pin enable
+		}
+		Loop(){
+			if(PCIFR & (1 << PCIF0)) PORTC |= (1 << 3);		Als knop 1 interrupt = LED aan
+			if(PCIFR & (1 << PCIF1)) PORTB &= ~(1 << 3);	Als knop 2 interrupt = LED uit
+		}
+		
+
+_________________________________________________________________________________________________________________
+-- Timers -- 
+------------
+• TC = Timer Counter
+
+• Waarom timers?
+	Om tijdsgebonden activiteiten te kunnen doen,
+	zonder de CPU hiermee te belasten en ook energie te besparen.
+		vb. delay, om de ms iets doen, millis, signaal generatie
+
+-- Theorie 6 --
+• TC0: 8-bit timer/counter met PWM
+	- Features:
+		• Channel Counter
+		• Clear Timer on Compare Match (Auto Reload)
+		• Pulse Width Modulator met fase correctie (PWM)
+		• Frequentie generator
+		• 10-bit prescaler voor het klok signaal
+		• Kan interrupts generen bij Overflow en Compare Match
+		
+	- Control Logic:
+		• Count: stijgende flank bij Count = één stap tellen
+		• Clear = reset → TCNT0 = "0000 0000"
+		• Direction: omhoog of omlaag tellen
+		• clk_Tn = Timer/Counter clock
+		• BOTTOM = laagste telstand = "0000 0000"
+		• TOP 	 = hoogste telstand = "1111 1111" of een andere ingestelde waarde
+		
+	- OCR0A = Output Compare Register A
+	  OCR0B = Output Compare Register B
+		Getal in instellen om te vergelijken met de counter TNCT0, dit geeft een intern signaal.
+		→ intern signaal kan ingesteld worden om een interrupt te veroorzaken
+		
+		→ Interrupt Vector:
+			TIMER0_COMPA = Timer/Counter0 Compare Match A
+			TIMER0_COMPB = Timer/Counter0 Compare Match B
+		
+	- TIFR0 = TC0 Interrupt Flag Register
+		OCFA = Timer/Counter0, Output Compare A Match Flag
+		OCFB = Timer/Counter0, Output Compare B Match Flag
+		TOV0 = Overflow Flag
+		
+	- TIMSK0 = TC0 Interrupt Mask Register
+		OCIEA = Timer/Counter0, Output Compare A Match, Interrupt Enable
+		OCIEB = Timer/Counter0, Output Compare B Match, Interrupt Enable
+		
+	- Waveform Generator (voor PWM):
+		Maakt golfvorm op basis van counter, comparator resultaat en interne signalen.
+		Kan naar fysische pinnen OC0A en OC0B gebracht worden.
+		
+	- ClkT0 = Clock van TC0:
+		Klokpuls kan van verschillende bronnen komen:
+			• Uit de pre-scaler v/d centrale CPU klok
+			• Van de externe pin T0 om externe events te tellen
+				→ Edge Detector: keuze om bij rising of falling edge te tellen
+		
+		→ TTCR0B = TC0 Controle Register:
+			- Clock select
+			- Pre-scaler select adhv 3-bits CA0[2:0] 
+				N deeltal opties: 1, 8, 64, 256, 1024
+				
+	- Werkings Modi:
+		• Normal Mode
+			→ WGM0[2:0] op 0:
+			
+			Telt omhoog tot TOP "1111 1111" en begint terug van BOTTOM "0000 0000"
+			Bij TOP waarde → TOV0 = Overflow Flag op 1
+				→ Als TOV0 interrupt niet actief staat in het Interrupt Mask Register wordt deze niet auto op 0 gezet maar blijft op 1
+				→ Kan ook als extra tel bit gebruikt worden om de resolutie van 255 te verhogen naar 512!
+			
+		• CTC Mode = Clear Timer on Compare Match Mode 
+			→ WGM12 = ”0” - WGM11 = ”1” - WGM10 = “0”
+			
+			Telt omhoog tot waarde in OCR0A
+			Ideaal om externe events op te tellen omdat te tijd ertussen kan variëren.
+			Of om een op pin OC0A een blokgolf met instelbare frequentie te genereren
+				→ OC0A in “toggle mode” (kan niet op OC0B, en vergeet niet op uitgang te zetten!)
+				De frequentie van het blokgolf signaal op OC0A kan berekend worden met de volgende formule: f_OCnx = f_clkI/O / (2.N.(1+OCRnx))
+		
+		• Fast PWM Mode 
+			→ WGM12 = ”0” - WGM11 = ”1” - WGM10 = “1”
+			
+			Opwekking PWM door single-slope operation: telt van BOTTOM naar TOP
+			
+			De opwekking van een PWM signaal met hoge frequentie wordt hierdoor mogelijk.
+			De duty-cycle van het PWM signaal wordt hierbij bepaald door de waarde in het OCR0A / OCR0B register → 50% duty-cycle adhv toggle mode met OC0A
+			Bij fast PWM kan men kiezen of het PWM-signaal normaal of geïnverteerd op de fysieke uitgang terecht komt.
+			Deze keuze maakt men met de COMnx[1:0] bit’s in het TCCR0A register
+			De frequentie van het PWM signaal op OC0A kan hoger liggen dan bij CTC en berekend worden met de formule: f_OCnxPWM = f_clkI/O / (N.256)
+			
+		• Phase Correct PWM Mode
+			1) WGM12 = ”1” - WGM11 = ”0” - WGM10 = “1”
+				→ waarbij TOP = OCR0A (OCR0B)
+			2) WGM12 = ”0” - WGM11 = ”0” - WGM10 = “1”
+				→ waarbij TOP = 0xFF
+				
+			Opwekking PWM door dual-slope operation: telt van BOTTOM naar TOP en terug omlaag van TOP naar BOTTOM.
+			Zo kunnen we de fase van het signaal bepalen, maar de maximum frequentie is wel maar de helft tegenover single-slope.
+			
+			→ Voorkeur bij het aansturen van motoren door de "zachte" duty-cycle overgang, enkel met OCR0A!
+			→ OCR0B enkel bruikbaar als op en af teller!
+			
+			De frequentie van het uitgangs-signaal op OC0A kan berekend worden met: f_OCnxPCPWM = F_clkI/O / (N.510)
+
+-- Theorie 7 --
+• TC1: 16-bit timer/counter met PWM
+	- Verschillend van TC0:
+		True 16-bit design
+		One Input Capture Unit
+		Input Capture Noise Canceller
+		External Event Counter
+		(Hoger frequentie bereik mogelijk door 16-bit)
+		
+		• True 16-bit design:
+			CPU is 8-bit
+			- Geheugen register v/d timer opgedeeld in 2x 8-bit
+			- Laagste 8-bits v/d timer direct ingelezen in de DATA BUS,
+				de hoogste 8-bits gaat eerst in een TEMP (8-bit) register, en daarna pas ingelezen in de DATA BUS
+				
+		!!!	- Schrijven in TCNT1: eerst hoogste 8-bits schrijven TCNT1H, daarna de laagste 8-bits TCNTH1L.
+			
+			TEMP register wordt ook voor het OCRnx gebruikt.
+				→ OCR kan je duty-cycle mee regelen.
+			
+			- Allows 16-bit PWM
+			
+			- TC0 & TC1 "delen" dezelfde pre-scaler, maar kunnen wel een ander deeltal hebben dmv MUX.
+		
+		• One Input Capture Unit:
+			- Laat toe om:
+				time-stamps te maken (werkt vergelijkbaar met een chronometer)
+				duty-cycles meten
+				frequenties tellen
+				
+			ICRn = Input Capture Register nr
+			
+			TC1 is 16-bits dus TCR1 heeft twee 8-bit delen.
+			
+			..AANVULLEN
+		
+		• Input Capture Noise Canceler
+			Digitale filter die 4 klokpulsen lang leest om zeker te zijn v/d input.
+			Als alle 4 gelijk zijn klapt de uitgang om.
+			→ zekere vertraging!
+				→ als je iets heel snel moet doen is deze uitschakelbaar.
+		
+		• External Event Counter
+		
+	- Werkings Modi:
+		• Normal Mode:
+			Counter telt omhoog
+			
+			→ instellen WGM1[3:0] op 0x0
+			
+		..AANVULLEN
+		
+		• Fast PWM
+			TOP = 0X03FF = 1_bits = 0 - 1023
+				zo kan je een waarde v/d ADC (ook 10-bit, waarde 0 - 1023) rechtstreeks naar de Fast PWM sturen zonder conversie (zoals met map())
+				! letten op volgorede van schrijven! Eerst hoogste 2-bits, dan pas laagste 8-bits
+		
+		..AANVULLEN
+		
+		zachte overgang is dat er tussen waardes/frequenties tussen zitten voor een mooie curve, geen plotse sprong.
+
+-- Theorie 8 --
+• TC2: 8-bit timer/counter met PWM + asynchrone werkingsmodus
+	- Grotendeels hetzelfde als TC0
+	- Anders dan TC0:
+		• Extra deeltallen voor de clock: 32 & 128
+		• PSRASY → Clear om te herstarten
+		• TOSC1 = om extern signaal op de oscillator aan te sluiten,
+			of kristal tussen TOSC1 en TOSC2
+			
+			→ zo krijg je een asynchrone werking tegenover de clock
+			 
+			→ ASSR: vlag register "busy bits" om aan te geven wanneer een register wel of niet gelezen mag worden.
+				OCR2AUB ..AANVULLEN
+				
+				X-Tal = 32,768 kHZ
+					 → 256 stappen → volledig doorlopen v/d timer = 1 seconden → "real-time clock" = RTC
+					 
+• GTCCR = General Timer/Counter Register = algemeen register voor alle TC's
+	- Heeft resets voor de prescalers:
+		Bit 0 - PSRSYNC: 1 = reset gedeelde prescaler van TC0 en TC1
+		Bit 1 - PSRASY:  1 = reset prescaler van TC2
+		
+		Bit 7 - TSM: Timer/Counter Sync Mode,
+					1 = prescalers tegenhouden/pauzeren
+					0 = terug samen starten
+					
+!!! Enkel OCRnx schrijven als TCNTn kleiner is dan OCRnx
+
+---------------------------------------------------------------
+• Clock Generation:
+	- Oscillator geeft op zich ligt afwijkende pulsen.
+		We vertrekken van een hoge frequentie om die dan te delen om zo tot een meer gelijke pulsen te krijgen.
+		N-deeltallen:	1	2	4
+						8	16	32
+						64	128	256
+			→ Selectie in het Clock Prescaler Register = CLKPR
+					
+	- Fuses (nu met FLASH geheugen): om de bootloader te programmeren, en clock selectie meegeven.
+		→ Fabrieksinstelling = LC-oscillator
+		
+	- Clock: 0 - 20 MHz
+	
+	- Externe kristal oscillator op X-TAL ingangspinnen
+		→ low power, maar kan enkel CPU aansturen, 0 - 16 MHz mogelijk
+		→ full swing, 0 - 20 MHz
+		
+	- Interne LC-oscillator:
+		default: "exact" 8 Mhz / pre-scaler deeltal 8 = 1 MHz
+		instelbaar via fuses aan verschillende condensator waarden
+		callibratie in een register
+		
+	- Interne 128 KHz oscillator: low-power mode, kan wel alles aansturen, maar traag.
+
+• Oefening 1:
+	Oef 1:
+		Gevraagd: N en OCRnx-deeltal moeten worden ingesteld.
+			→ één kiezen, en de andere berekenen.
+		
+		1) Timer kiezen: hier gegeven, TC0
+		2) Modus kiezen: CTC Mode voor signaal te genereren
+		3) Frequentie berekenen, startende met de laagste:
+			f_OCnx = f_clk_I/O / (2 . N . (1 + OCRnx))
+			→ Omvormen: (f_clk_I/O / (2 . N . f_OCnx)) - 1 = OCRnx
+			
+			Gegeven:	f_OCnx = 880 Hz
+						f_clk_I/O = 16 MHz
+			
+			Voor N-factor = 1
+				→ geeft 18180 → gaat niet, maar 8-bit mogelijk = max. 255
+						
+			N-factor = 64
+				→ geeft 141 → BINGO!
+				→ invullen in originele formule om te zien of de oplossing de juiste frequentie geeft.
+					→  880,2 HZ → 0,2 naast
+				
+	→ Zo groot mogelijke OCR-waarde, geeft de meest accurate oplossing,
+		want OCR bepaald het aantal stapjes in de golf, hoe kleiner de deeltjes, hoe minder de frequentie zal afwijken
+		van de gewenste frequentie.
+		
+	Oef 2:
+		Gevraagd: 	1 kHz
+		Oplossing:	N = 64
+					→ OCR = 124
+					→ geeft exact 1 KHz
+		
+	Oef 3:
+		Gevraagd:	3,3 kHz
+		Oplossing:	N = 64
+					→ OCR = 36,9 → 37
+					→ geeft 3289 Hz → 11 Hz naast
+					
+	Programmeren in CTC:
+		1) Modus → 010:		TCCR0A &= ~(1 << WGM00);
+							TCCR0A |= (1 << WGM01);
+							TCCR0B &= ~(1 << WGM02);
+					
+		2) N = 64 → 110:	TCCR0A |= (1 << CS00);
+							TCCR0A |= (1 << CS01);
+							TCCR0A &= ~(1 << CS02);
+		
+		3) Voor waveform generator → Toggle → 10:
+		
+							TCCR0A |= (1 << COM0A0);
+							TCCR0A &= ~(1 << COM0A1);
+							
+		4) Pin op uitgang:	DDRD |= (1 << PD6);
+		
+		5) Oplossingen van berekeningen naar OCR schrijven:
+
+							FR[] = {141, 124, 37};
+							OCR0A = FR[n];
+			
+		6) OCR waarde schrijven.
+					
+• Oefening 2:
+	16 ms → 16 MHz
+	
+	N = 1024 → 16 MHz / 1024 = 15,625 Hz
+	f = 1/t = 64 us
+	
+	16 ms / 64 us = 16000 / 64 = 250
+	
+	Interrupt veroorzaken: 
+	OCR0A = TCNT0 → vector TIMER0_COMPA_vect
+	ISR(TIMER0_COMPA_vect){}
+	
+	N = 0 → niet tellen, N = 1024 → beginnen tellen
+	
+	Code:	Setup()
+				Normal mode
+				OCR0A = 250;
+				TCNT0 = 0;
+				Interrupt aanzetten
+				
+			ISR(PCINT)
+				N van 0 naar 1024, timer starten
+				uitgang instellen: PORTD |= (1 << PD3);
+				
+			ISR(TIMER)
+				N van 1024 op 0, timer stoppen
+				PORTD &= ~(A << PD3);
+				TNCT0 = 0;
+
+-- Theorie 9 --
+	
+• Oefening 3: DC-DC converter (niet mogelijk met gewone Arduino code)
+
+_________________________________________________________________________________________________________________
+-- Reset -- 
+-----------
+• Reset:
+	Belangerijkste reden: moment dat poort aangezet wordt weet je niet wat erop zal komen, kan 1 of 0 zijn = onbepaald.
+	Oplossing = RESET forceren op alle poorten, geeft default waarde (niet persé 0, kan ook 1 = SET zijn)
+	
+	Verschillende manieren:
+		- Reset-pin, extern (met pull-up weerstand)
+			kan uitgeschakkeld worden met RSTDISBL "fuse"
+		- Reset bij opstart
+		- Door Brown-out Detectie
+		- Door Watchdog TIMER
+		
+	t_TOUT = tijd nodig om alles te resetten, Time-OUT
+	V_POT  = drempel spanning voor de Vcc om een RESET te veroorzaken
+	pulse moet 2,5 ms duren om als RESET gezien te worden
+	
+	INTERNAL RESET pulse duurt de lengte dat je op RESET drukt + t_TOUT
+	
+• Brown-out = spanning zakt te laag onder de nodige werkspanning waardoor de MCU niet goed kan werken. (Zwakke Black-out)
+	Kan waarden in registers doen omklappen, waardoor de werking verandert.
+	
+	V_BOT-	onder deze waarde start de RESET
+	V_BOT+	hier stopt de RESET weer + t_TOUT
+	
+	Kunnen we instellen BODLEVEL
+	
+• Watchdog Timer:
+	Kijkt of de CPU nog zijn werkt doet.
+	CPU geeft geregeld signaal naar de Watchdog dat hie nog goed werkt.
+	Wanneer de CPU vastloopt krijgt de Watchdog dit signaal dus niet meer,
+	en kan deze een RESET doen.
+	
+Problemen bootloader branden:
+	- Kristal (zie vorig deel)
+	- Condensator op RESET pin, gewoonlijk 20% tolerantie, kan te laag zijn om aan 2,5 ms te geraken.
+	
+_________________________________________________________________________________________________________________
+-- Power Management -- 
+----------------------
+Verschillende modi:
+	• Sleep Mode
+
+	• Idle Mode: SM[2:0] op '000'
+		Stopt CPU clock, waardoor de CPU stopt, en Flash geheugen.
+		Alle andere onderdelen blijven werken.
+		
+	• ADC Noise Reduction Mode: SM[2:0] op '001'
+		Door schakelende poortjes zijn er storingen op de voedingsspanning, spanning veriëert met enkele millivolts.
+		In deze mode worden het aantal poortjes dat kunnen schakelen tot een minimum gehouden.
+		Want bij ADC conversies kan deze noise de resultaten beïnvloeden.
+		
+		ADC Conversion Complete Interrupt moet actief zijn, om na de conversie terug uit deze mode te geraken.
+		
+	• Power-Down Mode: SM[2:0] op '010'
+		Chip bijna volledig uitgeschakeld. Enkel enkele zaken kunnen de chip terug wakker maken: ..AANVULLEN
+		
+	• Power-Save Mode: SM[2:0] op '011'
+		adhv Timer TC2
+		
+	• Standby Mode: SM[2:0] op '110'
+		Oscillator blijft draaien, maar het signal wordt niet doorgegeven.
+		Hierdoor heeft deze geen opstart tijd nodig.
+		
+	• Extended Standby Mode: '111'
+
+	ZIE SLIDES VOOR OVERICHT!!
+	
+Verdere energie besparingen:
+• PRR = Power Reduction Register:
+	Onderdelen v/d MCU uitschakelen: ADC, UART (seriele communicatie), SPI, TC0, TC1, TC2 enkel in syncrone mode, TWI (I²C)
+	
+• MCUCR = MCU COntrol Register
+	- Brown-out detectie uitschakelen, moet op speciale procedure, anders gaat deze gewoon alles resetten.
+	- Interne pull-up weerstanden uitschakelen -> opletten dat je dit voorziet in code, waarden kunnen veranderen hierdoor
+	
+• DIDR = Digital Input Disable Register:
+	Digital Input Disable
+	
+
+-- LES AFWEZIG GEWEEST -- SESSIE 10 --
+
+_________________________________________________________________________________________________________________
+-- Analoge Comparator -- 
+------------------------
+AANVULLEN
+
+_________________________________________________________________________________________________________________
+-- Fuses -- 
+-----------
+AANVULLEN
+
+
+-- SESSIE 11 --
+
+_________________________________________________________________________________________________________________
+-- 32-bit MCU -- 
+----------------
+Wordt professioneel het meest gebruikt.
+Werkt met CPU met 32-bit instructies.
+Interne data, registers en/of I/O bus meestal maar 16- en 8-bits.
+
+• STM32 Familie:
+	Producent: STMicroelectronics
+	Maken gebruik van ARM processor cores
+	
+	density -> slaagt op hoeveelheid FLASH memory
+		medium-density ranges between 64 en 128 ...
+		
+	kan intern tot 4GB addresseren in 8 blokken van 512MB
+	
+	Voeding:
+		- werkings-spanning 2.0 tot 3.6 V
+		- programmable voltage detector
+		
+	CPU:
+		- 72 MHz max CPU frequentie
+		- ARM Cortex M3
+		
+	Geheugen:
+		- Flash
+		- RAM 
+		- ... AANVULLEN
+		
+	GPIO:
+		Acht poorten A .. G
+		16 bits per poort
+		128 potentiële pinnen, werkelijk 51, 80 of 112
+		I/O snelheid instelbaar op 2, 10, 50 MHz
+		
+	ADC:
+		- drie 12-bits ADC's
+		- 18 kanaals MUX waarvan 16 external inputs
+		
+	DAC:
+		...
+		
+	Interrupts:
+		- De 112 mogelijke pins kunnen allemaal een interrupt via 16 vectoren met elk 3 modes (rising, falling, change)
+		- Nested vectored interrupt controller:
+			Kan tot 60 maskeerbare interrupt vectoren verwerken
+			16 prioriteit niveaus
+			
+	Timers:
+		11 timer/counters
+			4x generieke 16-bits
+			2x 16-bit met PWM en nog andere functies zoals noodstop
+			2x programmeerbare watchdog timers
+			1x RTC
+			1x ...AANVULLEN
+			
+	Communicatie:
+		tot 5x USART's (voor seriële communicatie)
+		2x I²C
+		tot 3x SPI interfaces 18 Mbit/s
+		tot 2x CAN 2.0 interfaces (databus in auto's)
+		1x fullspeed USB 2.0 interface
+		1x SDIO interface (voor SD-kaart lezer)
+		1x Ethernet controller, enkel op STM32F107-reeks)
+		
+	Security:
+		1x 96-bit CRC calculator unit (om CPU te ontlasten)
+		
+	Low power:
+		Sleep, Stop en Standby modi
+		42 backup registers (16-bits)
+		VBAT spanning voor RTC en backup registers
+		
+	Clock en reset:
+		- 4-16 MHz crystal oscillator + PLL (Phase Lock Loop) unit tot 72 MHz
+		- ..AANVULLEN
+	
+	Display:
+		- parallel interface direct display aansluiting mogelijk.
+		
+	Direct Memory Access:
+		12-channel DMA controller (CPU ontlasten)
+		
+	Debug mode:
+		- JTAG interface
+		- SWD = Serial Wire Debug
+		- Cortex-m3 Embedded Trace Macrocell
+		
+• STM32F103C8T6 aka "Blue Pill" aka STMduino:
+	Programmeerbaar via JTAG of SWD, niet de USB.
+	Je kan wel met JTAG een bootloader schrijven om daarna via USB te kunnen programmeren.
+	
+	-> 3.3 V seriële interface!
+	
+	Program en run modi, zodat je niet kan programmeren terwijl de chip operationeel is.
+	
+	- GPIO Registers:
+		atomic bit operations = 1 bit van een register bewerken/wijzigen
+	
+		..AANVULLEN
+		
+• STM32 Nucleo = STM32 Development Board serie:
+	STM32 implementatie + JTAG programmer via USB op hetzelfde PCB.
+	(Bij sommige is er een breeklijn zodat de programmer afreekbaar is.)
+	
+	Ook "Nano" versie beschikbaar die lijkt op een Arduino.
+	
+	Voordeel:
+		- echte programmer, dus geen FLASH geheugen verlies aan een bootloader
+		- Direct Debug mogelijkheden vanuit de IDE omgeving.
+		
+-- SESSIE 12 --
+
+_________________________________________________________________________________________________________________
+-- Programming Toolchains -- 
+----------------------------
+• Toolchain = ketting van tools
+	- Pre-processor
+	- Compiler
+	- Assembler
+	- Linker
+
+	- Pre-processor: code wordt ingevuld voor de code naar de Compiler gaat
+		#include #define -> Macro Instructions
+		#ifdef #endif
+		
+	- Compiler: omzetting hogere programmeertaal naar Assembler instructies
+		-> cross compiler: code compileren voor een ander platform dan waarop de compiler draait. vb. Arduino IDE = Laptop CPU naar Atmega MCU
+	
+	- Assembler: omzetting naar hex code conform de memory layout v/d doel hardware.
+		Geheugen voorzien voor library code.
+	
+	- Linker: werk van Assembler vervolledigen.
+		Haalt de code uit de gebruikte libraries en voeg deze in de hex code van de Assembler.
+		Resultaat is een binair bestand dat direct uitvoerbaar is op het doel platform.
+		
+• gcc toolchain:
+	gcc = vroeger: gnu c-compiler, nu: gnu compiler collection, ondersteund veel meer programmeertalen dan C.
+	
+	Typisch drie onderdelen:
+	- gcc
+	- binutils
+	- glibc
+	
+	- gcc: de compiler
+	
+	- binutils: collectie elementen zoals de assembler, linker en debugger
+	
+	- glibc: C library
+	
+• AVR toolchain:
+	- binutils
+	- gcc-avr
+	- avr-libc
+	- avrdude
+	
+	Arduino IDE = GUI voor de gcc-avr compiler en avrdude
+	
+	fuses branden met avrdude
+	
+• STM toolchain:
+	- STM32CubeIDE geavanceerde C/C++ ontwikkelingsplatform
+		gebasseerd op Eclipse IDE
+		GDB = gnu debugger
+	
+	- SW4STM32:
+		gratis tool
+		ondersteund allerlei boards
+		Eclipse plug-ins voor nieuwe talen
+		ST-LINK support (debug feature van STM32)
+		
+
+_________________________________________________________________________________________________________________
+-- Oefeningen -- 
+----------------
+• DC-DC converter oefening
+	DC-DC converter om van een hogere naar een lagere spanning te gaan -> spanningsdeler
+	Omgekeerd: DC -> AC -> DC, met ADC -> PWM -> transformator -> diode brug + parallel condensator -> spannings-deler 12V naar 0-5V en terugkoppelen naar de ADC.
+	
+	- Opgave: 	Zo snel mogelijk! -> 8-bits ipv 16-bits -> TC0
+				adhv ADC en TC0
+				TC0 -> 975 Hz
+				PWM = 249,6 kHz clock
+				Mode = Fast PWM
+				
+	- Oplossing:
+		- TC0 timer instellen:
+			TC0 975 Hz -> 255 clock pulsen voor 1 Hz -> 975 . 255 = 248,6 -> 16 MHz / N64 = 250 -> N-deeltal = 64
+			Hogere V_ADC = lagere duty cycle PWM
+			
+			Mode: Fast PWM = "110":
+				TCCR0A |= (1 << WGM00)
+				TCCR0A |= (1 << WGM01)
+				TCCR0B &= ~(1 << WGM02)
+			
+			Pre-scaler instellen, 64 = "110":
+				TCCR0B |= (1 << CS00)
+				TCCR0B |= (1 << CS01)
+				TCCR0B &= ~(1 << CS02)
+			
+			-> geïnverteerde uitgang nodig, Set on Compare Match when up-counting = "11"
+				TCCR0A |= (1 << COM0A0)
+				TCCR0A |= (1 << COM0A1)
+			Pin op output:
+				DDRD |= (1 << PD6)
+				
+		- ADC instellen:
+			Enkel ADCH gebruiken: OCR0A = ADCH
+			
+			Naar boven shiften -> ADLAR op "1"
+				ADMUX |= (1 << ADLAR)
+				
+			ADC laten werken op interne ref spanning van 1,1V -> stabieler als 5V input: REFS op "11"
+				ADMUX |= (1 << REFS0)
+				ADMUX |= (1 << REFS1)
+				
+			Manier van conversie -> enable + auto trigger, "1" en "1":
+				ADCSRA |= (1 << ADATE)
+				ADCSRA |= (1 << ADSC)
+				
+			Clock pre-scaler instellen, zo snel mogelijk -> N = 64, anders boven de snelheid van de ADC -> ADPS = "011":
+				ADCSRA &= ~(1 << ADPS0)
+				ADCSRA |= (1 << ADPS1)
+				ADCSRA |= (1 << ADPS2)
+			
+			ADC aanzetten:
+				ADCSRA |= (1 << ADEN)
+			
+			Input setten:
+				DDRC |= ~(1 << PC0)
+				
+		- Weerstanden spanningsdeler:
+			1 op 19 -> 92k + 4k7
+			
+		-> Met TC1 zou je de frequentie exact kunnen instellen, maar dit gaat trager omdat je 16-bits hebt aan de uitgang ipv 8-bits.
+		-> moet de ADC meting stabiel zijn, of de schakeling is batterij gevoed (= onstabiel), dan moet je de referentie spanning 1,1V gebruiken voor de ADC,
+			en niet de voedingsspanning.
+			-> met condensator is nog stabieler → condensator filtered ruis weg
+	

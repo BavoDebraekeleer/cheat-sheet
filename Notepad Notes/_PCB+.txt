@@ -1,0 +1,50 @@
+PCB DESIGN ADVANCED
+-------------------
+
+Documentatie met Word:
+----------------------
+Bronverwijzingen (Bibliografie):
+	Verwijzingen -> citaat toevoegen
+	Bibliografie -> optie kiezen
+	
+Annotaties bij afbeelding:
+	Rechtermuisknop -> Bijschrift invoegen
+
+KiCad:
+------
+
+A - component toevoegen
+E - component waarden aanpassen
+
+Labels gebruiken -> rechter zijbalk
+
+Voor naar PCB design:
+	1) ERC check -> bovenbalk
+	2) Annotaties toevoegen -> bovenbalk (nummertjes)
+	
+	
+	
+Ontwerpopdracht 1: PCB Horloge
+------------------------------
+- 12 LED's SMD 0805
+- MCU: ATTINY1616-SFR
+- Kristal 32.768 kHz: FX135A-327
+- Batterijhouder: MULTICOMP PRO - MP000358
+- Hoe nauwkeuriger de tijd, hoe meer punten
+- Werkspanning en knoopcel te bepalen
+- PCB moet te bevestigen zijn in behuizing of aan bandjes
+
+UPSI
+IQRC
+Clock controller
+
+Componenten bestellen:
+ - Beeper (€1,00 - 0,55):
+	Murata PKMCS0909E4000-R1 https://www.digikey.be/en/products/detail/murata-electronics/PKMCS0909E4000-R1/4878400
+ - Zijknop (€0,38 - 0,19):
+	Citizen LS12T2-T https://www.digikey.be/nl/products/detail/citizen/LS12T2-T/5820681
+ - Zijknop (voorkeur) (€0,67 - 0,33):
+	https://www.digikey.be/nl/products/detail/panasonic-electronic-components/EVP-AVAA1A/4930562
+ 
+ - LED driver (€0,379 - 0,287):
+	Microchip MIC2860-2PYD6-TR https://be.farnell.com/microchip/mic2860-2pyd6-tr/led-dvr-2ch-6sot23/dp/2509995

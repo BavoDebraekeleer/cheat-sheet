@@ -1,0 +1,553 @@
+  _______  ___       _______   ______  ___________  _______     ______    _____  ___    __     ______    ________ 
+ /"     "||"  |     /"     "| /" _  "\("     _   ")/"      \   /    " \  (\"   \|"  \  |" \   /" _  "\  /"       )
+(: ______)||  |    (: ______)(: ( \___))__/  \\__/|:        | // ____  \ |.\\   \    | ||  | (: ( \___)(:   \___/  
+ \/    |  |:  |     \/    |   \/ \        \\_ /   |_____/   )/  /    ) :)|: \.   \\  | |:  |  \/ \      \___  \       
+ // ___)_  \  |___  // ___)_  //  \ _     |.  |    //      /(: (____/ // |.  \    \. | |.  |  //  \ _    __/  \\      
+(:      "|( \_|:  \(:      "|(:   _) \    \:  |   |:  __   \ \        /  |    \    \ | /\  |\(:   _) \  /" \   :) 
+ \_______) \_______)\_______) \_______)    \__|   |__|  \___) \"_____/    \___|\____\)(__\_|_)\_______)(_______/  
+ 
+ FORMULES, TERMINOLOGIE & GROOTHEDEN en ÉÉNHEDEN
+
+-- TERMINOLOGIE --
+------------------
+DC = Gelijkstroom
+AC = Wisselstroom
+
+ʝ = Imaginair getal = √(-1)
+
+Spanningsval
+
+Anode		Positief
+Cathode		Negatief
+
+__________________________________________________________________________________________________________________________________________________
+-- GROOTHEDEN & SI-EENHEDEN --	Engelse termen: https://wiki.analog.com/university/courses/electronics/text/glossary
+------------------------------	Electrical Units of Measure: https://www.electronics-tutorials.ws/dccircuits/dcp_3.html
+
+Grootheid:													SI-eenheid:					Basis Formule:
+----------													-----------					--------------
+C 	Capaciteit 					Capacitance					|	F 	Farad				|	C = Q / U
+F	Kracht						Force						|	N	Newtons				|	F = B.I.ℓ (Motor Action, magnetisch veld)	|	F = m.a	 → m = massa/mass, a = acceleratie/acceleration
+ƒ 	Frequentie					Frequency					|	Hz	Hertz				|	ƒ = 1 / T 
+G 	Geleiding					Conductance					|	S 	Siemens				|	G = 1 / R
+I	Stroom						Current						|	A 	Ampère				|	I = U / R				→ I_gem (gemiddeld) = 2/π . I_max
+L	Inductantie					Inductance					|	H 	Henry				|	Zelfinductie: L = n² . ((µr.µ0.A) / ℓ)	→ Zelfinductiespanning (Tegen) E_mk = -L(di/dt) 	→ Inductie = spanning(sval): U_L = (-)L(di/dt)
+P 	Vermogen					Power						|	W	Watt				|	P = U . I of I² . R	
+P_r	Reactief Vermogen										|	VAR	Volt Ampère Reactief|	P_r = U_eff . I_eff = U²_eff / X_C = I²_eff . X_C	→ Zelfde met X_L
+Q	Lading						Charge						|	C 	Coulomb				|	Q = C . U 				→ Basis formule condensatoren, zie Condensatoren
+R	Weerstand					Resistance					|	Ω	Ohm					|	R = U / I 
+U/V	Spanning(U)					Voltage(V or E)				|	V	Volt				|	U = I . R				→ V_rms = Effectieve Spanning
+W	Energie/Arbeid				Work						|	J	Joule				| 	W = F.Δ.x.cos(θ)		→ Energie opgeslagen in Magnetisch veld: W = (1/2).L.I²
+X 	Reactantie					Reactance					|	Ω	Ohm					|	
+X_C Capacitieve Reactantie		Capacitive Reactance		|	Ω	Ohm					|	U_max / I_max = X_C = -/+1 / ω.C = -/+1 / 2.π.ƒ.C	→ zie Condensatoren
+X_L Inductieve Reactantie		Inductive Reactance			|	Ω	Ohm					|	X_L = ω.L = 2.π.ƒ.L		→ afhankelijk v/d frequentie
+Z	Impedantie					Impedance					|	Ω	Ohm					|	Z = R + ʝX, where Z = Complexe Impedance, R = Re(Z), X = Im(Z)	→ AC Resistance: Z² = R² + X²
+Φ	Magnetische Flux			Magnetic Flux				|	Wb	Weber				|	→ 1 Wb = 10^8 veldlijnen → 1 µWb = 100 veldlijnen
+B 	Magnetische fluxdichtheid	Magnetic Flux Density		|	T 	Tesla				|	B = Φ  / A → waarbij A = doorsnede in m²
+T 	Periode						Time period					|	s 	seconden			|	T = 1 / ƒ
+µ	Permeabiliteit (absolute)	Permeability				|	H/m Henry per meter		|	µ_0 (vacuüm) = 4.π.10^-7.(Wb/Atm)	|	µ_r (relatieve) = µ / µ_0
+																→ N/A² = Newtons per vierkante Ampere
+																→ Wb/Atm = Weber per Ampère toeren meter	→ toeren = wikkelingen
+R	Reluctantie / Magnetische Weerstand (Schoonschrift R)	|	At/Wb Ampère toeren per Weber	|	R = ℓ / µ.A
+
+ʝ = Imaginair getal = √(-1)
+
+→ Kleine letter = ogenblikkelijk
+→ rms = eff = effectieve waarden
+	vb.: V_rms 	= Effectieve Spanning
+
+Voeding/Power supply bij transistors: https://www.pcmag.com/encyclopedia/term/vcc
+	V_*	→ 	c 	= collector relative to ground
+			cc 	= power supply to collecctor bipolar transistor / power supply voltage
+					+Vcc → NPN bipolar / BJT transistor
+					-Vcc → PNP transistor
+			ee	= power supply to emitter / emitter voltage (negatieve voeding)
+			be 	= base to emitter
+			ce	= collector to emitter
+			ss 	= source
+			dd 	= drain
+		
+		→ Single lettre = voltage relative to ground
+		→ Two different lettres = voltage between two terminals of a transistor
+		
+
+
+φ	Fase verschuiving	Phase Angle			|	° or rad		|	Difference in degrees between the voltage waveform and the current waveform having the same periodic time. It is a time difference or time shift and depending upon the circuit element can have a “leading” or “lagging” value. The phase angle of a waveform is measured in degrees or radians.
+ω	Frequentie hoek		Angular Frequency	|	rads/s(econds)	|	Mainly used in a.c. circuits to represent the Phasor Relationship between two or more waveforms is called Angular Frequency, symbol ω. This is a rotational unit of angular frequency 2πƒ with units in radians per second, rads/s. The complete revolution of one cycle is 360 degrees or 2π, therefore, half a revolution is given as 180 degrees or π rad.
+		ω = 2.π.ƒ = 2π / T
+τ 	Tijdsconstante		Time Constant		|	s(econds)		|	Time Constant of an impedance circuit or linear first-order system is the time it takes for the output to reach 63.7% of its maximum or minimum output value when subjected to a Step Response input. It is a measure of reaction time.
+		τ = R.C	(Condensatoren)	→ kΩ . nF = µs
+			→ 1 τ = 63.2% opgeladen
+			→ Volledig opgeladen na 5 τ
+			→ U_C = U_bron . ( 1 - e^(τ/R_C) ) 
+			
+		τ = L/R (Spoelen)
+		
+Andere units:
+-------------
+Wh	Watt-Hour	Electrical energy consumed by hour
+dB	Decibel		1/10B = unit of the Bel = Gain in voltage, current or power. → ratio input/output in audio system
+				Eg.: 20log10 (Vout/Vin)	→ Gain = +20dB, loss = -20dB); input = output → 0dB
+
+Griekse letters (hoofdletter & kleine letter):
+----------------------------------------------
+Α	α	Alpha
+Β	β	Bèta
+Δ 	δ	Delta	→ Het verschil tussen twee punten, bvb. op een grafiek v/e sinusgolf
+Θ 	θ	Theta
+Ω 	ω	Omega
+Φ 	φ	Phi
+M 	µ	Mu
+Π	π	Pi
+Ε	ε	epsilon
+Τ	τ	ταυ
+
+Prefixen / Multiples:
+---------------------
+T	Tera		10^12		1 000 000 000 000
+G	Giga		10^9		1 000 000 000
+M	Mega		10^6		1 000 000
+k	kilo		10^3		1 000 
+	éénheid		10^0		1
+m	mill		10^-3		0,001
+µ	micro		10^-6		0,000 001
+n	nano		10^-9		0,000 000 001
+p	pico		10^-12		0,000 000 000 001
+f	femto		10^-15		0,000 000 000 000 001
+
+__________________________________________________________________________________________________________________________________________________
+-- ALGEMENE FORMULES & WETTEN --
+--------------------------------
+• Serie:
+	U_bron = U1 + U2 + U3
+	I_bron = I1 = I2 = I3
+	R_v = R1 + R2 + R3						→ R_v = vervangings weerstand = weerstanden in serie = R_TH(evenin) of R_T
+		→ R_v = (U1/I_bron) + (U2/I_bron)	→ Wet van Ohm toegepast
+	C_T = 1 / ((1 / C1) + (1 / C2))
+	X_Ct = X_C1 + X_C2						→ X_Ct = Totale Capacitieve Reactantie
+	Q_T = Q1 = Q2 = Q3						→ Q_T = Totale Lading
+
+• Parallel:
+	U_bron = U1 = U2 = U3
+	I_bron = I1 + I2 + I3
+	R_v = 1 / ((1 / R1) + (1 / R2))		→ "1/x" of "^-1" op rekenmachine
+	C_T = C1 + C2 + C3
+	X_Ct = 1 / ((1 / X_C1) + (1 / X_C2))
+	P = P1 + P2 + ... + Pn
+	
+• Wet van Ohm:
+	U = I . R	|	U = P / I 	|	U = √(P . R)
+	I = U / R	|	I = P / U	|	I = √(P / R)
+	R = U / I	|	R = P / I²	|	R = U² / P
+	P = R . I²	|	P = I . U	|	P = U² / R 
+	
+• Wet van Kirchhoff:	https://www.electronics-tutorials.ws/dccircuits/dcp_4.html
+	I_in1 + I_in2 + ... + I_inX = I_uit1 + I_uit2 + ... + I_uitX 
+
+• Wet van Faraday (Spoelen):
+
+• Wet van Lenz (spoelen):
+	
+__________________________________________________________________________________________________________________________________________________
+-- OVERZICHT ONDERDELEN --	https://www.alliedcomponents.com/blog/essential-electronic-components-functions
+--------------------------
+• Voeding/Bron			Power Supply/Source		V				Levert een DC/gelijkstroom of AC/wisselstroom en spanning. Kan afzonderlijk, in serie (-12V en 12V), of parallel geschakelt zijn.
+• Weerstand				Resistor				R					Beperkt het vloeien van stroom. Heeft power rating en resistance value.
+	Potentiometer														Regelbare weerstand. 
+	LDR = Light Dependent Resistor				LDR						Hoe minder licht, hoe meer weerstand → PTC = Positieve Temperatuurs Coëfficiënt
+	Thermistor									PTC						Hoe hogere temperatuur, hoe meer weerstand
+												NTC						Hoe lagere temperatuur, hoe meer weerstand
+• Condensator			Capacitor				C					Slaat Vermogen op in Elektrische Energie. 2 voornaamste soorten: ELCO = Electrolytische Condensator, en Ceramic Disc
+• Transistor			Transistor				P					Electronische schakelaar. Halfgeleider/Semiconductor device used to amplify or switch electronic signals and electrical power. 3-PINs : Basis/Base, Collector & Emitter	Aan de basis wordt een ingangssignaal aangeboden: een spanning Ub, die een ingangsstroom Ib veroorzaakt. Daardoor komt de transistor "in geleiding": het geleidingsvermogen van het circuit van batterij, weerstand Rc en van collector naar emitter, neemt toe, waardoor de stroom Ic kan gaan vloeien.
+• Spoel/Inductantie		Inductor / Choke		L		Pasief		Slaat energie op in de vorm van magnetisme. Wire wound around a magnet or air core.
+	Relais																Electronische schakelaar obv een spoel.
+• Diode					Diode										Electronische schakelaar. Laat enkel stroom door in één richting, van Anode+ naar Cathode-
+
+__________________________________________________________________________________________________________________________________________________
+-- Weerstanden -- (Omgekeerde vaan Weerstand R is Geleiding G)
+-----------------
+• Weerstanden in Serie:
+	R_v = R1 + R2 + R3						→ R_v = vervangings weerstand = weerstanden in serie = R_TH(evenin) of R_T
+		
+		→ R_v = (U1/I_bron) + (U2/I_bron)	→ Wet van Ohm toegepast
+
+• Weerstanden Parallel:
+	R_v = 1 / ((1 / R1) + (1 / R2) + (1 / Rn)		→ "1/x" of "^-1" op rekenmachine
+		
+		→ Voor 2 weerstanden:	R_v = (R1 . R2) / (R1 + R2)
+		→ Voor dezelfde waarde weerstanden:	R_v = R / n 	→ n = aantal weerstanden
+
+• Spanningsdeler = serie schakeling van weerstanden:
+	U_x = (R_x / R_totaal) . U_bron/ref		→ U_x is de spanning over een bepaalde weerstand x
+	
+• Stroomdeler = parallelschakeling van weerstanden:
+	I_x = (R_v / R_x) . I_totaal
+	
+		→ Voor 2 weerstanden: 	I_1 = (R2 / R1 + R2) . I_tot
+								I_2 = (R1 / R1 + R2) . I_tot
+
+__________________________________________________________________________________________________________________________________________________
+-- Condensatoren -- (Slaat Vermogen op in Elektrische Energie)
+--------------------
+• Faseverschil tussen Spanning en Stroom:
+	i = ΔQ / Δt			i . Δt = C . Δu
+	Q = C . U			i = C . (Δu / Δt)
+	
+	→ Δ = Het verschil tussen twee punten op de grafiek
+		i_A = C . (Δu / Δt) = C . (u_1 - u_2 / t_1 - t_2) = C . ( 0 / t_1 - t_2) = 0 A
+		i_B = C . (Δu / Δt) = C . (-u_4 - u_3 / t_1 - t_2) = C . ( -(u_4 + u_3) / t_1 - t_2) = -I_max
+		
+• Capacitieve Reactantie X_C (Capacitantie) = Reactantie v/e Condensator bij AC/wisselstroom:
+	U_max / I_max = X_C = -/+1 / ω.C = -/+1 / 2.π.ƒ.C
+	
+	→ hoe lager de frequentie, hoe meer weerstand over de Condensator
+	
+	→ In Serie:		X_Ct = X_C1 + X_C2
+	→ In Parallel:	X_Ct = 1 / ((1 / X_C1) + (1 / X_C2))
+	
+		X_Ct = Totale Capacitieve Reactantie
+
+• Capacitieve spanningsdeler:
+	U_Cx = (C_t / C_x) . U_bron		OF		U_x = (X_Cx / X_Ct) . U_bron 	
+	
+		X_Cx = Reactantie v/d Condensator C
+		X_Ct = Totale Capacitieve Reactantie
+		U_x  = Spanning over Condensator C_x
+		
+• Vermogen:
+	→ Werkelijk Vermogen (True Power) = 0 W		→ Lekkage, verlies, dissipatie van vermogen door warmte ontwikkeling
+	
+	→ Reactief Vermogen:	P_r = U_eff . I_eff = U²_eff / X_C = I²_eff . X_C		→ Snelheid waarmee Conddensator energie opslaat en afgeeft
+
+• Tijdsconstante / Time Constant:
+	τ = R.C
+	→ 1 τ = 63.2% opgeladen
+	→ volledig opgeladen na 5 τ
+	→ U_C = U_bron . ( 1 - e^(τ/R_C) ) 
+		→ e = 2,7182818... → toets op rekenmachine
+__________________________________________________________________________________________________________________________________________________
+-- (Elektro-)Magnetisme -- 
+--------------------------
+• Φ		Magnetische Flux			Magnetic Flux				|	Wb	Weber				|	→ 1 Wb = 10^8 veldlijnen → 1 µWb = 100 veldlijnen
+• B 	Magnetische fluxdichtheid	Magnetic Flux Density		|	T 	Tesla				|	B = Φ  / A → waarbij A = doorsnede in m²
+• T 	Periode						Time period					|	s 	seconden			|	T = 1 / ƒ
+• µ		Permeabiliteit (absolute)	Permeability				|	H/m Henry per meter		|	µ_0 (vacuüm) = 4.π.10^-7.(Wb/Atm)	|	µ_r (relatieve) = µ / µ_0
+																→ N/A² = Newtons per vierkante Ampere
+																→ Wb/Atm = Weber per Ampère toeren meter	→ toeren = wikkelingen
+	µ_r → Relatieve Permeabiliteit geeft aan hoeveel keer een materiaal beter de magnetische veldlijnen geleid dan de veldlijnen door vacuüm.
+
+__________________________________________________________________________________________________________________________________________________
+-- Spoelen -- 	https://nl.wikipedia.org/wiki/Spoel
+-------------
+• L = Inductantie/Inductance in Henry (H) = Reactantie van een spoel
+	→ Zelfinductie: L = n² . ((µr.µ0.A) / ℓ)
+		Waarbij:	L : Zelfinductie in Henry
+					µ0:	absolute permeabiliteit 4π10^-7 Wb/Am (permeabiliteit van vacuüm)
+					A : oppervlakt v/d doorsnede v/d wikkelingen v/d speol in meter
+					ℓ : lengte v/d werkelijke spoel in meter
+					n : aantal wikkelingen v/d spoel
+					
+	→ Zelfinductiespanning (Tegen) E_mk = -L(di/dt)
+	→ Inductie = spanning(sval): U_L = (-)L(di/dt)
+
+• De inductantie is recht evenredig met de permeabiliteit µ van het kernmateriaal.
+• Permeabiliteit = Permeabiliteit betekent 'doorlaatbaarheid' of 'doordringbaarheid'. Zie: magnetische permeabiliteit; de mate waarin het medium een magnetisch veld geleidt; permeabiliteit (materiaal); de materiaaleigenschap van vaste stoffen om andere stoffen door te laten.
+• Ferromagnetisch = meer dan 100 of 1000 µr
+		
+• R_W = Windingsweerstand/wikkelweerstand/DC-weerstand:
+	Inherente weerstand v/d spoeldraad
+
+• C_W = Windingscapaciteit
+	Parasitaire capaciteit tussen twee windingen v/e spoel.
+	→ Belangerijk bij hoge frequenties
+
+• Totale inductantie spoelen in Serie (zelfde als Weerstanden):
+	L_t = L1 + L2
+	
+• Totale inductantie spoelen in Parallel (zelfde als Weerstanden):
+	L_t = 1 / (1/L1 + 1/L2)
+	
+• Energie opgeslagen in Magnetisch veld: W = (1/2).L.I²
+
+• Wervelstromen (vb.: inductiekookplaten):
+	Warmte opwekking door spanning gecreëerd door zelfinductie die kortsluit.
+	
+• Time Constant τ = L / R
+	
+• Kwaliteitsfactor Q = reactief vermogen/werkelijk vermogen = X_L / R
+	→ afhankelijk v/d frquentie
+	
+• I 90° naijlend op U
+
+• X_L Inductieve Reactantie	of Inductantie v/e spoel in RL-keten		ʝ.X_L = ʝ.ω.L = ʝ.2.π.ƒ.L
+	
+__________________________________________________________________________________________________________________________________________________
+-- OPAMP's DEEL 1 -- 
+--------------------
+OPAMP = Operational Amplifier
+
+• Soorten: cijfer = type, letters = fabrikant
+	- 741 	= ?
+	- 339 	= Comparator
+	- 555 	= Asynchrone Timer
+	- 4017 	= Sequencer
+
+• Verschilversterking:
+	A = Versterking
+	A_ol = Open-lus Versterking in dB/decade(roll-off), ideaal = ∞ → in werkelijkheid meestal 100k, nieuwere 200k of oude 50k
+		A_ol = u_out / u_diff 
+		u_diff = u_+ - u_-
+	Z_in = Input impedantie, ideaal = ∞ → in werkelijkheid = 1 MΩ
+	Z_out = Output impedantie = +/- 300 Ω
+	
+	- Bij signaal aangelegd aan de inverterende ingang (voeding op -): INVERTEERD
+		u_out = A.u_diff = A.(u_+ - u_-)	→ Bij + = 0V: u_out = A.- u_-
+
+• Transfertkarakteristiek:
+	AANVULLEN Deel 1
+	
+U_in(max) = Ingangsspanningsbereik
+	Algemeen: 	U_in(max) < U_b 
+	Meestal:	U_in(max) < (U_b - 1 à 2 V) → interne componenten OPAMP
+	
+U_iΦ = Differential input offset voltage
+	→ Offset dients voor als de inputs aan massa liggen, de ouput ook op 0V staat → voor nauwkeurigheid, vooral bij kleine signalen
+	→ met pot meter aan V_ee (negatieve voeding)
+	
+CMRR = Common Mode Rejection Ratio → CMRR' = 90 à 100 dB
+	CMRR = A_u(diff) / A_cm
+	CMRR' = 20.log(A_u(diff) / A_cm) → zelfde als CMRR, maar in dB
+	A_cm = ?
+	
+ƒ_T = Transit frequentie / Transition frequency → frequentie bij 0 dB
+	ƒ_T = A_u . BW
+	BW = banddbreedte
+	
+	vb.: 	Opgave: OPAMP met ƒ_T = 1 MHz en A_ol = 100 dB
+	
+			A_ol = 100 dB = 100k versterking
+			ƒ_T = BW . A_ol
+			1 MHz = BW . 100k
+			BW = 1 MHz / 100k = 10 Hz
+
+ƒ_K = Kritische frequencie
+A_P = 10.log(P_out/P_in)
+A_u = 20.log(U_out/U_in)
+
+S = Slew Rate in V/µs
+
+
+-- OPAMP's DEEL 2 -- 
+--------------------
+Spanningsdeler: U_out = (R2 / (R1 + R2) ) * U_in
+
+U_ref = (R2 / (R1 + R2) ) * U_bron
+	→ waarbij:	U_ref = referentiespanning
+				U_ref = U_R2
+
+→ Zenerdiode in een stabilisatiescchakeling houdt de referentiespanning U-ref stabiel.
+
+
+-- OPAMP's DEEL 3 -- 	https://nl.wikipedia.org/wiki/Operationele_versterker
+--------------------
+! → Zie schema theorie video!					
+Inverterende versterker aan - ingang: 			A_u = -(R2 / R1)		 	→ waarbij R1 voor de ingang staat, en R2 over de OPAMP van - ingang naar uitgang
+Niet-inverterendde versterker aan + ingang:	 	A_u = (R2 / R1) + 1
+→ R3 & R4 = spanningsdeler
+
+u_uit = (R2 / R1) . (u_in2 - u_in1)		→ waarbij R1 = R3 en R2 = R4
+
+Z'in = Zin . ((1 + A_ol.B) 	 	→ Z'in = Zin . (1 + A_ol)
+	→ A = versterkinng v/d opamp
+		→ A_cl = closed loop → met terugkoppeling
+		→ A_ol = open loop/lus → zonder terugkoppeling
+	→ B = terugkoppeling/backloop (eventuele verzwakking)
+		B = 1/A_cl
+		→ Bij spanningsdeler met input op +ingang → B = 1/((R2/R1)+1) (of = R2/(R1+R2)?)
+		→ Bij spanningsdeler met input op -ingang → B = 1/-(R2/R1)
+		→ Bij spanningsvolger (geen spaaningsddeler/weerstanden) → B = 1 → Z'in = Zin . (1 + A_op)
+		
+Z'out → zelfde formule als in
+
+Instrumentatieversterker:
+	u_uit = u_in2 - u_in1 + 2.I.R1
+	I = (u_in2 - u_in1) / R2
+	U_R2 = U_B - U_A						→ U_B = U_in2; U_A = u_in1
+
+
+-- OPAMP's PDF --
+-----------------
+• Niet-inverterende versterker:
+	- Input op +ingang, terugkoppeling met spanningsdeler op -ingang:
+	
+		Z_inNI = U_in / I_in = Z_in . (1 + B . A_ol)
+		Z_outNI = Z_out / (1 + B . A_ol)
+		
+		U_in = Z_in . I_in . (1 + B . A_ol)
+		
+	- Input op -ingang, zonder terugkoppeling:
+	
+		U_out = A_ol . U_in
+	
+• Spanningsvolger:
+	- Input op +ingang, terugkoppeling zonder spanningsdeler op -ingang:
+		Z_inSV = Z_in . (1 + A_ol)
+		Z_outSV = Z_out / 1 + A_ol
+		
+		Au = 1 + (Rf / Ri) = 1
+
+• Inverterende versterker:
+	- Input met spanningsdeler op -ingang, ground op +ingang:
+		i_in = -i_out
+		i_in = u_in / R1 = -i_c = -(u_out / R2)
+		
+		A_gl = -(u_out/u_in) = -(R2/R1)
+		
+		Z_inI = R1
+		Z_outI = Z_out / 1 + A_ol + B
+
+	- Somversterker = spanningsdeler met input van meerdere bronnen + weerstand + terugkoppelingop op -ingang, ground op +ingang:
+		U_out = -(I1 + I2 + ... + I_n) . R_f
+			  = -((U_in1/R1) + (U_in2/R2) + ... + (U_inN/R_n)) . R_f
+			→ R_f = terugkoppelings-weerstand
+			
+			→ Als alle weerstanden gelijk zijn:
+				U_out = -(U_in1  + U_in2 + ... + U_inN)
+				
+		→ Gemidddelde waarde van de verschillende bronnen berekennen door R = R1 = R2 ... = Rn
+			U_out = -(R_f / R).(U_in1  + U_in2 + ... + U_inN)
+				→ waarbij (R_f / R) = 1/n → en n = aantal bronnen
+				
+		→ Scaling adder S68
+__________________________________________________________________________________________________________________________________________________
+-- COMPLEXE GETALLEN -- 
+-----------------------
+• Transformatievergelijkingen: → Afronden tot 2 cijfers na de komma!
+  ----------------------------
+	→ ʝ = Imaginair getal = √(-1)
+																		Voorbeelden:
+	1) Cartesische coördinaten:		c = a + ʝb							c1 = 2,5 - ʝ4,33							c2 = -2 + j0
+
+	2) Poolcoördinaten:				c = r ; φ							c1 = √(2,5²+4,33²) ; arctan(4,33/2,5)+2π	c2 = √(-2²+0²) ; arctan(0/-2)+π
+																		
+		→ |c| = r = √(a² + b²) ; φ = arctan( b / a ) + (hoek kwadrant)		
+		
+		→  a + ʝb	→ 1e kwadrant
+		→ -a +/- ʝb → 2e/3e kwadrant	→ +  π = + 180°																c2 = 2 ; 0° + 180°
+		→  a - ʝb	→ 4e kwadrant		→ + 2π = + 360°					c1 = 5 ; -60° + 360°
+																		c1 = 5 ; 300°								c2 = 2 ; 180°
+		→ arctan = tan^-1 = Bgtan
+		→ r = |c|
+		
+	3) Goniometrische vorm:			c = r . (cosφ + ʝsinφ)				c1 = 5.(cos300°+ʝsin300°)
+	
+	4) Exponentiële vorm:			c = r . e^ʝφ						c1 = 5.e^ʝ300°
+	
+__________________________________________________________________________________________________________________________________________________
+-- COMPLEXE REKENWIJZE -- 
+-------------------------
+
+Low Pass & High Pass Filters:	https://www.youtube.com/watch?v=lagfhNjMuQM
+-----------------------------
+	• Verband uitgang- en ingangsspanning RC-keten:		u_out = ( 1 / √(ωRC)² + 1) ) . u_in
+		→ ω = Angular Frequency
+		
+	• Versterking of verzwakking in dB:					A_u[dB] = 20.log.(U_out / U_in)
+	
+__________________________________________________________________________________________________________________________________________________
+-- NTC-weerstand -- 
+-------------------
+	R = A . e^B/T
+
+		→ waarbij:	R = Weerstand in Ω
+					A = Constante in Ω
+					e = Wiskundige constante e
+					B = Constante in K
+					T = Absolute temperatuur in K
+	
+	• Temperatuurs-afhankelijkheid v/d NTC:
+		
+		R = R_25°C . e^(B . ((T0 - T)/(T0 . T)))
+	
+		T = (298 K / ( ((ln(R_NTC / R_25°C))/ B) . (298+1) ) - 273 K
+
+	• (Thermische) Tijdsconstante:
+
+		T - T_eind = (T_begin - T_eind) . e^-(t/τ)
+					
+			→ waarbij:	T = Temperatuur
+						T_eind = Eindtemperatuur
+						T_begin = Begintemperatuur
+						τ = K/C 
+						K = Warmtecapaciteit v/d weerstand  in J/°CMRR
+						C = Warmtedissipatiecoëfficiënt
+						
+	• Afgeliede weerstandswaarden
+		- Serieschakeling NTC - R: (- = in serie met)
+			
+			R_tot = A . e^b/T + R
+		
+		- Parallelschakeling NTC / R: (/ = in parallel met)
+			
+			R_tot = (A . e^b/T . R) / (A . e^b/T + R)
+	
+		- Serie-parallelschakeling (NTC - R2) / R1
+		
+			R_tot = (R2 + A . e^b/T . R1) / (R1 + R2 + A . e^b/T)
+
+__________________________________________________________________________________________________________________________________________________
+-- PTC-weerstand -- 
+-------------------
+• Weerstandsverloop in functie van temperatuur:
+	
+	R = (1/α).e^(φ0/k.T)
+	
+		→ waarbij:	α  = factor evenredig met grootte der korrels
+					φ0 = elektrisch potentiaal der lagen in de kristalstructuur
+					T  = absolute temperatuur in Kelvin
+					k  = richtingscoëfficiënt v/d raaklijn
+					
+__________________________________________________________________________________________________________________________________________________
+-- LDR-weerstand -- = Light Depending Resistor
+-------------------
+
+__________________________________________________________________________________________________________________________________________________
+-- PN-Juncties & DIODES --  https://www.youtube.com/channel/UCbeY0rlAGrz5h4CFxy47XTQ/search?query=diode  https://www.youtube.com/watch?v=g54vURe47gM
+--------------------------	KNAP = Kathode Negatief (korte einde of met |), Anode Positief				https://www.youtube.com/watch?v=VIIiyeXWlDE
+• Diode in doorlaat/forward bias:
+	U_R = U_bron - U_dif
+		→ schakeling met bron, 1 weerstand
+		→ U_dif = 0,7 V = difussiespanning van de diode in doorlaat
+			→ in doorlaat als stroomzin + naar - met de pijl v/d diode mee staat.
+			
+	I_F = Forward Current, stroom door de diode in doorlaat
+	U_F = Forward Voltage, spanningsval over de diode in doorlaat
+
+• Diode in sper/reverse bias:
+	U_sper = U_bron
+	U_R = 0V (ongeveer)
+		→ schakeling met bron, 1 weerstand
+		
+	I_R = Reverse Current, stroom door de diode in sper
+	U_R = Reverse Voltage, spanningsval over de diode in sper
+		
+• Gelijkrichter = Graetzbrug → 4 diodes in een vierkant met in tegengestelde hoeken de + en - OUT, en 2 ~ IN-poorten voor AC-bron. → 1 component
+• Difussiespanning = Doorlaatspanning = Drempelspanning = V_K = Knee Voltage = 0.7 V (standaard)
+__________________________________________________________________________________________________________________________________________________
+-- TRANSISTOREN -- 
+------------------
+S?? Wet van Kirchoff
+S56
+S58-63
+Overzicht S64
+
+S65
+S68 
+
+__________________________________________________________________________________________________________________________________________________
+-- FET's -- 
+-----------
+Soorten S70
+S80-83
+MOSFET S86
+Overzicht S90

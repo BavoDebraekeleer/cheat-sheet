@@ -1,0 +1,105 @@
+  _______  ___       _______   ______  ___________  _______     ______    _____  ___    __     ______    ________ 
+ /"     "||"  |     /"     "| /" _  "\("     _   ")/"      \   /    " \  (\"   \|"  \  |" \   /" _  "\  /"       )
+(: ______)||  |    (: ______)(: ( \___))__/  \\__/|:        | // ____  \ |.\\   \    | ||  | (: ( \___)(:   \___/  
+ \/    |  |:  |     \/    |   \/ \        \\_ /   |_____/   )/  /    ) :)|: \.   \\  | |:  |  \/ \      \___  \       
+ // ___)_  \  |___  // ___)_  //  \ _     |.  |    //      /(: (____/ // |.  \    \. | |.  |  //  \ _    __/  \\      
+(:      "|( \_|:  \(:      "|(:   _) \    \:  |   |:  __   \ \        /  |    \    \ | /\  |\(:   _) \  /" \   :) 
+ \_______) \_______)\_______) \_______)    \__|   |__|  \___) \"_____/    \___|\____\)(__\_|_)\_______)(_______/  
+ 
+ LABO → • 
+ 
+-- MultiSim --
+--------------
+• Transient Analysis:
+	Metingen doen zoals op een oscilloscoop adhv Propes (vergrootglaasjes met V, A, ... midden bovenaan)
+	
+Labo 2:
+-------
+	Multimeter op wisselspanning AC
+	Weerstand = 47 Ohm
+	500mVpp  peak-to-peak-to-p
+	A = rood
+	B = zwart
+
+	• Voedingen in serie → serie aanduiden op labo voedingen → ZIE VIDEO
+	+ → rode kabel
+	- → blauw kabel
+	Tussen voedingen → zwarte kabel
+
+	• Tussen (Functie-)Generator en Oscilloscoop: BNC-kabel
+		→ 1x versterking instellen op Oscilloscoop
+	
+	• Functiegenerator:
+		- Output-knop:
+			Om signaal te sturen
+		- Instellen waardes:
+			1) Selecteren met de blauwe pijl toetsen naast scherm
+			2) Met de grote draai-knop en pijltijes daar onder
+			OF met cijfer-toetsen + blauwe pijlen om eenheid te selecteren
+		- Offset:
+			Om de golf te verzetten op de Oscilloscoop zodat deze niet meer door het nulpunt komt
+			→ Minimum peak-to-peak moet 0 zijn
+				→ Offzet instellen met waarde van de Min peak-to-peak waarde om daar boven te verschuiven
+				
+	• Ground:
+		- Aarding = Protective Earth
+		- Ground in een circuit:
+			Gekozen referentiepunt waar tegenover we het potentiaalverschil os spanningsverschil gaan meten.
+				→ Vrij te kiezen
+				
+			• GND
+			• AGND
+			• DGND
+			
+	• Dubbele voeding:
+		Kan zowel de positieve als negatieve waarde leveren.
+			vb.: -5V → +5V, -12V → 12V
+		→ opamp heeft dubbele voeding nodig
+		
+		In Multisim:
+			1) 2x Components → Sources → POWER_SOURCES → V_REF...
+				→ Verschillende symbolen voor verschillende referentiepunten voor sommige onderdelen (REF1, REF2, REF3, ...)
+				→ Achterliggend verbonden met Ground
+			2) 2x Components → Sources → POWER_SOURCES → DC_POWER plaatsen
+			3) + van de ééne verbinden met - van de andere, en deze verbinding aan een GROUND hangen.
+			4) De V_REF kopiëren naar de DC_POWER supplies en hieraan verbinden
+			5) Instellen als Global Connectors
+			
+		In het Labo:
+			Labo voeding heeft twee kanalen om in te stellen als dubbele voeding
+			1) CH1 & 2 in Serie
+				→ 2 kleine zwarte langwerpige knopjes naast elkaar
+				→ Rechtse indrukken zoals aangegeven op de voeding om in serie te zetten
+			2) Voltage instellen op CH1 met de bovenste draaiknop
+				→ CH2 volgt
+			3) Aansluiten:
+				• Zwarte-kabel	→	Gemeenschappelijke Ground	→ COM-poort → CH1 -
+				• Rode-kabel	→	Positieve Voltage niveau	→ CH1 +
+				• Blauwe-kabel	→	Negatieve Voltage niveau	→ CH2 -
+			4) Power Supply aanzetten
+			5) Nakijken met Multimeter
+				Zwart in COM + Rood 	→ Geeft + waarde 		vb. +9V
+				Zwart in COM + Blauw 	→ Geeft - waarde 		vb. -9V
+				Blauw in COM + Rood 	→ Geeft totale range 	vb. 18V
+	
+Inwendige weerstand generator op 50 Ohm
+	
+Labo 5:
+-------
+	• Bodediagram:
+		De faseverschuiving en de grootte van de uitgangsspanning opmeten in functie van verschillende frequenties.
+		
+		-	De versterking (in dB) in functie van de frequentie
+		-	De faseverschuiving (in graden) in functie van de frequentie
+		
+	• Logaritmische schaal:
+		Idere decade bestrijkt dezelfde afstand.
+			→ Geen negatieve waarden.
+			→ Bestaat steeds uit twee delen die precies onder elkaar worden getekend op dezelfde pagina.
+		
+		- Decade:
+			Ratio of 10 between two numbers
+			
+	• Laagdoorlaatfilter / Low Pass Filter:
+		- Versterker: als de uitgangsspanning GROTER is dan de ingangsspanning
+		- Verzwakker: als de uitgangsspanning KLEINER is dan de ingangsspanning

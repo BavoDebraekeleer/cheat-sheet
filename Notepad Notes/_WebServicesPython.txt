@@ -1,0 +1,389 @@
+§§ Web Services Python §§	• 
+-------------------------	→ 
+
+-- 1 - Intro web API's --
+  ---------------------
+• Headless CMS
+
+• Flask: micro-framework
+
+• Django framework:
+	meer uitgebreid dan Flask
+	
+• API = Application Programming Interface
+	Interface voor systemen, niet voor mensen om te gaan bekijken.
+	Systemen moeten enkel de API kunnen gebruiken.
+	
+	Verschillende types:
+		- Web API's
+		- Hardware API's 
+		
+	Design modellen:
+		- SOAP
+		- REST
+		- GraphQL
+		
+		- SOAP = Simple Object Access Protocol:
+			meer gericht op enterprise wereld
+			contract gebaseerd gebruik → meer zekerheid dat je respons krijgt
+			ACTIONS staan centraal
+			
+		- REST = Representational State Transfer
+			Veel dichter bij HTTP specs 
+			voor publieke API's via web
+			meest gebruikt/dominant
+			
+		- GraphQL:
+			zeer flexibele querytaal voor API's om zeer fijnmazig data op te vragen
+			Voor NoSQL databases
+			
+	Structuur:
+		- Base URL (bevat meestal het woord API)
+		- Resources: de data die je wilt opvragen, gescheiden door "/"
+		- Endpoints: de mogelijke URL samenstellingen waarmee je specifieke resources kan opvragen
+	
+• API gebruiken:
+	import requests
+	headers = {"X-headername": "headerdata"}  # Niet vereist
+	response = requests.get("url", headers=headers)  # Headers kan weggelaten worden
+	
+	- request: bevatten alle relevante data over de API call:
+		base URL + endpoint + gebruikte methode + headers ...
+		
+	- respons: data teruggestuurd door de server:
+		content, status code, headers
+		
+		respons.request
+					   .url
+					   .path_url
+					   .method
+					   .headers
+		respons.text 	(unicode, voor tekst)
+			   .content (bytes, voor alles wat geen tekst is, vb. afbeeldingen)
+			   .json() 	(method: omzetten naar json)
+		respons.status_code
+		respons.reason
+		respons.headers
+	
+	→ info HTTP messages: MDN documentatie
+	
+	→ Status codes:
+		200 OK
+		201 Created
+		400 Bad request
+		401 Unautherized
+		404 Not found
+		405 Method not allowed
+		500 ...
+		
+	→ Headers:
+		- Accept
+		- Content-Type
+		- User-Agent
+		- Server
+		- Authentication
+	
+• CRUD handelingen → HTTP verbs
+	CRUD = Create, Read, Update, Delete
+	HTTP: POST, GET, PUT, DELETE
+
+• Authenticatie manieren:
+	- API key: zodat ze weten wie de call doet
+	- OAut = Open Authentication
+		vaak gebruikt, veiliger dan een key, voor serieuze zaken
+		adhv een ID en SECRET
+		vb. aanmelden op website via Google account
+		
+		
+-- 2 - Flask --
+  -----------
+• Python web framework
+• Micro-framework = zeer eenvoudig starten met enkel bestand en enkele regels code
+• Web sites & API's
+• URL routing
+• Templating systeem
+• Statische files tonen
+• WSGI = Web Server Gateway Interface compatibel
+
+• Voordelen/nadelen:
+	- Enorm flexibel
+	- Je moet alles zelf bouwen
+	- Geen standaard database ondersteuning
+		→ Django geeft daar meer mogelijkheden, DJango is geen micro-framework
+		
+• Project opzetten:
+	(File > Settings > Project > Project Interpreter > + > Flask)
+	File > New Project > Flask
+	from flask import Flask
+	
+• Flask runnen in terminal:
+	Code:
+		export FLASK_APP = main
+		export FLASK_ENV = development
+		flask run
+
+• Routing:
+	Code:
+		app = Flask(__name__)
+		@app.route("/")
+		def route-aam():
+			# Wat er hier moet gebeuren.
+		
+• Pagina templates met Jinja:		https://jinja.palletsprojects.com/en/3.0.x/
+	Om variabelen in HTML aan te spreken, vergelijkbaar met werking Angular.
+	
+	Code:
+		from flask import Flask, render_template, request
+		
+		app = Flask(__name__)
+		
+		@app.route("/route-naam", methods=['GET','POST'])
+		def route-naam():
+			if request.method == 'POST':
+				return render_template('route-naam.html', url=request.form['url'],
+				var-naam=request.form['var-naam'])
+			else:
+				return ...
+		
+	→ In HTML bestand:
+		<h2>{{var-naam}}</h2>
+		
+		<form action="jouw-webfave" method="get">
+			<label for="url">Website URL</label>
+				<input type="url" name="url" value="" required="">
+				<br>
+				<label for="naam">Naam</label>
+				<input type="text" name="naam" value="" required="">
+				<br>
+				<input type="submit" value="Toevoegen">
+		</form>
+		
+• Redirect en url_for:
+	Code:
+		from flask import Flask, render_template, request, redirect, url_for
+		@app.route('/jouw-webfave', methods=['GET','POST'])
+		def jouw_webfave():
+			if request.method == 'POST':
+				return render_template('jouw-webfave.html', url=request.form['url'],
+				naam=request.form['naam'])
+			else:
+				# wijziging!
+				return redirect(url_for('start'))
+				
+• Data opslaan in JSON:
+	HTML:
+		{"ap": {"url": "http://www.ap.be"}}
+	
+	Code:
+		import json
+		@app.route('/jouw-webfave', methods=['GET','POST'])
+		def jouw_webfave():
+			if request.method == 'POST':
+				webfaves = {}
+				webfaves[request.form['naam']] = {'url': request.form['url']}
+				with open('webfaves.json', 'w') as webfaves_file:
+				json.dump(webfaves, webfaves_file)
+				return render_template('jouw-webfave.html', url=request.form['url'],
+				naam=request.form['naam'])
+			else:
+				return redirect(url_for('start'))
+			
+• User feedback met flash:
+	Code:
+		from flask import Flask, render_template, request, redirect, url_for, flash
+		app.secret_key = 'qlslsmz342fki432ebee2ytee'
+		flash('Deze naam is reeds in gebruik. Selecteer een nieuwe naam aub')
+		
+	HTML:
+		{% for boodschap in get_flashed_messages() %}
+		<h2>{{ boodschap }}</h2>
+		{% endfor %}
+		
+• CSS, client-side JS, HTML files in "static" folder
+
+• File upload:
+	→ enctype belangrijk!!
+	
+	HTML:
+		<form action="jouw-webfave" method="post" enctype="multipart/form-data">
+			<label for="url">Website URL</label>
+				<input type="url" name="url" value="" required="">
+				<br>
+				<label for="naam">Naam</label>
+				<input type="text" name="naam" value="" required="">
+				<br>
+				<label for="file">Bestand</label>
+				<input type="file" name="file" value="" required="">
+				<br>
+				<input type="submit" value="Toevoegen">
+		</form>
+		
+	Code:
+		from werkzeug.utils import secure_filename
+		
+		f = request.files['file']
+		volledige_naam = request.form['naam'] + secure_filename(f.filename)
+		f.save('/Users/kristofmichiels/PycharmProjects/webfaves-1/static/opgeladen/'
+		+ volledige_naam)
+		webfaves[request.form['naam']] = {'url': request.form['url'], 'file': volledige_naam}
+		
+• Variabele in URL:
+	@app.route('/<var-type:var-naam>')
+	
+	vb.: @app.route('/<string:naam>')
+	
+• Error messages:
+	Code:
+		from flask import abort
+		return abort(404)
+		@app.errorhandler(404)
+		def pagina_niet_gevonden(error):
+			return render_template('pagina_niet_gevonden.html'), 404
+
+	HTML:
+		<h1>404 - Page Not Found</h1>
+		<p>We hebben deze naam niet kunnen vinden. Snel naar de startpagina ;-)</p>
+		<p><a href="{{ url_for('start') }}">Terug naar start</a></p>
+		
+• Sessies en cookies:
+	Code:
+		from flask import session
+		
+		def start():
+			return render_template('start-v5.html', naam="Webfav.es", boodschap="Hallo",
+			faves=session.keys())
+			
+		with open('webfaves.json', 'w') as webfaves_file:
+			json.dump(webfaves, webfaves_file)
+			session[request.form['naam']] = True
+		return render_template('jouw-webfave.html', url=request.form['url'],
+		naam=request.form['naam'])
+	
+	Onderaan HTML:
+		{% if faves %}
+		<h2>Webfaves die je hebt aangemaakt</h2>
+		<ul>
+			{% for fave in faves %}
+			<a href="{{ url_for('redirect_to_url', naam=fave) }}">
+			<li>{{ fave }}</li>
+			</a>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		
+-- 3 - Flask REST API --		→ alternatief: Fast API
+  --------------------
+• Debug mode: in Configurations aan zetten, gaat de server auto herstarten bij wijzigingen.
+
+• Werken met JSON: 		https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+	- key-value paren
+	- jsonify(key="value")	vb. jsonify(message="Blij met deze nieuwe URL: '" + url + "'.")
+	
+• Clean URL's, endpoints moeten volgens patroon zijn en voorspelbaar:	https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
+	Belangrijk voor het succes en adaptatie van de API, vb. twitter
+	
+	- Accept and respond with JSON
+	- Endpoint paths with nouns, no verbs → the HTTP verbs say enough
+	- Logical nesting on endpoints → child data comes after the parent, eg.: '/articles/<int:articleId>/comments'
+	- Handle errors gracefully and return standard error codes
+		Common error HTTP status codes include:
+			400 Bad Request – This means that client-side input fails validation.
+			401 Unauthorized – This means the user isn’t not authorized to access a resource. It usually returns when the user isn’t authenticated.
+			403 Forbidden – This means the user is authenticated, but it’s not allowed to access a resource.
+			404 Not Found – This indicates that a resource is not found.
+			500 Internal server error – This is a generic server error. It probably shouldn’t be thrown explicitly.
+			502 Bad Gateway – This indicates an invalid response from an upstream server.
+			503 Service Unavailable – This indicates that something unexpected happened on server side (It can be anything like server overload, some parts of the system failed, etc.).
+	- Allow filtering, sorting, and pagination
+	- Maintain good security practices, use SSL/TLS
+	- Cache data to improve performance → be aware of problems with outdated data
+	- Versioning our APIs → usually done with /v1/, /v2/, etc. added at the start of the API path.
+	
+• SQLite:
+	File gebaseerde databank.
+	Niet gemaakt voor productie = meerdere gelijktijdige gebruikers. Eerder voor development.
+	
+	Tools:
+		- ORM = Object-Relational Mapper, vb. SQLAlchemy
+			→ Werkt met Python objecten, geen SQL
+			
+			Code:
+				from flask_sqlalchemy import SQLAlchemy
+				from sqlalchemy import Column, Integer, String, Float
+				import os
+				basedir = os.path.abspath(os.path.dirname(__file__))
+				app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir,
+				"webfaves.db")
+
+				db = SQLAlchemy(app)
+			
+		- DB Browser for SQLite:	https://sqlitebrowser.org/
+		
+		- Marshmallow:		https://flask-marshmallow.readthedocs.io/en/latest/
+			Objecten serializeren om te werken met SQLAlchemy.
+			
+			Code:
+				from flask_marshmallow import Marshmallow
+				ma = Marshmallow(app)
+				
+			vb.:
+				@app.route("/webfaves", methods=["GET"])
+					def webfaves():
+					webfaves_list = Webfave.query.all()				// SQLAlchemy gebruiken om query opvraag uit db te doen
+					result = webfaves_schema.dump(webfaves_list)	// adhv Marshmallow data serialiseren
+					return jsonify(result)							// geserialiserende data in JSON omzetten
+
+
+• API beveiliging:
+	Decorators toevoegen aan de routes die je wil beveiligen
+	
+	Tools:
+		- JSON Web Tokens: https://jwt.io
+			Flask-JWT-Extended package installeren: 4.3.1
+			
+	CRUD = Create, Read, Update, Delete
+	
+		GET 	retrieves resources.
+		POST 	submits new data to the server.
+		PUT 	updates existing data.
+		DELETE 	removes data.
+		
+		
+--------------------------------------------------------------------------------------------------------------------------------
+
+-- 9 - Django --
+  ------------
+  
+Plotly: https://plotly.com/
+Dash: https://realpython.com/python-dash/#:~:text=Dash%20is%20an%20open%20source,requiring%20advanced%20web%20development%20knowledge.
+
+Web app framework. 
+MVC = Model - View - Controller conceptuele structuur.
+  
+• manage.py
+	Hiermee voer je Django taken uit:
+		- Django project opstarten:		python manage.py runserver	(in PyCharm op play knop is zelfde)
+			localhost:8000
+			
+		- application aanmaken:			python manage.py startapp mijn_toepassing
+		
+• project (folder):
+	- __init__: 			geeft aan Python mee dat deze folder Python bestanden bevat
+	- wsgi.py en asgi.py: 	hooks voor web servers Apache of nginx
+	- settings.py: 			configureren van Django
+	- urls.py: 				URL-routing
+	
+• templates (folder):
+	
+	
+• application (folder): component binnen een project, alles dat dezelfde resources gebruikt samen, anders opsplitsen
+	bestanden:
+	- db.sqlite3: 			db.sqlite-bestand in hoofd-folder
+	- apps.py: 				settings specifiek voor deze app - meestal geen editing nodig
+	- models.py: 			datalaag voor deze toepassing → https://docs.djangoproject.com/en/4.0/ref/models/fields/
+	- views.py: 			logic en control flow voor de toepassing
+	- tests.py: 			unit tests voor de toepassing
+	- admin.py: 			admin interface voor de toepassing
+	- migrations (folder): 	bestanden die dienen voor het maken van aanpassingen aan de databank
+	
+	→ app moet in settings.py gelinkt zijn (normaal automatisch)

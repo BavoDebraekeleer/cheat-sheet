@@ -1,0 +1,244 @@
+------------
+-- Docker --
+------------
+→ Rechtermuisknop > Git Bash Here
+
+• Update Linux:
+	sudo apt-get update && sudo apt-get -y upgrade
+	
+• List of running Docker containers:
+	sudo docker ps
+
+- Node-RED -
+------------
+• Running Node-RED:		https://nodered.org/docs/getting-started/docker
+	docker run -it -p 1880:1880 -v node_red_data:/data --name mynodered nodered/node-red
+	
+	→ Shared Directory on Windows:		https://medium.com/@kale.miller96/how-to-mount-your-current-working-directory-to-your-docker-container-in-windows-74e47fa104d7
+		eg.: docker run -it --volume //c/Users/kale/my_project:/home/project ubuntu:latest
+		
+		docker run -it -p 1880:1880 -v //d/Electronica-ICT/2IT_IOT/IoT_Project/node_red_data:/data --name mynodered nodered/node-red
+	
+	- detach: 					Ctrl+P 	Ctrl+Q
+	- reattach:					docker attach mynodered
+	- restart container:		docker start mynodered
+	- stop container:			docker stop mynodered
+	
+	- make persistent volume:	docker volume create --name node_red_data
+	
+	- update image:				docker pull nodered/node-red
+								docker stop mynodered
+								docker rm mynodered
+								docker run -it -p 1880:1880 -v node_red_data:/data --name mynodered nodered/node-red
+								
+	- Docker Compose file & Dockerfile examples, see: https://nodered.org/docs/getting-started/docker
+	
+	→ Met Dockerfile:
+		→ Ga naar directory met Dockerfile → In Win: Rechtermuisknop > Git Bash Here
+		docker build -t ci-dash .
+		docker run -d -p 1880:1880 -v //d/Electronica-ICT/2IT_IOT/IoT_Project/rs-dash/data:/data --name cid ci-dash
+		
+		herstarten: docker start cid
+
+- MongoDb -
+-----------
+• Running MongoDb server:		https://hub.docker.com/_/mongo		https://medium.com/swlh/how-to-run-mongodb-on-local-network-using-a-raspberry-pi-and-docker-4e5c4379cea2
+
+	eg.: docker run -d -p 27017:27017 -v ~/data:/data/db --name mongo mongo:bionic
+	
+	→ Met Dockerfile:
+		→ Ga naar directory met Dockerfile → In Win: Rechtermuisknop > Git Bash Here
+		docker build -t mongodb .
+		docker run -d -p 27017:27017 -v //d/Electronica-ICT/2IT_IOT/IoT_Project/mongodb/data:/data/db --name mongo mongodb
+		
+		docker run -it -p 27017:27017 -v //d/Electronica-ICT/2IT_IOT/IoT_Project/mongodb/data:/data/db --name mongo mongodb
+		
+		herstarten: docker start mongo
+		attachen:	docker attach mongo
+		
+	- Start with interactive terminal in Bash Shell:
+		sudo docker exec -it mongodb bash
+	- Open MongoDb shell:
+		mongo
+		
+		→ quit() to leave MongoDb shell
+		→ "exit" again to leave the interactive terminal, or quit() or Ctrl+C
+		
+• Creating a db:			https://adamtheautomator.com/docker-mongodb/
+	show dbs			Show all databases on the server
+	show collections	
+	
+	use db_name			Switches to this database, Creates new database if the specified db does not exist.
+	
+	db.db_name.command
+		.insertOne({"key":"value"})		Data toevoegen als JSON object
+		.find().pretty()				Search data and show in readable format
+		.update()						Commit changes
+	
+	Create user:
+		db.createUser({user: "bavo", pwd: "s120267", roles: [{role: "userAdminAnyDatabase", db: "admin"}]})
+		quit()
+		test user: mongo -u ata -p --authenticationDatabase admin
+		
+
+- Docker Basics -
+-----------------
+• Installation:
+	- Raspberry Pi: https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo
+
+• Container:
+	- Isolated environment
+	- Has one main process. When this process ends the container exits.
+
+• App to Docker deployment:
+	1) Add dockerfile:
+		Specifications on how to run the app
+	2) Make image
+	3) Run image in container
+
+• DockerHub registry:
+	GitHub for Docker images
+	
+• Container Networking:
+	- Expose a specific port to access outside of the container
+		run command with -p option
+		
+		port containerName 			Shows used ports
+		
+	- Default network = host
+		
+	- Address for host machine:
+		host.docker.internal
+		
+	- nc = Netcat: networking tool
+		• Image with nc = netcat installed:
+			docker run --rm -ti ubuntu:14.04 bash
+		
+		• Make connection between ports:
+			nc -lp portnr1 | nc -lp portnr2			lp = listen port
+		
+		• Listen to specific port:
+			nc ip-address portnr	vb.: nc host.docker.internal 45678
+										 nc localhost 32776
+			
+• Volumes:
+	Virtual discs to store and share local data, not part of iamges.
+	2 types:
+		- Persistent		Stay on the host.
+		- Ephemeral			Auto removed if no container is using it.
+		
+• Docker Registries:
+	Registries manage and distribute images.
+	Docker has a free public one, DockerHub. You can also setup your own private one.
+	
+	search name										Search for an image in repository
+	login											Login to repository
+	pull name[:tag]									Pull specific image, download from repository
+	tag name[:tag] username/new-name[:tag]			Rename an image
+	push username username/new-name[:tag]			Push your image to repository
+	
+• Dockerfile:
+	Instructions on how an image has to be build
+	https://docs.docker.com/engine/reference/builder/ 
+	
+	Cashing with each step. Every line creates a new image from the previous image.
+	You can create multiple Dockerfiles to run after one-another.
+	
+	docker build -t name-of-result	.				Build image to local docker registry (. = local)
+		
+	Syntax:	
+		FROM										Which image to start from. Always begin with this.
+		MAINTAINER Firstname Lastname email			Author documentation.
+		COPY 										Adds files from your Docker client’s current directory.
+		RUN command									Run a command, eg. RUN unzip install.zip /opt/install/
+		ADD file-path /to-directory					Add a file, can also be from archive or download URL.
+		ENV statement								Set environment variables for the build and the resulting image.
+		ENTRYPOINT									Specifies the start of the command to run.
+		CMD											Specifies the whole command to run, gets replaced if arguments are added to the container.
+														→ 2 forms:	- Shell form, runs in a shell, eg. in a Bash shell: nano notes.txt
+																	- Exec form, runs directly = more efficient, eg. ["/bin/nano", "notes.txt"]
+		EXPOSE portnr								Maps a port into the container.
+		VOLUME ["/host/path/" "/container/path/"]	Define shared folder = persistent volume. →  AVOID!!
+		VOLUME ["/shared-data"]						Define ephemeral volume.
+		WORKDIR	/directory/							Set the cd directory the container starts in.
+		USER username/ID							Set which user the container will run as.
+		...				
+
+• Preventing Golden Image Problem:
+	- Include installers in your project.
+	- Have a canonical build that builds from sratch.
+	- Tag your builds with the git hash of the code that built it.
+	- Use small base images, such as Alpine.
+	- Always build images you share publicly from Dockerfiles.
+	- Don't ever leave passwords.
+	
+• Orchestration:
+	Managing groups of containers.
+	
+	- Docker Compose:
+		1 command: docker compose up			Starts all containers.
+		
+	- Kubernetes:
+		• Containers run programs.
+		• Pods group containers together.
+		• Services make pods available to others.
+		• Labels are used for very advanced service discovery.
+
+• Commands: start with "docker"
+	Command											Explanation
+	-------											-----------
+	version											See current Docker version installed
+	ps [options]									Shows containers
+		-a												All containers
+		-l --format=$FORMAT								Formats a list
+				
+	images OR image ls								Shows available images on system
+	run [options] imageName:tag command					Make a running Container of a local image
+		-ti												Terminal interactive: full terminal inside an image
+		--rm											Remove container after exit
+		-d												Detached, starts the container but doesn't enter it
+		--memory amount									Set a maximum allowed memory usage
+		--cpu-shares									CPU bandwith relative to other containers
+		--cpu-quota										Limit CPU usage for the container
+		-p portnrInside[:portnrOutside][/protocol]		Publish a port from inside the container to a port outside. If outside port is not specified, Docker will select an available one automatically.
+															Protocol = tcp or udp, default is tcp
+		--name containerName							Give the container a name. If omitted Docker gives it a random name.
+		--net networkName								Set up container in a network.
+			-- net=host										Give full access to the host's networking stack and turns off all protections, not for production.
+		-v /pathOnHost:/pathOnContainer					Set up shared folder between host and this container = Persistent
+		-v /pathOnContainer								Create a new directory on the container  = Ephemeral
+		--volumes-from containerName					Mounts the shared directory from the container = Ephemeral
+		--restart=always								If this container dies, start it back up immediately.
+		
+	run repository:tag									Download and run a image in the Docker Hub repository.
+	exit												Leave container = Ctrl+D
+				
+	commit imageName/ID newImageName					Commit altered image and give it a new name
+															Docker automatically adds a name.
+															
+	search name												Search for an image in repository
+	login													Login to repository
+	pull name[:tag]											Pull specific image, download from repository
+	tag name[:tag] username/new-name[:tag]					Rename an image
+	push username username/new-name[:tag]					Push your image to repository
+				
+	rmi	imageName[:tag]									Remove image by name
+	rmi imageID											Remove image by ID
+					
+	attach containerName								Enter a detached container
+	exec												Starts a new process in an existing container
+	logs containerName									View the log of a container
+	kill containerName									Stop a container
+	rm containerName									Remove container
+				
+	port containerName 									Shows used ports of the container
+	
+	inspect ...											Inspect a container. See documentation.
+	
+	save -o filename.tar.gz image-name[:tag] imagename2[:tag] ...	Save multiple images into an archive.
+	load -i filename.tar.gz											Load archive, for migrating between storage types.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+-- Docker for Developers --		https://www.linkedin.com/learning/docker-for-developers-14493163/docker-for-developers?autoAdvance=true&autoSkip=false&autoplay=true&resume=true&u=93921834
+---------------------------

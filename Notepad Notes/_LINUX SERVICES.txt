@@ -1,0 +1,1008 @@
+LINUX SERVICES
+
+_________________________________________________________________________________________________
+-- BEST PRACTICES --
+--------------------
+Updaten bij opstart:	$>sudo apt-get update && sudo apt-get upgrade
+
+Scripts beginnen met:	#!/bin/bash
+	→ uitvoerrechten:	chmod +x naam.sh
+	→ uitvoeren:		./naam.sh
+	→ onderbreken:		CTRL+C
+	→ stoppen:			CTRL+Z
+	
+Quit log bestand:		q
+	
+Gedeelde map:			mnt/LinuxServices/	
+	→ share <filename> 	→ alias in .bashrc: alias share='/home/userName/.copyToShared.sh'
+						→ copyToShared.sh:  cp $1 /mnt/Examen/$1
+	
+Bestand verbergen:		.fileName
+	→ Verborgen zien:		ls -a
+	
+_________________________________________________________________________________________________
+-- HERHALING ALLE COMMANDO'S --
+-------------------------------
+sudo poweroff
+sudo reboot
+
+sudo fdisk -l				Partities
+mkfs						Make file-system
+								vb.: mkfs.ext4, mkfs.btrf, mkfs.ntfs					
+mount						Mount op mount-point, usb auto in /media
+lsblk						Lijst van alle disk/block devices
+df							Disk info
+umount						Unmount disk dmv mount-point
+		
+uname -a 					Isntallatie versie van Linux
+dpkg [options]				Package manager zonder dependencies
+	→ options:	-list		Lijst alle packages
+				-S			Search
+				-search 	Search
+				-status 	Dependencies lijst + installatie status
+				-i 			install
+				-r 			remove package
+				-P 			Purge: remove package + files
+				-audit 		Check op fouten mbt packages
+
+apt [options]				Package Manager die ook dependencies installeert, front-end voor dpkg
+apt search					Package zoeken met apt
+apt-get install				Package installeren
+add-apt-repository			Package bron toevoegen vanwaar kan gedownload worden
+apt-get remove				Verwijderen package
+apt-get purge				Verwijderen package + files
+apt depends					Dependencies bekijken
+apt show					Package info
+		
+crontab	[options]			Scheduler voor script te runnen op bepaalde momenten, dagen, tijden.
+	→ options:	-l				Lijst
+				-e 				Edit in editor, opdrachten toevoegen
+				
+								→ m h dom mon dow command/<absolute script file-path>
+								
+									vb.: 0 8 * * * systemctl start nginx.service			= elke dag om 8 uur nginx webserver starten
+										*/15 * * * mon-fri /home/userName/weekscript.sh	= elke kwartier, van maandag tot vrijdag, dit script runnen
+								
+									m = minutes				1-59	vb.: 15 = kwart na; */2 = elke twee minuten; * = elke minuut
+									h = hour				1-24	vb.: 12 = op de middag; */4 = elk vier uur
+									dom = 		
+									mon = month				1-12 of jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
+									dow = day of the week	1-31 of mon, tue, wed, thu, fri, sat, sun	vb.: 1-5 of mon-fri = maandag tot vrijdag
+		
+									→ Wildcards:	* = alle mogelijkheden
+													*/.. = elke .. minuten/uren/dagen	vb.: */5 = elke 5 minuten
+									→ Meerdere maanden en dagen mogelijk	vb.: jan, feb, mar 		vb.: mon, thu, sat
+									→ Bereik van dagen, uren, ..			vb.: 1-5 of mon-fri= maandag tot vrijdag
+									→ Meerdere taken/commandos per lijn gescheiden door "; "
+									→ Altijd volledig/absoluut file-path opgeven	vb.: /home/userName/Desktop/taak.sh
+
+ssh -p <poort> user@host	Open SSH, standaard poort = 22
+scp							Secure copy met Open SSH
+scp -P <poort>				scp op andere poort dan 22	
+
+ftp							FTP Server, standaard poort = 21
+								→ help, dir, cd, get, put
+								
+lpr							Vanuit bash iets printen met Cups printer server, poort = 631
+
+ps							Processen zien met PID-nr, static
+top							Processen in real-time zien, CPU%
+pstree						Process forking, parent-child relaties van processen
+
+bash						Nieuwe Terminal starten
+logout/exit					Terug naar vorige Terminal
+
+<bash commando> &			Job in background uitvoeren, non-blocking van de huidige Terminal
+jobs						Actieve jobs bekijken
+fg							foreground: job naar voorgrond brengen
+bg							background: job naar background sturen
+
+kill <PID-nr>				Proces afsluiten
+killall	<service naam>		Alle deel-processen afsluiten van bepaalde service
+nohup						Process-output tekst naar tekst-file sturen ipv Terminal, zodat de Terminal vrij blijft om te typen
+
+tput [option] [parameter]
+	tput setaf [0..9]		Zet Terminal tekst in kleur
+	tput setab [0..9]		Zet achtergrond kleur
+	tput bold				Maak terminal tekst vet
+	tput dim				Maak terminal tekst minder helder
+	tput sgr0				Alles terug naar default
+	tput cup [x] [y]		Zet cursor op plaats x,y
+	
+		[0..9]				0	Black		3	Yellow		6	Cyan				(8	Not used)
+							1	Red			4	Blue		7	White
+							2	Green		5	Magenta		9	Reset to default
+
+$RANDOM 					Geeft getal tussen 0 en 32 767	vb.: $(($RANDOM*100/32767))		Geeft getal tussen 0 en 100
+
+$> sleep <nr>[suffix]			Bepaalde tijd wachten
+	→ Suffix:	s 				seconds = default
+				m				minutes
+				h				hours
+				d 				days
+				
+$> ln 						Maakt symbolische link, mbt System targets en run levels, vb.: voor config files 
+
+$> journalctl [options]		Log-files bekijken
+	→ less								Scrollen
+	→ q									Quit
+	
+	→ Options:	--since [yyyy-mm-dd]	Enkel log files tonen vanaf bepaalde datum.
+				--since today			Enkel log files tonen van vandaag.
+				-n 						Aantal lijnen beperken tot de laatste 10.
+				-n [aantal lijnen]		Aantal lijnen beperken tot een zelf bepaald aantal.
+				--list-boots			Alle geregistreerde systeem opstarten. → 0 is actieve boot, -[nr] is hoeveel boots het geleden is.
+				--list-boots | tail -5	Output beperken tot 5 laatste lijnen.
+				-b [boot nr]			Enkel logs van bepaalde boot vb. "-b" voor de huidige of "-b -1" voor de vorige.
+				-p [prioriteit]			Enkel bepaalde prioriteit berichten tonen (zie journald hieronder).
+				-u [service naam]		Enkel log berichten tonen van bepaalde service/applicatie.
+				-f 						Real-time logging zien.
+				
+$> dmesg [options]			Log van de kernel intern.
+	→ Options:	-k 				Enkel log berichten uit de kernel-space.
+				-u 				Enkel log berichten uit de user-space.
+	
+$> journald					Achtergrond proces (d = deamon) dat de logging doet.
+	
+/dev/null					Zwart gat, om bestanden leeg te maken en inode behouden
+
+								1) Inloggen als root:			$> sudo -i
+								2) Inhoud en grote bekijken		$> ls -hsi <bestandsnaam.log>
+								3) Inhoud van /dev/null sturen	$> sudo cat /dev/null > <bestandsnaam.log>		→ /dev/null is "zwart gat"
+			
+$> du [options] [directory]	Disk Utilisation, de grote van alle bestanden in een directory bekijken.
+	→ Options:	-c				Totaal van de opgegeven directory onderaan geven
+				-d [level]		Ook van subdirectory levels vb. "-d 1" geeft van de opgegeven directory en de ddirectories in deze directory.
+				-sh				Enkel het totaal van dde direcctory en al zijn subdirectories.
+
+$> ip a						IP adressen weergeven
+
+$> ip link show				Netwerk adapters tonen.
+	→ state UP = actief			→ inschakelen:	$> sudo ip link set <interface> up
+	→ state DOWN = niet actief	→ uitschakelen:	$> sudo ip link set <interface> down
+	
+$> netplan					Ubuntue Server versie van ip link adhv yaml files
+	$> netplan try				Instellingen uittesten
+	$> netplan change			Instellingen effectief veranderen
+	
+$> ip route show			Route-table tonen.
+							→ "metric" is de plaatse in de route-table die we kunnen meegeven.
+
+Routes manueel toevoegen: 
+	$> sudo ip route add {NETWORK/MASK} via {GATEWAYIP}
+	$> sudo ip route add {NETWORK/MASK} dev {DEVICE}
+	$> sudo ip route add default {NETWORK/MASK} dev {DEVICE}
+	$> sudo ip route add default {NETWORK/MASK} via {GATEWAYIP}
+
+		vb.: $> sudo ip route add default via 192.168.50.254 dev enp0s8 proto static metric 200
+
+Routes verwijderen: 
+	$> sudo ip route del default dev <interface>	vb.: $> sudo ip route del default dev enp0s8
+
+$> sudo ufw	<command>		Uncomplicated FireWall
+	status [numbered]			Status bekijken 
+	enable						Firewall inschakellen
+	allow ssh/http/https		Toelatings regel instellen adhv protocol, zodat de services kunnen werken
+	reset						Firewall regels resetten
+	delete <lijn-nr>
+	allow <poortnr>
+	allow proto <p> from <ip> to <ip> port <#>	
+		→ <ip> kan "any" zijn
+	deny						Pakketjes worden gedropt, zender weet niet of het aankomt of niet
+	reject						Pakketjes worden gedropt, maar stuurt error naar zender! Zo kan hacker weten dat de service bestaat!
+	show raw					Default aanwezige rules
+	reload						Nieuwe regels inlezen zonder de firewall uit te schakellen.
+	
+bash: awk '{..}'			Tekst processing programmeertaal, met eigen syntax verschillend van bash
+		awk '{sub(/teVervangen/,"vervangenDoor"); print} test.txt'	= Tekst vervangen
+		awk {{..}}				Lussen
+		
+		vb.:	awk '{print $1 "-hallo- $2}'
+				awk '$3 > 4000 {$1, $2}'
+				awk '{if ($3 == "root" print $1; else print "----"}'
+				awk '{for (n=0; n<3; n++) print}'
+
+_________________________________________________________________________________________________
+-- LABO 1: DISK MOUNTING --
+---------------------------
+sudo poweroff			Server uitschakellen
+sudo reboot				Server heropstarten
+
+cd /dev					Map met partitie-files
+ls sd*					Partitie-files zien
+
+sudo fdisk [Options]	Creëeren en manipuleren van disk partities
+	→ Options: 	-l			Lijst van partities
+				-h			Help, show all options
+
+Nieuwe disk aanmaken en toevoegen:
+----------------------------------
+In VirtualBox
+	1) Rechtermuisknop op Linux installatie
+	2) Instellingen
+	3) Opslag
+	4) Knop: Voeg harde schijf toe
+	5) Nieuwe harde schijf 'Aanmaken'
+	6) 'Toevoegen' aan Linux installatie
+
+Disk partitie aanmaken:
+-----------------------
+cd /dev → Directory waar toegevoegde disk's komen
+ls sd* → Kijken welke disk's er zijn
+sudo fdisk /dev/sdb
+n
+p
+[Enter] → default gebruiken = 1
+[Enter] → default gebruiken = 2048
+[Enter] → default gebruiken = 2097151
+w (partitie schrijven)
+
+File system op disk zetten:
+---------------------------
+mkfs.fileSystemName /dev/partitieNaam (= make file system = formateren)
+sudo mkfs.btrfs /dev/sdb1
+
+Disk mounten in systeem:
+------------------------
+auto mount in → /media (vb. usb-stick)
+→ Voor disk:
+	cd /mnt
+	sudo mkdir labodisk
+	sudo mount /dev/sdb1 /mnt/labodisk
+
+Testen:
+cd labodisk
+sudo touch test.txt (testen of we een file kunnen aanmaken)
+
+Disk unmounten:
+---------------
+cd /
+sudo umount /mnt/labodisk
+
+Opnieuw mounten bij user:
+-------------------------
+cd
+mkdir labodisk
+sudo mount /dev/sdb1 /home/[userName]/labodisk
+
+lsblk 		→ lijst van alle block devices
+lsblk -fs 	→ + file system
+
+	→ [SWAP] = Virtual Memory
+
+df 		→ Gebruik van blocks
+df -h 	→ -h = Human Readable
+			→ nu in Megabytes en Gigabytes
+
+_________________________________________________________________________________________________
+-- LABO 2: LINUX (UBUNTU) SERVER & DEBIAN PACKAGES --
+-----------------------------------------------------
+Ubunutu Server:
+---------------
+- Headless install:
+	→ Tekstuele interface
+	TAB				Navigatie VOLGENDE
+	SHIFT + TAB		Navigatie VORIGE
+	SPACE			Selecteren
+	Enter			Finale keuze bevestigen
+	
+- Updaten: → Moet gewoonte zijn als sysadmin!
+	sudo apt-get update
+
+- Server uitschakelen:
+	sudo poweroff
+	
+Debian Packages .deb:
+---------------------
+dpkg [options] [naam][wildcard]
+	→ Checked GEEN dependencies!
+	→ Option:			Beschrijving:										Voorbeeld:
+	  -------			-------------										----------
+	-l / -list			Lijst pacakges in systeem							dpkg -l google*
+	-S / --search		Package zoeken op het systeem						dpkg -S softwarepakket
+	--status			Status v/e package:									dpkg --status softwarepakket
+							lijst met dependencies, installatie, versie
+	-i / --install		Package installeren									sudo dpkg -i softwarepakketbestand.deb
+							→ zonder controle op dependencies
+							→ Dependencies moet je manueel installeren
+	- r / --remove		Package uit systeem verwijderen						sudo dpkg -r softwarepakket
+							→ Indien er dependencies zijn zal hierop
+							gewezen worden en het verwijderen mislukken.
+	-P / --purge		Package én config files verwijderen					sudo dpkg -P softwarepakket
+							→  Zelfde met dependencies als --remove
+	--audit				Check for broken packages							dpkg --audit
+							→  Iets mis met dependencies of install
+		
+	→ Naam package niet noodzakelijk gelijk aan naam .deb file!	
+
+	→ Mogelijke statussen van een pakket:
+		• Not-installed
+		• Half-installed
+		• Unpacked
+		• Half-configured
+		• Installed
+		
+apt Package Manager
+	→ Checked WEL dependencies!
+	
+	→ Commando:					Beschrijving:								Voorbeeld:
+	  ---------					-------------								----------
+	apt search [naam]			Zoeken in software-lijst systeem			apt search nieuwsoftwarepakket
+		
+	apt-get update				Maakt lijst met updates	uit:				sudo apt-get update
+									etc/apt/sources.list
+								en	etc/apt/sources.list.d/
+								
+	apt-get install	[naam]		Bepaalde package installeren				sudo apt-get install softwarepakket
+	
+	add-apt-repository [bron]	Software bron toevoegen aan					sudo add-apt-repository softwarebron	
+								sources.list's +apt-get update runnen
+								om de lokale lijst te actualiseren.
+								
+	apt-get remove				Software pakket verwijderen uit systeem		sudo apt-get remove softwarepakket
+	apt-get purge				Software + config files verwijderen
+	
+	apt depends	[naam]			Dependencies bekijken						apt depend softwarepakket
+	
+	apt show [naam]				Gedetailleerde informatie over de package	apt show softwarepakket
+	
+
+_________________________________________________________________________________________________
+-- LABO 3: CLOUD SERVICES --
+----------------------------
+
+Linux Distributies:
+-------------------
+Op te zoeken op distrowatch.com:
+	• FreePBX
+	• Open MediaVault
+	• PelicanHPC
+	• Vinux
+	• AsteriskNow
+	• AVLinux
+	• LibreELEC
+	• EasyNAS
+	• Puppy Linux
+	
+→ Weg geraken uit log gedoe: q
+
+- NAT = Network Address Translation
+	→ Naar "Bridged adapter" zetten
+
+- IP adres vinden:
+	LINUX	$> ip address = $> ip a		172.16.195.188
+	WIN		cmd> ipconfig
+
+- Updaten:	$>sudo apt-get update && sudo apt-get upgrade
+
+- NGINX Webserver:
+	• Instaleren: 			$> sudo apt-get install nginx
+	• Chceken of actief: 	$> sudo systemctl status nginx
+	• Website plaatsen in:	/var/www/html/
+	
+- PHP 7:
+	• PHP ondersteuning toevoegen aan de webserver.
+	• Gebruit zelfde map:	/var/www/html/
+	• Instaleren:	$> sudo apt-get install php7.4 php7.4-fpm
+					$> sudo apt-get install php7.4-mysql php-common php7.4-cli
+					$> sudo apt-get install php7.4-common php7.4-json php7.4-opcache
+					$> sudo apt-get install php7.4-readline php7.4-mbstring php7.4-xml
+					$> sudo apt-get install php7.4-gd php7.4-curl php-imagick php7.4-zip
+					$> sudo apt-get install php7.4-xml php7.4-bz2 php7.4-intl
+					$> sudo apt-get install php7.4-bcmath php7.4-gmp
+	• Checken of het werkt: $> php -v
+	• Default server block instellingen aanpassen om php-code te kunnen gebruiken:
+		$> sudo nano /etc/nginx/sites-available/default
+		→ Hekjes wissen tot dit:
+			# pass PHP scripts to FastCGI server
+			  location ~ \.php$ {
+				include snippets/fastcgi-php.conf;
+			# 	With php-fpm (or other unix sockets):
+				fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+			# 	With php-cgi (or other tcp sockets):
+			# 	fastcgi_pass 127.0.0.1:9000;
+			  }
+	• nginx herstarten:	$> sudo systemctl restart nginx
+	• PHP test bestand aanmaken: $> sudo nano /var/www/html/mijnscript.php
+		→ Met code: <?php echo "phptest"; ?>
+		
+- mariadb:
+	• Instaleren:	$> sudo apt-get install mariadb-server
+					$> sudo apt-get install mariadb-client
+	• Controleren:	$> sudo systemctl status mariadb
+	• Passwoord toeveogen:	$> sudo mysql_secure_installation
+	
+	• inloggen:		$> sudo mysql -u root -p
+	
+- NextCloud:
+	• Config file aanmaken:		$> sudo nano /etc/nginx/conf.d/nextcloud.conf
+		→ controleren:			$> sudo nginx -t
+		→ herstarten			$> sudo systemctl restart nginx
+		
+	• Instaleren:
+		1) Downloaden					$> wget https://download.nextcloud.com/server/releases/nextcloud-20.0.7.zip
+		2) Unzip installeren			$> sudo apt-get install unzip
+		3) Installer unzippen			$> sudo unzip nextcloud-20.0.7.zip -d /usr/share/nginx/
+		4) Bestand eigendom aanpassen	$> sudo chown -R www-data:www-data /usr/share/nginx/nextcloud
+		5) Oude bewaren					$> cd /etc/nginx/sites-available
+										$> sudo mv default default.bak
+		6) Nieuwe in de plaats			$> sudo cp ../conf.d/nextcloud.conf default
+		7) nginx herstarten				$> sudo systemctl restart nginx
+		
+		
+_________________________________________________________________________________________________
+-- LABO 4: SCHEDULER: CRON --
+-----------------------------
+
+Automatiseren van taken met service "Cron".
+Elke user heeft eigen "Crontab"
+
+	• Taken bekijken (in lijst vorm):		$> crontab -l			l = list
+	• Taken toevoegen en verwijderen:		$> crontab -e			e = edit
+		→ Wildcards:	* = alle mogelijkheden
+						*/.. = elke .. minuten/uren/dagen	vb.: */5 = elke 5 minuten
+		→ Meerdere maanden en dagen mogelijk	vb.: jan, feb, mar 		vb.: mon, thu, sat
+		→ Bereik van dagen, uren, ..			vb.: 1-14
+		→ Meerdere taken/commandos per lijn gescheiden door "; "
+		→ Altijd volledig path opgeven	vb.: /home/user3/Desktop/taak.sh
+		
+- Guest Additions:
+	1) 	Menu venster → Apparaten/Devices → Insert Guest Additions CD image
+	2) 	CD mounten:
+			$> sudo mkdir /media/cdrom
+			$> sudo mount -t iso9660 /dev/cdrom /media/cdrom
+	3)	Versie nr Linux kernel opvragen:
+			$> uname -r		→ "5.4.0-66-generic"
+	4)		$> sudo apt-get install -y build-essential
+			$> sudo apt-get install -y linux-headers-<resultaat uname -r hier> → Hier dus "5.4.0-66-generic"
+				→ "5.4.0-66.74"
+	5)	Installatie script runnen v/d CD:
+			$> cd /media/cdrom
+			$> sudo ./VBoxLinuxAdditions.run
+	6)	Ubuntu Server herstarten:
+			$> sudo reboot
+			
+- Shared Folder:
+	1)	Folder/map aanmaken in Windows
+	2)	Bij instellingen Ubuntu Server in VirtualBox deze map toevoegen bij gedeelde mappen
+	3)	Linux Guest Additions installeren (zie hierboven)
+	4)	Shared folder mounten in Linux:
+			1.	Directory aanmaken:
+					$> sudo mkdir /mnt/FolderName
+			2.	Map uit host OS (Windows) mounten:
+					$> sudo mount -t vboxsf WinFolderName /mnt/FolderName
+					
+_________________________________________________________________________________________________
+-- LABO 5: FILE TRANSFER SERVICES --
+------------------------------------
+→ Headless: gebruik zonder monitor, keyboard en muis, vb.: serveHeadless: gebruik zonder monitor, keyboard en muis, vb.: server
+
+- Open-SSH → P22:
+	• 2 delen:
+		1) Open-SSH-client 		vb. Putty
+		2) Open-SSH-server		deamon in achtergrond, luisterd op poort 22 naar binnenkomende verbindingen
+	
+	• Instaleren (default aanwezig in Ubuntu Server):
+		$> sudo apt-get install open-ssh server
+		
+	• Bestanden kopiëren: (werkt ook op MacOS, op Windows met programma WinSCP)
+		$> scp user@remote-machine:/path/file.txt /localpath/file.txt
+		OF indien volgende stap is ingesteld
+		$> scp -P 3022 user@remote-machine:/path/file.txt /localpath/file.txt
+		
+	• in VirtualBox port-forwarding/poortdoorverwijzing instellen:
+		1) Netwerkinstellingen op NAT
+		2) Machine → Settings → Network → Advanced → Port-forwarding knop
+		3) Nieuwe doorverwijzings-regel toevoegen:
+		4) Name: ssh, Protocol: TCP, Host Port: 3022, Guest Port: 22
+			→ De local port 3022 v/d host verbinden met de 22 port v/d guest
+		
+		→ Inloggen via PuTTy: Host Name: 127.0.0.1, Host Port: 3022 (local-loop address)
+		→ Via MacOS of Linux: $> ssh -p 3022 user@127.0.0.1
+
+- (S)FTP-server = (Secure) File Transfer Protocol → P21:
+	• Populaire FTP-servers:
+		- vsftpd
+		- proftpd
+		
+	• proftpd:
+		→ sftp door module toe te voegen
+		
+		- instaleren:
+			1) Systeem updaten:	$> sudo apt-get update && sudo apt-get upgrade
+			2) Instaleren:		$> sudo apt-get install proftpd
+			3) Testen:			$> sudo systemctl status proftpd.service
+			4) Configureren:	$> sudo nano /etc/proftpd/proftpd.conf
+				4.1) UseIPv6 				→ # UseIPv6
+				4.2) # DefaultRoot ~ 		→ DefaultRoot ~
+				4.3) ServerName "Debian"	→ ServerName "NaamVoorDeServer"
+			5) Herstarten:		$> sudo systemctl restart proftpd.service
+							
+		- Verbinding maken:
+			$> ftp <hostnaam>	vb.: $> ftp localhost → met de lokale ftp verbinding maken
+			
+		- Alle commando's tonen:	ftp> help
+		
+		- Belangerijke commando's:
+			ftp> cd <directory path>				
+			
+			ftp> get <bestandsnaam>		Bestand van server halen
+			ftp> put <bestandsnaam>		Bestand op server plaatsen
+			
+			ftp> dir					Actuele directory tonen
+
+		- Verbinding verbreken:
+			ftp> bye
+			
+	• FileZilla: Windows tool om bestanden naar en van de server te verplaatsen
+		
+- Linux "Windows" Server samba:
+	• Instaleren:
+		$> sudo apt install samba
+		
+	• Controleren of de twee afzonderlijke deamons van smaba draaien, smdb & nmdb:
+		$> sudo systemctl status smbd.service
+		$> sudo systemctl status nmdb.service
+		
+	• Configureren:
+		1) $> sudo nano /etc/samba/smb.conf
+		2) Onderaan toevoegen:
+			[sambashare]
+				comment = Samba-fileserver op Ubuntu
+				path = /home/<username>/sambashare
+				read only = no
+				browsable = yes
+		3) Herstarten:
+			$> sudo systelctl restart smbd.service
+		4) Samba-wachtwoord instellen: (mijn = samba)
+			$> sudo smbpasswd -a <username>
+			
+		5) In Windows 10 toevoegen met "Map network Drive"
+		
+- Printer-server cups:
+	• Instaleren:
+		$> sudo apt install cups
+	• Nakijken:
+		$> sudo systelctl status cups.service
+	• Enable:
+		$> sudo systemctl enable cups
+	• Configureren:
+		$> sudo nano /etc/cups/cupsd.conf
+			1) Browsing Off 			→ Browing On
+			2) Listen localhost:631		→ Port 631
+			3) In sectie "Restrict access to the server...", onder "Order allow, deny"
+				→ Allow @LOCAL
+			4) In sectie "Restrict access to the admin pages..."
+				→ <Location /admin>
+					AuthType Default
+					Require valid-user
+					Order allow,deny
+					Allow @LOCAL
+				  </Location
+	• Herstarten:
+		$> sudo systemctl restart cups.service
+	
+	• In browser zien:
+		192.168.0.160:631
+		
+	• Printen vanaf Linux terminal:
+		$> lpr <filepath>
+		
+		
+_________________________________________________________________________________________________
+-- LABO 6: PROCESSEN, JOBS & TPUT --
+------------------------------------
+
+Process		Programma in uitvoering.
+Job			Programma dat door de user vanuit de shell (terminal) gestart wordt, en dus ook een process.
+Service		Geheel van processen in een software pakket.
+
+Commando:					Beschrijving:
+---------					-------------
+$> ps [options]				Geeft een lijst/snapshot van de ACTIEVE processen van de HUIDIGE gebruiker
+	→ Options:	-ef				Geeft een lijst van ALLE actieve processen. Ook van de andere gebruikers, zoals bvb. root
+	
+$> top						Proccess Monitoring: real-time overzicht van de actieve processen, met ook hun geheugen en CPU belasting.
+								→ Verlaten met: q
+
+$> pstree					Tree overzicht van parent-child processen / Forking
+
+$> bash						Nieuwe Terminal opstarten in de huidige.
+								→ Je gebruikt nu een Fork van de Terminal en de vorige waarin dit fork process draait wordt in een "wait()" toestand gebracht.
+								→ Uit deze fork gaan met: exit
+								
+$> bash	&					Nieuwe Terminal opstarten in de BACKGROUND.
+								→ De huidige nu in de FOREGROUND.
+								→ & = job control commando
+								
+Job control:
+------------
+Processen die we starten zijn JOBS.
+Bepalen welke JOBS in de FOREGROUND of BACKGROUND draaien noemen we JOB CONTROL.
+
+Naamgeving: [job-nr] PID-nr	→ vb.: [3] 1944
+
+Hotkeys:
+CTRL+C		→ process onderbreken	→ process is beëindigt	
+CTRL+Z		→ process stoppen		→ dit pprocess kunnen we terug verder laten lopen!		
+
+Job Control Commando's:			Beschrijving:
+-----------------------			-------------
+$> process-commando &			Process NON-BLOCKING in BACKGROUND starten
+$> jobs	[options]				Lijst van actieve jobs
+	→ Options:	-l					PID-nrs tonen
+$> fg <job-nr>					Job met dit job-nr naar FOREGROUND brengen. vb.: fg 2
+$> bg <job-nr>					Job met dit job-nr naar BACKGROUND sturen.	vb.: bg 1
+$> kill <PID-nr1> <PID-nr2>	 	Process beëindigen adhv PID-nr
+$> kill %<Job-nr>				Process beëindigen adhv Job-nr
+$> killall <Service naam>		Service beëindigen adhv de Service naam 	vb.: killall nginx
+
+$> nohup <job-process-naam>		Output van de job niet naar de terminal sturen, maar naar "nohup.out"		
+
+tput:
+-----
+$> tput [option] [parameter]
+	
+	tput setaf [0..9]			Zet Terminal tekst in kleur
+	tput setab [0..9]			Zet achtergrond kleur
+	tput bold					Maak terminal tekst vet
+	tput dim					Maak terminal tekst minder helder
+	tput sgr0					Alles terug naar default
+	tput cup [x] [y]			Zet cursor op plaats x,y
+	
+		[0..9]					0	Black		3	Yellow		6	Cyan				(8	Not used)
+								1	Red			4	Blue		7	White
+								2	Green		5	Magenta		9	Reset to default
+								
+$RANDOM in bash script:
+-----------------------
+$RANDOM 						Geeft getal tussen 0 en 32 767
+$(($RANDOM*100/32767))			Geeft getal tussen 0 en 100
+
+sleep:
+------
+$> sleep <nr>[suffix]	Bepaalde tijd wachten
+	→ Suffix:	s 	seconds = default
+				m	minutes
+				h	hours
+				d 	days
+
+endless loop:
+-------------
+while :			→ : = true → https://stackoverflow.com/questions/3224878/what-is-the-purpose-of-the-colon-gnu-bash-builtin/3224910#3224910
+do
+	//code
+done
+
+increments:	→ https://linuxize.com/post/bash-increment-decrement-variable/
+-----------
+i=$((i+1))
+((i=i+1))
+let "i=i+1"
+
+((i+=1))
+let "i+=1" 
+
+((i++))		→ postfix returns the value of i and then increments 
+((++i))		→ prefix first increments and then returns the value
+let "i++"
+let "++i"
+
+echo i: $i	→ "i: <value>"
+
+_________________________________________________________________________________________________
+-- LABO 7: BOOT SERVICES - Boot, Run & Start configuratie --
+------------------------------------------------------------
+
+Commando:										Beschrijving:
+---------										-------------
+$> systemctl get-default						Toont default runlevel waarin het systeem start.
+
+$> systemctl set-default <gewenste runlevel>	Default runlevel instellen voor de volgende opstart.
+	vb.: sudo systemctl set-default rescue.target	Rescue mode = veilig opstarten in Windows
+		 sudo reboot								Herstarten om instellingen te activeren.
+													→ Connection refused voor SSH.
+		 sudo systemctl set-default multi-user.target
+		 sudo reboot
+		 
+$> ln [options] [doelbestand] [linknaam]		Link maken van een doelbestand.
+												Verschillende soorten links mogelijk.
+	→ Options:	-s									"symbolic link"
+	
+	→ $> ls -l									Toont in de lijst naar welke bronbestanden links verwijzen.
+	
+$> systemctl disable <naam.service>				Service uitschakelen in huidig runlevel, link verwijdert.	vb.: nginx.service
+$> systemctl enable <naam.service>				Service ingeschakeld in huidig runlevel, link aangemaakt.
+
+$> cat <bestandnaam>							Inhoud van bestand naar terminal schrijven.
+
+-----------------------------------------------------------------------------------------------------
+
+Terminologie:
+-------------
+units:		Services of groepen van services die tijdens de opstart door het init systeem "systemd" worden opgestart.
+target:		Of doel, is het opstarten van een unit door systemd.
+			Voor elk runlevel is er een reeks targets in een directory. Eindigt typisch op ".target.wants" in /etc/systemd/system
+			Een target wordt beschreven in een bestand en eindigen met een categorie. vb.: voor een service is dit ".service"
+			
+link:		Een verwijzing naar een bestand dat eruit ziet als een bestand,
+			enkel zijn gewone bestanden wit en links lichtblauw.
+			Verwijderen zoals een gewoon bestand met $> rm
+
+--------------------------------------------------------------------
+
+rc-local.service:
+-----------------	
+Service die de mogelijkheid biedt bash code bij boot te runnen. (Oude methode)
+
+1) Service aanmaken:
+	$> sudo nano /etc/systemd/system/rc-local.service
+						
+# GNU Lesser General Public License : LGPL-2.1+
+
+[Unit]
+Description=/etc/rc.local Compatibility
+Documentation=man:systemd-rc-local-generator(8)
+ConditionFileIsExecutable=/etc/rc.local
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+RemainAfterExit=yes
+GuessMainPID=no
+
+[Install]
+WantedBy=multi-user.target
+
+
+2) rc.local bestand aanmaken in /etc/ 	→ is een gewoon bash script, maar moet eindigen met "exit 0"
+	$> sudo nano /etc/rc.local
+	
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Hieronder je eigen .sh bash script bestandspaden toevoegen om uitgevoerd te worden.
+# vb.: /home/mijnusername/mijnbootscript.sh &
+
+exit 0
+
+
+3) Uitvoer rechten geven
+	$> sudo chmod +x /etc/rc.local
+	
+4) Activeren van het runlevel target:
+	$> sudo systemctl enable rc-local.service	→ Laden
+	$> sudo systemctl start rc-local.service	→ Starten
+	$> sudo systemctl status rc-local.service	→ Status nakijken
+	
+5) Je eigen bash code toevoegen een rc.local om bij boot uitgevoerd te worden kan, maar heeft risico's.
+	Fouten in de bash code kan echter resulteren in het mislopen van het booten!
+	Daarom eigen code in apart "non-blocking" .sh bestand waarnaar verwezen wordt in het rc.local bestand.
+
+---------------------------------------------------------------------------------------------------------
+
+.bashrc		→ "." voor een bestandsnaam wilt zeggen dat deze verborgen is. Kan je zien met $> ls -a (=all)
+-------
+Voorkeursinstellingen of auto bash code runnen bij het starten van een terminal.
+→ .bashrc wordt automatisch uitgevoerd telkens een terminal start.
+→ STAAT IN HOMEDIRECTORY! → cd [leeg!]
+
+1) Backup maken van origineel .bashrc bestand
+	$> cp .bashrc .bashrc-backup
+	
+2) Inhoud bekijken:
+	$> cat .bashrc
+	
+	→ PS1 = environment variabele
+	→ alias = nieuw commando aanmaken
+		alias <aliasNaam>='commando zoals je het in de terminal zou ingeven'
+	
+3) Eigen aliasen of bash code toevoegen onder # some more ls aliases (ver vanonder)
+
+_________________________________________________________________________________________________
+-- LABO 8: LOGGING --
+---------------------
+• Logging:
+	Het wegschrijven van informatie in geval van problemen met het systeem naar log-files.
+	
+Commando:							Beschrijving:
+---------							-------------
+$> journalctl [options]				Log-files bekijken
+	→ less								Scrollen
+	→ q									Quit
+	
+	→ Options:	--since [yyyy-mm-dd]	Enkel log files tonen vanaf bepaalde datum.
+				--since today			Enkel log files tonen van vandaag.
+				-n 						Aantal lijnen beperken tot de laatste 10.
+				-n [aantal lijnen]		Aantal lijnen beperken tot een zelf bepaald aantal.
+				--list-boots			Alle geregistreerde systeem opstarten. → 0 is actieve boot, -[nr] is hoeveel boots het geleden is.
+				--list-boots | tail -5	Output beperken tot 5 laatste lijnen.
+				-b [boot nr]			Enkel logs van bepaalde boot vb. "-b" voor de huidige of "-b -1" voor de vorige.
+				-p [prioriteit]			Enkel bepaalde prioriteit berichten tonen (zie journald hieronder).
+				-u [service naam]		Enkel log berichten tonen van bepaalde service/applicatie.
+				-f 						Real-time logging zien.
+				
+$> dmesg [options]					Log van de kernel intern.
+	→ Options:	-k 						Enkel log berichten uit de kernel-space.
+				-u 						Enkel log berichten uit de user-space.
+	
+$> journald							Achtergrond proces (d = deamon) dat de logging doet.
+	
+	→ Houddt standaard enkel log-files bij sinds de laatste opstart.
+	→ Config file in "/etc/systemd"
+	→ Aanpassen:	sudo nano /etc/systemd/journald.conf
+						#Storage=auto → Storage=persistent → Opslaan
+					suddo reboot
+	→ Stelt prioriteit in die bepaalde kleur toekent.
+		→ De 7 prioriteiten:	emerg(0)=rood			alert(1)=rood			crit(2)=rood		err(3)=rood
+								warning(4)=oranje/rood	notice(5)wit/oranje		info(6)=grijs		debug(7)=grijs
+	→ Log berichten wordden opgeslagen in "/var/log"
+		"auth.log" 	bevat login info, af- en aanmelden van users.
+		"kern.log" 	specifieke beichten v/d kernel
+		"syslog" 	van het systeem
+		"btmp"		niet gelukte login pogingen → niet leesbaar, wordt binair opgeslagen, enkel met journalctl te lezen.
+		→ Ook directories per service/applicatie met daarin hun log-files.
+!!	→ Je mag de inhoud van log-files wissen maar NIET de bestanden zelf!!
+		→ log-files worden herkent aan hun "inode" = het identifiactie nr die het systeem gebruikt
+		$> ls -i toont de inode nrs
+		
+		→ Inhoud bestand wissen:
+			1) Inloggen als root:			$> sudo -i
+			2) Inhoud en grote bekijken		$> ls -hsi <bestandsnaam.log>
+			3) Inhoud van /dev/null sturen	$> sudo cat /dev/null > <bestandsnaam.log>		→ /dev/null is "zwart gat"
+			
+$> du [options] [directory]		Disk Utilisation, de grote van alle bestanden in een directory bekijken.
+	→ Options:	-c					Totaal van de opgegeven directory onderaan geven
+				-d [level]			Ook van subdirectory levels vb. "-d 1" geeft van de opgegeven directory en de ddirectories in deze directory.
+				-sh					Enkel het totaal van de direcctory en al zijn subdirectories.
+				
+				
+_________________________________________________________________________________________________
+-- LABO 9 & 10: Networking & Firewall --
+----------------------------------------
+Instellen van IP adres:
+-----------------------
+	$> ip link show			Netwerk adapters tonen.
+		→ state UP = actief			→ inschakelen:	$> sudo ip link set <interface> up
+		→ state DOWN = niet actief	→ uitschakelen:	$> sudo ip link set <interface> down
+
+	$> ip address show		Adressen van netwerk kaarten bekijken.
+	$> ip addr show			Verkorting 1
+	$> ip a show			Verkorting 2
+
+	Meeste Linux's netwerk configuratie in: /etc/network/interfaces
+	→ Bij Ubuntu Server 20.04 met het "netplan" → /etc/netplan
+
+	.yaml → conventie voor het structureren van configuratie bestanden:
+		1) Je kan gewoon config bestanden bij plaatsen.
+		2) Bestanden moeten genummerd zijn. (Start op 00-
+			Nieuw aanmaken vb.: sudo nano /etc/netplan/01-fixed-ip-config.yaml
+			
+			network:
+			 version: 2			→ identingen zijn SPATIES, géén TABS!
+			 ethernets:
+			  enpxxx: 			→ xxx vervangen door de juiste naam
+			   dhcp4: false
+			   addresses:
+				- 192.168.50.1/24
+			   nameservers:
+				addresses:
+				 - 192.168.50.254
+			   gateway4: 192.168.50.254
+		
+		→ Configuratie testen: 		$> sudo netplan try
+		→ Configuratie toepassen: 	$> sudo netplan apply
+		
+		→ IP adres berijkbaarheid testen: 	$> ping <IP-adres>
+											$> ping -I <interface> <IP-adres>
+											
+Routing:
+--------
+	$> ip route show	→ Route-table tonen.
+		→ "metric" is de plaatse in de route-table die we kunnen meegeven.
+
+	• Routes manueel toevoegen:
+		$> sudo ip route add {NETWORK/MASK} via {GATEWAYIP}
+		$> sudo ip route add {NETWORK/MASK} dev {DEVICE}
+		$> sudo ip route add default {NETWORK/MASK} dev {DEVICE}
+		$> sudo ip route add default {NETWORK/MASK} via {GATEWAYIP}
+		
+			vb.: $> sudo ip route add default via 192.168.50.254 dev enp0s8 proto static metric 200
+		
+	• Routes verwijderen:
+		$> sudo ip route del default dev <interface>
+		
+			vb.: $> sudo ip route del default dev enp0s8
+
+			
+Firewall: (Naam komt van de gelijknamige beveiligingswand tussen de motor en de cabine van een auto.)
+---------
+	• iptables		Ingebouwde Firewall van Linux, zeer ingewikkeld.
+		- Acties op IP packets:
+			ACCEPT = allow (ufw)
+			DROP 	 = deny (ufw)
+			REJECT = reject (ufw)
+		
+		- Chains: wegen voor packetjes doorheen de firewall.
+			input-chain:	voor inkomende packets
+			output-chain:	voor uitgaande packets
+			forward-chain:	voor packets doorheen het systeem, bvb. van client tot client
+			
+			→ onderdelen/stapjes van een chain met oa "before" en "after" keywords, bvb. before-input
+	
+	• ufw = Uncomplicated FireWall → Front-End programma voor de originele Linux iptables
+		
+		Status ufw controleren: 		$> sudo ufw status	→ (v6) is voor IPv6 regels.
+		Inschakelen:					$> sudo ufw enable
+		Uitschakelen:					$> sudo ufw disable
+		
+		Toelating geven aan service:	$> sudo ufw allow <service-naam> 		vb.: $> sudo ufw allow ssh
+		Toelating geven op poort:		$> sudo ufw allow <poort-nr>			vb.: $> sudo ufw allow 8080
+											→ ssh  = poort 22, http = poort 80
+		Toelating geven adhv IP's:		$> sudo ufw allow from <ip> to <ip>		vb.: $> sudo ufw allow from 192.168.1.1 to 192.168.1.2
+		Toelating geven adhv IP & poort:$> sudo ufw allow from <ip> to any port <poort-nr>	vb.: $> sudo ufw allow proto tcp from 192.168.56.1 to any port 8080
+			→ "from" = uitgaande verbindingen
+			  "to"   = inkomende verbindingen
+			→ Default blokeert ufw alle inkomende verbindingen en laat alle uitgaande verbindingen toe.
+		
+		Toelating weigeren:				$> sudo ufw reject [zelfde opties als hierboven]	→ ERR_CONNECTION_REJECTED	/ verbinding geweigerd
+		Geen verbinding laten maken:	$> sudo ufw deny [zelfde opties als hierboven]		→ ERR_CONNECTION_TIMED_OUT 	/ reageert niet → security reasons tegen hackers
+			→ Als een poging eindeloos blijft duren dan leert men daar in niets van bij,
+				als men daarintegen een duidelijk bericht krijgt dat een poort of dienst of adres niet toegankelijk is,
+				dan weet men wel dat die wellicht bestaat.
+		
+		RESETTEN (regels verwijderen en firewall inactief zetten: $> sudo ufw reset
+		
+		Regels verwijderen:				$> sudo ufw delete <lijn-nr>					vb.: sudo ufw delete 3
+		OF								$> sudo ufw delete <commando> <service-naam>	vb.: sudo ufw delete allow http
+		Om regels met lijn-nr te zien:	$> sudo ufw status numbered
+		
+	→ Poort ngnix aanpassen:
+		1) $> sudo nano /etc/nginx/sites-available/default
+		2) Pas bij "server { ..." poort 80 aan naar 8080 op beide lijntjes
+		3) Herstart nginx: $> sudo systemctl restart nginx.service
+	
+	→ Enkel tcp/ip protocol toelaten op poort 8080:
+		$> sudo ufw allow proto tcp from 192.168.56.1 to any port 8080
+			IP laptop (thuis): 192.168.0.178
+			Ubuntu Server IP (thuis): 192.168.0.160
+
+	→ Server niet ping-baar maken:
+		Configuratie directory van ufw: /etc/ufw
+		
+		1) $> sudo nano /etc/ufw/before.rules
+		2) Onder "# ok icmp codes for INPUT" de "ACCEPT" 4x veranderen in "DROP"
+		3) Configuratie bestanden herinlezen (herstarten zou de server kwetsbaar maken tijdens het heropstarten):
+			$> sudo ufw reload
+			
+awk: https://www.digitalocean.com/community/tutorials/how-to-use-the-awk-language-to-manipulate-text-in-linux 
+----
+Soort programmeertaal om tekst te bewerken.
+Het neemt tekst als input en laat je toe er bewerkingen op te doen.
+
+	vb.: 	$> ls | awk '{print}'							→ output "ls" in 1 kolom afdrukken
+			$> ls -al | awk '{print $9}'					→ enkel 9e kolom van de output van "ls -al" afdrukken in 1 kolom
+			$> ls -al | awk '{print $3 "-hallo-" $9}' 		→ kolom 3 en 9 aan elkaar plakken met "-hallo-" als tussenvoegsel, en afdrukken in 1 kolom
+			$> ls -al | awk '$3 > 4000 {print $1, $3, $9}' 	→ enkel de 1e, 3e en 9e kolom afdrukken als de 3e kolom een waarde heeft groter dan 4000
+			$> ls -al | awk ‘{if ($3 == “root”) print $9; else print “----”}'
+			$> ls | awk ‘{for (n=0; n<3; n++) print}
+			$> awk '{print}' test.txt						→ Inhoude van "test.txt" tekstbestand afdrukken
+	
+	Commando:			Omschrijving:				Voorbeeld:
+	---------			-------------				---------
+	print				in kolommen afdrukken.		$> ls -al | awk '$3 > 4000 {print $1, $3, $9}'
+	sub					vervangen					$> awk ‘{sub(/bestandje/, “zinnetje”); print}' test.txt	→ past enkel output aan, niet de tekstfile!
+	{if(..){if(..)}}	{} around code for nesting	$> awk ‘{if ($1==”dit”) { if ($2 == “is” print “lussen”} }' test.txt
+	

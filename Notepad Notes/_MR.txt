@@ -1,0 +1,46 @@
+Project Mixed Reality
+---------------------
+
+Project keuze:
+	1) Glasses off:
+		You start in an empty white room, well lit, and put on the VR glasses.
+		The VR world reflects this and you can walk around the space.
+		By the end the VR world is completely dark except for a light with you (eg. Echoes of the Eye sim)
+		When you take of the headset the room you started in is also completely dark with a light source with you,
+		having the effect of making your surrounding feel super dark by the light shining in your eyes.
+		
+		To drive immersion further there is a secret in the real room that you learned in the VR room that you feel compelled to check.
+		By making this secret actually real in the real world drives the experience home.
+		
+		More of an installation.
+		
+		Like the game Outer Wilds it's up to you to explore the room and find things out through environmental storytelling.
+		This then teaches you the secret in the real world.
+		
+		eg.: Outer Wilds, Antichamber, Spider-Man: Far From Home
+		
+	2) Valpreventie
+		You should feel panicky and your body temp goes down, this must be communicated visually.
+		-> shivering can be with rumble in the controllers, as well as heartbeat
+		-> slow build up in intensity, shift in colors in the VR world from calm to threatening.
+		Time elapses by black-outs
+	
+	3) Environmental immersion
+	
+_______________________________________________________________________________________________________________________________________
+
+Portal to a new world
+---------------------
+
+Pitch:
+	- What is our project?
+		
+	- Who is it for? Target group, audience
+	
+	- Why should you care? What's the goal?
+	
+	- Type of immersion and why?
+	
+	- 360 map of main scene
+	
+	- Story structure and user flow?

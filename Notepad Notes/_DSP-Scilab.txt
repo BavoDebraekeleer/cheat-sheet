@@ -1,0 +1,81 @@
+Digital Signal Preccesing
+
+Periode 1kHz = 1ms
+	→  8kHz = 125us
+
+-- Scilab --
+------------
+Console commands:
+
+	- Algemeen:
+		Nieuwe dataset aanmaken					varnaam = [];
+			-> ; zorgt ervoor dat de output niet wordt weergegeven in de console
+			-> Tab om commandos aan te vullen
+		
+		Sessie stoppen							exit
+		Clear console							clc
+		Clear + cursor naar boven				tohome
+		On-line help							help
+		
+		Interrupt program						pause (Ctrl+X)
+		Hervatten								resume
+		Berekenning annuleren					abort
+		
+		Display									disp("String") OR disp(var)
+			-> String interpolation, vb. disp("Faeryn " +string(d)+" is hot")
+			
+		Op volgende lijn verder typen met		..	vb. disp("Ik ben ..
+														Bavo.")
+			
+		
+		
+	- Basis berekenningen:
+		-> resultaat wordt opgeslagen in de tijdelijke var "ans"
+		
+		Gemiddelde								mean (varnaam)
+		Standaard deviatie (amplitude)			stdev (varnaam)
+		"e" en "π"								%e  %pi
+		vierkantswortel							sqrt()
+		
+	- Graphics window:
+		Vorige plot wissen						clf
+		Nog een graphics window openen			scf;
+		Plot in specifiek venster nr			scf(nr);
+		
+	- Functions:
+		function solutionvar=functionname(inputvar1,inputvar2); expression endfunction
+		vb.: function d=dollar(e,t); d=e*t; endfunction
+	
+	- Matrices:
+		varnaam = [row1column1,row1column2;row2column1,row2column2]
+	 OR varnaam = [x1 y1 z1; x2 y2 z2; x3 y3 z3]
+	 
+	- Loops:
+		startvalue:endvalue
+	 OR startvalue:step:endvalue	vb. 1:2:10		u=20:-4:2
+	 
+		for ... end
+			vb.	for n=1:20
+					u(n+1)=u(n)+2*n+3;
+					disp([n,u(n)])
+				end
+		
+		while ... end
+			vb. while h<7
+					h=h+0.3;
+					y=y+1;
+				end
+		
+	
+Editor:
+	Comments	//
+	
+	vb.:	u(1)=1
+			for n=1:10
+				u(n+1)=2*u(n)-3
+				disp([n,u(n)])
+			end
+			
+
+
+Scilab_beginners p17

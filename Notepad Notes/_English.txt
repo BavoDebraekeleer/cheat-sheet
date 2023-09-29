@@ -1,0 +1,107 @@
+=======
+English
+=======
+
+Prepositions
+============
+	Word or word group followed by a noun, gerund clause or pronoun
+	To show direction, time, place, location, spatial relationships, or to introduce an object.
+	
+	Direction
+		-> to, in, into, on, onto
+		
+	Time
+		-> in, at, on
+		-> Extended time: since, for, by, during, from..to, from..until, with, within
+	
+	Place
+		-> in, at, on, inside
+		-> higher/lower: over, above/below, beneath, under, underneath
+		-> proximity: by, near, next to, between, among, opposite
+		
+	Location
+		-> in, at, on
+	
+	Spatial relationships
+		-> above, across, against, ahead of, along, among, around, behind, below, beneath, beside, between, from, in front of, inside, near, off, out of, through, toward, under, within
+
+	Idiomatic
+		-> verb + preposition combination
+		-> adjective + preposition combinations
+		
+		You have to learn them, look up in dictionary
+		slide 17-19
+
+Articles
+========
+	1. Zero/no article
+		Mass nouns
+		Plural count nouns with general reference
+		Proper names
+		Singular count nouns, eg. man/woman
+	
+	2. A(n) = indefinitive article
+		Singular count nouns
+	
+	3. The = definitive article
+		Singular count nouns
+		Mass nouns with definitive reference
+		Plural count nouns with definitive reference
+		Proper names with definitive reference, eg. the King.
+		
+
+Verb forms
+==========
+	Formation -> Self study on Digitap
+	
+	Concord/Agreement
+		-> is the number relationship between:
+			the noun in the noun phrase functioning as subject
+			the verb
+			the subject complement
+			verb complements
+			
+		Formal concord
+			-> The number of the verb depends on whether the subject noun phrase is morphologically singular or plural
+		
+		Referential Concord
+			-> When the subject noun phrase is singular in form, but has multiple reference the verb subject
+				complement etc. are often plural
+			eg. The family HAVE not eaten -> PLURAL, NOT singular using HAS!
+			
+		Proximal Concord
+			-> 1. The verb takes the number (and person) of the nearest noun phrase
+					in subjects consisting of NPs conjoined with or, nor, either …or,
+					neither …nor and not… only.
+				eg. Either you or he IS mistaken. -> SINGULAR
+			
+			-> 2. When the sentence begins with there and the first NP of the subject
+					is singular , the verb is mostly singular.
+				eg. There is a billiard room and a library in this house.
+				
+			-> 3. After more than /half of or other fractions , the verb follows the number of the NP that follows.
+				eg. More than one pupil HAS been punished.
+					More than twenty pupils HAVE been punished.
+					
+			-> Exceptions:
+				Stereotyped combination with a single reference, eg. bacon and eggs
+				Compound subject begins with each or every
+				
+		Gerund
+			Fuuuck this!
+			slides 41-42
+	
+	Gerund
+
+Spelling
+========
+
+Pronouns
+========
+
+Quantifiers
+===========
+
+Noun forms
+==========
+	Genitive

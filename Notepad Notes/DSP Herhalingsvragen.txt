@@ -1,0 +1,143 @@
+DSP Herhalingsvragen
+---------------------
+____________________________________________________________________________________________________________________________________	
+1. Overzicht tijdscontinue signalen en systemen:
+
+	1. Verklaar met eigen woorden wat een continue signaal is.
+	2. Verklaar met eigen woorden wat een vermogensignaal is.
+	3. Verklaar met eigen woorden wat een discreet signaal is.
+	4. Wat wordt verstaan onder een data-aquisitiesysteem?
+	5. Wat wordt verstaan onder een domein? Wat wordt bedoeld met het bereik en duidt dit aan op een assenstelsel.
+	6. Hoe is de formule voor statistisch gemiddelde? Wat is de statistische betekenis ervan en wat is de betekenis ervan voor een signaal?.
+	7. Wat is het verschil tussen een standaarddeviatie en een deviatie.
+	8. Hoe is de formule van de standaarddeviatie? Wat is de statistische betekenis ervan en welke betekenis heeft de standaarddeviatie voor een signaal?
+	9. Wat wordt bedoeld met “het onderliggende systeem” ? Omschrijf dit met eigen woorden .
+	10. Wat is de formule van Typical error? Geen een omschrijving voor dit begrip.
+	11. Wat is de formule voor SNR en CV? Geef een omschrijving voor deze begrippen.
+	12. Wat is een histogram is en waarvoor wordt het gebruikt?.
+	13. Geef de formule voor gemiddelde en standaarddeviatie bij een histogram.
+	14. Wat houdt een “probability mass function” in? Verklaar wat je ermee kan doen?.
+	15. Wat is het verschil tussen een histogram en pmf?
+	16. Wat is een “probability density function”? Verklaar wat je ermee kan doen.
+	17. Leg uit aan de hand van een zelfgekozen voorbeeld hoe je de probability kan berekenen vanuit de probability density.
+	18. Teken de pdf van een blokgolf, driehoek en ruissignaal en verklaar het verloop..
+	19. Wat houdt binning in en waarvoor het wordt gebruikt?
+	20. Hoe verloopt de generale vorm van een normale distributie?
+	21. Geef weer op een Gausscurve wat er gebeurt als het gemiddelde en/of standaarddeviatie verandert.
+	22. Waarvoor wordt de cumulatieve distribution functie van de normale distributie gebruikt?
+	23. Op welke manieren kan je digitale ruis opwekken? Wat zijn de onderlinge verschillen en verklaar deze.
+	24. Omschrijf de begrippen precisie en nauwkeurigheid en geef hiervan een voorbeeld.
+	25. Wat is een digitaal beeld? Hoe is het opgebouwd?
+	26. Verklaar het principe hoe je ruis in een beeld kan verminderen via gebruik te maken van het gemiddelde. Welk nadeel bevat deze methode?
+	27. Verklaar het principe hoe je ruis in een beeld kan verminderen door gebruik te maken van het gewogen gemiddelde. Wat zijn voordelen ten opzichte van de methode via gebruik van gemiddelde?
+	28. Verklaar het principe om ruis in een beeld te verminderen via gebruik van de mediaan.
+	29. Verklaar hoe je ruis in een beeld kan verminderen door gebruik te maken van een kuwaharafilter. Verklaar hoe zo'n filter is opgebouwd.
+	30. Hoe kan je een beeld filteren op basis van een gewogen som?
+	31. Verklaar op welke filtermethode randen in digitale beelden kunnen worden opgespoord. Leg het principe van deze methode uit.
+	32. Verklaar met welke filtermethode je digitale beelden kan scherpstellen. Leg dit principe uit.
+	33. Verklaar het werkingsprincipe van een kuwaharafilter.
+	
+	
+____________________________________________________________________________________________________________________________________	
+2. Analoog Digitaal Conversie:
+	
+	1) Omschrijf met eigen woorden omschrijven hoe ADC en DAC wordt bekomen.
+	2) Verklaar het begrip kwantisatie uitleggen aan de hand van een voorbeeld.
+	3) Wat is de invloed van kwantisatie op de ruis? Toon aan met een voorbeeld wat de invloed van het aantal kwantisatiebits van de ADC is op de ruis..
+	4) Verklaar het begrip dither. Geef een voorbeeld waar dither wordt toegepast en verklaar het principe ervan..
+	5) Teken en verklaar met eigen woorden het sampletheorema.
+	6) Verklaar het begrip aliasing en verduidelijk dit met een voorbeeld.
+	7) Verklaar het begrip Nyquistfrequentie uitleggen
+	8) Geef het sampletheorema in het tijdsdomein-en frequentiespectrum weer. Verklaar via deze figuren wat de gevolgen zijn ten gevolge van aliasing.
+	9) Maak een analyse van een digitaal naar analoog conversie.
+	10) Verklaar wat bedoeld wordt met “sinc” . Teken een sinc-functie en geef het nut aan bij digitaal-analoog conversie.
+	
+	
+____________________________________________________________________________________________________________________________________	
+3. Lineaire systemen:
+
+	1) Wat is het verschil tussen een continu en een discreet systeem?
+		Een continu systeem werkt met een continu signaal als ingang en uitgang.
+		Een discreet systeem werkt met een discreet signaal als input en output.
+	
+	2) Hoe worden signalen voorgesteld van een continu en een discreet systeem?
+		Continu signaal met ronde haken, vb. x(t)
+		Discreet signaal met vierkante haken, vb. x[t]
+	
+	3) Welke zijn de vereisten voor lineariteit? Geef deze en omschrijf ze met eigen woorden.
+		- Homogeniteit:
+		- Additiviteit:
+		- Shift invariantie: 
+		
+	4) Geef minstens drie voorbeelden van een lineair systeem en van een niet-lineair systeem.
+		• Golven zoals geluidsgolven en elektromagnetische golven
+		• Elektrische circuits die bestaan uit weerstanden, condensatoren en spoelen
+		• Elektronische circuits zoals versterkers en filters
+		• Systemen die beschreven kunnen worden door differentiaalvergelijkingen zoals weerstand-condensator-spoelnetwerken
+		• Vermenigvuldiging met een constante (versterken – verzwakken van het signaal)
+		• Signaalveranderingen zoals echo's, resonanties en het wazig maken van een beeld
+		• Een eenheidsysteem waarbij de uitgang steeds gelijk is aan de ingang
+		• Het nul-systeem waarbij de uitgang steeds gelijk is aan 0, ongeacht het ingangssignaal
+		• Differentiatie en integratie, de analoge operaties van een eerste afgeleide, som van discrete signalen
+		• Kleine verstoringen in een niet-lineair systeem zoals een klein signaal dat wordt versterkt door een transistor
+		• Convolutie: een wiskundige bewerking waarbij elke waarde in de uitvoer wordt uitgedrukt als de som van de waarden in de input, vermenigvuldigd met een set van wegingscoëfficiënten.
+		• Recursie: een techniek die vergelijkbaar is met convolutie, met uitzondering van eerder berekende waarden in de uitgang die worden gebruikt als aanvulling op de waarden van de input.
+		• Systemen die geen statische lineariteit bevatten zoals bijvoorbeeld de relatie tussen vermogen en spanning over een weerstand
+		• Systemen waarbij aan de ingang een sinus wordt aangelegd en de uitgang deze niet weergeeft zoals piekdetectie, sinus-blokgolfomzettingen, cross-oververvorming, sinusvervormingen (clippen), sweepgeneratie, …
+		• Vermenigvuldigen van een signaal door een ander signaal zoals bijvoorbeeld amplitudemodulatie.
+		• Verzadigings- of saturatieverschijnsel van elektronische versterkers, transformatoren, …
+		• Systemen met een bepaalde threshold zoals logische poorten (digitale techniek).
+	
+	5) Welk zijn de speciale eigenschappen van lineariteit ? Omschrijf deze met eigen woorden.
+	6) Wat wordt verstaan onder synthese en decompositie?
+	7) Wat wordt verstaan onder impulsdecompositie? Geef een voorbeeld van impulsdecompositie en werk dit uit.
+	8) Wat wordt verstaan onder stapdecompositie? Geef een voorbeeld van stapdecompositie en werk dit uit
+	9) Wat wordt verstaan onder even/oneven decompositie? Geef een voorbeeld van even/oneven decompositie en werk dit uit.
+	10) Wat wordt verstaan onder Fourier decompositie? Geef een voorbeeld van Fourier decompositie en werk dit uit.
+	11) Wat wordt verstaan onder interlaced decompositie? Geef een voorbeeld van interlaced decompositie en werk dit uit.
+	12) Wat is het belang van Fourier decompositie?
+	
+	
+____________________________________________________________________________________________________________________________________	
+4. Convolutie:
+
+	1) Geef de definitie van een deltafunctie
+	2) Wat is een impulsresponsie
+	3) Hoe verandert een ingangssignaal binnen een systeem in een uitgangssignaal?
+	4) Wat is convolutie?
+	5) Geef een voorbeeld van convolutie.
+	6) Hoe vind je het uitgangssignaal (impulsresponsie) als je de convolutie bekijkt vanaf het ingangssignaal?
+		
+	
+	7) Hoe vind je het uitgangssignaal (impulsresponsie) als je de convolutie bekijkt vanaf het uitgangssignaal?
+		
+		
+	8) Hoe kan je via convolutie een discrete afgeleide maken?
+	9) Hoe kan je via convolutie een discrete integratie maken?
+	10) Bespreek de opbouw van een digitale LDF via convolutie.
+	11) Bespreek de opbouw van een digitale HDF via convolutie.
+	12) Geef een voorbeeld van LDF via convolutie.
+	13) Geef een voorbeeld van HDF via convolutie.
+	
+	14) Wat is een signaal met een causal verband? Geef een voorbeeld.
+	15) Wat is een signaal met een non-causal verband? Geef een voorbeeld.
+	
+	16) Wat houd de commutatieve eigenschap van convolutie in?
+		a[n] * b[n] = b[n] * a[n] 
+
+	17) Wat houd de associatieve eigenschap van convolutie in?
+		(a[n] * b[n]) * c[n] = a[n] * (b[n] * c[n])
+		
+		De associatieve eigenschap zorgt ervoor dat de volgorde van de systemen kan worden herschikt zonder invloed op de algemene werking van de cascade. 
+		Twee of meer systemen in cascade kunnen worden vervangen door één enkel systeem.
+		
+	18) Wat houd de distributieve eigenschap van convolutie in?
+		a[n] * b[n] + a[n] * c[n] = a[n] * (b[n] + c[n])
+		
+		De distributieve eigenschap laat zien dat parallelle systemen met toegevoegde uitgangen kunnen worden vervangen door één enkel system. 
+		De impuls respons van het vervangende systeem is gelijk aan de som van de impuls reacties van alle originele systemen.
+	
+	19) Wat is de relatie tussen een verandert ingangssignaal en de verandering in het uitgangssignaal?
+		Het uitgangssignaal verandert precies op dezelfde lineaire manier als het hoe het ingangssignaal was verandert.
+		
+	20) Wat houdt de centrale limietsteling in?

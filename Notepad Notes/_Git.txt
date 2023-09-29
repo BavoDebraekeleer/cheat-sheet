@@ -1,0 +1,96 @@
+GIT commands:
+
+• Issues with large files and using LFS:
+	https://medium.com/swlh/everything-you-need-to-know-to-resolve-the-git-push-rpc-error-1a865fd1ebea
+	https://git-lfs.github.com/
+
+• Best practices:
+	- Bij aanmaken GitHub repository:
+		1) eerst Push doen van lege repository zonder enige files
+		2) nadien gitignore toevoegen vooraleer je project files stage/commit/push
+
+• User config voor alle repositories:
+	$ git config --global user.name "Name"
+	$ git config --global user.email "mail@mail.com"
+	
+	→ Kan ook met --local per repository
+	
+	→ Nakijken:
+		$ git config user.name
+		$ git config user.amail
+	
+• Repository aanmaken:
+	1) $ mkdir repository_name
+	2) $ cd repository_name
+	3) $ git init
+	
+• Status checken, om na te kijken of wat je hebt ingegeven hebt is gebeurd:
+	$ git status
+	
+• Files stagen:
+	$ git add filename.ext filename2.ext
+	$ git add .
+	
+• Commit (lokaal toevoegen aan version control):
+	$ git commit -m "commit message"
+	
+• Log, toont overzicht van alle commits en hun SHA-codes:
+	$ git log
+	
+	→ SHA-code:
+		unieke ID auto gegenereerd per commit.
+		Meestal zijn de eerste 7 characters genoeg om de commit te identificeren.
+	
+• Git ignore toevoegen om files of directories die niet nodig zijn te negeren:
+	$ git add .gitignore
+	
+• Uitchecken/Checkout, naar bepaalde vorige commit versie gaan van de repository:
+	$ git checkout SHA-code
+	$ git checkout master
+	
+• Branch, nieuwe tak van development toevoegen, om nieuwe versie van product te maken:
+	$ git checkout -b branch_name
+	
+	→ Branches vergelijken:
+		$ git show-branch branch_name master
+		
+• Branches samenvoegen met de main/master branch, kan op 3 manieren:
+	1) Merging
+	2) Rebasing
+	3) Cherry-picking
+	
+	1) Merging, voegt de wijzigingen samen in de main/master:
+		$ git checkout master
+		$ git merge branch_name
+		
+	2) Rebasing, commits van ééne branch en uitvoeren bovenop die van de andere branch:
+		
+	3) Cherry-picking, enkel specifieke commits mergen adhv SHA-code:
+		$ git cherry-pick SHA-code
+		
+• Remote repositories:
+	- Clone, bestaande repository kopiëren adhv HTML of SSH link:
+		$ git clone link
+	
+	- Fetch:
+	
+	- Pull:
+		$ git pull
+	
+	- Push:
+		$ git push origin branch_name
+		
+	→ Voorbeeld 1, repo aanmaken in GitHub en lokaal toevoegen:
+		1) Repo aanmaken op GitHub
+		2) $ git remote add origin link
+		   $ git branch -M main/master
+		   $ git push -u origin main/master
+		   
+	→ Voorbeeld 2, repo lokaal aanmaken en dan syncen met GitHub:
+		$ git init
+		$ git add README.md
+		$ git commit -m "commit message"
+		$ git branch -M main/master
+		$ git remote ad origin link
+		$ git push -u origin main
+	

@@ -1,0 +1,26 @@
+// Liedje maken
+// Jesse Denaux & Daan Dekoning Krekels
+#define LUIDSPREKER 2
+const float f[] = {440.0, 466.2, 493.9, 523.3, 554.4, 587.3, 622.3, 659.3, 698.5, 740.0, 784.4, 830.6, 880.0, 1760.0}; // A -> A2 : frequentie
+const float x[] = {0.000, 0.056, 0.109, 0.159, 0.206, 0.251, 0.293, 0.333, 0.370, 0.405, 0.439, 0.470, 0.500, 0.750 }; // A -> A2 : tijd
+#define C  3
+#define D  5
+#define E  7
+#define F  8
+#define G  10
+
+const byte liedje[] = {C,D,E,C, C,D,E,C, D,E,F, D,E,F, F,G,F,E,D, C, F,G,F,E,D, C, C, G, C, C, G, C};
+const bool snelh[]  = {0,0,0,1, 0,0,0,1, 0,0,1, 0,0,1, 0,0,0,0,1, 1, 0,0,0,0,1, 1, 1, 1, 1, 1, 1, 1};
+byte liedje_length = sizeof(liedje)/sizeof(liedje[0]);
+void setup() {
+  pinMode(LUIDSPREKER, OUTPUT);
+}
+
+void loop() {
+  for(byte i = 0; i < liedje_length; i++){
+    tone(LUIDSPREKER, f[liedje[i]], x[liedje[i]]);
+    delay(10000/liedje_length);
+    if (snelh[i])
+      delay(100);
+  }
+}

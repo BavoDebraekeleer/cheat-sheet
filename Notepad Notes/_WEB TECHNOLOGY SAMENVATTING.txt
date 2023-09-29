@@ -1,0 +1,409 @@
+--------------------------------------------------------------------------------------------------------
+****** WEB TECHNOLOGY SAMENVATTING *********************************************************************
+--------------------------------------------------------------------------------------------------------
+Hotkeys:
+--------
+Alt+Z	→ Toggle Word Wrap (View)
+________________________________________________________________________________________________________
+Commentaar:
+-----------
+HTML 	→ <!-- Tekst -->
+CSS		→ /* tekst */
+JS		→ // 1 regel tekst
+		→ /*
+			meerdere 
+			regels 
+			tekst  
+		  */
+________________________________________________________________________________________________________
+Terminologie:
+-------------
+- Inline vs Block: 	Inline is op dezelfde lijn vb.: <a>, <span>
+					Block is nieuwe afzonderlijke blok op nieuwe lijn vb.: <p>, <nav>, <div>, <main>
+					→ Afzonderlijke eigenschappen zoals color & background
+- html = Hyper Text Markup Language
+- css = Cascading Style Sheet
+- js = Java Script
+- element → padding(-ruimte) → border → margin(-ruimte)
+________________________________________________________________________________________________________
+Website set-up:
+---------------
+1) Folders & files:
+	Project/	→	index.html
+					css/style.css
+					js/script.js
+					html/[alle andere pagina's]
+					images/
+
+2) index.html →	a) ![Enter]
+				b) Binnen <head>: <link rel="stylesheet" href="./css/style.css" (type="text/css")>
+				c) Als laatste in <body>: <script src="./js/script.js"></script>
+________________________________________________________________________________________________________
+HTML Basis Structuur:
+---------------
+<!DOCTYPE html>
+<html>
+<head>
+    <meta>
+    <link>
+    <title></title>
+</head>
+<body>
+    <header>
+		<h1></h1>
+        <nav></nav>
+    </header>
+    <main>
+        <article></article>
+        <aside></aside>
+    </main>
+    <footer></footer>
+</body>
+</html>
+________________________________________________________________________________________________________
+Custom lettertype toevoegen:
+----------------------------
+1) Google Fonts:	index.html 	→ Binnen <head>: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=[naam van lettertype]"> (https://developers.google.com/fonts/docs/getting_started)
+					style.css 	→ [tag, class of ID] {
+									font-family: 'Amiko';
+									font-size: 22px;
+								  }	
+2) Eigen file:		style.css	→ @font-face {
+									font-family: "fontNaamZelfKiezen"; → Met deze naam aanspreken in css zoals bij 1)
+									src: url(bestandspad.type);
+									... → Eventuele extra's:font-stretch, -style, -weight, unicode-range: ... ;
+								  }
+________________________________________________________________________________________________________
+--HTML--------------------------------------------------------------------------------------------------
+********************************************************************************************************
+HTML Tags:
+<div>		→ Container voor opmaak
+<br>		→ Line break
+<nav>		→ Navigatie links in <body><header> adhv ankers → <a href="[link]>
+<article> 	→ Op zich staande stukken vb blog post, in <body>
+<img> 		→ Afbeelding
+				src="" alt="" width="" height=""
+<span> 		→ Inline element
+<aside>		→ Zij container in <body>
+<meta>		→ Extra informatie over website voor browser en zoekrobots, in <head>
+				vb.:	<meta charset="UTF-8">
+						<meta name="description" content="Inschrijving AP">
+						<meta name="keywords" content="IOT, DSN, PROG">
+						<meta name="author" content="Hassan Haddouchi">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<a>			→ Link naar:	1) andere HTML file	vb.: href="tweedePagina.html"
+							2) web adres		vb.: href="https://dikketiete.be"
+							3) mail				vb.: href="mailto:bavo_debraekeleer@msn.com"
+				→ Tussen de opening en closing tags komt de tekst die wordt weergegeven.
+________________________________________________________________________________________________________
+Speciale tekens:
+& + naam van karakter of #unicode vb.: 	&#60 	→ <
+										&euro	→ €
+________________________________________________________________________________________________________
+Lijsten:
+<ul> & <ol>	→ Unordered & ordered list = Bulletpoints & genummerd
+<li>		→ List item
+CSS properties: list-style-type, -position, -image:
+				→ list style: [type] [position] [image];
+________________________________________________________________________________________________________
+Tabellen:
+<table>
+	<caption>Titel/Tekst</caption>
+	<thead>
+		<tr>
+			<th></th> → Genereerd lege kolom
+			<th>Titel</th> 
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th>Titel</th>
+			<td>Data/Tekst</td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<th>Titel</th>
+			<td>Data/Tekst</td>
+		</tr>
+	</tfoot>
+</table>
+________________________________________________________________________________________________________
+Formulieren:
+<form action="bestandspad of url waar de data naartoe moet" method="GET">
+	<fieldset>
+		<legend>Tekst</legend>
+		
+		<label for="..">Tekst voor of achter</label>
+		
+		<input type=".." name=".." id=".." required><br>
+		<input type="text" name=".." id=".." size="getal" maxlength="getal">
+		<input type="date" name=".." id=".." placeholder="dd/mm/jjjj"><br>
+		<input type="password" name=".." id=".." size="..">
+		<input type="checkbox/radio" name=".." id=".." checked>Tekst erna <br>
+		<input type="file" name=".." id="..">
+		<input type="submit" value="Tekst op knop"
+		
+		<button type="button/reset/submit">Tekst op knop</button>
+		
+		<textarea name=".." cols=".." rows="..">Placeholder tekst</textarea><br>
+		
+		<select name=".." id=".." multiple>
+			<option value=".." selected>Tekst in optie veld</option>
+			<option value="..">Tekst in optie veld</option>
+			...
+		</select><br>
+	</fieldset>
+</form>
+________________________________________________________________________________________________________
+Figure, video & audio, iframe:
+<figure>
+	<img src="bestandspad.type" alt="ipv image bij niet weergeven">
+	<fifcaption>Tekst onder de afbeelding.</fifcaption>
+</figure>
+
+<video width="getal" height="getal" autoplay>
+	<source srcc="bestandspad.type" type="video/bestandstype">
+	Alternatieve tekst bij niet kunnen inladen.
+</video>
+
+<audio controls>
+	<source srcc="bestandspad.type" type="audio/bestandstype">
+	Alternatieve tekst bij niet kunnen inladen.
+</audio>
+
+<iframe src="url" width="getal" height="getal" frameborder="getal">
+	Text onder video.
+</iframe>
+
+
+
+________________________________________________________________________________________________________
+--CSS---------------------------------------------------------------------------------------------------
+********************************************************************************************************
+CSS Structuur:
+selector {
+	property: value1 value2 value3 ... valueN; → Gescheiden enkel door één spatie
+}
+________________________________________________________________________________________________________
+CSS Selectors:
+- tag-naam			→ html: <tag> → css: tag
+- class	(meerdere)	→ html: <tag class="name"> → css: .name
+- tag & class		→ css: tag.name → Zowel alle van deze tags & alle van deze klasse
+- id (één enkele)	→ html: <tag id="name"> → css: #name
+- pseudoclass 		→ html: <tag> → css: tag:(:)state
+						→ states: :link, :visited, :hover, :active, :lang([taal naam]), :first-child, :required, ::after
+- class attributes	→ css: tag[(attribuut/class)(attribuut-selector)="waarde"]
+						~ → aparte woorden	
+						* → deel in woord
+						^ → start met
+					vb.: 	a[target] {..}
+							[title*="boek"] {..}
+							input[type="button"] {..}
+							[class*="col-"] {..}
+
+Mobile-first: Maak je basis website voor smartphones (max-width: 500px) & tablets (max-width: 768px)
+-------------
+In HTML: <head> <meta name="viewport" content="width=device-width, initial-scale=1.0"> </head>
+in CSS:
+@media voorwaarde/(voorwaarde) {
+	tag {
+		/* code */
+		}
+	}
+	→ voorwaarde:	- Voor alles: all → default waarde, dus moet je niet typen
+					- Voor print uiterlijk: @ media print {..}
+					- Voor enkel scherm: @media only screen and (min-width/max-width: 768px) {..}
+					- Voor iets bepaald NIET: @media if not ...
+	
+	→ (voorwaarde):	- mobile-first:  @media (min-width: 768px) {..} → Alles behalve mobile
+					- desktop-first: @media (max-width: 768px) {..} → Voor mobile
+					- Voor andere orientaties: @media (orientation: landscape) {..} → landscape = screen width > screen height
+					
+	→ Meerdere voorwaarden: EN/AND: (voorwaarde) and (voorwaarde) vb.: (orientation: landscape) and (max-width: 768px)
+							OF/OR:  (voorwaarde), (voorwaarde)
+	
+	→ Alle verschillende scherm grootes van klein naar groot:
+		1) smartphones: 
+		2) tablets:		
+		3) ...
+________________________________________________________________________________________________________
+CSS Properties:
+---------------
+- position: static, relative, absolute, fixed, sticky; → Scherm positie
+- z-index: -1; → Op welke diepte laag/z-axis positie
+- display: none, inline, block, inline-block, flex, grid;
+- border-width, -style, -color, -image
+- overflow: hidden, scroll; → Wat moet er gebeuren als content te groot is
+- background-image: url("bestandspad.type"); -repeat, -position, -size
+- box-sizing: border-box; → Tel de padding en margin mee in de afmetingen van alle elementen
+- padding: (-top in px) (-left & -rigth in px) (-bottom in px) vb.: padding: 20px 10px 30px
+________________________________________________________________________________________________________
+Fonts & Text:
+-------------
+font: font-style font-variant font-weight font-size/line-height font-family|caption|icon|menu|message-box|small-caption|status-bar|initial|inherit;
+font-family: naam, family, generic-family; vb.: "Times New Roman", Times, serif; of Arial, Helvetica, sans-serif;
+    -size: px, %, em;
+	-weight: light, medium, bold, black, normal;
+	-style: normal, italic, oblique, initial, inherit;
+	-stretch: condensed, expanded, ... ;
+	→ Voor heel de html pagina met "html { font-family: ...; }
+text-align: center, left, right, justify;
+	-decoration: underline, line-through, dotted, dashed, ... ;
+	-indent: px, %, em;
+	-transform: uppercase, lowercase, capitalize;
+
+color:
+
+first-letter & first-line als pseudoclass vb.: p.intro:first-letter {
+													font-size: 200%;
+												}
+letter-spacing & word-spacing: px, %, em;
+line-height: normal, px, %, em;
+
+Zelf font toevoegen:
+--------------------
+1) Online met Google fonts:
+	→ HTML: <head> <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=[FONT NAME HERE]'> </head>
+	→ CSS:	html {
+				font-family: '[FONT NAME HERE]';
+			}
+
+2) Met eigen file:
+	→ Enkel CSS:
+		→ Aanmaken:	@font-face {
+						font-family: "[NAAM DIE JE HET FONT WILT GEVEN]]";
+						src: url(../font/filename.filetype) format(filetype);
+						font-weight: light/bold/...;
+					}
+		→ Gebruiken: tag {
+						font-family: "[NAAM DIE JE GEGEVEN HEBT]", sans-serif/serif;
+________________________________________________________________________________________________________
+Grid:
+-----
+grid-column, -row and -gap
+1) .grid-container {
+		display: grid;
+		grid-template-areas:
+			'menu header header header header header'
+			'menu main main main main right'
+			'menu footer footer footer footer footer';
+		grid-gap: 1px;
+		padding: 1px;
+	}
+	
+	.gridItem {
+		grid-area: header/menu/main/right;
+	}
+2) 	.grid-container {
+		display: grid;
+		grid-template-columns: auto auto auto auto; → Gives 4 columns → all auto for even width and filling up the space, or a width per column in px, or combination
+		grid-template-rows: 80px 200px;
+	}
+	.gridItem {
+		grid-column-start: 1;
+		grid-column-end: 3;
+		grid-row-start: 1;
+		grid-row-end: 3;
+	}
+
+justify-content: space-evenly/space-around/space-between/center/start/end; → Aligns whole grid
+align-content: same as above; → Aligns vertically
+________________________________________________________________________________________________________
+Flexbox:
+html: 	<div class="flex-container">
+			<div>1</div>
+			<div>2</div>
+			<div>3</div> 
+			<div>4</div>
+		</div>
+css:	.flex-container {
+			display: flex;
+			flex-direction: row(default), column;
+		}
+		
+align-self & -items: center/flex-start/flex-end;
+________________________________________________________________________________________________________
+Voorbeeld code modeloplossingen docenten:
+-----------------------------------------
+* {
+  box-sizing: border-box; /* tel de padding en margin mee in de afmetingen van alle elementen */
+} 
+---------------------------------------------------------------------------------------------------------
+/* Responsive flexbox: 1 kolom in plaats van 2 kolommen naast elkaar */
+@media (max-width: 800px) {
+	.flex-container {
+    flex-direction: column;
+  }
+}
+--------------------------------------------------------------------------------------------------------- 
+/* Zorg ervoor dat de footer de context daarvoor niet zal overschrijven */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+--------------------------------------------------------------------------------------------------------- 
+/* For mobile phones: */
+[class*="col-"] {
+  width: 100%;
+}
+/* For desktop: */
+@media only screen and (min-width: 768px) {
+  .col-3 {width: 50%;}
+  .col-6 {width: 50%;}
+}
+--------------------------------------------------------------------------------------------------------- 
+/* Zorg ervoor dat de footer de context daarvoor niet zal overschrijven */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+--------------------------------------------------------------------------------------------------------- 
+
+________________________________________________________________________________________________________
+--JAVASCRIPT--------------------------------------------------------------------------------------------
+********************************************************************************************************
+Variabele:			let getal1, getal2 = 4, string1, string2 = 'Bavo', straing3 = 'Fien', getal3 = 1;
+					→ Altijd let gebruiken, niet var
+					→ Een var kan van datatype veranderen door toekenning vb.: let getal = 1 → getal = 'twee';
+					→ Verschillende datatypes aan elkaar hangen vb.: 	let waarde = 1;
+																		let tekst = "waarde is: ";
+																		let output = tekst + waarde;
+																		alert(output);
+																		→ waarde is: 1
+
+Operators: +, -, *, /, %, ++, --
+Toekenningsoperators: +=, -=, *=, /=, %=
+Vergelijkingsoperators op waarde: ==, !=, >, <, >=, <=
+Vergelijkingsoperators op waarde & datatype: ===, !==
+Logische operators: &&, ||, !
+
+Array aanmaken: 	let arrayNaam = [waarde0, waarde1, waarde2, ... waardeN];
+Array aanspreken:	arrayNaam[0];
+Array lengte:		arrayNaam.length → Geeft de langte als waarde
+					arrayNaam.length = getal; → Stelyt de lengte in op waarde van getal
+
+Object aanmaken: 	let objectNaam = {
+						property1: 'stringWaarde',
+						property2: 1564,
+						...
+						propertyN: 'einde'
+					};
+Object aanspreken:	objectNaam.propertyNaam;
+
+if: 				if(voorwaarde) {
+						code
+					} else {
+						code
+					}
+
+Variabele waarde toekennen aan HTML ID:					
+	let varNaam  = "tekst";
+	let varElement = document.getElementById("htmlId");
+	busElement.textContent = varNaam;
+	
+alert(waarde of var) → Geeft melding venster met de waarde
+
+console.log(waarde); → Om waarde af te drukken in de console in de browser → om te debuggen 

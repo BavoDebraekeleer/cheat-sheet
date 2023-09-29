@@ -1,0 +1,282 @@
+-- Digital Signal Preccesing --
+-------------------------------
+
+Digitale Filters
+----------------
+• Gebruikt voor signaal afscheiding:
+	aanvullen
+	
+• Analoog vs Digitaal:
+	- Analoog:
+		Goedkoop
+		Groot dynamisch ...
+		Stabiliteit en nauwkeurigheid
+		
+	- Digitaal:
+		Superieur tov analoog
+		Je kan hogere ordes maken
+		
+• Tijdsdomein:
+	Signalen worden gemaakt met samples op regelmatige tijdsintervallen, oscilloscoop
+	vb. sensors op vliegtuigvleugels
+	
+	Convolutie = doorsnede van het signaal en de filter
+	
+	Met op een Oscilloscoop
+		
+• Convolutie:
+	Iedere sample v/d output wordt berekend adhv samples aan de ingang op te tellen.
+	
+	y=h*x
+	
+	waarbij h = filter coefficienten
+			x = ingangssignalen, vb van ADC waardes gemapt tussen 0 en 1023
+			y = gefilterd signaal
+			
+	-> Meer coefficineten nodig hebben, tragere respons,
+		niet aangewezen voor realtime toepassingen, maar wel nauwkeuriger
+			
+• Recursie:
+	Uitbreiding van convolutie.
+	..aanvullen
+	
+	-> Mogelijkheid op storingen en/of oscillaties.
+
+• Responses:
+	Computer is discreet, moet 0 of 1 zijn, kan niet om met oneindige waarden.
+	
+	3 soorten:
+		- Impulse response, begint van 0 en gaat terug naar 0.
+			Impulse = 0 naar 1 en direct terug naar 0
+		
+		- Stap/step response = verandering in waarde, vb. 0 naar 1
+			=> integratie, de stap is een integraal van een impuls
+			
+			Beschrijft info in het tijdsdomein, op een bepaald moment
+			
+		- Frequentieresponse
+			-> Frequentie domein -> op Spectrum Analyzer
+			
+			Kan worden gevonden via DFT (met FFT-algoritme) van de impulsrespons.
+			
+			..aanvullen
+			
+			Beschrijft info in het frequentiedomein over een bepaalde periode van tijd.
+			
+	-> Het is niet mogelijk om een digitale filter gelijktijdig zowel door de stapresponse te optimaliseren als voor de frequentiedomein.
+		vb. ECG de hartslag van de moder wegfilteren zodat je enkel die van de baby overhoudt
+			Voor een hoorapparaat de frequenties de niet goed gehoord worden versterken.
+		
+• Tijdsdomeinparameters:
+	..aanvullen
+	
+	- Lineaire phase verschuiving:
+		Lineair geeft geen vervorming, alle signalen schuiven gelijk op -> S-curve, symmetrisch boven en onder overgangspunt
+		Non-lineair zorgt voor vervorming → plotse overgangen
+		
+		Analoog → 3dB = 70,7%
+		Digitaal → zelf kiezen, meestal 50% → lineaire phase verschuiving
+		
+
+Moving Avarage Filter	→  infrarood sensor, 1/r, r=afstand
+---------------------
+Om pieken en storingen af te vlakken.
+Voor tijdsdomein, niet geschikt voor frequentiedomein.
+
+! Totaal moet altijd 1 zijn!
+
+Polynoom = veel term
+
+• IIR = Infinitive Impulse:
+	Filters met tegenkoppeling
+	Storingen door oscillaties mogelijk
+	Theoretisch oneindig aantal waarden
+	
+	Sneller, voor realtime
+	
+	Non-lineaire = vervorming
+	Groepsvertraging is niet constant
+	
+	Kwa opbouw gelijk aan analoge filters
+	
+	Transfertvergelijking heeft een noemer/terugkoppeling in zijn transfertfucntie
+	
+	Scilab: 
+	
+• FIR = Finitive Impulse:
+	Filters zonder tegenkoppeling
+	Stabiel
+	Eindig aantal waarden
+	
+	Meer coefficiënten nodig = hogere orde = trager
+	
+	Lineaire faserespons = geen vervorming
+	
+	Magnitude en fase kunnen onafhankelijk van elkaar bepaald worden
+	
+	Transfertvergelijking heeft geen noemer/geen terugkoppeling in zijn transfertfucntie
+	
+	Scilab: wfir()
+
+• Eigenschappen digitale filters:
+	- Afsnijfrequentie
+	- Doorlaatband
+	- Transition/overgang band
+	- Sperband
+	- Filterorde
+	- Filtertype
+	- ..aanvullen
+	
+• Nyquistfrequentie = de helft van de samplefrequentie fs, vanaf wanneer aliasing optreed
+	→ In DSP vaak genormaliseerd naar 1 Hz
+	→ Afsnijfrequenties moeten liggen tussen 0,0 en 0,5 Hz
+
+• Toepassing in Scilab:
+	
+	filter(num, dem, input)
+	
+		→ waarbij:	..aanvullen
+		
+	subplot(kolom, rij, plaats)
+	
+• "Window"-methode:
+	Window = Bereik van de filter werking (kan je zien als vakje dat opschuift over het signaal)
+	
+	Types: (functies niet vanbuiten kennen)
+		- Rectangular
+		- Triangular
+		- Hamming (berg vormig), zijlob = 1/5 v/h signaal
+		- Kaiser(-Bessel) (spitsere berg)
+		- Dolph-Chebyshev (berg piek), zijlob is vlak
+		
+		
+	Toepassen in Scilab: wfir(), zie slides S46
+	
+		wfir() returned [coefficients, amplitude, frequency]
+		
+		wfir(filter-type, filter-order, [fg1 fg2], windowtype, [par& par2])
+		
+		..aanvullen
+		
+		fft(): tijdsdomein omzetten in frequenties
+		
+		
+-- Matrices --
+--------------
+- Doel = Beeldbewerking
+- Weergeven van grootheden als rijen van getallen, ordening.
+- Beelden doen bewegen door transformaties toe te passen.
+
+- Definitie matrix:
+	Geordend schema van getallen die geen getalwaarde bezit (in tegenstelling tot een determinant).
+	
+- 1 dimensionele matric = vector
+- Nulmatrix: alle elementen zijn 0, om iets te wissen bvb.
+- Diagonalen: om bepaalde vermenigvuldigingen sneller uit te voeren
+	Hoofdiagonaal: van links boven naar rechtsonder
+	
+- Driehoeksmatrix:
+	Onderdriehoeks: alles boven het midden = 0
+	Bevondriehoeks: alles onder het midden = 0
+	Orde = het aantal rijen
+	
+- Determinant van een vierkante matrix = scalaire waarde
+	- Minor: de rij en kolom van een element schrapen en de overblijvende met elkaar kruis vermenigvuldigen
+	- Cofactor: zie slides
+	
+- Optellen en aftrekken:
+	- Gesloten
+	- ...
+	
+- Scalair veelvoud: optelling van de vermenigvuldigde elementen
+
+- Transponeren: de rij met kolom van de elementen omwisselen met elkaar
+	-> Draaien, spiegelen
+	
+- Bijzondere matrices: Scheefsymmetrische = spiegelbeeld
+
+- Vermenigvuldigen:
+	Bij matrices met ongelijke dimensies gelden bepaalde regels.
+	-> niet-commutatief: A.B is niet noodzakelijk gelijk aan B.A
+
+- Inverse matrix:
+
+- Encryptie:
+	Determinant mag niet 0 zijn! Anders geen inverse.
+	
+-- Signaalbewerking met Arduino - 1 - aansturen van motoren --
+--------------------------------------------------------------
+!! Principes van werking van de motoren en de aansturing kennen en kunnen uitleggen.
+	Niet nodig hoe de bepaalde IC's exact werken.
+	
+	- H-brug
+	- PWM
+	- Servo-motor
+	- Steppen-motor magnetisch moet spoelen die van polariteit kunnen veranderen.
+		Deze trekt de dichtstbijzijnde magneet aan.
+
+- Tegen-EMK, Inductantie, stroompieken in tegenrichting
+	→ condensator plaatsen dicht tegen elke IC
+	→ in en uitgang NIET naast elkaar leggen
+	
+	→ motoren liefst op aparte voeding van de Arduino.
+	
+- PCB: banen van Vcc en GND mogen juist wel lang naast elkaar liggen
+
+- Transistoren kan je meer spanning naar de motor verliezen tegenover FET's.
+	→ Een H-brug IC kan met beide zijn opgebouwd
+	→ bij FET threshold spanning kiezen afhankelijk van de aansturingsvoltage.
+		vb voor 5V een threshold van 3V, voor 3.3V een threshold van 2V.
+		
+- Met PWM kan je de snelheid bepalen, gemakkelijkste om aan te sturen,
+	maar eigenlijk niet goed voor de motor, omdat deze continu in-
+	en uitgeschakeld wordt.
+	
+- Werken met H-brug:
+	!! Bij verandering van commando even de motor UIT zetten = alle schakelaars open!
+	vb tussen voorwaarts en achteruit rijden,
+	dit maakt de transistoren en de batterij stuk door kortsluitingen
+	
+- Bij Servo aansturing ook voldoende wachten tussen verandering van hoek.
+
+- Met Arduino verlies van nauwkeurigheid bij aansturen meerdere Servo's.
+	→ Bij RPi met multitasking op hogere snelheid blijft nauwkeurigheid behouden.
+	
+→ Metingen met wijzer met naald sneller interpreteerbaar en beter leesbaar vanop afstand tegenover digitale cijfers.
+
+
+-- Genereren van Galm (Echo) --
+-------------------------------
+Werken met array ring-buffer met geluid-samples met een pointer om deze in en uit te lezen.
+Indexcounter
+ADC, tussen A0 en A1 wisselen door register
+ADC afwijking = kwantisatie-fout
+
+Zelf DAC maken adhv PWM-buffer en timer OCR2A
+
+Analoge golf heeft 0 punt en min en plus waarden, in 256 bits digitaal 0-255, waarde begrenzen tot middelpunt 127
+
+Potentiometer om diepte van de galm te bepalen, 0-1023 herleiden tot 0-255
+Galm toevoegen door: (127 - vorigeWaardeBuffer) . (DACpotwaarde / 255) = galm (int, dus afronding van kommagetallen naar onder)
+Analoog krijgen we:  127 - DAC_input + galm = DAC_out voor PWM
+
+Laag-doorlaat filter bij PWM out
+Met Timer2 omdat we al werken met 8-bit
+
+volatile variabelen kunnen niet geoptimaliseerd worden door de compiler naar een constante waarde (verandering gebeurt door input van buitenaf)
+
+
+-- Capacitieve Sensor --
+-------------------------------
+Tussen Sendpin en Receivepin wordt een bepaalde weerstand geplaatst afhankelijk van de gewenste response.
+Hoe groter de weerstand, hoe groter de gevoeligheid van de sensor maar hoe trager de reactie zal zijn.
+
+	1 MΩ voor activatie bij aanraking
+	10 MΩ voor response op zo’n 10 à 15 cm afstand
+	40 MΩ voor response op zo’n 30 à 50 cm afstand
+
+Een capaciteit van 1 nF in serie met de sensor kan eventueel 50 Hz bron voorkomen of sterk verminderen.
+
+Research has shown that a small capacitor (100 pF) or so from sensor pin to ground improves stability and repeatability.
+Bij gebruik van een breadboard vervullen de connecties in het breadboard zelf deze rol.
+Adding small capacitor (20 - 400 pF) in parallel with the body capacitance, is highly desirable too, as it stabilizes the sensed readings.

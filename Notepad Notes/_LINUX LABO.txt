@@ -1,0 +1,383 @@
+LINUX LABO SAMENVATTING
+ALLES VAN LABO 2-11
+___________________________________________________________________________________________________________________________________________________________________
+HANDIGE DINGEN:
+---------------
+man [command]		Manual: Documentatie, geeft meer info over commando		vb.:man man → geeft info over man commando
+TAB					Auto complete typen van bestaande files & directories
+import [file name][file extention]	vb.:import screenshot.jpg → je krijgt een kruisjes cursor waarmee je een venster kan tekenen om een screenshot te maken. Deze wordt dan opgelsagen als de opgegeven file.
+SHIFT + CTRL + '+'	Terminal vergroten
+clear OF CTRL + L	Maakt terminal console leeg
+CTRL + C			Commando dat blijft runnen stoppen
+alias [commando naam]="[code]"		Nieuw commando aanmaken met eigen code		vb.: alias cls="clear; ls" → Bij uitvoring van 'cls' eerst 'clear' uitvoeren en dan 'ls'
+
+tput [options] [param]				Terminal instellingen aanpassen				vb.: tput setaf 2 → Tekst groen maken
+	→ setaf [0..9] → Set terminal tekst kleur
+	  setab [0..9] → Set terminal achtergrond kleur
+	  bold		   → Maak terminal tekst bold
+	  dim		   → Maak terminal tekst minder helder
+	  sgr0		   → Set all to default
+	  cup [x] [y]  → Set cursor position x,y
+		→ Colors: 0 → Black
+				  1 → Red
+				  2 → Green
+				  3 → Yellow
+				  4 → Blue
+				  5 → Magenta
+				  6 → Cyan
+				  7 → White
+				 (8 → Not used)
+				  9 → Reset to default color
+
+ip a				IP adressen van systeem laten zien
+
+shelcheck [script filename]		Script op errors laten checken	→ Installeren: sudo apt-get install shellcheck
+___________________________________________________________________________________________________________________________________________________________________
+SSH:
+-----------------
+ssh [username]@[hostname or ip]		Verbinding maken met externe Linux en hierop inloggen met bepaalde user.
+										vb.: ssh apstudent@135.181.42.235 → ap-testssh server → wachtwoord: checkP0INTalfa?
+										     ssh bavo@localhost → Met de locale Linux verbinding maken
+systemctl start sshd				SSH-server opstarten
+
+scp [OPTION] [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2 	Secure copy: Kopiëren van ssh-server of lokale computer naar andere ssh-server of lokale computer → https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/
+	→ Options: -r → copy directories recursively					vb.: scp -r /etc/passwd root@10.0.2.15:/tmp/
+																→ The colon ":" is how "scp" distinguish between local and remote locations
+																	→ Local moet geen [user@]SRC_HOST:] bij, enkel de filepath
+																→ How to Fix the SSH “Connection Refused” Error: https://kinsta.com/knowledgebase/ssh-connection-refused/
+sudo service ssh [option] OR /etc/init.d/ssh [option]
+	→ Options: 	status					Checken of ssh runt
+				start					Starten
+				stop					Stoppen
+				restart					Heropstarten
+				
+sudo apt-get install openssh-server		SSH installeren van de Openssh-server → https://www.cyberciti.biz/faq/debian-linux-install-openssh-sshd-server/
+netstat -tulpn | grep :22				Verify TCP port 22
+
+vboxmanage guestproperty get "VM_NAME" "/VirtualBox/GuestInfo/Net/0/V4/IP" 		IP van local SSH vinden → https://serverfault.com/questions/540107/connect-via-ssh-to-virtualbox-guest-vm-without-knowing-ip-address
+
+___________________________________________________________________________________________________________________________________________________________________
+DIRECTORY TEKENS:
+-----------------
+/					Root
+[directory name]/	'/' om aan te duiden dat het over een directory gaat
+~					Zelfde als starten met je home directory v/d ingelogde user		vb.:cp file1 ~/file2
+___________________________________________________________________________________________________________________________________________________________________
+FILE NAAM TEKENS:
+
+*					Als file name → alle files		vb.:mv * /dir5
+						In file name → alle files startend of beginnend met wat voor of achter * staat		vb.:mv tekst* /dir5
+?					Ipv character in file name (één of meer) → op plaats van ? om het even welk character, maar enkel één!	vb.:mv ?ekst /dir5 of mv ??kst /dir5
+.					Geef zelfde naam als source			vb.:cp file1 /dir/.
+						Kan ook volledige pad invullen		cp /dir1/a/b/c/d/e/f/file1 /dir2/.
+___________________________________________________________________________________________________________________________________________________________________
+FILES & DIRECTORIES:
+--------------------
+ls [options][path]	List: Toont lijst van files in de [path] directory, zonder → de 'working directory'		vb.:ls /bin
+	→ Options:	-1		Lijst opsomming onder elkaar
+				-a		Toont ook verborgen files
+				-l 		Gedetaileerde lijst, toont File attributes
+ll					Zelfde als 'ls -l' hierboven
+
+cd [directory]		Change directory: Ga naar bepaalde directory		vb.:cd var 	→ Naar var directory (die zich in de in de working directory bevind)
+																			cd / 	→ Naar root
+																			cd .. 	→ Stap uit working directory
+																			cd 		→ Naar home directory							
+
+pwd					Print working directory: geeft de boomstructuur hiervan weer
+
+cp [source file] [name copy]	Copy: File kopiëren	vb.:cp file1 file2 -> Kopiëer file1 en noem deze file2
+mv [source] [destination]		Move: File verplaatsen		vb.:mv file1 directory2 → file1 staat nu in directory2
+									OF van naam veranderen	vb.:mv file1 file2		→ file1 blijft in dezelfde directory, maar noemt nu file2
+rm [options] [file]				Remove: File wissen		vb.:rm file1			→ wist file1
+	→ Options: -r					Alles wissen			rm -r directory1	→ wist directory1 en ALLE bestanden erin
+
+mkdir [options][path][directory name]	Make directory: Maakt een nieuwe directory aan 	vb.:mkdir mijndir		→ maakt nieuwe directory mijndir aan in de working directory
+	→ Options: -p							If not exists									mkdir /home/mijndir	→ maakt nieuwe directory mijndir aan in /home																				
+
+rmdir [options][path][directory name]	Remove directory: Wist de opgegeven directory
+
+touch [options][file name]		Touch: Maakt nieuwe file aan
+
+tree [options][path]			Treebranch structure van de working directory (niet standaard, moet geïnstalleerd worden)
+	→ Options: -d					Toont enkel directories	
+
+import [file name][file extention]	vb.:import screenshot.jpg → je krijgt een kruisjes cursor waarmee je een venster kan tekenen om een screenshot te maken. Deze wordt dan opgelsagen als de opgegeven file.
+
+___________________________________________________________________________________________________________________________________________________________________
+USERS & GROUPS
+--------------
+/etc/passwd → alle userinfo zien met cat [filename]
+/etc/group 	→ alle groupinfo zien met cat [filename]
+Via GUI: Start → System → Administration → Users and Groups
+
+useradd [name]		Maakt user aan, maar ZONDER homedir en wachtwoord, voor gebruik in scripts
+adduser [name]		Maakt user aan en vraagt alles om een wachtwoord, homedir en beschrijving te creëren, MAAR zelf een script, niet bruikbaar IN een ander script
+userdel [name]		Wist de opgegeven user
+passwd [username]	Wachtwoord wijzigen → zonder [username] de ingelogde user
+
+su [username]		Super User: Andere user worden voor het systeem → zonder [username] wordt je root superuser → gevraagd wachtwoord is dat van de user die je wilt innnemen
+sudo -i (of -s)		as Super User Do: Zelfde als su zonder [username], wordt je root superuser, maar enkel voor dat commando
+exit				Keer terug naar vorige identiteit
+
+sudo [commando]		Voer [commando] uit als root superuser (mits de huidige user sudo rechten heeft!) → gevraagd wachtwoord is van huidige user
+
+whoami				Who am I? Toont als wie je op dat moment ingelogd bent
+
+groupadd [group name]					Maakt nieuwe group aan [group name]
+groupdel [group name]					Wist group [group name]
+groupmod -n [new name] [group name]		Group van naam veranderen
+usermod -a -G [group name] [username]	Voeg [username] toe aan [group name]
+groups [username]						Toont in welke groups [username] zit
+memebers [group name]					Toont welke users in [group name] zitten
+											→ Niet standaard, eerst toevoegen: sudo apt-get install members
+id [username]							Toont de uid/gid en de gid's waar [username] lid van is
+___________________________________________________________________________________________________________________________________________________________________
+FILE RECHTEN SYSTEEM & OWNERSHIP
+--------------------------------
+ll										Lijst van files in working directory (ls) + permissions + ownership → ll = ls -l
+											→ Permission types: drwx(u)rwx(g)rwx(a) (d = directory)
+chmod [file attributes] [filename]		File permissions aanpassen (Goeie uitleg: https://www.howtogeek.com/437958/how-to-use-the-chmod-command-on-linux/)
+	→ File attributes op volgorde van permission types: drwx(u)rwx(g)rwx(o) (d = directory, een hier - betekend dat het een file is)
+	→ Permissions: 	r (=4) → Read
+					w (=2) → Write
+					x (=1) → Execute
+						→ Bij getallen methode: tellen op!
+	→ For who:		u → User who owns the file
+					g → Group: alle memebers van de group die owner is v/d file
+					o → Others: de rest die niet 'u' of 'g' is
+					a → All: iedereen
+						→ Als niet gespecifieërd wordt 'a' gebruikt
+	→ Operations:	+ → Adds the permission to the existing permissions
+					- → Removes the permission
+					= → Set specified permission and removes all others
+					
+	→ Twee manieren:	1) Met getallen 	vb.: chmod 754 file1 			→ -rwxr-xr-- → User krijgt de drie permissions, Group krijgt Read en Execute, en Others enkel Read
+												 chmod 754 directory1 		→ drwxr-xr--
+						2) Met operations	vb.: chmod a=r,ug=x,u=w file1	→ Exact hetzelfde als hierboven
+												 chmod a+x file2			→ Iedereen krijgt uitvoer rechten
+												 chmod +x file2				→ Exact hetzelfde als hierboven want standaard wordt 'a' gebruikt als niet gespecifieërd
+												 
+chown [username]:[group] [filename1] [filename2] ...		Change Ownership: File ownership aanpassen
+
+chgrp [options] [group] [filename1] [filename2] ...			Change Group: Enkel file group ownership aanpassen
+	→ Options: -v → Print wat gebeurt
+			   -c → Print enkel wat effectief verandert
+			   -f → Geef geen error boodschap als het mislukt
+	→ Username of group kan ook nummeriek zijn → GID
+	→ +[GIU] → Maakt nieuwe group aan met nummer [GID] als GID
+___________________________________________________________________________________________________________________________________________________________________
+BACKUPS MAKEN: Comprimeren, Archiveren & Synchroniseren
+-------------------------------------------------------
+gzip [options] [filename]		File comprimeren → originele file wordt verwijdert, snelste	vb.: gzip file1.txt → file1.txt.gz
+	→ Options: -k					Met behoud van originele file
+bzip2							File comprimeren → betere compressie, maar trager dan gzip 
+gunzip [options]  [filename]	Gzip file uitpakken
+
+tar [options] [target filename] [source filename1] [source filename2] ...	Archiveren	vb.: tar cvfz archieffile.tar.gz file1 file2 file3 → Archief aanmaken (c), file1-3 toevoegen, het archief comprimeren (z), en ondertussen tonen wat er gebeurt (v)
+	→ Options: 	-c	→ Create archive														 tar xvfz archieffile.tar.gz → Archief de-comprimeren (z) en de-archiveren (x), en ondertussen tonen wat er gebeurt (v)
+				-x 	→ Extraxt archive
+				-v 	→ Verbose: toont wat tar aan het doen is
+				-r 	→ Append files to archive (!Gaat niet als gecompresseerd!)
+				-f 	→ File: gebruik een archief bestand (ALTIJD!)
+				-z 	→ Zip: gzip of gunzip van het archief afhanekelijk van of het al gecomprimeerd is of niet
+	→ Eigenaar en rechten blijven zelfde als originele file
+
+rsync [options] [source name][target]	Synchroniseren van file of directory
+	→ Options: 	-r 	→ Recursive: alle files hoger in de tree worden gekopieërd
+				-v 	→ Verbose: toont wat er gebeurt
+				-a 	→ Archive: bewaard ook de originele tijd, rechten, enz.
+				-u 	→ Update: sla bestanden die nieuwer zijn op de bestemming over
+				-t 	→ Times: behoud modificatie tijden
+				--delete 	→ wist ook bestanden op de bestemming indien gewist op de source directory
+	→ Twee manieren van gebruik:	1) Files: rsync bronbestand doelbestand
+									2) Directories: rsync -vrut brondirectory/ doeldirectory/
+___________________________________________________________________________________________________________________________________________________________________
+STREAM REDIRECTION:
+-------------------
+[command] > [target]	Stuur output van [command] naar [target]	vb.: ls > lijst.txt → Maakt nieuwe file lijst.txt met daarin de output van ls
+							→ Maakt nieuwe file aan OF overschrijfd als file al bestaat
+[command] >> [target]	Append output van [command] aan [target]	vb.: ls >> langelijst.txt → Plakt de output van ls onderaan langelijst.txt
+[command] 2> [target]	Stuurt error outputs van [command] naar [target]
+							→ Kan beide met 2> of 2>>
+
+echo [options] [text string]	Output de ingevoerde tekst, standaard naar de terminal console			vb.: echo "Geeft deze tekst weer in de terminal"
+	→ Options: -n 					Zonder line break/nieuwe alinea
+									→ Met stream redirection kan je zo tekst toevoegen aan een file		vb.: echo "Dit wordt in een textdocument gezet." > tekst.txt
+cat [options] [filename]		Output inhoud van een file, standaard naar de terminal console
+									→ Met stream redirection kan je zo de inhoud van een andere file toevoegen aan een nieuwe of bestaande file
+head [options] [filename]		Zelfde als cat, maar enkel de eerste lijnen → Standaard 10
+	→ Options: -[aantal lijnen]		vb.: head -21 tekst.txt	→ Output de eerste 21 lijnen van tekst.txt
+tail [options] [filename]		Zelfde als head, maar enkel de laatste lijnen
+	→ Options: -n [aantal lijnen]
+
+[command1] | [command2]		Output van het eerste commando naar het tweede sturen
+___________________________________________________________________________________________________________________________________________________________________
+EDITORS: Van oud naar nieuw: vi → emacs → nano
+--------
+vi [options][filename][file extension]		Opent de vi editor, en optioneel nieuwe file aanmaken 	→ Uit vi of vim geraken met ESC + :q!
+nano [options][filename][file extension]	Opent de nano editor, en optioneel nieuwe file aanmaken
+___________________________________________________________________________________________________________________________________________________________________
+TEXT:
+-----
+more [options] [filename]	Tekst in pagina's onderbreken en weergeven in terminal console
+								→ SPATIE 		→ naar de volgende pagina
+								→ /[pagina nr] 	→ naar specifieke pagina gaan
+								→ q 			→ more verlaten
+less [options] [filename]	Zelfde als more, maar less is more, dus ondersteund scrollen
+								→ Pijltjes up & down 	→ scrollen
+								→ q 					→ less verlaten
+grep [options] [pattern] [filename]		Zoekt het opgegeven patroon in de opgegeven file en drukt de lijnen af waar dit patroon voorkomt.
+diff [options] [filename1] [filename2]	Zoekt het verschil tussen twee files zegt hoe je ze identiek maakt door posities en de verschillen weer te geven
+											→ Positie:	a → add
+														c → change
+														d → delete
+												vb.: 3,4c3,4 → change in beide files row 3-4 aan
+													 2c2,3   → change row 2 in file1 en row 2-3 in file2
+											→ < → Zegt wat het verschil is  vb.: < verschillende woorden
+	→ Options: -u 						Unify: Geeft volledige inhoud van de files weer met de verschillen aangeduid met '-' en '+'
+___________________________________________________________________________________________________________________________________________________________________
+CONCATENATIE: Meerdere commando's op dezelfde lijn uitvoeren
+-------------
+[command1] ; [command2]		De commando's één voor één uitvoeren
+[command1] && [command2]	Conditioneel: Het tweede commando wordt enkel uitgevoerd als het eerste GEEN error's output
+[command1] || [command2]	Conditioneel: Het tweede commando wordt enkel uitgevoerd als het eerste WEL error's output		
+
+
+
+___________________________________________________________________________________________________________________________________________________________________
+SCRIPT: (Bash, extentie → *.sh)
+-------
+#!/bin/bash				Text interpreteerbaar maken als een Bash script → Bash script moet hiermee beginnen
+							→ Script file moet ook uitvoerrechten krijgen	vb.: chmod +x scripttextfile.sh
+# [comments]			Commentaar toevoegen
+./[scriptfilename.sh]	Script uitvoeren → ./ OF volledig filepath
+./[scriptfilename.sh] [param1] [param2] ... 	Script uitvoeren en direct extra parameters inputten	vb.: ./mijnscript.sh hallo → $1 = "hallo"
+	→ Viariabele $0 → [scriptfilename]
+				 $1 → [param1]
+				 $2 → [param2]
+				 ...
+				 
+shelcheck [script filename]		Script op errors laten checken	→ Installeren: sudo apt-get install shellcheck
+
+-- VARIABELEN: (voor duidelijkheid in hoofdletters, maar niet verplicht) ------------------------------------------------------------------------------------------
+[variabele naam]=[variabele waarde]			Variabele initialiseren en declareren
+											vb. getal: GETAL1=123
+											vb. string: TEKST="tekst string"
+$[viariabele naam]							Waarde van de variabele gebruiken/lezen
+
+export [variabele naam]						Om variabelen ook te gebruiken in alle child-processes in andere shells buiten de actuele shell
+read [options][variabel1] [variabel2] ...	Input inlezen en in (een) variabele(n) opslaan	vb.: read -p "Wat is je naam?" NAAMVAR
+												→ Als variabele niet gespecifiëerd is deze op te halen via $REPLY
+	→ Options:	-p "tekst"		→ Prompt: echo de tekst
+				-d [delimitor]	→ Delimitor: kies een ander teken (→ [delimitor]) ipv spatie als tussen variabele
+				-n [x]			→ Leest x-aantal chars als input
+				-s 				→ Secure: verbergt de ingave, vb. voor wachtwoord
+
+-- ENVIRONEMNT VARIABELEN: PS1, PS2, PATH, HOME, REPLY (→ niet vanbuiten kennen, gewoon dat ze bestaan) -----------------------------------------------------------
+printenv		Output alle environment variabelen naar de terminal met echo
+
+-- BEWERKINGEN: ---------------------------------------------------------------------------------------------------------------------------------------------------
+[resultaatvar]=$(($[var1] [bewerking] $[var2]))		vb.: SOM=$(($A + $B)) → Getallen in A en B optellen
+
+-- LIJSTEN: -------------------------------------------------------------------------------------------------------------------------------------------------------
+lijst="een twee drie" 		→ "een", "twee" en "drie" zijn afzonderlijke items in de lijst
+[var naam]=$([commando])	Commando substitutie: output van een commando opvangen in een lijst
+
+-- CONDITIONALS & LOOPS: (! Let op! Plaatsing van spaties, leestekens en haakjes zeer belangerijk!) ----------------------------------------------------------------
+https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php 
+
+Conditions 	voor getallen:	-eq → '='  Equal to									vb.: $GETAL -eq 3
+							-ne → '!=' Not equal to									 001 -eq 1 → true
+							-lt → '<'  Less than
+							-le → '<=' Less than or equal to
+							-gt → '>'  Greater than
+							-ge → '>=' Greater than or equal to
+			
+			voor strings	-n → The length of STRING is Not zero
+							-z → The lengh of STRING is Zero → it is empty
+							 = → Two strings ar equal to eachother 				vb.: "Iets" = "Iets" → true
+							!= → Two strings are not equal							 001 = 1 → false! Omdat het wordt vergeleken als strings, niet als getallen
+							
+			voor files:		-e → File exists
+							-f → File is a "regular" file
+							-d → File is a directory
+							-r → File has read permission
+							-w → File has write permission
+							-x → File has execute permission
+							-s → File exists and it's size is greater than zero → it is not empty
+							
+! [EXPRESSION]				The [EXPRESSION] is false
+[condition] && [condition]	AND
+[condition] || [condition]	OR
+
+break		Loop stoppen → de code gaat voort na/onder de loop (geen effect op if, enkel de loop waar het in staat)
+continue	Gaat naar de volgende iteratie → slaat de code eronder in de huidige stap in de loop over → gaat verder met de volgende stap	vb.: if ... then continue
+							
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+if [ [value] [condition] [value] ]; then
+	# code die moet uitgevoerd worden als true
+(elif [ [value] [condition] [value] ]; then		vb.: if [ -e "$file" ]; then → Als de file bestaat, dan ...
+	# elif/else if code)
+(else
+	# else code)
+fi → Geen ';' om code blokken te sluiten in Bash dus conditionals en loops moeten steeds gesloten worden meet bepaald commando
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+case [expression] in		vb.:	case $INPUT in
+	[patroon1] )						start )
+		# Code								echo "waarde in INPUT was start"
+	;;									;;
+	[patroon2] )						"echo" ) → Als [patroon] hetzelfde is als een bestaand commando → tussen ""
+		# code								echo "waarde in INPUT was stop"
+	;;									;;
+	...									[1-8] ) → Patronen kunnen gegroepeerd worden, [a-z] kan ook
+esac										echo "waarde in INPUT was een getal van 1 tot en met 8"
+										;;
+										* ) → Elk mogelijke andere waarde als degene die hierboven voorkomen
+											echo "iets anders"
+										;;
+									esac
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+while/until [condition]		vb.:	while [ $getal -lt 10 ]		vb.:	until [ $getal -eq 9 ]
+do 									do									do
+	# code								echo $getal							echo "kies 9 om te stoppen"
+done									getal=$((getal+1))					read getal
+									done								done
+									
+	→ 'while' voert code uit ALS de conditie voldaan is
+	→ 'until' STOPT als de conditie voldaan is
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+								
+for [VAR] in [list]			vb.:	LIJST="een twee drie" → "een", "twee" en "drie" zijn afzonderlijke items in de lijst gescheiden door delimitor spatie
+do									for ITEM in $LIJST
+	# doe iets met $[VAR]			do
+done									echo $ITEM → Schermafdruk: 	een
+									done							twee
+																	drie → De lijst wordt één voor één afgegaan
+	→ Niet zoals 'for loop' in andere programmeer talen.
+	  Deze doorloopt alle items in een lijst [list] en kent deze toe aan [var], om er bvb. bewerkingen op te doen of iets te zoeken.
+	
+	→ De lijst kan ook opgegeven worden in de loop code vb.: 	for GETAL in {1..20} → Kan ook met letters vb.: {b..k}
+																do
+																	echo $GETAL → Drukt alle getallen van 1 tot en met 20 onder elkaar af in de terminal
+																done
+	
+	→ Met commando substitutie:							vb.:	for FILE in $(ls)
+																do
+																	echo $FILE → Elke filename die 'ls' output wordt onder elkaar afgedrukt in de terminal
+																done
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- METHOD / FUNCTION ----------------------------------------------------------------------------------------------------------------------------------------------
+→ De Methoden code moet boven de code staan waar je ze wil gebruiken!
+
+function [name] { → Eén van de weinige keren in Bash waar code block gevormd wordt met {}
+	# code
+}

@@ -1,0 +1,1018 @@
+§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§  PYTHON PROGRAMMING SAMENVATTING  §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+_______________________________________________________________________________________________________
+--------------------
+§§ HANDIGE DINGEN §§
+--------------------
+string.len()			→ geeft lengte van een string
+
+String concatenatie: https://realpython.com/python-f-strings/
+	1) ""+""		→ "x=" + str(self.x) + ", y=" + str(self.y)
+	2) "{}".format	→ "(x={0}, y={1})".format(self.x, self.y)
+	3) f"{}"		→ f"x={self.x}\n, y={self.y}"				→ \n = escape character new line
+	
+import datetime: https://realpython.com/python-datetime/#using-the-python-datetime-module 
+
+Overloading functions: https://stackabuse.com/overloading-functions-and-operators-in-python/#:~:text=Python%20supports%20both%20function%20and,the%20scope%20of%20a%20class.
+	__..__(self, other):
+	
+	__add__	+	addition						__mul__	*	multiplication
+	__sub__ -	subtraction						__truediv__ / divition
+	__mod__	%	modulus							
+
+	__eq__ 	==	equal to 						__ne__ 	!=	not equal
+	__le__ 	<=	less than or equal to 			__lt__	<	less than
+	__ge__	>=	greater than or equal to		__gt__	>	greater than
+	
+	__len__		length value					__bool__	boolean check
+	
+	vb.:	class Order:
+				def __init__(self, cart, customer):
+					self.cart = list(cart)
+					self.customer = customer
+
+				def __len__(self):
+					return len(self.cart)
+
+				def __bool__(self):
+					return len(self.cart) > 0
+
+				def __add__(self, other):
+					new_cart = self.cart.copy()
+					new_cart.append(other)					→ Wel effectief toevoegen aan cart: self.cart.append(other)
+					return Order(new_cart, self.customer)
+
+			order = Order(['appel', 'mango', 'banaan'], 'Kim')
+			order2 = Order([], 'Jente')
+			print(bool(order))	→ True
+			print(bool(order2))	→ False
+			print(len(order))	→ 3
+			print((order + 'kiwi').cart)	→ ['appel', 'mango', 'banaan', 'kiwi']
+			print(order.cart)	→ ['appel', 'mango', 'banaan']
+
+_______________________________________________________________________________________________________
+------------------
+§§ TERMINOLOGIE §§
+------------------
+• Algoritme:
+	Reeks specifieke stappen om probleem op te lossen.
+
+• Formele taal:
+	Taal die door de mens is ontworpen voor bepaald doel. → Programmeertalen, wiskunde
+	
+• Bug:
+	Error in het programma.
+	→ Drie soorten: Syntax, Runtime en Semantic Error
+		- Syntax Error:
+			Code is niet volgens de syntax regels.
+			→ Tijdens coderen en compileren
+
+		- Runtime Error:
+			Exceptions, verschijnt na dat het programma is opgestart.
+			→ Tijdens het lopen van het programma
+
+		- Semantic Error
+			Het programma doet iets anders dan de bedoeling is.
+			→ Geen error van de interpreter of compiler.
+			→ Debuggen door de output van het programma te analyseren of het wel doet wat je verwacht.
+	
+• High-level programmeertaal:
+	Door de mens gemakkelijk leesbare programmeertaal bvb. Phyton, C#.
+	
+• Interpreter:
+	Engine die de programmacode uitvoert.
+
+• Immediate mode:
+	Stijl om Phyton te gebruiken in de command prompt
+	waarbij de resultaten meteen worden weergegeven.
+	
+• Parse:
+	Programma onderzoeken en de syntactische structuur analyseren.
+
+• Object Code:
+	Output van de compiler na de vertaling van het programma.
+	
+• Problem Solving:
+	Proces van het formuleren van een programma,
+	het vinden van een oplossing,
+	en het uitdrukken van de oplossing.
+
+• Phyton Shell:
+	Interactieve user interface voor de Phyton Interpreter.
+	Commando's worden ingevoerd in de prompt (>>>) en worden na Enter naar de interpreteer gestuurd om te verwerken.
+	
+• Token:
+	Een basiselement (zie slides)
+	
+• State Snapshot:
+	Grafische weergave van reeks variabelen en de waarde waarnaar ze verwijzen,
+	genomen op een bepaald moment tijdens de uitvoering van het programma.
+	
+• Module:
+	Gelijkaardig aan een Library in andere talen.
+	
+• Invoke:
+	Aanroepen van een methode.
+	
+• 'Lazy' function: 
+	Produceert het volgende element enkel wanneer het nodig is.
+		→ voor performantie → nog niet nodig = hoeft nog niet in geheugen
+		vb.: range()
+		
+• Namespace:
+	Verzameling van identifiers die tot een module, functie of klasse behoren.
+	
+	from moduleNaam import functieNaam1, FunctieNaam2, .. OF *(Alles)
+		→ importeerd in lokale namespace → je moet de module naam er niet meer voor zetten, "moduleNaam." weglaten, enkel de functieNaam
+		
+• Recursie = iets definiëren in termen van zichzelf
+	→ Functies kunnen zichzelf aanroepen om subproblemen op te lossen.
+	
+• Control Flow:
+	Interpreter houdt bij welke statement zal worden uitgevoerd.
+
+_______________________________________________________________________________________________________
+--------------------------
+§§ ALGEMEEN §§
+--------------------------
+Commentaar:
+-----------
+	#Eén regel commentaar
+
+	"""
+	Meerdere regels
+	commentaar
+	in blok.
+	"""
+	
+Naming Conventions: https://visualgit.readthedocs.io/en/latest/pages/naming_convention.html
+-------------------
+
+Tekst:
+------
+	• 'woord' → tussen '
+	• "een zin als volgt" → tussen "
+	• """Een paragraaf zetten we tussen
+	  drie dubbele quotes."""
+
+Inspringen:
+-----------
+	Code blokken worden aangegeven door in te springen met tabs → HEEL BELANGERIJK!
+	 → code blokken die bij elkaar horen, 'if else' bvb, moeten op zelfde afstand staan.
+ 
+Variabelen:
+-----------
+	Geen impliciete declaratie nodig → Declaratie gebeurt bij initialisatie dmv wat je eraan toe kent.	
+
+Datatypes:
+----------
+	- 5 soorten datatypes:
+		• Numbers
+			→ 4 types:		vb.:
+				- int		10
+				- Long		51924361L → hoofdletter L belangerijk om als Long gezien te worden
+				- Float		17.20
+				- Complex	8.3645e-27j
+				
+		• String
+			→ String is array van characters
+				→ vb.: print str[1:4] → characters van de 2e tot de 4e positie
+			→ Concatenatie vb.: str + "andere string"
+			
+		• List
+			→ [,] om te initialiseren
+			→ [:] om uit te lezen
+			
+		• Turples = read-only lists
+			→ (,) om te initialiseren
+			→ [:] om uit te lezen
+			
+		• Dictionary → key-value pairs
+			→ {} om te declareren
+			→ ['..'] om één enkele waarde toe te kennen
+			→ {'..': ,} om meerdere waardes toe te kennen en te initialiseren
+			→ varNaam.keys() geeft alle key namen
+			→ varNaam.values() geeft alle waardes
+			
+	- Datatype converting:
+		datatype(variabele)
+		→ vb.: 	float(a)
+				str(b)
+				
+	- Paired Data:
+		celeb = ("Michael Jordan", 1963)
+		
+		→ Één van de twee kan ook nog een lijst zijn.
+			studenten = [
+				("Kim", ["CompSci", "Physics"]),
+				("Jente", ["Maths", "CompSci", "Stats"]),
+				("Yana", ["CompSci", "Accounting", "Economics", "Management"])	]
+		
+		→ Paired Data kan ook in een Array:
+			celebs = [("Michael Jordan", 1963), ("Michael B. Jordan", 1987), ("Kitten Faeryn", 1996)] 
+			
+		→ Doorlopen met for-loop:
+			vb.:	for name, year in celebs:
+						if year < 1980:
+							print(name)
+							
+			vb.:	for naam, cursussen in students:
+						print(naam, "volgt", len(cursussen), "cursussen")
+		
+Operatoren:
+-----------
+	Soorten operatoren:
+		• Rekenkunddige
+		• Vergelijkende
+		• Toewijzings-
+		• Logische
+		• Bitwise-
+		• Liddmaatschaps-
+		• Identiteits-
+
+		• Rekenkunddige operatoren:
+			+	→ Optelling
+			-	→ Aftrekking
+			*	→ Vermenigvuldiging
+			/	→ Deling
+			%	→ Modulo → rest waarde
+					→ Om waarde uit andere te halen
+						- rechtse getal(len)			vb.: 45%10 = 5	of	8645%100 = 45
+						- minuten en uren uit seconden	vb.: resterende_seconden = (totaal_seconden%3600) %60
+			**	→ Exponent → macht
+			//	→ Floor Division 	→ cijfers achter de komma zijn verwijderd
+									→ Als één van de operanden negatief is, is het resultaat floor 
+									→ afronden weg van 0
+									vb.: 9//2 = 4;	-11//3 = -4;	9.0//2.0 = 4.0
+		
+		• Vergelijkende operatoren:
+			==	→ Gelijk aan
+			!=	→ Niet gelijk aan
+			<>	→ Niet gelijk aan (zelfde als !=)
+			>	→ Groter dan
+			<	→ Kleiner dan
+			>=	→ Groter of gelijk aan
+			<=	→ Kleiner of gelijk aan
+		
+		• Toewijzingsoperatoren:
+			=	→ rechtstreekse toekenning
+			+=	→ toekening van uitkomst rekenkundige operatoren
+			-=
+			*=
+			/=
+			%=
+			**=
+			//=
+		
+		• Logische operatoren:	vb.:				→ true/false = 1/0
+			and					(a and b) is true
+			or					(a or b) is true
+			not					not(a < b) → Niet vervangbaar met !(a < b)
+		
+		• Bitwise-operatoren:
+		
+		
+		• Liddmaatschapsoperatoren: → zit element in lijst → true/false = 1/0
+			in					x in y
+			not in				x not in y
+		
+		• Identiteitsoperatoren: → pointers naar zelfde adres → true/false = 1/0
+			is					x is y
+			is not				x is not y
+
+_______________________________________________________________________________________________________
+-------------
+§§ STRINGS §§	(Aanvullen Theorie 2 en samenzetten vorige)
+-------------
+
+String Formatting:
+------------------
+Met gebruik van turple en %-parameter
+- Parameters:
+	%s				String (of object)
+	%d				Integer
+	%f				Float
+	%.<#digits>f	Float met # beduidende cijfers
+	%x of %X		Integer in hexadecimale voorstelling
+	
+vb.:	naam = 'Bavo'
+		leeftijd = 29
+		print("%s is %d jaar oud." % (naam, leeftijd))
+
+string.format()		
+	vb.:	txt = "For only {price:.2f} dollars!"
+			print(txt.format(price = 49))
+			
+	vb.:	totaal = 1000
+			aantal = 2
+			prijs = 450
+			zin = "Ik heb {totaal} euro, waardor ik {aantal} consoles van {prijs:.2f} euro kan kopen."
+			print(zin.format(totaal = totaal, aantal = aantal, prijs = prijs))
+
+_______________________________________________________________________________________________________
+------------------------------------------------------------------------
+§§ DECISION MAKING / BESLUITVORMING = BOOLEAN EXPPRESSION / CONDITION §§
+------------------------------------------------------------------------
+- null = geen geheugen (niet gelijk aan 0)
+- nesting: if statements in code block andere if statement
+
+- if statement:
+	if ( boolean exppression ) :	→ Haken niet verplicht, tenzei → vb.: (a and b) or (c or d)
+	code lijn/statement/body
+	
+	if ( boolean exppression ) :
+		code block
+		/statements
+		/body
+		
+	if var (not) in list:
+	
+- if else statement:
+	if ( boolean exppression ) :
+		code/statement(s)/body
+	elif ( boolean exppression ) :
+		code/statement(s)/body
+	else:
+		code/statement(s)/body
+
+_______________________________________________________________________________________________________
+--------------------
+§§ LOOPS / LUSSEN §§
+--------------------
+- Sequentieel
+
+- while loop:
+	while <condition> :
+		<statement(s)>
+
+- for loop (zoals in BASH Linux, for each loop):
+	vb.: zie theorie 2
+	lijst met opeenvolgende getallen genereren → range(van, tot) → 'van' default = 0
+		→ vb.: for getal in range(1, 10): → getallen 1 tot en met 9
+			   range(1, 10) = [1, 2 3, 4, 5, 6, 7 8, 9]
+			   range(4) = [0, 1, 2, 3]
+		→ 'lazy' function: produceert het volgende element enkel wanneer het nodig is
+			→ voor performantie → nog niet nodig = hoeft nog niet in geheugen
+
+- Loop control statements:
+	• break:
+		beëindigt de huidige lus en gaat verder met de code na de lus code
+		
+	• continue:
+		beëindigt de huidige iteratie en gaat verder bij het begin van de loop
+	
+	• pass:
+		nul operatie, slaagt de lus over
+		→ gebruikt als placeholder zodat er geen errors zijn als de lus nog niet af is
+			vb.: zie for loop
+			
+- pass:
+	iteratie of if/else blok overslagen.
+	
+- Tabellen creëeren:
+	vb.:	for x in range(10):
+				print(x, "\t", 2**x)
+	→ geeft:	0	1
+				1	2
+				2	4
+				3	8
+				4	16
+				5	32
+				6	64
+				7	128
+				8	256
+				9	512
+				
+	vb.:	for x in range(min, max):
+				for y in range(min, max):
+					if x*y < 100:
+						print(x * y, "\t\t", end="")
+					else:
+						print(x * y, "\t", end="")
+				print()
+				
+- String omdraaien:
+	vb.:	woord = input("Geef een woord: ")
+			print(woord[::-1])
+			
+			→ ZELFDE ALS:	for i in range(len(woord)):
+								print(woord[len(woord) - 1 - i], end="")
+				
+- Paired Data:
+	celeb = ("Michael Jordan", 1963)	→ Één van de twee kan ook nog een lijst zijn.
+	
+	celebs = [("Michael Jordan", 1963), ("Kitten Faeryn", 1996)]
+	
+	for name, year in celebs:
+		if year < 1980:
+			print(name)
+
+_______________________________________________________________________________________________________
+-------------------------
+§§ FUNCTIES / METHODES §§
+-------------------------
+- Syntax:
+	def functienName( parameters ):
+			"function_doccstring"
+			function_suite
+			return [expression]
+	
+- vb.:
+	# Functie definiëren
+	def printen( str ):
+			"Een doorgegeven string zal in deze fuccntie worden geprint"
+			print(str)
+			
+	# Functie aanroepen
+	printen("Geprint vanuit de functie")
+	
+- Types of function arguments:
+	• Required:
+		Verplich mee te geven bij aanroeping
+		vb.: def printen( naam, leeftijd ):
+					print("Naam: " + naam)
+					print("Leeftijd: " + str(leeftijd)
+					return;
+			
+			 printen( "Jasmien", 22 )
+	
+	• Keyword:
+		De naam van de variabele (= keyword) gebruiken in de aanroeping van de functie
+		vb.: def printen( naam, leeftijd ):
+			 ..
+			 printen( leetfijd=22, naam="Jasmien" )
+	
+	• Default:
+		Standaard waarde opgeven voor als deze niet wordt meegegeven bij het aanroepen.
+		vb.: def printen( naam, leeftijd=22 ):
+			 ..
+			 printen( "Jasmien" )
+	
+	• Variable-length:
+		vb.: def printen( arg1, *mijnturple ):		→ * = één of meerdere
+				print("Uitkomst: ")
+				print(arg1)
+				for var in mijnturple:
+					print(var)
+			
+			printen( 10 )
+				→ arg1 = 10; mijnturple is leeg
+			printen( 400, 500, 600 )
+				→ arg1 = 400; 500 & 600 zitten in mijnturple
+				
+- return statement:
+	De functie een waarde laten teruggeven bij het aanroepen.
+	vb.: def optellen( arg1, arg2 ):
+			som = arg1  + arg2
+			return som
+			
+		 som = optellen( 10, 20)
+		 print(som)
+		 
+- Functies die andere functies aanroepen:
+	vb.:	def teken_rechthoek(dier, breedte, hoogte):
+				for _ in range(2):
+					dier.forward(breedte)
+					dier.left(90)
+					dier.forward(hoogte)
+					dier.left(90)
+					
+			def teken_vierkant(dier, grootte): # Een nieuwe versie om een vierkant te tekenen
+				teken_rechthoek(dier, grootte, grootte)
+	
+_______________________________________________________________________________________________________	
+------------------------------------------------------------
+§§ KLASSEN & OBJECTEN → OOP = Object Oriented Programming §§
+------------------------------------------------------------
+→ In Phyton is bijna alles een object, elke waarde is een object.
+→ Een object heetf Eigenschappen & Methodes
+→ is een programming paradigm om software te ontwikkelen.
+
+- OOP Terminologie:
+	• Klasse:
+		Template voor een object
+		definieert een set attributen kenmerkend aan elk object van deze klasse
+		De attributen zijn data members (= klasse-variabele + instantie-variabele)
+		en methoden
+		toegankelijk via de puntnotatie.
+	
+	• Klasse-variabele:
+		Variabele die wordt gedeeld door alle instanties van een klasse.
+		Worden gedefinieerd binnen een klasse,
+		maar buiten de methoden van de klasse.
+	
+	• Instantie-variabele:
+		Variabele die gedefiniëerd is binnen een methode,
+		en alleen tot de huidige instantie van een klasse behoort.
+	
+	• Data member:
+		Klasse-variabele of instantie-variabele zijn data members,
+		bevat gegevens van een klasse en zijn objecten.
+		
+	• Object:
+		Uniek exemplaar van een gegevensstructuur die wordt gedefinieerd door zijn klasse.
+		Omvat data memebers en methoden
+		→ object of concept in de reële wereld
+		
+		→ In Python is elke waarde een object
+		→ Object heeft:
+			- state = informatie over het object (vb.: kleur, xypositie)
+			- methodes (vb.: get_x_positie)
+		
+	• Methode:
+		Speciale functie gedefinieerd in een klasse-definitie.
+		→ wijze van interactie tussen objecten in de reële wereld
+	
+	• Instantie:
+		Individueel object van bepaalde klasse.
+		
+	• Overerving:
+		De overdracht v/d eigenschappen v/e klasse naar een andere klasse die daarvan is afgeleid.
+		parent → child
+	
+	• Functie overloading
+		Het toewijzen van meer dan één gedrag aan een bepaalde fucntie,
+		afhankelijk v/h type objecten of argumenten.
+	
+	• Operator overloading:
+		Het toewijzen van meer dan één functie aan een bepaalde operator.
+		
+	• State:
+		Informatie over het object.
+
+_______________________________________________________________________________________________________
+---------------------
+§§ INPUT GEBRUIKER §§
+---------------------
+input("Eventuele tekst/vraag")						→ Returned string, evaluatie
+	vb.: leeftijd = input(Voer je leeftijd in: ")	→ Als nummeriek eventueel parsen naar int of float
+		 print("Je leeftijd is " + leeftijd)			→ getal = int(leeftijd)
+		 
+round(number, ndigits)
+
+x, y, z = input("Geef drie getallen om te vermenigvuldigen gescheiden door een komma: ").split(",") → Bij split(leeg) wordt spatie gebruikt
+print(int(x)*int(y)*int(z))
+		 
+_______________________________________________________________________________________________________
+-------------------------------
+§§ PROGRAMMA BUILDING BLOCKS §§
+-------------------------------
+• Input
+• Output
+• Bewerkingen
+• Voorwaardelijke operaties
+• Herhaling
+
+_______________________________________________________________________________________________________
+--------------
+§§ KEYWORDS §§
+--------------
+→ Hoofdletter gevoelig! vb./ 'False' kan je niet declareren, maar 'false' wel
+→ Nu een 30-tig tal
+False			None			True
+and				as				assert
+async			await			break
+class			continue		def
+del				elif			else
+except			finally			for
+from			global			if
+import			in 				is
+lambda			nonlocal		not
+or				pass			raise
+return			try				while
+with			yield
+
+_______________________________________________________________________________________________________
+-------------
+§§ MODULES §§
+-------------
+• Module = file met definities en statements
+• Attributen = variabelen gedefinieerd in een module
+	→ Toegankelijk met .(dot)-operator
+
+• Wiskunde modules hebben GEEN constructor nodig = GEEN object aannmaken
+
+• Eigen modules make:
+	1) Code schrijven
+	2) Opslaan met .py extensie
+	3) Importeren
+	
+	vb.:	1)	def remove_at(pos, seq):
+					return seq[:pos] + seq[pos+1:]
+			2)	Opslaan als "sequentialtools.py"
+			3)	import sequentialtools
+			
+			Gebruiken:	s = "Een string"
+						sequentialtools.remove_at(5, s)
+			
+						→ geeft: "Een string"
+						
+• Namespace:
+	Verzameling van identifiers die tot een module, functie of klasse behoren.
+	
+	from moduleNaam import functieNaam1, FunctieNaam2, .. OF *(Alles)
+		→ importeerd in lokale namespace → je moet de module naam er niet meer voor zetten, "moduleNaam." weglaten, enkel de functieNaam
+		
+• Recursie = iets definiëren in termen van zichzelf
+	→ Functies kunnen zichzelf aanroepen om subproblemen op te lossen.
+	
+	vb.:	def lijstsom(lijst):
+				if len(lijst) == 1:
+					return lijst[0]
+				else:
+					return lijst[0] + lijstsom(lijst[1:])
+					
+			print(lijstom([1, 3, 5, 7, 67]))
+						
+-------------------------------------------------------------------------------------------------------
+§§ MODULE: TURTLE GRAPHICS §§
+-----------------------------
+import turtle				→ Module turtle inladen
+
+window = turtle.Screen()	→ Playground voort turtles aanmaken
+naam = turtle.Turtle()		→ Een turtle met naam aanmaken = object
+
+Methoden:
+---------
+naam.forward(10)			→ 10 units naar voor
+	.left(90)				→ 90° draaien naar links
+	.right()
+	.penup()
+	.pendown()
+	.speed(30)	
+	.stamp()
+	.color("colorname")		→ https://trinket.io/docs/colors
+
+window.exitonclick()		→ Na uitvoering kan het venster gesloten worden met een muis klik.
+	  .bgcolor(colorName)
+	  .setup(width, height, startx, starty))
+
+Parameters:
+-----------
+→ De huidige 'state' zijn de waarden van al de parameters
+	vb.: turtle.color("blue"), .pensize(3), .shape("turtle")...
+		 window.bgcolor("lightgreen"), .title("Titel") ...
+
+-------------------------------------------------------------------------------------------------------
+§§ MODULE: MATH §§
+------------------
+import math
+
+math.sqrt()		→ Square root
+	.ceil() 	→ Ceiling rounding
+	.floor()	→ Floor rounding
+	
+	Afronding vb.:
+		import math
+		getal = 578.848578
+		print(round(getal, 2))          #578.85
+		print(math.floor(getal))        #578
+		print(getal - (getal % 0.01))   #578.84
+		
+-------------------------------------------------------------------------------------------------------
+§§ MODULE: RANDOM §§
+--------------------
+• Gebruik:
+	- game of chance
+	- kaartspel
+	- regenval simuleren
+	- sessie encryptie
+	
+import random
+
+random.Random()						→ Object aanmaken
+random.randrange(min, max, step)	→ Random nummer genereren tussen min en max (inc min, exc max), deelbaar door step
+random.sample(list, nr)				→ Geef een lijst en haal er random een bepaald aantal uit
+random.choice(string)				→ Returned random character uit een string
+
+randgenObject.shuffle(list)
+
+→ Random generators zijn pseudo-random, omdat je een seed value meegeeft.
+
+• Interval (min, max)		vb.: [0.0, 1.0)
+	→ [] = Closed/gesloten interval	→ exc
+	→ () = Open interval			→ inc
+	
+• Zonder herhaling van getallen:
+	Voor klein bereik, niet performant voor groot bereik
+	vb.:	import random
+	
+			xs = list(range(1,13))
+			rng = random.Random()
+			rng.shuffle(xs)
+			result = xs[:5]			→  Neemt de eerste 5 elementen uit de lijst
+			
+			print(result)
+	
+	Voor groot bereik, combinatie van list en randrange
+	vb.:	def make_random_ints_no_dups(num, lower_bound, upper_bound):
+				result = []
+				rng = random.Random()
+				for i in range(num):
+					while True:
+						candidate = rng.randrange(lower_bound, upper_bound)
+						if candidate not in result:
+							break
+					result.append(candidate)
+				return result
+				
+			print(make_random_ints_no_dups(5, 1, 10000000))
+	
+	Enkele selecteren uit een gegenereerde lijst zonder dubbels
+	vb.: 	tickets = []
+			i = 0
+			while i < 100:
+				candidate = random.randrange(0000000000, 9999999999, 1)		→ unieke code van 10-digits  
+				if candidate not in tickets:
+					tickets.append(candidate)
+					i += 1
+			print(random.sample(tickets,2)) → selecteerd random 2 ticket nrs
+
+_______________________________________________________________________________________________________
+----------------
+§§ DATA FILES §§	
+----------------
+• Read/write files
+	open("filename",'r')	→ Read → 'r'= default, hoef je niet mee te geven
+	open("filename",'w')	→ Write, nieuwe file aanmaken
+	fileveriable.close()	→ Close: file gebruik afsluiten
+
+	filename.write(..)		→ File schrijven
+	filename.readlines()	→ File regels inlezen
+	filename.read()			→ Volledige file inlezen
+
+	vb.:	with open("test.txt", "w") as myfile:
+				myfile.write(...)
+				...
+				
+	vb.:	with open("test.txt", "r") as nieuwe_handle:
+				for regel in nieuwe_handle:
+					print(regel, end="")
+					
+	- Sorteren:
+		.sort()
+		
+		vb.:	with open("students.txt", "r") as input_file:
+					alle_regels = input_file.readlines()
+				alle_regels.sort()
+				
+				with open("students_sorted.txt", 'w') as output_file:
+					for regel in alle_regels:
+						output_file.write(regel)
+					
+	- Opsplitsen in aparte woorden:
+		.split()
+		
+		vb.:	with open("test.txt") as file:
+					content = file.read()
+				words = content.split()
+				print("Er zijn {0} woorden in uw file.".format(len(words)))
+				
+	- Filter functie maken:
+		
+		def filter(oldfile, newfile):
+			with open(oldfile,'r') as infile, open(newfile,'w') as outfile:
+				for line in infile:
+					if not line.startswith('#'):	# Filter regel: regels die beginnen met # overslaan.
+						outfile.write(line)
+					
+• Directories:
+	- Default in huidige directory
+	- Openen uit ander pad:
+		vb.: oldfile = open("/usr/share/dict/myfiles", "r")
+	
+• Van internet:
+	import urllib.request
+	
+	urllib.request.urlopen("url")
+	urllib.request.urlretrieve("url", "destinationFilePath")
+	
+	vb.:	for line in urllib.request.urlopen("http://textfiles.com/games/worldcup"):
+				print(line.decode('utf-8))
+	
+	vb.:	data = "http://textfiles.com/games/worldcup"
+			destination = "test.txt"
+			urllib.request.urlretrieve(data,destination)
+
+_______________________________________________________________________________________________________
+---------------------------------------------
+§§ KLASSE, OBJECTEN & INSTANTIES, METHODEN §§
+---------------------------------------------
+• Syntax:
+	class KlasseNaam:
+		"""Klasse  beschrijving."""
+		
+		def __init__(self, param1 = 0, param2 = 0): 	→ Initializer method/constructor
+			"""Nieuw object van klasse aanmaken met attributen met de waardes van de parameters."""
+			self.attribute1 = param1					→ Default waarden
+			self.attribute2 = param2
+			
+		def __str__(self):								→ State returnen idv een string → Gebruik: print(instanceNaam)
+			return ("attribute1 = "  + self.attribute1 + ", attribute2 = " + self.attribute2)
+			
+		def __add__(self, other):						→ Operator overloading voor de "+" operator, functionaliteit van deze built in functie uitbreiden.
+			return self. ...								Bepaal wat er gebeurt als er + op dit object gedaan wordt.
+			
+		def __sub__(self, other):						→ Operator overloading voor de "-" operator
+			return self. ...								Bepaal wat er gebeurt als er - op dit object gedaan wordt.
+			
+		def get_methode_naam(self):						→ GETTER methode → METHODE = een FUNCTIE van een KLASSE.
+			return self.attribute
+			
+			→ return value kan ook een Object zijn
+				vb.:	def halfway(self, target):			→ Methode van een Point object met als attributen x en y coördinaten
+							mx = (self.x + target.x) / 2
+							my = (self.y + target.y) / 2
+							return Point(mx, my)			→ Maakt nieuw point object aan met de berekende coördinaten en returned deze
+																De variabele waarin je dit opvangt is dus nu een Point object
+																
+		def mod_method_naam(self, vars):				→ MODIFIER functie of methode die één of meer objecten aanpast.
+															→ 1 object → methode
+															→ meerdere objecten → functie
+															→ Meestal voide, retourneet niets
+		
+	vb.:
+	class MyTime:
+		"""MyTime houd een tijd bij die genormaliseerd wordt.
+		Dit wilt zeggen dat de waardes boven de 60 mogen liggen voor seconden en minuten, als ook negatief zijn."""
+		
+		def __init__(self, hrs=0, mins=0, secs=0):		→ Genneraliseren →  base 60
+			totalsecs = hrs * 3600 + mins * 60 + secs	→ Alle input parameters samentellen naar 1 var, seconden
+			
+			self.hours = totalsecs  // 3600				→ Aantal uren uit totaal seconden halen
+			leftoversecs = totalsecs % 3600				→ Overgebleven seconden na het ontrekken v/d uren
+			self.minutes = leftoversecs // 60			→ Minuten eruit halen
+			self.seconds = leftoversecs % 60			→ De overgebleven seconden na de minuten eruit gehaald zijn
+			
+		def to_seconds(self):
+			""" Retourneert het aantal seconden in deze instantie. """
+			return self.hours * 3600 + self.minutes * 60 + self.seconds 	→ Omgekeerde van constructor hierboven
+			
+		def after(self, time2):
+			""" Retourneert True als deze instantie strikt groter is dan time2. """
+			return self.to_seconds() > time2.to_seconds()
+			
+		def __add__(self, other):
+			return MyTime(0, 0, self.to_seconds() + other.to_seconds() )
+			
+		def __add__(self, other):
+			VUL ZELF AAN ALS OEFENING!
+			return MyTime(0, 0, self.to_seconds() - other.to_seconds() )
+				→ Wat als negatief?
+							
+• Object Equality:
+	- Shallow equality: enkel referenties vergelijken met = 
+	- Deep equality: inhoude van de objecten vergelijken met ==
+	
+	→ Nakijken of 2 referenties naar hetzelfde object verwijzen of niet:
+		"is" → vb. p1 is p2, als True hetzelfde object, als False niet hetzelfde object
+	
+• Objecten kopiëren met de copy module:
+	→ Aliassen maken een programma moeilijk leesbaar
+	
+	1) (Shallow) Copy
+		copy.copy(object)
+		
+		vb.:	import copy
+				p1 = Point(4,5)
+				p2 = copy.copy(p1)
+				print(p1 is p2)		→ False, ze hebben dezelfde co¨rdinaten, maar zijjn geen aliasen/verwijzen niet naar hetzelfde object
+		
+	2) Deepcopy
+		copy.deepcopy(object)	→ Kopiëert zowel het object als elk embedded object (objecten dat binnen een ander object gebruikt worden vb. Point in Rectangle)
+
+• Polymorfisme:
+	Een functie die argumenten van verschillende types krijgt = polymorfisch.
+	vb.: def front_and_back(front):
+			import copy
+			back = copy.copy(front) #copy maken want reverse() is een modifier
+			back.reverse(back)
+			return back
+	
+• Pure Function:
+	Functie die objecten meekrijgt als parameters, maar geen enkel object wijzigt.
+	→ Meestal met return waarde, niet void
+
+• Duck typing rule: uitbreidingen AANVULLEN
+
+	vb.: def reverse(self):
+			(self.x, self.y) = (self.y, self.x)
+	
+
+_______________________________________________________________________________________________________
+--------------------------------
+§§ VERZAMELINGEN VAN OBJECTEN §§
+--------------------------------
+vb. Kaartspel:
+	
+	object kaart
+	attributen: rank (1-13), suit (0-3)
+	
+	class Card:
+		#Mapping class attributes
+		suits = ["Clubs", "Diamonnds", "Hearts", "Spades"]
+		ranks = ["narf", "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"] #"narf" is placeholder zodat "Ace"=1, dit kan je niet hard coden tenzei je een nieuwe list class maakt. https://www.quora.com/Can-I-change-indexing-way-starts-with-0-in-Python
+	
+		#Object constructor
+		def __init__(self, suit=0, rank=0):
+			self.suit = suit
+			self.rank = rank
+		
+		#String overloader
+		def __str__(self):
+			return(self.ranks[self.rank] + " of" + self.suits[self.suit])
+			
+		#Operator overloading om de kaarten te gan vergelijken
+		#Afspraken: return 1 als param1>, -& als param2>, 0 als param1=param2; hogere suit is belangerijker als hogere rank
+		def cmp(self, other): #compare methode
+			if self.suit > other.suit: return 1
+			if self.suit < other.suit: return -1
+			
+			#Als suits = zijn, ranks vergelijken
+			if self.rank > other.rank: return 1
+			if self.rank < other.rank: return -1
+			
+			#Als suits en ranks = zijn, 0 returnen
+			return 0
+
+		def __eq__(self, other):
+			return self.cmp(other) == 0
+		...
+		→	__eq__ 	== equal to 						__ne__ 	!= not equal
+			__le__ 	<= less than or equal to 			__lt__	<  less than
+			__ge__	>= greater than or equal to			__gt__	>  greater than
+		
+		
+	class Deck:
+		def __init__(self):
+			self.cards = []
+			for suit in range(4): 							#0-3
+				for rank in range(1, 14):					#1-13
+					self.cards.append(Card(suit, rank))		#Deck opvullen met van elke combinatie suit-rank één exemplaar
+				
+		def __str__(self):
+			s = ""
+			for i in range(len(self.cards)):
+				s = s + " " * i + str(self.cards[i]) + "\n"		#" " * i laat elke volgendde kaart een extra spatie inspringen
+			return s
+			
+		def shuffle(self):
+			import random
+			rng = random.Randdom()
+			rng.shuffle(self.cards)
+			
+		def remove(self, card):
+			if card in self.cards:
+				self.cards.remove(card)
+				return True
+			else:
+				return False
+				
+		def pop(self):
+			return self.cards.pop()
+			
+		def is_empty(self):
+			return self.cards == []
+			
+		def deal(self, hands, num_cards=999):
+			num_hands = len(hands)
+			for i in range(num_cards):
+				if self.is_empty():				#Als kaarten op zijn.
+					break			
+				card = self.pop()				#Neem de bovenste kaart
+				hand = hands[i % num_hands]		#Wie is de volgende speler? Als we voorbij de laatste speler zijn starten we terug vanaf 0 door de %-operator
+				hand.add(card)					#Volgende speler een kaart geven
+			
+				
+_______________________________________________________________________________________________________
+----------------
+§§ OVERERVING §§
+----------------	
+parent class - child/sub-class
+
+	class Hand(Deck):
+		pass #gebruik pass als de klasse voor de rest leeg blijft
+
+	class Hand(Deck)
+	
+		def __init__(self, name=""):
+			self.cards = []
+			self.name = name			#name is nieuw en optioneel voor Hand
+		
+		def add(self, card):
+			self.cards.append(card)
+			
+		def __str__(self):
+			s = "Hand " + self.name
+			if self.is_empty():
+				s += " is empty\n"
+			else:
+				s += " contains\n"
+			return s + Deck.__str__(self)
+
+_______________________________________________________________________________________________________
+----------------
+§§ IMPORT §§
+----------------
+from fileName import ClassName

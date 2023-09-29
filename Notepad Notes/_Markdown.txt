@@ -1,0 +1,16 @@
+Markdown:		https://wordpress.com/support/markdown-quick-reference/
+
+File extension .md or .markdown
+
+List example:
+- [x] Additional markup is supported, including @mentions, #references, [links](url), **emphasis**, and <del>HTML tags</del>.
+- [x] List syntax is required.
+  - You can nest lists below, too!
+- [x] This item is completed.
+- [ ] This item is not complete.
+
+Headers:
+# This is an <h1> header, which is the largest
+## This is an <h2> header
+###### This is an <h6> header, which is the smallest
+

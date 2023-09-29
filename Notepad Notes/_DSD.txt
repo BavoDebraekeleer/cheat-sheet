@@ -1,0 +1,111 @@
+Digital Systems Development
+---------------------------
+
+FPGA = Part: xc7a35tcpg236-1, Product: Artix-7, Family: Artix-7, Package: cpg236, Speed Grade: -1, Board Name: Basys3
+
+FPGA werkt met hardware waarheidstabellen met flip-flops.
+VHDL = hardware description language
+Welke componenten heb ik hardware-matig nodig en deze omschrijven in VHDL.
+Nu meer in blokken werken.
+
+DSP is analoog signaal samplen en bijhouden om bewerkingen op te doen zoals optellen en vermenigvuldigen.
+
+Met FPGA chip emuleren zodat je al demo kunt geven en software ontwikkelen.
+Her-configuratie mogelijk in plaats van nieuwe chip te hoeven maken.
+
+ERROR directory non writable -> geen spaties in naamgeving, bij aanpassing namen "nameproject.cache/wt" wt map verwijderen
+	-> Best gewoon op C schijf in Xilinx/Projects werken
+	-> Als het niet werkt nieuw project aanmaken
+	https://support.xilinx.com/s/question/0D52E00006iHjjSSAS/common-171293-the-path-filenamecachewt-already-exists-is-a-directory-but-is-not-writable?language=en_US
+
+
+DSP op FPGA
+-----------
+
+Pipelining:
+	Dmv registers tussen blokken te plaatsen kunnen operaties die veel tijd nodig hebben parallel worden uitgevoerd.
+
+ieee.numeric_std.all
+
+unsigned en signed gebruiken -> 2s compliment
+Addition: output van optelling moet 1-bit groter zijn dan de inputs	vb. reg unsigned [3:0] in1, in2 -> [4:0] out
+Multiplication: output moet aantal bits hebben van alle bits		vb. reg unsigned [3:0] in1, in2 -> [7:0] out
+
+Multiply by 2, shift left <<, slf
+Devide by 2, shift right >>, srt
+
+Volume:
+	Shift left = harder
+	Shift right = zachter
+
+IIR filter: https://www.youtube.com/watch?v=eE6Qwv997cs	(Latice FPGA)			https://www.youtube.com/watch?v=QRMe02kzVkA (Design)
+
+Moving Average filter:
+	Gemiddelde van aantal samples -> Low-pass
+	
+	-> Zie slides DSD3
+
+	https://github.com/Digilent/Pmod-I2S2
+	https://surf-vhdl.com/how-to-implement-moving-average-in-vhdl
+	https://www.fpga4student.com/2017/01/a-low-pass-fir-filter-in-vhdl.html
+
+FIR filter: https://www.youtube.com/watch?v=yS5MsFkwzyU (MatLab en Vivado)		https://www.youtube.com/watch?v=uNNNj9AZisM (Design)
+
+	-> Zie slides DSD3
+	
+
+Basys3 Microblaze -> MCU maken in de FPGA die in C geprogrammeerd kan worden.
+
+
+Project
+-------
+Soort muziek instrument met geluid visualisatie.
+Input met een USB muis.
+Afhankelijk van de coördinaten en snelheid waarmee je de muis beweegt krijg je een andere toon.
+
+Mouse interface: https://www.fpga4student.com/2017/12/how-to-interface-mouse-with-FPGA.html
+
+x,y coördinaten weergeven op het scherm.
+Afhankelijk van het coördinaat krijg je een bepaalde toon.
+Aansturing met een muis:
+	- beweging geeft de coördinaat
+	- als je een muisknop ingedrukt houd krijg je een toon
+		-> rechtermuisknop een harmonische?
+
+I2S interface TX to get sound out
+
+
+Timing & Delays
+---------------
+Hoe langer de draad/verbindingen parallel met een groundplane, zoals op een PCB, hoe hoger de capaciteit van die lijn.
+EN hoe hoger de capaciteit, hoe langer de lijn "oplaad", dit wil zeggen de tijd het duurt voor een signaal om door de lijn te gaan.
+Dit geeft dus een delay.
+Een buffer tussenin kan extra stroom geven om de C sneller te doen opladen en dus de delay te verlagen.
+
+Delay kan ook verlaagd worden door de werkspanning te verlagen.
+Opladen van een capacitor naar 1V is veel korter dan naar 5V.
+Of de omgevingstemperatuur te manipuleren.
+
+Fan-out = hoeveel poorten je achter de output van een andere poort hebt.
+
+Drive = stroom
+
+Clock Skew = delay in distribution, verschil van dezelfde clock op andere lijnen
+	dit kan door buffers met verschillende delays (buffer delay), lengte can lijnen (wire delay)
+	maar ook door temperatuur! Hogere temperatuur zorgt voor grotere delays.
+	
+	-> oplossen! Extra delay toepassen op lijn die voor zit
+		controle van buffer delay en wire delay
+		
+Static path = verbinding tussen FPGA en ander toestel
+	heeft ook bepaalde delay
+	
+Pipelining & Retiming
+	Combinatorische blokken opdelen met tussen registers.
+	
+	
+Delay is voor Hold Violations waar het signaal te snel komt.
+Flip-flops na delay om signaal terug te clocken voor signalen die wat traag komen, Setup Violations
+
+Hold Violation = te senl signaal
+Setup Violations = te traag signaal

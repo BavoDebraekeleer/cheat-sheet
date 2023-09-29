@@ -1,0 +1,18 @@
+ML Agents
+---------
+
+Anaconda documentation: https://www.anaconda.com/products/individual/installation-success?source=win_installer
+
+Start ML Agent API: 	mlagents-learn config/CubeAgent.yaml --run-id=CubeAgent
+Resume ML Agent API: 	mlagents-learn config/CubeAgent.yaml --run-id=CubeAgent --resume
+
+Log results: 			tensorboard --logdir results
+localhost:6006
+
+Rays:
+	- Letten op Ray Length, zeker bij parallel werken
+	- Behavior  Parameters -> Vector Observation -> Space Size: belangrijk voor wat de Agent kan zien, is de hoeveelheid data.
+
+
+cd d:
+cd D:\Electronica-ICT\2IT_IOT\VR_Experience\Projects\MLAgents

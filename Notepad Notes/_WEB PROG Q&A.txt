@@ -1,0 +1,812 @@
+   ___                  _____           _       _   → • 
+  |_  |                /  ___|         (_)     | |  
+    | | __ ___   ____ _\ `--.  ___ _ __ _ _ __ | |_ 
+    | |/ _` \ \ / / _` |`--. \/ __| '__| | '_ \| __|
+/\__/ / (_| |\ V / (_| /\__/ / (__| |  | | |_) | |_ 
+\____/ \__,_| \_/ \__,_\____/ \___|_|  |_| .__/ \__|
+                                         | |        
+                                         |_|        
+
+Voorbeeld vragen over de Theorie.
+_______________________________________________________________________________________________________________________________	
+-JS- Week 1: variabelen, syntax -JS-
+------------------------------------
+• Wat is een value, type en variabele in JavaScript? En wat zijn de verschillen tussen deze 3 concepten?
+	Variabele is iets dan een waarde/value kan vasthouden.
+	Type is wat voor type value dit is: getal, string, boolean, object of functie.
+	Value is de effectieve waarde die de variabele van een bepaald type gaat bijhouden. 
+
+• Wat wil loosely typed zeggen in JavaScript?
+	Dat je geen types moet meegeven aan de variabelen.
+	De interpreter gaat zelf kijken wat het moet zijn.
+
+• Wat is het verschil tussen let, const en var declaraties? Toon dit aan met voorbeelden.
+	Scope en updatebaarheid.
+	var is global of fucntion scoped en update- en herdeclareerbaar (Pre-ES6 manier, vervuilt global scope)
+	let is local/block {} scoped en updatebaar,
+	const is ook local/block scoped en onveranderlijk-niet updatebaar.
+	
+	→ Niet initialiseren == undifined (in C# == null)
+	→ https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/
+
+• Beschrijf in eigen woorden wat scope in JavaScript betekent.
+	Scope is de afgegrenzde ruimte binnen de code waarbinnen een variabele bruikbaar is.
+	  → global scope = overal,
+		function scope = binnen de fucntie,
+		block scope = binnen {}
+
+• Is "strict mode" in JavaScript belangrijk? Waarom?
+	Strict mode heeft een meer beperkte, afgebakende syntax,
+	die alle errors throwed, performanter is, en veiliger.
+	'use strict', maar mindere compatibiliteit met oude browsers.
+
+• Wat betekent dat JavaScript "in the sandbox" runt? Geef een voorbeeld van een mogelijk gevaar, of van zaken die in het verleden al eens voorgekomen zijn.
+	Sandboxing is het isoleren van een programmeer omgeving voor security redenen.
+	De browser beperkt wat JavaScript kan doen op je systeem.
+	Anders zou je code kunnen uitvoeren die van alles met je persoonlijke bestanden zou kunnen doen, zoals foto's uploaden of bestanden wissen.
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 2: functies -JS- → JS ondersteund geen function overloading!
+--------------------------
+Beschrijf in eigen woorden en maak eigen code voorbeelden om de begrippen te verduidelijken:
+
+• ES6, ECMAScript:
+	De standaard waarop JavaScript is gebaseerd.
+	Post-ES6 is de moderne JavaScript en heeft let en const, en klasse bij gekregen.
+	"exports" is "export" geworden, "require" is "import" geworden.
+
+• Arrow functies:
+	Een verkorte and simpelere manier om functies te schrijven.
+	Je hoeft het "function" keyword en "return" niet te schrijven.
+	vb.: add = (a,b)=> a+b
+	
+	→ https://zendev.com/2018/10/01/javascript-arrow-functions-how-why-when.html
+
+• Function expressions:
+	Syntax voor het aanmaken van een fucntie die expliciet wordt toegekend aan een variabele.
+	Hierdoor kunnen we deze functie als die variabele meegeven aan een andere functie,
+	waardoor de code onderhoudbaarder en herbruikbaar wordt.
+	
+	→ https://javascript.info/function-expressions
+
+• Call Stack:
+	Is een LIFO (=Last in, First Out) queue waar functies aan worden toegevoegd die moeten worden uitgevoerd.
+	JavaScrip is signle threaded, wat wilt zeggen dat code één voor één wordt uitgevoerd, niets parallel.
+	
+	→ https://blog.sessionstack.com/how-does-javascript-actually-work-part-1-b0bacc073cf
+
+• Event loop:
+	Mechanisme die de code executie behandeld door continu de Call Stack te controleren op functies die moeten worden afgehandeld.
+	Elke tab in een browser heeft zijn eigen Event Loop om de andere pagina's niet te blokkeren.
+	Als er functies moeten worden uitgevoerd worden deze door de Event Loop toegevoegd aan de Call Stack.
+
+	→ https://www.educative.io/edpresso/what-is-an-event-loop-in-javascript, https://blog.sessionstack.com/how-javascript-works-event-loop-and-the-rise-of-async-programming-5-ways-to-better-coding-with-2f077c4438b5
+
+• IIFE = Immediately-Invoked function expression:
+	Een functie die direct wordt uitgevoerd als ze geschreven wordt,
+	om zo de global scope niet te vervuilen.
+	
+	Als je verschillende .js files wilt gebruiken vanuit HTML file,
+	zouden alle variabelen met dezelfde naam die in de global scope zitten elkaar gaan overschrijven en ga je errors krijgen voor herdeclaratie.
+	Om dit te vermijden kan je binnen elke .js file een fucntion scope aanmaken dmv IIFE,
+	en al je code binnen deze functie zetten (=encapsuleren) waardoor alle variabelen van deze file hun eigen function scope krijgen,
+	en de global scope dus niet meer vervuilen.
+	
+	vb.: (()=>{ ... })() of (function(){ ... })()
+
+• Hoisting:
+	De code wordt herordent voor het uitvoeren.
+	Declaraties van fucnties en variabelen worden bovenaan de scope gezet,
+	maar niet de toekenning van variabelen.
+	
+	Dit wil zeggen dat gewone functies kunnen worden aangeroepen voor ze gedeclareerd worden in je code,
+	maar function expressions niet, omdat deze eerst aan de variabele moeten worden toegekend.
+
+• Closures:
+	Een fucntie die de variabelen uit de scope waarin hij gedefiniëerd staat (de parent scope) onthoud, en dus ook toegang tot heeft en kan gebruiken (outer variables).
+	Elke functie is een closure in JS (met als enige uitzondering de new Function syntax).
+	Wanneer ze worden gedefiniëerd, wordt er onthouden waar dit is adhv een verborgen [[Environment]] property, 
+	en zo kunnen ze de outer variables buiten hun scope ook gebruiken.
+	
+	→ https://javascript.info/closure
+	
+	→ Lexical Environment (verborgen object [[Environemnt]] ):
+		Object die informatie bijhoudt voor een bepaalde scope.
+		De global scope heeft een Lexical Environment,
+		en als een functie wordt aangeroepen krijgt deze zijn eigen Lexical Environment,
+		waarbinnen oa de variabelen van die scope dan worden bijgehouden.
+
+• Higher-order functies:
+	Functies die andere functies gebruiken,
+	door ze mee te krijgen als argumenten,
+	of door ze te returnen.
+	
+	→ https://eloquentjavascript.net/05_higher_order.html
+
+• Callbacks:
+	Het aanroepen van een functie die als argument is meegegeven aan de huidige functie.
+	
+	vb.: let ask = (question, yes, no)=>{
+			if(confirm(question)) yes()
+			else no()
+		 }
+		 let showOk = ()=> alert("You agreed.")
+		 let showNotOk = ()=> alert("You did not agree.")
+		 
+		 ask("Do you agree?", showOk, showNotOk)
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 3: arrays -JS- https://www.w3schools.com/jsref/jsref_obj_array.asp 
+------------------------
+• Hoe loop je over een array?
+	Met een for-loop met als grens de array lengte,
+	of met een foreach-loop.
+	
+	vb.:	let mijnArray = new Array() of [] 	// Nog geen lengte
+			mijnArray = [0,1,2,3,4] of ["string1","string2"]
+			
+			for(let i=0; i<mijnArray.length; i++) DoeIets(mijnArray[i])
+			for(let arrayValue of mijnArray) DoeIets(arrayValue)			vb.: for(let naam in namen) ...
+
+• Achterhaal de lengte van een array:
+	Met de length property.
+	vb.: let lengte = arrayNaam.length
+
+• Wat doen de belangrijkste methodes op een array (shift, unshift, searching, push, pop, verwijder elementen)?
+	.reverse()		volgorde omdraaien
+	.sort()			alfabetisch rangschikken
+	
+	.shift()		verwijdert en returned eerste element VOORAAN
+	.unshift()		voegt één of meerdere elementen toe VOORAAN en returned de nieuwe lengte	
+	.pop()			verwijdert en returned laatste element ACHTERAAN
+	.push()			voegt één of meerdere elementen toe ACHTERAAN en returned de nieuwe lengte	
+	.slice(i,i)		returned nieuwe array met de elementen in aangegeven index beriek
+	.splice(i,i)	verwijdert en returned elementen in aangegeven index beriek
+	
+	.indexOf(e)		zoekt van VOOR naar ACHTER, en returned index eerst gevonden, of -1 bij niets gevonden
+	.lastIndexOf(e)	zoekt van ACHTER naar VOOR, en returned index eerst gevonden, of -1 bij niets gevonden
+	.includes(e,i)	returned true of false, e=element to search, i=start index (default=0)
+	
+	.concat(a)		voegt array a ACHTERAAN toe aan de array
+	.join(d)		returned string van alle elementen in de array gescheiden door een delimiter d (default=,)
+	
+	.find(f)		returned eerste element dat true returned op de meegegeven test functie, if indefined bij niets gevonden
+	.findIndex()	returned de index van het eerste element dat true returned op de meegegeven test functie, if indefined bij niets gevonden
+	
+		e = element value
+		i = index
+		a = array
+		d = deliminator
+		f = function(currentValue, index, arr),thisValue
+
+• Wat zijn iteratieve methoden, hoe werken ze?
+	Deze voeren de functie altijd uit op alle elementen in de array.
+	
+	.every(f)		returned true als alle elementen true returnen op de functie
+	.some(f)		returned true als één element true returned
+	.filter(f)		returned nieuwe array met alle elementen die true returnen op de functie
+	.map(f)			returned nieuwe array met de return values van de functie					vb.: numbers.map(Math.sqrt); const map1 = array1.map(x => x * 2);
+
+	.forEach(f)		voert de functie uit op alle elementen 
+
+		f = function(currentValue, index, arr),thisValue	
+
+• Reduce & ReduceRight methoden: https://www.w3schools.com/jsref/jsref_reduce.asp
+	.reduce(f)		reduces the array to a signle value, van VOOR naar ACHTER
+	.reduceRigh(f)	"", van ACHTER naar VOOR
+	
+		f = function(total, currentValue, currentIndex, arr), initialValue
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 4: objecten -JS-
+--------------------------
+• OO begrippen:
+	class:			Karakteristieken/properties, van een object definiëren.
+	
+	object:			Instantie van een klasse.
+	
+	property:		Een karakteristiek van een object, bvb kleur, xpos, ypos.
+	
+	method:			Een functie van een object om het object iets te laten doen.
+	
+	constructor:	Methode die aangeroepen wordt bij de creatie, moment van instantiatie, van een object.
+	
+	inheritance:	Overerving van karakteristieken van een andere klasse, de parent class.
+	
+	encapsulation:	Code onderbrengen in een functie waardoor de scope beperkt is tot die functie.
+					Bvb voor klasse pre-ES6 adhv Factory patroon.
+							
+	abstraction:	Een klasse die overerft van een andere hoeft enkel de zaken te bevatten die nieuw of anders zijn voor die klasse.
+					Zo wordt de complexiteit van de overerving verborgen.
+	
+	polymorphisme:	Methoden andere uitvoering geven afhankelijk van het object waarop het wordt uitgevoerd,	
+					of de meegegeven variabelen.
+
+• Object constructor:
+	Code voor het aanmaken van objecten.
+	Post-ES6 worden hier de properties gedefiniëerd en de parameters toegekend aan de juiste properties.
+
+• Factory patroon:
+	Pre-ES6 manier om objecten aan te maken.
+	
+	function CreateObject(var1,var2){
+		var o = new Object()
+		o.Property1 = var1
+		o.Property2 = var2
+		
+		o.DoeItes = function(){
+			console.log(this.Prop2)
+		}
+		return o
+	}
+	var b = CreateObject(1,"Iets")
+	b.DoeIets()
+
+• Constructor patroon = Constructor function:
+	Pre-ES6 manier om klassen te definiëren in de vorm van een function.
+	
+	function KlasseNaam(){
+		this.Property1=""
+		this.Property2=""
+		
+		this.DoeIets = function(){
+			console.log(this.Prop2)
+		}
+	}
+	var b = new KlasseNaam()
+	b.Property2 = "Iets"
+	b.DoeIets()
+
+• Typeof operator:
+	Om te weten te komen welke type een property, of een variabele, is.
+	Returned een string.
+	
+	vb.:	const list = []
+			
+			console.log(typeof list) 	//"object"
+			console.log(typeof "test") 	//"string"
+			console.log(typeof color) //"undefined"
+			
+	vb.:	if(typeof car.color == undefined) ...
+
+• Object literals:
+	Als je van een object maar één nodig hebt moet je geen klasse maken,
+	maar gewoon een object op zich = object literal.
+	
+	vb.:	let persoon = {
+				voornaam:"Tom",
+				achternaam:"Peeters",
+				print:function(){
+					console.log(this.voornaam + "" + this.achternaam)
+				}
+				print2:()=> console.log(this.voornaam + "" + this.achternaam)
+			}
+
+• Prototype patroon:
+	Elke functie wordt aangemaakt met een prototype property,
+	wat een object is met eigen properties en methodes.
+	Alle properties en methoden worden gedeeld door object instanties.
+	
+	let o = function(){}
+	o.prototype.Prop1="Value1"
+	o.prototype.Prop2=()=> alert(this.Prop1)
+
+• Class support: class definition, get/set:
+	Pots-ES6 manier voor het werken met klassen.
+	
+	class ClassName {
+		constructor(parameter1, parameter2) {
+			this.property1 = parameter1;
+			this.property2 = parameter2;
+		}
+	  
+		FunctionName(parameters) {
+			// Do something
+		}
+	  
+		get propertyAccessorsName() {		// Get & Set Accessors
+			return this.propertyName
+		}
+		set propertyAccessorName(newValueVarName) {
+			this.propertyName = newValueVarName
+		}
+	}
+
+	class SubClassName extends MainClassName {					// Subclass
+		constructor(parameter1, parameter2, parameter3) {		// If the class doesn't have parameters you don't have to add a constructor here since it's first purpose is to pass parameters
+			super(parameter1, parameter2)						// call the super class constructor and pass the parameters, has to be called first before any additional properties
+			this.property3 = parameter3;
+		}
+	  
+		FunctionName(parameters) {
+			// Add specific functions for this Sub class
+		}		
+	}
+
+• this:
+	Keyword/parameter om properties van het huidige object aan te spreken.
+	this.PropertyNaam
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 5: browser -JS-	(Ook hoe formulieren werken en DOM insert)
+-------------------------
+• DOM = Document Object Model:
+	Boomstructuur van de html code,
+	in de vorm van een API,
+	beschikbaar gesteld door de browser.
+	DOM is de interne representatie van de browser,
+	toegankelijk via het window object.
+
+• Document object:
+	Object, van het window object, om in JavaScript html tags uit de DOM aan te spreken.
+	window.document. ... , maar "window." hoef je niet te schrijven.
+
+• Hoe pagina structuren inspecteren?
+	Adhv het document object.
+	
+	vb.: document.getElementById("idNaam")
+
+• CSS Styling editeren:
+	Adhv .style
+	
+	vb.: 	var element = document.getElementById("ptag")
+			element.style.color = "red"
+
+• Event listeners:
+	Een luisteraar die naar "events" luisterd die kunnen gebeuren in de DOM.
+	
+	vb.: document.addEventListener("mouseover",()=> code voor wat je wilt doen als het event plaats vind)
+
+• Nodes binnen een HTML pagina:
+	De onderdelen van de HTML pagina binnen de DOM.
+	Nodes: document, element(html tag), attr(attribuut van tag), text(tekst inhoud van element of attr), comment(commentaar in html code)
+
+• DOMContentLoaded event:
+	Om na te gaan of de DOM is aangemaakt en beschikbaar is,
+	vooralleer we deze gaan aanspreken met JavaScript code.
+	
+	De DOM moet eerst geladen zijn vooraleer je deze kan parsen!
+		→ Event listener gebruiken om te wachten tot de DOM geladen is:
+			document.addEventListener("DOMContentLoaded", function(event){
+				console.log(event)
+			})
+		→ OF met Arrow function:
+			document.addEventListener("DOMContentLoaded", (event)=>{
+				console.log(event)											
+			})
+
+• Methodes om elementen te vinden:
+	document.getElementBy...
+		TagName('h1')[0]
+		ClassName('linkheader')[0]
+		Id('WinkelKarTable')
+
+• Selectors:
+	Zoeken in de DOM adhv van .querySelector, of .querySelectorAll, zoals je het in CSS zou doen.
+	
+	vb.: document.querySelector('#BannerCheckbox')
+
+• Editeren van de DOM tree:
+	Met bepaalde methodes kan je nodes toevoegen aan de DOM.
+		document.createElement() → maakt nieuwe element node aan
+		document.createTextNode() → maakt nieuwe text node aan
+		document.appenChild() → nieuw (child) element node aanmaken binnen een andere (parent) node.
+			
+	vb.:	let listNode = document.createElement("li")				→ <li> list item tag node aanmaken
+			let textNode = document.createTextNode("tekst")			→ text node aanmaken en tekst toevoegen
+			listNode.appendChild(textNodde)							→ tekst toevoegen in de list item → <li>"tekst"</li>
+			document.getElementById("myList").appendChild(node)		→ list item toevoegen aan een unordered list tag nod <ul id="myList"> → <lu id="myList"><li>"tekst"</li></ul>
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 6: animaties -JS-
+---------------------------
+• Wat is canvas?
+	2D teken platform waarme je een bitmap naar het scherm kan schrijven dmv JavaScript en HTML.
+	(canvas element is wrapper rond de 2D rendering context)
+	
+	html: <canvas width="value in pixels" height="value" id="myCanvas"></canvas>
+	js:   let canvas = document.getElementById("myCanvas")
+
+• Wat is de 2D rendering context?
+	Object van canvas dat we kunnen aanspreken om dingen binnen de canvas te tekennen op het scherm.
+	
+	js:   let ctx = canvas.getContext("2d")
+
+• Hoe teken je lijnen, rechthoeken, cirkels?
+	Lijnen: ctx.beginPath() + .moveTo() + .lineTo() + .stroke() + .lineWidth = .. + .strokeStyle = "kleur"
+	Cirkel: ctx.beginPath(), .arc(centerX, centerY, radius, startingAngle, endingAngle, direction) + .fillStyle + .strokeStyle + .stroke() of .fill()
+	Rechthoek: ctx.fillRect(xPos, yPos, width, height)
+
+	vb.:  ctx.fillRect(0,0,200,200) → rechthoek op positie x=0, y=0, van 200x200px
+
+• Wat is een animation loop?
+	Code die blijft uitgeveord worden om animaties te creëeren en real-time uptedaten.
+	Animation loop: Update() → Draw() → Clear()
+	Game loop: ProcessInput → Simulte game world → render
+
+• Wat is translatie?
+	Verplaatsing van een object dmv verplaatsing van de oorsprong coördinaten van de 2d rendering context.
+	ctx.translate(x,y)
+
+• Wat is rotatie?
+	Een object laten draaien dmv de 2d rendering context te roteren met een hoek in radialen.
+	ctx.rotate(hoek*Math.PI/180)
+	
+	→ Vooralleer je gaat transleren save state van het canvas: ctx.save()
+	  Nadien terugzetten door: ctx.restore()
+
+• Wat is collision detection?
+	Controleren of objecten elkaar overlappen adhv een berekening obv hun properties.
+	
+	function CheckCollisionRect(obj1,obj2){
+		if( ((obj1.x + obj1.width) > obj2.x) && ((obj2.x + obj2.width) > obj1.x) &&
+		   !((obj1.Y + obj1.height) < obj2.y) && !((obj2.Y + obj2.height) < obj1.y) return true
+		return false
+	}
+	
+	function CheckCollisionCircle(obj1,obj2){
+		let dx = obj1.x - obj2.x
+		let dy = obj1.y - obj2.y
+		let afstand = Math.sqrt(dx*dx + dy*dy)
+		if(afstand < obj1.straal + obj2.straal ){
+			return true
+		}
+		return false
+	}
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 7: server-side scripting & node.js -JS-
+-------------------------------------------------
+• Wat is fullstack javascript development?
+	Zowel front-end/client side als back-end/server-side coderen adhv JavaScript, of een back-end taal als PHP om met de server te communiceren.
+	Full stack = Presentation layer (single page apps, front-end) + Business Logic layer (NodeJS, back-end) + Data Access layer (MongoDB, JSON files)
+
+• Wat is node.js?
+	Back-end oplossing om de back-end ook met JavaScript te kunnen behandelen, adhv modules.
+	Modules: code opsplitsen in verschillende files.
+
+• Wat is npm?
+	Node Package Manager. Hiermee kan je externe/third-party modules installeren.
+
+• Wat zijn node modules?
+	Code voor back-end opgesplitst in verschillende files.
+
+• Wat is commonJS?
+	Standardizatie in het module eccosysteem,
+	herkenbaar aan require() function en module. exports,
+	Post-ES6: import, export
+
+• Leg de 3 categorieën van node modules uit.
+	- File-base: modules aanmaken met .js bestanden. → require("./module_naam")
+	- Core modules: interen modules, deel van NodeJS bvb path, fs, os, util → require("module_naam")
+	- Externe Node modules: third party modules om extra functionaliteit toe te voegen. Deze moete geïnstalleerd worden door npm. → require("module_naam")
+			1) Installeren in Terminal: 		npm i --save libraryName 		vb.: npm i --save lodash
+			2) Toevoegen voor gebruik in file: 	const _ = require("lodash")
+			3) Functie van library gebruiken:	let getal = _.random(100, 300)
+
+• Hoe kan je gebruik maken van node modules?
+	Door ze te importeren of installeren in je hoofd .js file.
+	
+	Nieuw project opzetten:
+	-----------------------
+	1) Nieuwe map aanmaken en openen
+	2) Terminal openen:
+		2.1) npm init -y
+		2.2) npm install -save express mysql body-parser
+		2.3) npm install -save-dev nodemon
+	3) Aan package.json toeveogen onder "scripts": {:
+		"start": "nodemon server.js",
+		"runnen": "npm start",
+	4) Setup basic webserver:
+		4.1) "server.js" file aanmaken
+		4.2) code:	const express = require("express")
+					const bp = require("body-parser")
+					const mysql = require("mysql")
+					const app = express()
+
+					app.use(bp.urlencoded({extended:false}))
+					app.use(bp.json())
+
+					app.get("/",(req,res)=>{
+						res.send("ok")
+					})
+
+					app.listen(3000,err=>{
+						if(err)
+							console.log(err)
+						console.log("running #3000")
+					})
+
+						5) Server runnen in Terminal:
+							node server.js
+
+• Wat is het verschil tussen node modules pre en post ES2015?
+	Pre-ES2015: require("..") & exports
+	Post-ES6: import & export
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 8: express web server -JS-
+------------------------------------
+• Wat is Express?
+	Framework Module om API's te maken.
+	
+• Wat is een web API?
+	API = Application Programming Interface
+	Laat programma's, of onderdelen, toe met elkaar te communiceren en data te delen in eender welke vorm.
+		vb. json code, html code, een afbeelding, ...
+
+• Hoe installeer je express?
+	1) Open de Terminal
+	2) npm init 				→ package.json aanmaken
+	3) npm i express --save		→ map node_moddules aanmaken 	→ module.exports = require('./lib/express'); → = Pre-ES5 dus importeren met "require"
+	4) server.js aanmaken
+	5) express gebruiken, vb:
+								const express = require("express")
+								const app = express() 						// Express object aanmaken
+								app.listen(3000, err => {
+									if(err)
+										console.log(err)
+									console.log("Listening on port 3000")
+								})
+	6) Laten draaien → in Terminal: node server.js
+	7) Afsluiten met Ctrl+C
+
+• Wat zijn endpoints?
+	De verschillende URL combinaties waarnaar kan gesurft worden, 
+	en dus naar geluisterd moet worden door de server,
+	en waar we code aan koppelen om uit te voeren adhv HTTP verbs (get, put, post, delete, ...).
+
+• Wat zijn http verbs of methods?
+	Manier om te communiceren met een server door een request te sturen.
+	Get = data opvragen,
+	Post = data versturen,
+	Put = data updaten (of creëeren),
+	Delete = data verwijderen.
+
+• Wat zijn http response status codes?
+	Response van de server over hoe je request behandeld is.
+		1xx)	Information responses
+		2xx)	Successful responses
+		3xx)	Redirection messages
+		4xx)	Client error responses
+					401 Unauthorized: "unauthenticated", the client must authenticate itself to get the requested response. Bvb. bij verkeerd wachtwoord.
+		5xx)	Server error responses
+
+• Wat is een request object?
+	Wat je wilt dat de server doet.
+	Dit bevat bvb SQL code als je iets met een database wilt doen.
+
+• Wat is body-parser?
+	Node.js middleware/extension module voor Express,
+	dat de body van HTTP Post requests streams te parsen (extracts and exposes) in req.body .
+	
+	→ Instaleren:	npm i --save body-parser
+
+• Wat is middleware?
+	Systeemsoftware dat extra services en mogelijkhededn toevoegd aan een applicatie mbt informatie-uitwisseling.
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 9: mysql & node.js -JS-
+---------------------------------
+• Wat is XAMPP?
+	XAMPP is een open-source cross-platform web server solution stack package.
+	Een programmatje waarmee je een locale test server kan opzetten die hetzelfde werkt als een live server,
+	obv Apache HTTP Server, MariaDB, PHP & Perl, vanwaar de naam komt.
+	
+	→ https://en.wikipedia.org/wiki/XAMPP
+
+• Welke poort gebruik mysql?
+	3306
+
+• Wat is phpmyadmin?
+	phpMyAdmin (config.inc.php) is het configuratie bestand van de Apache HTTP Server van XAMPP.
+
+_______________________________________________________________________________________________________________________________	
+-JS- Week 10: client side -JS-
+------------------------------
+• Wat zijn routes?
+	Dit is een manier van code refactoring,
+	waarin we end-points gaan groeperen en verplaatsen naar aparte .js files.
+	Deze files zijn router objecten,
+	die we kunnen aanmaken met express.Router(),
+	en waarin afzonderlijke end-points routes worden genoemd.
+
+• Hoe zet je routes op?
+	1) Maak aparte file voor het pool object + exporteer als module → database.js
+	2) Maak aparte file per groep van end-points = Router object met routes, + exporteer als module → groepNaam.js
+	3) Importeer de modules in server.js + gebruik ze → app.use("/groepNaam",groepNaam)
+	
+	Code:
+		1) Maak aparte file voor het pool object + exporteer als module → database.js:
+		
+			const mysql = require("mysql")
+
+			const pool = mysql.createPool({
+				connectionLimit:10,
+				host:"localhost",
+				user:"root",
+				password:"",
+				database:"tennis"
+			})
+
+			module.exports = pool
+			
+		2) Maak aparte file per groep van end-points = Router object met routes + exporteer als module → groepNaam.js, vb.: spelers.js
+		
+			const express = require("express")
+			let router = express.Router()
+			const pool = require("../database")
+
+			router
+				.route("/")
+				.get((req,res)=>{
+					pool.getConnection( (err,connection)=>{
+
+						if(err)
+							throw err
+						Getdata(connection,"select * from spelers",(rows)=>{
+							res.send(rows)
+						})               
+				
+					})
+
+				})
+
+			router
+				.route("/:id")
+				.get((req,res)=>{
+					const id = req.params.id;
+					pool.getConnection( (err,connection)=>{
+
+						if(err)
+							throw err
+						Getdata(connection,`select * from spelers where spelersnr = ${id}`,(rows)=>{
+							res.send(rows)
+						})  
+					})
+				})
+				.delete((req,res)=>{
+					const id = req.params.id;
+					pool.getConnection( (err,connection)=>{
+
+						if(err)
+							throw err
+						Getdata(connection,`delete from spelers where spelersnr = ${id}`,(rows)=>{
+							res.send(rows)
+						})  
+					})
+				})
+
+
+			function Getdata(connection, sql,callback){
+				
+				connection.query(sql, (err, rows)=>{    
+					connection.release()
+					if(err)
+						console.log(err)
+					else
+						callback(rows)
+				})
+			}
+
+			module.exports = router
+			
+		3) Importeer de modules in server.js + gebruik ze:
+		
+			const express = require("express")
+			const bp = require("body-parser")
+			const pool = require("./database")
+			const spelers = require("./routes/spelers")
+			const teams = require("./routes/teams")
+			const app = express()
+
+			app.use(bp.urlencoded({extended:false}))
+			app.use(bp.json())
+
+			app.use("/spelers",spelers)
+			app.use("/teams",teams)
+
+			app.listen(3000,err=>{
+				if(err)
+					console.log(err)
+				console.log("running #3000")
+			})
+
+• Wat is XMLHttpRequest?
+	XMLHttpRequest is een ingebouwd browser object dat je toelaat HTTP requests te maken in JavaScript.
+	Het kan naast XML ook werken met éénder welk soort data.
+	
+	→ https://javascript.info/xmlhttprequest
+	
+	Code:
+	- In server.js:
+		app.get("/",(req,res)=>{
+			res.sendFile(__dirname + "/www/index.html")
+		})
+		
+	In /www/index.html:
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Document</title>
+
+			<script>
+
+				document.addEventListener("DOMContentLoaded",()=>{
+					
+				   // LoadDataWithXMLHttpRequest()
+				  
+				})
+
+				function LoadDataWithXMLHttpRequest(){
+
+					let request = new XMLHttpRequest()
+					request.open("GET","http://localhost:3000/spelers")            
+					request.onload = ()=>{
+						let response = request.response
+						let parsedData = JSON.parse(response)
+					   // console.log(response)
+						console.log(parsedData)
+						const table = document.querySelector("table")
+						parsedData.forEach((item)=>{
+						   
+							const tr = document.createElement("tr")
+							const tdNaam = document.createElement("td")
+							tdNaam.appendChild(document.createTextNode(item.NAAM))
+							tr.appendChild(tdNaam)
+							const tdPlaats = document.createElement("td")
+							tdPlaats.appendChild(document.createTextNode(item.PLAATS))
+							tr.appendChild(tdPlaats)
+							table.appendChild(tr)                                       
+						});
+					}
+					request.send()
+				}
+
+				function PostDataWithXMLHttpRequest(){
+				
+					const request = new XMLHttpRequest()
+					request.open("POST","http://localhost:3000/teams")
+					request.onload = ()=>{
+						let response = request.response
+						let parsedData = JSON.parse(response)
+						console.log(response)
+						console.log(parsedData)
+					}
+					const newTeam = {teamnr:10,spelersnr:6,divisie:"test"}            
+					console.log(newTeam)
+					request.setRequestHeader("content-type","application/json")
+					request.send(JSON.stringify(newTeam))        
+				}
+
+				function UpdateDataWithXMLHttpRequest(){
+				
+				const request = new XMLHttpRequest()
+				request.open("PUT","http://localhost:3000/teams/10")
+				request.onload = ()=>{
+					let response = request.response
+					let parsedData = JSON.parse(response)
+					console.log(response)
+					console.log(parsedData)
+				}
+				const newTeam = {teamnr:10,spelersnr:6,divisie:"test123"}            
+				console.log(newTeam)
+				request.setRequestHeader("content-type","application/json")
+				request.send(JSON.stringify(newTeam))        
+			}
+			</script>
+		</head>
+		<body>
+			<h1>Tennis</h1>
+			<input type="button" value="get data" onclick="LoadDataWithXMLHttpRequest()">
+			<input type="button" value="post data" onclick="PostDataWithXMLHttpRequest()">
+			<input type="button" value="update data" onclick="UpdateDataWithXMLHttpRequest()">
+			<table border="1">
+
+			</table>
+		</body>
+		</html>
+

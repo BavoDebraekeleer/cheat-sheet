@@ -1,0 +1,246 @@
+# Design Patterns
+
+## Courses
+
+- [dotNET academy: SOLID](https://learn.dotnetacademy.be/unit/view/id:8143)
+- [YouTube: Change Behaviors with the Strategy Pattern - Unity and C# by One Wheel Studio](https://www.youtube.com/watch?v=yjZsAl13trk)
+- [Pluralsight: Clean Architecture: Patterns, Practices, and Principles by Matthew Renze](https://app.pluralsight.com/library/courses/clean-architecture-patterns-practices-principles/table-of-contents)
+
+
+---
+
+## Factory Pattern
+
+### OCP Simple Factory Pattern
+
+In a factory pattern, you create an object without exposing the creation logic. An interface can be used for creating an object, but lets the subclass decide which class to instantiate. Rather than defining each object manually, you can do it programmatically.
+In short, a factory is an object that creates other objects without the use of a constructor.
+#### [Reflection](https://stackify.com/what-is-c-reflection/)
+
+Reflection provides objects of type `Type` that describe assemblies, modules, and types. You can use reflection to *dynamically create an instance of a type*, bind the type to an existing object, or get the type from an existing object and invoke its methods or access its fields and properties. If you are using attributes in your code, reflection enables you to access them.
+
+Instead of having a switch or if statements chain to create new objects, like in this example:
+```c#
+class MovieFactory
+{
+    public Movie Create(int movieType, string movie_name)
+    {
+        Movie movie = null;
+        if (movieType == 1)
+        {
+            movie = new RegularMovie(movie_name);
+        }
+        if (movieType == 2)
+        {
+            movie = new ChildrenMovie(movie_name);
+        }
+        if (movieType == 3)
+        {
+            movie = new NewReleaseMovie(movie_name);
+        }
+        return movie;
+    }
+}
+```
+
+We can use *reflection*, using the `Activator.CreateInstance(Type...)` method.
+This way, we don't need to modify this method every time a new type class is added.
+```c#
+class MovieFactory
+{
+    public Movie Create(string type, string movie_name)
+    {
+        try
+        {
+            Movie m = (Movie)Activator.CreateInstance(
+	            Type.GetType(
+		            $"SOLID_Start.Movies.{type}"), 
+		            new Object[] { movie_name });
+            return m;
+        }
+        catch(Exception e)
+        {
+            return new NullMovie("null movie"); // Applying LSP
+        }
+    }
+}
+```
+
+---
+
+## Strategy Pattern
+
+Strategy is **a behavioural design pattern that turns a set of behaviours into objects and makes them interchangeable inside the original context object**. The original object, called context, holds a reference to a strategy object. The context delegates executing the behaviour to the linked strategy object.
+
+In scenarios where you would have to change an object type, you would normally have to instantiate a new object of that different type and by doing so lose all possible data it holds.
+By identifying what the reason is why you would have to change type, and encapsulating this into a strategy object, you now no longer have to change object type, but just switch out the strategy object.
+
+*Adheres to OCP, or Open/Closed Principle, because you can add functionality without modifying existing code.*
+
+![[Pasted image 20230929111556.png]]
+
+### Movie Rental Example (using abstract classes)
+
+#### Without Strategy Pattern
+
+There are three subclasses of the abstract base class `Movie`.The only thing the subclasses implement is the `GetCharge` method, which basically returns the pricing. If, over time, we want to change the `Movie` type from `NewReleaseMovie` to `RegularMovie` we would have to instantiate a new object to only change the pricing, while losing all other data, in this case the title.
+
+![[Pasted image 20230929101415.png]]
+
+```c#
+public abstract class Movie   
+{   
+	private string _title;   
+
+	public Movie(string title)    
+	{   
+		_title = title;   
+	}   
+
+	public string GetTitle()   
+	{   
+		return _title;   
+	}   
+
+	public abstract double GetCharge(int daysRented);
+}
+```
+
+```c#
+class NewReleaseMovie : Movie   
+{   
+	public NewReleaseMovie(string title) : base(title) { }   
+	   
+	public override double GetCharge(int daysRented)   
+	{   
+		return  daysRented * 3;   
+	}   
+}
+```
+
+#### With Strategy Pattern
+
+By applying the Strategy Pattern, we identified why we would have to change the object type, being the pricing, so introduced the `Price` strategy object as a property of `Movie`.
+This way, when a `Movie` object changes from `NewRelease..` to `Regular..`, only the `Price` property has to change from `NewReleasePrice` to `RegularPrice`, while the `Movie` object and all its other data, like title, are kept.
+
+![[Pasted image 20230929101431.png]]
+
+```c#
+public class Movie
+{
+    public string Title { get; set; }
+    public Price PriceType { get; set; }
+
+    public Movie(string title)
+    {
+        this.Title = title;
+    }
+
+    public double getCharge(int daysRented)
+    {
+        return this.PriceType.getCharge(daysRented);
+    }
+}
+```
+
+```c#
+public abstract class Price   
+{   
+	public abstract double getCharge(int daysRented);
+	// abstract, so subclasses HAVE TO provide their own implementation.
+
+	public virtual int getFrequentRenterPoints(int daysRented)
+	// virtual, so subclasses CAN provvide their own implementation.
+	{   
+		return 1;   
+	}   
+}
+```
+
+```c#
+class RegularPrice : Price   
+{   
+	public override double getCharge(int daysRented)   
+	{   
+		double result = 2;   
+		if (daysRented > 3)   
+			result += (daysRented - 2) * 1.5;   
+
+		return result;   
+	}   
+}
+```
+
+```c#
+public class NewReleasePrice : Price   
+{   
+	public override double getCharge(int daysRented)   
+	{   
+		return daysRented * 3;   
+	}   
+
+	public override int getFrequentRenterPoints(int daysRented)   
+	{   
+		return (daysRented > 1) ? 2 : 1;   
+	}   
+}
+```
+
+```c#
+class PriceFactory // Applying OCP = Open/Closed Principle
+{
+    public Price Create(string type)
+    {
+        try
+        {
+            Price p = (PrijsT)Activator.CreateInstance(
+	            Type.GetType($"SolutionName.FolderName.{type}Price"), 
+	            new Object[] { });
+            return p;
+        }
+        catch (Exception e)
+        {
+	        // Applying LSP = Liskov Substituation Principle
+            return new NullPrice("null price");
+        }
+    }
+}
+```
+
+### Unity Game Example (using an interface)
+
+Using an interface.
+
+Instead of implementing the `DoDamage` method in the base class, it is moved to an interface `IDoDamage`. This interface is then used as a property in the base class, so subclasses can set the `damageType` in their constructor. This way, the `TryDoAttack` method only needs to be implemented once in the base class, and no modifications, or overrides in the subclasses are necessary. 
+The different types of damage are separate classes that implement the `IDoDamage` interface.
+The `?` `null` check in `TryDoAttack` also allows for weapons that don't do any damage.
+
+![[Pasted image 20230928163436.png]]
+
+New types of damage can easily be added, without having to modify the base class or the `TryDoAttack` method. The damage type can also easily be interchanged, for example, to allow for modifiers which change the damage type of a weapon.
+
+![[Pasted image 20230928163732.png]]
+
+Instead of making separate subclasses for different damage types, you can also make a more generic subclass that gets the damage type as a constructor parameter, instead of hard coded.
+
+![[Pasted image 20230928163758.png]]
+
+If you want the ability to add multiple damage types per weapon, you can make the property into a list. Where you then step through.
+
+![[Pasted image 20230929093323.png]]
+
+*Note: the base class inherits from `MonoBehaviour`, because this is a Unity example, and this makes it easier to attach to a button in Unity.*
+
+
+### Happy Hour Billing Example (using an interface)
+
+![[Pasted image 20230929111240.png]]
+
+![[Pasted image 20230929111335.png]]
+
+![[Pasted image 20230929111359.png]]
+
+
+---
+
+

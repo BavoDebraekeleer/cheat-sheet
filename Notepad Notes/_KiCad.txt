@@ -1,0 +1,55 @@
+KiCad 6
+-------
+
+Schematic
+---------
+A - component toevoegen
+E - component waarden aanpassen
+
+Labels gebruiken -> rechter zijbalk
+
+Voor naar PCB design:
+	1) Tools -> Annotate
+	2) ERC check -> bovenbalk
+	3) Tools -> Edit Symbol Fields
+	4) F8 - Tools -> Update PCB from Schematic (annotate + footprint)
+	
+	Tools = Gereedschappen
+	Edit Symbol Fields = Symboolvelden bewerken
+
+Preferences -> Symbol library - to add libraries
+
+Ctrl+Shift+C = Change schematic symbols
+
+PCB Editor
+----------
+Auto zoom and fit to screen:
+	Preferences - >Display Options -> Cross-Probing
+	
+R - Rotate
+F - Flip side
+M - Select pad, press M, and move component with pad as centre-point on the grid
+Ctrl - Move without grid snapping
+V - Switch between layers in normal mode
+B - Fill al zones
+
+X - Route
+V - Add via while routing
+
+H - Hide or make other layers transparent
+
+Ctrl + click - Highlight net
+
+Inspect -> Design Rules Checker (DRC)
+
+Set Grid origin:
+	1) Preferences -> Origins & Axes -> Display Origin -> Drill/place file origin
+	2) Place -> Drill/Place File Origin
+	
+	OR: S - Place Grid Origin
+	
+Selection box Left to Right - Select only components fully in the box
+Selection box Right to Left - Select every component overlapping with the box
+
+Shift + V - Align Vertically (Assign in Preferences -> Hotkeys -> Align to Horizontal Center)
+Shift + H - Align Horizontally (Assign in Preferences -> Hotkeys -> Align to Vertical Center)

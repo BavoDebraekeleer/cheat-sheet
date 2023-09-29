@@ -1,0 +1,995 @@
+
+██     ██ ███████ ██████      ███████ ██████   █████  ███    ███ ███████ ██     ██  ██████  ██████  ██   ██ ███████ 
+██     ██ ██      ██   ██     ██      ██   ██ ██   ██ ████  ████ ██      ██     ██ ██    ██ ██   ██ ██  ██  ██      
+██  █  ██ █████   ██████      █████   ██████  ███████ ██ ████ ██ █████   ██  █  ██ ██    ██ ██████  █████   ███████ 
+██ ███ ██ ██      ██   ██     ██      ██   ██ ██   ██ ██  ██  ██ ██      ██ ███ ██ ██    ██ ██   ██ ██  ██       ██ 
+ ███ ███  ███████ ██████      ██      ██   ██ ██   ██ ██      ██ ███████  ███ ███   ██████  ██   ██ ██   ██ ███████ 
+ 
+• → 
+___________________________________________________________________________________________________________________________
+-- Handige dingen --
+--------------------
+• VS Code hotkeys:
+	CTRL + µ				Editor split
+	CTRL + K / CTRL + C		Code IN commentaar
+	CTRL + K / CTRL + U		Code UIT commentaar
+	CTRL + SHIFT + P		Opzoeken van commands
+	
+• String interpolation:
+	`${var} tekst`
+	
+• Type casting:
+	String → number:	+stringName OF Number(stringName)
+	
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+___________________________________________________________________________________________________________________________
+-- Herhaling --
+---------------
+• Browser request → Web Server response
+	→ HTTP Request:
+		- methods/verbs (GET, POST, PUT, DELETE, ...)
+		- Header, bevat:
+			• Key			vb. Accept		→ aanvaard, geef voorkeur aan bepaald formaat/MIME type
+			• Value			vb. text/html	→ HTML tekst = MIME type
+			• Description
+		- Body
+	
+	→ HTTP Response:
+		- Status code (200, 404, 500, ...)
+		- Header
+		- Body, bevat de content (HTML, CSS, javascript, font, XML data, JSON data, ...)
+		
+		→ adhv server-side scripting, queries
+	
+• Tools:
+	- F12 browser developer tools
+	- Fiddler: http proxy (kan je mee ingrijpen
+	- Wireshark: TCP niveau
+	- Postman: requests maken en versturen
+	
+• MIME types (Media types)	https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+
+• Werking Browser:
+	1) Bouwt DOM (= Document Object Model) op: zet HTML tags om in objecten van die bepaalde klasse.
+	2) Render Engine geeft de website weer adhv het DOM.
+
+• SPA = Single Page Application: enkel de initiële pagina wordt volledig geladen, de rest via AJAX.
+• RIA = Rich Internet Application
+• PWA = Progressive Web Application
+
+• AJAX = Asynchronous Javascript and XML:
+	- asynchrone HTTP request naar de server, blokkeert bijgevolg de UI niet.
+	- de huidige HTML pagina blijft in de browser ingeladen in het DOM (wordt niet volledig ververst).
+	- de AJAX call kan HTML zijn, maar ook enkel XML of JSON.
+	- enkel het resultaat van de AJAX call wordt, via Javascript, geïnjecteerd in het DOM van de huidige pagina.
+
+• Client-Side Web Frameworks (thick client)
+	- Server-side: ASP/MVC (Microsoft), Express/Node.js, Ruby on Rails, Django
+	- Client-side: Angular (Google), ReactJS (Facebook), Meteor, Ember
+	- Isomorphic: Angular Universal
+	- App development
+		• Hybrid apps: Cordova/ionic, Angular Mobile Toolkit
+		• Native apps: React Native, Nativescript (in combinatie met Angular)
+	- Desktop applications: Electron (in combinatie met Angular, volledige hergebruik van codebase mogelijk)
+
+	→ Gebruik:
+		- client-side caching
+		- databinden
+		- (auto) testing van client-side code = unit testing
+	
+	→ WF = Web Frameworks
+	  WAF = Web Application Framework
+	  
+	→ Voordelen:
+		- minder server calls, lagere server load
+		- lagere netwerk trafiek
+		- lokaal cachen van data = sneller
+		- geen overhead
+		- hogere gebruiksvriendelijkheid
+		
+	→ Nadelen:
+		- initieel mogelijk langere download tijd
+		- minder toegankelijk voor Web Crawlers = minder resultaten in Search Engines
+		- bepaalde code dubbel, vb. client-side validatie in Javascript en dezelfde validatie server-side in .NET
+	
+• WPF = Windows Presentation Foundation: a UI framework that creates desktop client applications.
+	→ databinden = het injecteren van nieuwe data op de juiste plaats, vb. suggesties onder een invoerveld, vb. Google Search
+	
+• LTS = Long Term Support
+
+• Instal NPM in CMD: npm install -g http-server
+	gebruiken: http-server
+	
+• Instal Bulma CSS framework: npm install bulma
+	https://bulma.io/
+	https://bulma.io/documentation/overview/start/
+	
+	→ Start code:
+___________________________________________________________________________________________________________________________
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- <link rel="stylesheet" href="styles/debug.css"> -->
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Hello World
+      </h1>
+      <p class="subtitle">
+        My first website with <strong>Bulma</strong>!
+      </p>
+    </div> 
+  </section>
+  </body>
+</html>
+___________________________________________________________________________________________________________________________
+-- TypeScript --
+----------------
+• TypeScript = "superset" van JavaScript
+	+ alle meest recente toevoegingen aan ECMAscript
+	+ "static types"
+	+ concept van namespaces en modules
+	
+	→ Oplossing van Microsoft voor dat niet alle JavaScript compilers in browsers alle nieuwste functies van ECMAscript (snel genoeg) ondersteunen.
+	
+• ECMAscript = de specificatie/standaard voor JavaScript
+
+• Transpiler: gaat je TypeScript code, met alle laatste features, omzetten naar JavaScript in de gewenste versie van ECMAscript,
+	zodat eventuele oudere browsers die de nieuwe features nog niet ondersteunen je website toch kunnen weergeven.
+	
+	→ Transpiling = compiling naar oudere versie
+	
+• TypeScript Playground: web app om in TypeScript te coderen en ineens te zien wat de Transpiler ervan maakt in JavaScript.
+	→ https://www.typescriptlang.org/play
+	→ https://stackblitz.com/edit/typescript-playground
+	
+• Installeren in VS Code:
+	Via Node.js terminal/command prompt:	npm install -g typescript		→  -g = "global install"
+	
+	→ TypeScript versie opvragen:	tsc -version	
+	→ Mogelijke opties opvragen:	tsc -help
+	
+	→ Bij Angular niet nodig, wordt mee geïnstalleerd.
+	
+• Static type support:
+	→ Voordeel: de compiler kan na kijken of je geen fouten maakt met toekenningen, want meestal weet je perfect wat je met een var gaat doen.
+	→ Types:
+		Type			Expliciet					Impliciet (Compiler ziet aan waarde die je wilt toe kennen welk type het is.)
+		----			---------					---------
+		Number			var a : number				var b = 5; var c = b + 1
+		Boolean			var d : boolean				var e = false
+		String			var f : string				var g = "String"; var h = "Other String"
+		Array			var i : number[]			var j = ["A", "b", "c"]; var k = [1, true, "OK"]
+		Tuple			var l : [number, string]
+		Enum			enum color {Red = 1, Green, Blue}
+						var m : color; var n = color.Red
+		Any				var o : any					var p; let q
+		
+• Strict Null Checks:	strictNullChecks : true/false
+
+	When strictNullChecks is false, null and undefined are effectively ignored by the language. 
+	This can lead to unexpected errors at runtime.
+	
+	When strictNullChecks is true, null and undefined have their own distinct types 
+	and you’ll get a type error if you try to use them where a concrete value is expected.
+		
+• Functies:
+	- Static types gebruiken voor parameters en return type.
+	- Alle parameters by default verplicht, maar kunnen optioneel gemaakt worden met "?"
+		vb.: function ReverseText(text : string, cutOffLength? : number) : string {..}
+		
+	- Default value voor laatste parameters, of aangeven met 'undefined' dat de default waarde gebruikt moet worden
+		vb.: function SplitText(text : string, separator : string = "-") : string[] {..}
+	
+	- Rest parameters met ".":
+		vb.: function buildName(firstName : string, ...restOfName : string[]) {
+				return firstName + " " + restOfName.join(" ")
+				
+			→ Hier kan je nog 3 extra strings meegeven als parameters die in de string array zullen geplaatst worden.
+			
+	- lambda expressions / fat-arrow functions = verkorte notatie van anonymous functions
+		vb. volgende functies zijn identiek, enkel met andere syntax:
+				function Sum(a : number, b : number) : number { return a + b }
+				var sum = function(a: number, b: number) { return a + b }
+				var sum = (a:number, b:number) => { return a+b }
+				var sum = (a:number, b:number) => a+b
+				
+• OOP: zelfde werking als in C#, maar ligt andere syntax, zie 36:52
+
+	→ Decorators met @name
+	
+• Modules: 37:50
+
+___________________________________________________________________________________________________________________________
+-- Angular --
+-------------
+• Waarom Angular?
+	- Expressieve HTML
+	- Powerful Data Binding
+	- Modular by design
+	- Built-in back-end integration
+	
+• Install in command line (cmd):
+	0) change drive: d:
+	1) cd installatie-pad
+	2) npm install -g @angular/cli
+	
+• Nieuw project aanmaken (cmd):
+	1) cd pad-waar-het-project-moet-komen
+	2) ng new ProjectNaam	→ maakt nieuwe map aan voor dit project
+	3) y op alle vragen
+	4) cd ProjectNaam
+	5) code .				→ project openen in VS Code
+	6) Onder (...) NPM SCRIPT het start script runnen
+	7) localhost:4200
+
+• Packages toevoegen aan project:
+	1) aan 'package.json' toevoegen onder "zone.js" bij private: ,\n "package_naam": (versie selecteren)
+		+ package.json saven (of auto-save aanzetten: User-space, onFocusChange)
+	2) "npm install" in Terminal runnen om package effectief te installeren
+	
+		→ Bij version nr:
+			1.0.4								Enkel deze specifieke versie installeren
+			1.0		of 1.0.x 	of ~1.0.4		Alle patch releases installeren wanneer er updates zijn
+			1		of 1.x 		of ^1.0.4		Minor releases updates
+			*		of x						Major releases updates
+		
+• Transpiler versie in tsconfig.json
+
+• Meeste files om in te werken in "src" folder
+
+• Werking:
+	In index.html enkel: <body><app-root></app-root></body>
+	Hierin gaat de TypeScript code worden geinjecteerd vanaf dat de pagina bezocht wordt.
+	
+• Angular applicatie opbouw:
+	Application = component + component + ... + component, + overkoepelende service
+		→ componnenten los van elkaar, blackboxes
+		→ services zorgen voor communicatie tussen componenten, en met de server
+		
+	→ Component = Template + Class(Properties: data, Methods: logic) + Metadata
+		→ Template: view layout, created with HTML, includes bindings and directives
+		→ Class: code supporting the view, created with TypeScript
+		→ Metadata: extra data for Angular, defined with a decorator
+		
+		vb. "app.component.ts" in "app" folder:
+		
+				import { Component } from '@angular/core';
+		
+				@Component({
+					selector: 'app-root',					//Verwijzing naar de tag in de body van index.html
+					templateUrl: './app.component.html',
+					styleUrls: ['.app.component.css']
+				})
+				
+				export class AppComponent {
+					title = 'My first application with Angular';
+				}
+				
+• Component aanmaken:
+	cmd: ng g c Naam
+	
+• Bulma installeren:
+	- npm install --save bulma OF zelf teovoegen in dependencies
+	- css file toevoegen aan de angular.json  file:
+		"styles": [
+			"node_modules/bulma/css/bulma.css"
+		]
+		
+• Interpolation (one-way, data vanuit .ts naar .html):
+	Gegevens vanuit onze klasse weergeven in de html template.
+	Enkel voor weergave → one-way binding!
+
+	- variabele in component.ts file zetten binnen de klasse
+	- in html {{varName}} om de variabele waarde hierin weer te geven
+		vb. <h1 innerText={{pageTitle}}></h1>
+	
+	→ Properties en methods aanspreken.
+	→ expressies of concatenaties:
+		vb. {{'Title: ' + getTitle()}}
+			{{1+1}}
+	
+	→ Pipes voor formatering/opmaak:
+		Data transformeren voor weergaven.
+		Bestaande ingebouwde pipes of zelfgemaakte custom pipes.
+		
+		vb. {{datum | date : "HH:mm:ss"}}
+			{{Name | lowercase/titlecase/uppercase}}
+			{{Calculate() | number:'3.2-4'}} → een nummer met 3 cijfers voor de komma, en min 2 en max 4 cijfers achter de komma (met afronding naar boven)
+			{{Amount | currency: 'EUR':true}}
+			
+• lodash:
+	Lodash is a JavaScript library that helps programmers write more concise and maintainable JavaScript. 
+	It can be broken down into several main areas: Utilities - for simplifying common programming tasks 
+	such as determining type as well as simplifying math operations.
+
+	Werking:
+		npm install --save-dev @types/lodash
+		import * as _ from 'lodash'
+		_.random(..)
+	
+• moment:
+	npm install moment -save
+	import 'moment'
+			
+• Structural directives:
+	Worden in combinatie met HTML element gebruikt.
+	Passen DOM structuur aan door elementen toe te voegen, te verwijderen of aan te passen.
+	→ Je kan gebruik maken van properties en methods uit de klasse van het component waarbinnen je werkt op voorwaarde dat deze public staan.
+	
+	*ngIf: built-in directive die HTML toevoegt of verwijdert aan de hand van gegeven expressies:
+		vb.	.html:	<div>{{Temperature}}</div>
+					<div *ngIf="Temperature > 25">Het is warm vandaag.</div> → Enkel weergeven als het warmer is dan 25°C
+			.ts:	get Temperature() {
+						return 30
+						}
+						
+		vb.	<table *ngIf="data">..				→ niet tonen als data == null
+			<table *ngIf="data.length > 0">...	→ enkel tonen als er iets in de tabel staat
+		
+	*ngFor: built-in directive die HTML toevoegt in een lus (vb. om rijen in een tabel te maken)
+		vb. .html:	<div *ngFor="let getal of getallen">{{getal}}</div>		→ een div wordt aangemaakt voor elk element in de getallen array
+			.ts: 	getallen : number[] = [1, 4, 5, 9, 5, 34]
+			
+		vb	.html:	<table>
+						<tr *ngFor="let getal of getallen">
+							<td>{{getal}}</td>
+							<td>{{getal * 2}}</td>
+							<td>Het getal is {{getal}}.</td>
+						</tr>
+					</table>
+					
+• Property binding (aka data-binding, net zoals bij Interpolation one-way, data vanuit .ts naar .html):
+	Gelijkaardig aan interpolation, maar je geeft een expressie op, niet enkel een variabele.
+	
+	!Je werkt op het DOM object en past hier dingen in aan adhv de properties. 
+	Het zijn deze properties die je met property binding aanspreekt.
+	Niet met de HTML attributes!
+		→ meestal hebben de attributes en properties dezelfde naam, maar deze zijn niet hetzelfde! Let hierop!
+			HTML attributes: https://www.w3schools.com/html/html_attributes.asp
+			DOM properties:	 https://www.w3schools.com/jsref/dom_obj_all.asp 
+				→ onder HTML Objects kan je terug vinden welke properties bvb een button heeft.
+				
+	Voorbeeld toepassingen:
+		- innerText:				<div [innerText]="Name"></div>	→ string, dus kan ook met interpolation {{}}
+		- img src:					<img [src]="imageUrl">			→ string, ""
+		- button enable/disable:	<button [disabled]="buttonStatus">My button text</button>	→ boolean, niet mogelijk met interpolation!
+		- button textContent:		<button [textContent]="buttonText"></button>
+	
+	Vergelijkingsvoorbeeld:
+		- In Javascript:
+			.js:	document.getElementById("title1").innerText = "Faeryn"
+			.html:	<div id="title1"></div>
+		
+		- Met interpolation:
+			.ts:	Name: string = "Faeryn"
+			.html:	<div>{{Name}}</div>
+		
+		- Met Property binding:
+			.ts:	Name: string = "Faeryn"
+			.html:	<div [innerText]="'Their name is ' + Name"></div> 	→ == <div [innerText]='"Their name is " + Name'></div>
+				→ binnen ""/'' kan je ''/"" gebruiken om nog string toe te voegen binnen de expressie, zoals hierboven.
+				
+	URL in TypeScript dynamisch aanpassen, vb.:
+	
+		imageUrl: string = "https://mdboostrap/blabla/img(1).jpg"
+		teller: number = 1
+		
+		constructor() {
+			setInterval(() => {
+				this.teller++
+				this.imageUrl = `https://mdboostrap/blabla/img(${this.teller}).jpg`
+			}
+			, 1000)
+		}
+
+• Event binding (one-way):
+	Inschrijven op events met ()
+	
+	Mogelijke HTML DOM Events: https://www.w3schools.com/jsref/dom_obj_event.asp of https://developer.mozilla.org/en-US/docs/web/events
+	
+	vb.:	.ts:	counter: number = 0
+					incrementCounter() { this.counter++ }
+			.html:	<button (click)="incrementCounter()">{{counter}}</button>
+			
+	vb.:	.ts:	mouseMove(event: MouseEvent) { console.log(`mouse cords x,y: ${event.clientx},${event.clienty}`)
+			.html:	<button (mousemove)="mouseMove($event)">Button text</button>
+			
+	- Template reference variables:
+		lokale variabele binnen de scope van de HTML template, declareren met #-token.
+		
+		vb.:	.ts:	DoSomething(value: number): void {..}
+				.html:	<input #in1 type="number" value="5"/>
+						<button (click)="DoSomething(in1.value)"></button>
+						
+			of	.html:	<input #in1 type="number" value="5" (change)="DoSomething(in1.value)"/>
+						<input #in2 type="number" value="5" (input)="DoSomething(in2.value)"/>
+						
+• Model binding (two-way):
+	→ Om te kunnen gebruiken, aan "app.module.ts" onder "imports" moet je FormsModule toevoegen!
+		import { FormsModule } from '@angular/forms';
+	
+	<input type="text" [(ngModel)]="Name">  =doet hetzelfde als=  <input #in1 type="text" [value]="Name" (input)="NameChanged(in1.value)"/>
+	
+	{{title}}
+	<select class="form-control" [(ngModel)]="counter">
+		<option value="1">Keuze A</option>
+		<option value="2">Keuze B</option>
+		<option value="3">Keuze C</option>
+	</select>
+	
+		→ Door in .ts: counter: string = 2
+			zal de default waarde value="2" en dus "Keuze B" zijn.
+			
+	→ Als je wilt dat meer dan alleen de waarde wordt aangepast kan je dit doen via een get & set te voorzien in .ts en de variabele private te zetten.
+		private _varName: string = "3"
+		
+		public get varName(): string {
+			return this._varName
+		}
+		public set varName(value: string) {
+			this._varName = value
+		}
+		
+• Parent-child componenten:
+	Bij gebruik van een component in een ander component kan je daar andere waarden gaan instellen adhv. de decorator @Input
+	
+	→ Toevoegen aan import status:
+		import { Component, OnInit, Input } from '@angular/core';
+	
+	component1-child.ts:	@Input("AltVarName") private _varName: string = "3"
+				
+	component2-parent.html:	<app-component1-child [AltVarName]="'1'"></app-component1-child>
+	
+	De @Output decorator bestaat ook.
+	
+• Nieuw Angular project bevat standaard:
+	- Startup module: AppModule → nieuw aangemaakte componenten worden hier automatisch aan gekoppeld
+	- Startup Component: AppComponent → gekoppeld aan de AppModule
+	- Externe modules, zoals BrowserModule: bevat functionaliteit om in browser te draaien (DOM)
+	
+• Angular Module:
+	@NgModule({								→ decorator om aan te geven dat het een Angular Module is, bevat volgende parameters
+		declarations: [NameComponent],		→ componenten die onder deze module vallen
+		imports: [BrowserModule],			→ gebruikte & externe Modules, BrowserModule = standaard
+		providers: [],						→ zie later
+		bootstraps: []						→ bevat de main/opstart module van het project
+	})
+	export class NameModule { }				→ afspraak: naam eindigt altijd op Module
+	
+• Routing = Navigatie tussen 'views'
+	- Dmv RouterModule
+	- Geen HTTP request naar een server, maar lokale lijst met URL's → URL mappen naar bepaald Component
+	- 'output' van de Routing wordt weergegeven in <router-outlet> tag
+	- Werkt met 'backward' en 'forward' knoppen in de browser
+	
+	- Routes worden afgehandeld van boven naar onder in de lijst van routes.
+		De eerste die "matched" zal worden gebruikt.
+	
+• Routing toevoegen:
+	1) in 'app.module.ts, onder imports:
+		RouterModule.forRoot([
+			{
+				path: "name_route1",
+				component: NameComponent
+			},
+			{
+				path: "name_route2",
+				component: NameComponent
+			},
+			{
+				path: "", // → als er geen path wordt ingegeven
+				redirectTo: "home",
+				pathMatch: "full"
+			},
+			{
+				path: "**", // → wild-card route, als het path niet gevonden wordt
+				component: PageNotFoundComponent // of redirectTo
+			}
+		], {useHash: true})	// → voorkomt server calls → localhost:4200/#/
+		
+	2) <router-outlet></router-outlet> tag toevoegen waar deze ge-route componenten moeten worden weergegeven.
+	
+• Bulma Navbar: https://bulma.io/documentation/components/navbar/
+	1) nav-bar component aanmaken:
+		cmd: ng g c nav-bar 	// lees: Angular generate component ..
+	
+	2) Bulma code copy/paste in de nav-bar.component.html
+	
+	3) Code aanpassen voor juiste naamgeving en routing toevoegen:
+		[routerLink]="['name_route']"
+		[routerLinkActive]="css classe naam" → meerdere classe: [routerLinkActive]="['classe1', 'classe2']"
+		
+	4) <app-nav-bar></app-nav-bar> tag plaatsen waar je de navigatie balk wilt tonen. 
+	
+	vb.:	<nav class="navbar" role="navigation" aria-label="main navigation">
+			  <div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+				  <a class="navbar-item" [routerLink]="['name_route1']" [routerLinkActive]="['is-primary']">
+					Name_route1
+				  </a>
+
+				  <a class="navbar-item" [routerLink]="['name_route2']" [routerLinkActive]="['is-primary']">
+					Name_route2
+				  </a>
+				</div>
+			  </div>
+			</nav>
+	
+• Afbeeldingen en logo's onderbrengen in de 'assets' folder
+
+• Locale Services:
+	Een centraal object waar je data bijhoud dat tussen verschillende componenten gebruikt moet/kan worden,
+	en bewaard worden in het geheugen bij het "killen" van componenten door dat ze niet worden weergegeven.
+
+	- Aanmaken lege service via CLI:
+		ng g s services/NameService		=		ng generate service services/NameService
+		
+	- Basis code:
+		import { Injectable } from '@angular/core';
+		
+		@Injectable({
+			provideIn: 'root'
+		}) 
+		export class NameService { .. }
+		
+	- Dependency Injection = DI:
+		In de constructor van een Component geef je mee of deze afhankelijk is van een Service:
+		
+			constructor(private service : NameService) { .. }	→ de service is een property door het private keyword
+			
+		Het framework zal de Service instantiëren en een referentie mee geven aan de Componenten = Dependency Injection
+		Er is steeds maar één object per Service = Singleton
+		
+	- Service gebruiken in Component:
+		Service zelf niet public zetten, zodat deze niet rechtstreeks toegankelijk is.
+		Enkel het component moet aan de Service kunnen.
+		→ data opvragen van Service via een getter in een component
+		
+• Externe (http) Services / Web API's:
+	- Calls moeten asynchroon gebeuren:
+		GET = ophalen
+		POST / PUT = wegschrijven
+	
+	- We gebruiken Angular HttpClientModule en de HttpClient klasse.
+	
+	- Werkwijze:
+		1) HttpClientModule toevoegen in de AppModule, in app.module.ts:
+			in de imports array → import statement wordt auto toegevoegd: import { HttpClientModule } from '@angular/common/http';
+		
+		2) In een Service de HttpClient toevoegen in de constructor:
+			constructor(private _http: HttpClient) {} → import { HttpClient } from '@angular/common/http';
+			
+		3) via de HttpClient kan je nu een GET request doen:
+			get GetMethod(params) : Observable<Object> {				→ deze geeft een Observable terug als resultaat.
+				return this._http.get("http://url.json")
+			}
+			
+		4) Subscriben in component waar de data naartoe moet:
+			dataVariable
+			
+			constructor(private _service: NameService){
+				this._service.GetMethod(params).subscribe(d => this.dataVariable = d)	→ kan hier, maar beter in OnInit
+			}
+			
+			ngOnInit(private _service: NameService){
+				this._service.GetMethod(params).subscribe(d => this.dataVariable = d)
+			}
+		
+			
+		vb. Service code:	private _apiKey = "00001"
+					
+							constructor(private _http: HttpClient){}
+							
+							get GetWeatherInfo(city: string) : Observable<Object> {
+								return this._http.get(`https://api.openweather.org/../q=${city}&key=${this._apiKey}`,)
+							}
+		
+• Observable:
+	Resultaat v/d get methode v/d HttpClient,
+	een object waarop je een subscribe moet doen,
+	door de asynchrone werking van de HttpClient moeten we niet wachten op het resultaat v/d get methode en wordt de applicatie niet geblokkeerd.
+	Wanneer het antwoord v/d api server binnenkomt wordt de callback functie, die werd meegegeven bij de subscribe, aangeroepen voor alle subscribers.
+	
+	Er kunnen meerdere subscribers zijn voor een zelfde observable.
+	
+	→ Best werken met een Interface om aan te geven over wat voor data en datatypes het zal bevatten.
+		→ Automatisch laten genereren door: http://json2ts.com
+			→ module mag je verwijderen, enkel de interfaces nodig
+			→ RootObject is het hoofdobject, de andere zijn objecten die zich hierbinnen bevinden.
+			→ Naamgeving eventueel nog aanpassen zodat de interfaces met I beginnen.
+	
+		vb.:	export interface IName{
+					id: number
+					objectid: number
+					geometry: string
+					geometry2: IGeometry
+					shape?: any
+				}
+				
+• Component LifeCycle:
+	1) constructor
+	2) OnInit
+	3) OnChanges
+	4) OnDestroy
+	
+	vb.:	export class NameComponent implements OnInit, OnChanges, OnDestroy{		→ vanaf je de implements hebt geschreven kan je de standaard code laten genereren!
+				constructor(){}
+				
+				ngOnInit(private _service: NameService){
+					this._service.GetMethod(params).subscribe(d => this.dataVariable = d)
+				}	
+				
+				ngOnChanges(changes: SimpleChanges): void{}
+				
+				ngOnDestroy(): void{}
+			}
+			
+	→ Subscriptions gebeuren best in de OnInit
+	
+• Promises:
+	→ Alternatief voor Observables!
+	→ toPromise methode zet Observable om in Promises
+	→ werken met "async" & "await", geven aan dat er asynchrone werking is
+	→ beter gestructureerde broncode, vooral bij meerdere API calls na elkaar, zeker als die van elkaar afhankelijk zijn en er moet gewacht worden.
+	
+	Promise aanmaken:
+		GetData(){
+			return this._http.get<INameInterface>("http://url.json").toPromis()
+		}
+			
+	Gebruiken:
+		async Methode(){
+			try {
+				this.data = await this._service.GetData()
+			}
+			catch(error){
+				console.log(error)
+			}
+		}
+		
+• Lokale JSON-Server:
+	1) installeer deze global adhv. npm (zie ook de uitleg op de pagina: https://www.npmjs.com/package/json-server) 
+		
+		npm install -g json-server
+		
+		
+	2) vervolgens het json bestand in een map plaatsen en vanuit die map de json server opstarten (db.json is de naam van het JSON bestand)
+		
+		json-server --watch db.json
+	
+	Standaard luistert deze server op poort 3000
+	
+----------------------------------------------------------------------------
+-- MEAN-stack --
+----------------
+• Stack = verzameling software lagen waaruit het project is samengesteld.
+• MEAN-stack = 	Mongo-DB	NoSQL database
+				Express		Server-side framework voor Node
+				Angular		Client-side framework
+				Node.JS		Server-side javascript runtime
+				
+	-> volledig gebasseerd op javascript technologiën
+	-> Tussen de software lagen wordt JSON data uitgewissled
+	
+• Node.JS
+	Javascript runtime gebasseerd op Chrome's V8 javascript engine
+		- event driven
+		- non-blocking I/O model
+		- lightweight and efficienbt
+		- npm = Node.JS Package Manager ecosystem -> largest ecosystem of open source libraries in the world
+		
+	Maakt nog gebruikt van CommonJS:
+		- module.exports	-> om naar andere modules te exporteren
+		- require("..") 	-> om andere module in te laden
+			-> eigen modules met relatief pad, vb.: var helper = require("./helper.js")
+													console.log(helper.hello);
+			-> npm en standaard modules zonder pad, vb.: var mathhelper = require("mathjs")
+		
+	Werking:
+		1) map aanmaken:		mkdir [name]
+		2) start VS Code:		cd [folder] code .
+		3) maak start bestand:	App.js
+		4) npm init		-> package.json wordt aangemaakt
+		5) npm packages dependencies toevoegen aan package.json
+		
+		-> console.log("..")	-> logging toevoegen
+		-> Debugging vanuit VS Code met F5
+		
+	- Nodemon debugging tool, houdt app draaiende en debugged terwijl je code toevoegt:
+		0) npm install -g nodemon
+		1) launch.json aanmaken
+		2) configuratie toevoegen:
+			{
+				// Use IntelliSense to learn about possible attributes.
+				// Hover to view descriptions of existing attributes.
+				// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+				"version": "0.2.0",
+				"configurations": [
+					{
+						"name": "Attach",
+						"port": 9229,
+						"request": "attach",
+						"skipFiles": [
+							"<node_internals>/**"
+						],
+						"type": "pwa-node",
+						"restart": true
+					},
+					
+					{
+						"type": "pwa-node",
+						"request": "launch",
+						"name": "Launch Program",
+						"skipFiles": [
+							"<node_internals>/**"
+						],
+						"program": "${workspaceFolder}\\main.js"
+					}
+				]
+			}
+			
+		3) in main.js toevoegen om de app draaiende te houden:
+			while(true){}
+		4) In Run and Debug -> Attach selecteren en draaien
+		5) nodemon --inspect [filename].js
+		
+			-> als niet werkt: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+		
+	- Eenvoudige HTTP Web Server met Node.js:
+		https://www.digitalocean.com/community/tutorials/how-to-create-a-web-server-in-node-js-with-the-http-module
+		
+• Express.JS
+	Server side web framework gebasseerd op Node.JS
+	Hulpmiddel om sneller en eenvoudiger een website te ontwikkelen, vooral naar routing.
+	
+	Werking:
+		1) "express" dependency toevoegen in package.json
+		2) npm intall runnen ("npm i" in het kort)
+		3) express.js bestand aanmaken
+		
+• Express Router:
+	Handelt alle requests af onder een bepaalde URL.
+		
+• Werken met API, vb REST, om JSON data op te vragen -> objecten
+	REST = REpresentational State Transfer
+		-> met HTTV VERBs:
+			GET		ophalen
+			POST	aanmaken
+			PUT 	update
+			DELETE 	verwijderen 
+			
+	vb. website.com/api/People		-> geeft lijst van alle personen (meestal niet toegelaten want kan héééél veel data zijn)
+		website.com/api/People/3	-> geeft enkel persoon met ID=3
+		
+• MongoDB
+	NoSQL database, werkt met JSON data in "documents" in "collections"
+	document gebasseerd, alle gegevens voor 1 record staan in 1 document
+	
+	document = JSON data
+	collection = verzameling van documenten
+	
+	- 2 mogelijke relaties:
+		1) embedded "subdocuments"
+			minder queries (geen joins)
+			betere "read performance"
+			update = 1 write operatie
+			
+		2) referenties tussen documenten:
+			genormaliseerd
+			geen duplicaten van gegevens
+			kleinere documenten
+			voor "many-to-many" relaties
+			
+	- Werking:
+		1) 'mongodb' package installeren (toevoegen aan package.json + npm install)
+		2) const mongoClient = require('mongodb').MongoClient
+		3) instellen:
+			const ObjectId = require('mongodb').ObjectId
+			var db
+			const url = 'mongodb://localhost:27017' 	// of cloud url
+			const dbName = 'myDB'
+			
+			mongoClient.connect(url, (err, client) => {
+				if (err != null) {
+					console.log(err.message)
+					throw err
+				}
+				db = client.db(dbName)
+				console.log("Connected to MongoDB")
+			})
+
+-----------------------------------------------------------------------------
+
+• Voor mobile apps, volgende mogelijkheden:
+	- Native:
+		Optimized code, high performance, native UI, pixel perfect
+	
+		voor Android -> Android Studio: java / kotlin
+		voor iOS -> Xcode / Swift
+	
+	- Cross-platform native:
+		Zelfde programmeertaal voor meerdere platforms
+		Code sharing, maar niet 100%, sommige code voor specifiek platform herschrijven
+		
+		Xamarin (MS) -> Visual Studio / C#
+		Flutter -> Dart
+		
+	- Cross-platform semi-native:
+		React Native -> javascript & typescript with native UI controls
+		
+	- Hybrid apps:
+		Gebruik makend van bestaande web technologiën -> HTML, javascript, CSS
+		SPA = Single Page Application
+		Draait in onzichtbare browser app
+			-> Ionic + Capacitor
+		
+		Based on Angular, React, Vue
+		Je hoeft geen nieuwe programmeertaal te leren, zelfdde als voor websites, wel de frameworks
+			
+	- PWA = Progressive Web App:
+		Zelfde tech als Hybrid apps
+		Easy deployment: Geen deployment via App store, maar via web server URL
+		Draait ook in onzichtbare web browser, maar gewoon die dat al op je smartphone staat geïnstalleerd
+		
+		Nadeel: gelimiteerde hardware access (camera, geolocation, orientation, AR)
+
+• Desktop apps:
+	- Cross-platform met Electron.js, gebruikt web tech in combinatie met Angular
+	
+• Ionic Framework:
+	- HTML5 Mobile App Styling Framework (zoals Bulma, maar veel uitgebreider)
+	- Provides native-like iOS and Android styling
+	- Gebaseerd op Angular Framework
+		Eigenlijk combinatie van Angular met een Styling Framework, eigen componenten
+	
+	- Werking:
+		1) Node.js moet geïnstalleerd zijn (in VS Code)
+		
+		2) install Ionic globally (once)
+			npm install -g @ionic/cli
+		
+		3) Create new (empty) project:
+			ionic start [name] [option]
+				[name] -> name of the project (a new folder is created)
+				[option] -> the type, which can be: blank, tabs, sidemenu, ...
+		
+		4) Starter template keuze
+		
+		5) Run the app in standaard browser (F12 Developer Tools om juiste device te selecteren):
+			ionic serve
+			
+	- Aanmaken onderdelen: https://ionicframework.com/docs/components
+		• component (zelfde als in Angular):
+			ionic generate component [name]
+		
+		• page = component met styling al op toegepast, vb een tab:
+			ionic generate page [name]
+			
+		• service (zelfde als in Angular):
+			ionic generate service [name]
+	
+• Capacitor
+	- Native container for running HTML/javascript
+	- Aangeraden "wrapper" voor Ionic
+	- Veel beschikbare plugins voor hardware toegang (camera, geolocation, orientation, bluetooth)
+	(Niet nodig als je Ionic gebruikt voor een PWA)
+	
+• Cors instelling, om toe te laten met verschillende domeinen of localhost's tegelijkertijd te werken:
+	in package.json:	"cors" toevoegen
+	in index.js:		const cors = require('cors')
+						app.use(cors())
+						
+• Deployment:
+	1) in index.js:
+		app.use(express.static('client'))  -> client is een map in het project
+	
+	2) app builden, in cmd:
+		ng build	-> build naar "www" map onder "server"
+	
+	3) verplaatsen of ineens builden naar de hosting map:
+		ng build --output-path=server/client	-> build naar nieuwe "client" map onder server
+												-> je kan dit commando ook toevoegen aan het "build" script in package.json,
+													zo moet je niet telkens het hele commando ingeven maar terug enkel "npm run build"
+													
+	-> Heroku.com biedt gratis demo hosting aan
+
+
+___________________________________________________________________________________________________________________________
+-- Angular Step-by-Step--
+-------------------------
+Navbar with Routing:
+	- app.module.ts:
+		import { RouterModule } from '@angular/router';
+
+		@NgModule({
+		  imports: [
+			RouterModule.forRoot([
+			  {path: "chosen-path", component: ChosenComponent},
+			  {path: "**", redirectTo: "chosen-path", pathMatch: "full"}
+			  ], {useHash: true})
+			]
+		})
+		
+	- app.component.html:
+		<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+		  <div id="navbarBasicExample" class="navbar-menu">
+			<div class="navbar-start">
+			  <a class="navbar-item" routerLink="/chosen-path" routerLinkActive="is-active">
+				Link Name
+			  </a>
+			</div>
+		  </div>
+		</nav>
+		<router-outlet></router-outlet>
+		
+Item list:
+	- Interfaces/IName.ts:
+		export interface IName {
+			Info: type,
+			Example: string
+		}
+		
+	- name.service.ts:
+		import { IName } from '../Interfaces/IName';
+		
+		private _listName: IName[] = []
+		
+		public get/set listName() {}
+		
+Service:
+	- cmd:
+		ng g s Services/name
+	
+	- component:
+		constructor(private _nameService: NameService) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,104 @@
+================================================
+= Entrepreneurship and corporate communication =
+================================================
+
+LESSON 1
+========
+
+Entrepreneurship:
+	Working for yourself, your own company.
+	
+Interpreneurship:
+	Working for a company or organization, but building a department or project within it.
+	
+Final presentation
+	7min Pitch
+	Afterwards go into detail
+	
+Organizations in Antwerp (antwerp.be):
+	Takeoff Antwerp Alliance
+	SINC: Students for Innovation and Cooperation -> Future Entrepreneurship Festival (English)
+	The Beacon: IoT (and VR) Hub sponsored by the city
+	Dunden: Co-working space for startups
+	HUMGY: Co-working space for creative startups
+	
+	Accelerator organisations
+		Incubators:
+		- StartIT KBC
+		- IMEC iStart
+		- Birdhouse (high growth)
+		
+		-> Incubators provide office space
+		
+		Accelerator
+		- Chamber of Commerce and Industry
+		
+	Entrepreneurship L-AP
+		-> Entrepreneur essentials YouTube channel
+		-> 50 koffie's: podcast with entrepreneurs from Antwerp
+		
+Entrepreneurship is when you act upon opportunities and ideas
+	and transform them into value for others.
+	
+	2 types:
+		SME = Small to Medium Enterprises -> Local markets, steady cashflow
+		IDE Innovation Driven Enterprise -> Global markets, large investment at start and spending a lot, and exponential growth afterwards
+		
+Innovation = Invention x Commercialization
+
+Target Audience are the ones paying for the service/product, in a financial/marketing pov.
+Users are the ones actually using it.
+
+The LEAN startup:
+	Going to market as fast as possible, with the least amount of money.
+	
+Commandments:
+	1) Perform Market Research
+	2) Be LEAN
+	3) Know your pitch
+	4) Be consistent
+	5) Choose the right team
+	6) Screen your competitors
+	7) Know your worth
+		7.1) Talk in advantages, not features
+
+____________________________________________________________________________________________________________________________________________
+
+LESSON 2 - Design Thinking
+==========================
+	
+Soft Skills
+-----------
+	Creativity - Creativity is multiplied when it's shared.
+		-> Hitchhiking on ideas
+		
+	Communication
+		-> Positive framing
+			Focus on the positive message -> better vibe in the team
+			"challenge" vs "problem"
+			
+	Planning
+		-> Handling uncertainty
+		
+	Leadership
+		-> Bosi DNA test https://bosidna.com
+		Innovator Specialist
+		
+Design Thinking
+---------------
+	1) Empathise: learn about the audience
+	2) Define: sharpen key questions
+	3) Ideate: brainstorm and create solutions
+	4) Prototype: build representations of one or more ideas
+	5) Test: test ides and gain feedback
+	
+	Step 1: understand your target audience.
+	Step 2: generate concepts and test them on the market.
+	Step 3: develop business and technology.
+	
+Value Proposition Canvas
+------------------------
+	Convince the customer what value they gain by using your product/service.
+	Using a Customer profile. -> Ask why?
+	Problem-Solution-fit -> the solution being build solves a problem the target audience/customer has.
+	Don't pitch your project to your customers while interviewing them, but address the problem.

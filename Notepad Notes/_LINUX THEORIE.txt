@@ -1,0 +1,655 @@
+LINUX THEORIE SAMENVATTING
+ENKEL WAT TE KENNEN IS VOLGENS DE TE KENNEN PRESENTATIE
+
+___________________________________________________________________________________________________________________________________________________________________
+** SESSIE 1 *******************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+Historiek & licenties
+---------------------
+- Unix:
+	• Geschreven door Ken Thompson & Dennis Ritchie in de jaren '70	( → Dennis Ritchie creator van programmeertaal C )
+	• Unix filosofie: gebruiker weet wat hij doet
+		→ Microsoft filosofie: gebruiker heeft schrik van computers, moet afgeschermd worden van hoe computer werkt
+	
+ - GNU-Linux:
+	• Linus Torvalds (University of Helsinki 1991) start Linux project, Linux Kernel, Git
+	• Richard Stallman (MIT, Cambridge 1983) start GNU project, Emacs, Free-Software-Foundation, GPL
+		→ GNU = GNU is Not Unix
+		→ Stallman's 4 basic rights of Free Software:					The four essential freedoms: (https://www.gnu.org/philosophy/free-sw.en.html)
+		  -------------------------------------------					----------------------------
+			1) The right to unlimited use for any purpose.				0) The freedom to run the program as you wish, for any purpose.
+			2) The right to study how the program works.				1) The freedom to study how the program works, and change it so it does your computing as you wish. (Access to the source codde is a precondition for this.)
+			3) The right to share copies of the software.				2) The freedom to redistribute copies so you can help others.
+			4) The freedom to improve the program						3) The freedom to distribute copies of your modified versions to others.
+				and to distribute the improvements to the program.			(By doing this you can give the whole community a chance to benefit from your changes. Acces to the source code is a precondition for this.)
+
+- Verschil tussen:
+	• Proprietary Software Licence (Copyright):
+		- Enkel het recht om de software te gebruiken.
+		- Gebruiker krijgt kopie van het gecompileerde programma "as is", vaak met beperking tot gebruik op één PC.
+		- Verbod op kopiëren, reverse-engineering, wijzigingen aan te brengen (zoals bugs en security holes).
+	
+	• GPL Software Licence (GNU Public Licence):
+		- Gebruiker krijgt kopie van de source code.
+		- Mag onbeperkt kopiëren, modificaties aanbrengen en distribueren van de broncode als gecompileerde versie onder voorwarden.
+			→ Voorwaarden:  - Alle kopies, met of zonder aanpassingen, uitdrukkelijk zelfde license agreements als source code.
+							- Alle kopies moete vergezeld worden van de source code, of deze moet ten alle tijde downloadbaar zijn.
+	
+	------------------------------
+	• Free/Libre-Software:
+		- Free = Vrijheid, NIET gratis! → Libre
+		- Bevat GEEN "closed source" onderdelen
+	
+	• Open-Source:
+		- Zelfde als Free-Software, MAAR
+		- Recht om Free- & Closed Software gebundeld te verdelen
+		
+Operating System
+----------------
+- OS: Systeem software die de computerhardware en softwarebronnen beheert, en diensten aanbiedt aan de applicatie-software.
+	→ Alle programma's (buiten firmware) hebben een OS nodig om te functioneren.
+	→ Het OS bevindt zicch tussen de User Programs en de Hardware.
+	
+- OS Functies:
+	• UI = User Interface
+	• Geheugen beheer
+	• Bestands beheer
+	• Beheer van I/O naar hardware
+	• Programma beheer
+	• Behandelen van foutmeldingen
+
+- 2 soorten ontwerpen:
+	• Hardware ONafhankelijk → gemakkelijk te porten naar andere CPU vb.: Linux
+	• Hardware afhankelijk	→ moeilijk te porten naar andere CPU vb.: "wintel"-deal → Microsoft Winndows + Intel CPU's
+	
+Virtualisatie
+-------------
+- Virtualisatie: de user merkt geen verschil tussen echt en simulatie.
+	→ Simulatie: nabootsing van de werkelijkheid adhv een model van de werkelijkheid
+		vb.: videogames zoals FlightSim, weervoorspelling adhv weer simulaties
+	
+- Virtual machine: software model van de reële hardware op het Host-OS
+	→ OS is ook een programma
+	→ Guest-OS ervaart het software model als de hardware
+	→ Host-OS draait op de werkelijke hardware, Guest-OS op de gesimuleerde hardware
+	
+- Voordelen:
+	• Meerdere OS tegelijkertijd gebruiken
+	• OS hadrware ONafhankelijk maken
+
+- Nadelen:
+	• Meer resources nodig → Guest-OS draait trager
+	• Mogelijks besturingsproblemen van hardware devices → drivers & firmware gerelateerd
+
+___________________________________________________________________________________________________________________________________________________________________	
+** SESSIE 2 *******************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+FS = File System
+----------------
+- File System: manier om te controleren hoe data wordt opgeslagen (= write) en opgeroepen (= read) op een computer.
+	→ Functies:
+		• File locatie, en volgorde v/d stukjes
+		• Lege plaatsen op de disk, en onbruikbare plekken
+		• Defragmenting kunnen uitvoeren (al dan niet automatisch)
+
+- Formateren: De schijven van een HDD opdelen in blokken, en markeringen schrijven waar deze starten en stoppen.
+	→ Linux commando: "dd"
+	
+- Linux File Systems:
+	• EXT2: 
+		+ Goed en snel
+		- Bij write onderbreking (vb.: stroompanne) → volledige disk controle (kan héél lang duren)
+	
+	• EXT3: 
+		+ Disk controle adhv Journal
+			→ Voor write opdracht start → welke file en waar → in Journal
+			→ Write geslaagd → in Journal
+		- Telkens 3 schrijfoperaties = trager
+		- Max volume = 32 TB
+	
+	• EXT4 (Default, meest gebruikt):
+		+ Hogere performantie dan EXT3
+		+ Max volume = 1 EB = ExaByte = 1 000 000 TB
+		
+	• REISER-FS:
+		+ Online resizing → enkel groeien
+		+ Sneller dan EXT2 & 3
+		- Geen defragmentation tools
+		
+	• BTRFS (= 'butter fs'):
+		+ Gebaseerd op COW = Copy-On-Write
+			→ Bij file copy → enkel referenties naar origineel
+			→ Bij file modificaties → enkel wijzigingen worden geschreven op huidige schrijfkop plaats, originele file blijft onangeroerd
+		- Extra overhead en fragmentatie door COW
+		+ Pooling = meerdere disk → hotswap hotadd
+		+ Snapshots
+		+ Journal met checksums
+		
+	• ZFS (Sun Micro Systems):
+		+ Efficiënte data compressie
+		+ Snapshots
+		+ Permanente data integrity controle
+		+ Automatic repair
+		- Weinig preventie tegen data corruption
+		- Sommige RAID configs niet mogelijk
+		
+	•  XFS (SGI = Silicon GraphIcs):
+		+ Beste I/O operations (Input/Output)
+		+ Ontworpen voor 3D graphics
+		- Kan enkel van formaat verandere door → backup, reinstall + restore
+		- Geen checksum protection
+		
+- Hoe meerdere FS gebruiken op 1 PC:
+	• Opslag-media opdelen in Partities
+	• Elke partitie kan andere FS gebruiken
+	• Partition-table → MBR = Master Boot Record
+		→ terminal commando: "fdisk -l"
+		→ in GUI: "gparted"
+		
+User Omgeving
+-------------
+- Disk's of andere media worden:
+	• Toegevoegd met "mount"
+	• Verwijdert met "unmount
+		→ Kan manueel of automatisch
+			→  Auto in directory "/media/[jouw-username]"
+			→  Manueel om het even waar in de boomstructuur
+				→ Andere directory is mogelijks andere Disk, zelfs op andere fysieke locatie!
+		→ Plaats = 'mount-point'
+			→ 1 medium kan op meerdere plaatsen gemount worden
+
+- Directory systeem:
+	• FHS = Filesystem Hierarchy Standard norm
+		→ is een POSIX norm = Portable Operating-System Interface
+			→ Set van normen voor Unix-achtige OS
+	• Voor orde & structuur
+	• Rechten systeem: multi-user omgeving → 3 niveau's: all, group, user
+	• Groepering van files in directories
+	
+- Device file:
+	• Files die de hardware representeren
+		• In Linux everything is a file!
+			→ File achtig = not files but treated as files
+			→ Doel = uniformisering
+			→ 'streams': data van/naar devices
+			→ User praat met Device file → Device file praat met Device driver → Device driver praat met de hardware
+
+- Inodes:
+	• Verbinden de User kant en de Hardware kant (opslag medium) met elkaar
+	• Houdt info bij:
+		- waar de 'blocks' op het opslag medium staan
+		- in welke directory de file komt
+		- timestamp (tijd en datum) laatste modificatie
+		- eigenaar, groep en toegangsrechten
+		- heetf uniek nummer
+			→ laat meerdere bestandsnamen toe die naar de inode refereren
+			→ laat meerdere bestandsnamen toe die naar de inode refereren
+	→ Commando: "stat [file_name]" → Toont inode info van bepaald bestand
+				"ls -i" → Toont naast elk bestand het inode nummer
+
+___________________________________________________________________________________________________________________________________________________________________	
+** SESSIE 3 *******************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+PC Hardware
+-----------
+- BIOS Flash Chip:
+	• BIOS = Basic Input/Output System
+	• Bevat de enige software die default in een PC te vinden is = firmware ( → niet alle firmware is BIOS software )
+	• Kan typisch:
+		- GPU in basic VGA aansturen
+		- keyboard lezen (geen layout keuze)
+		- lezen van opstart medium initializing
+
+!Linux Boot Process
+-------------------
+- In 6 stappen:
+
+	1) System Startup / Hardware initilaization	→ BIOS / System start
+	2) Boot loader - Stage 1					→ MBR = Master Boot Record
+	3) Boot loader - Stage 2					→ GRUB = GRand Unified Boot loader
+	4) Kernel									→ Linux OS
+	5) INIT process								→ Run levels
+	6) User prompt								→ User ccommands
+
+	1) System Startup / Hardware initilaization:
+		• Test hardware op fouten
+		• Zoekt MBR Boot loader → gaat media af in vooraf bepaalde volgorde
+		• BIOS laat MBR Boot loader in geheugen
+		• BIOS start MBR Boot loader en geeft controle eraan over
+	
+	2) Boot loader - Stage 1:
+		• MBR = Master Boot Record
+			→ staat op 1e sector bootable disk
+			→ bevat de 'Primary Boot loader'
+			→ bevat de partitie-tabel info
+		• MBR laad de 'Primary Boot loader' in het geheugen
+			→ Primary Boot loader in Linux = GRUB (of LILO bij oudere versies)
+		• GRUB wordt gestart
+	
+	3) Boot loader - Stage 2:
+		• GRUB = GRand Unified Boot loader
+			→ heeft config file in "/boot/grub/grub.conf"
+		• GRUB start het 'Splash Screen'
+				→ Keuze tussen verschillende Kernels of ander OS
+		• GRUB laad gekozen Kernel uit de "/boot" directory
+		• GRUB start de Linux Kernel
+	
+	4) Linux Kernel:
+		• Mount het File System
+			→ speciale manier want "mount" commando is onderdeel van het File System
+		• Kernel start INIT programma uit "/sbin/init"
+			→ "init.d", "upstart" of "systemd"
+			→ het volledige FS wordt gemount
+			→ éérste proces in 'user-sapce' met PID=1
+		• INIT neemt over
+	
+	5) INIT process:
+		• INIT bepaald het 'run level' uit "/etc/inittab"
+			OF 'target level' bij "systemd" uit "/lib/systemd/system"
+				→ de verschillende niveau's waarin een Linux PC kan opstarten
+		• INIT laad en runt programma's van gekozen 'run level' of 'target level' dmv 'forking'
+			→ Forking: het principe dat gebruikt wordt om processen te creëeren.
+				→ INIT "Fork()"'ed zichzelf → creatie child process waar "Exec()" aangeroepen wordt → vervangt code en start programma
+					→ herhaalt tot alle programma's van het 'run-level' gestart zijn
+	
+	6) User prompt:
+		• Afhankelijk van geladden programma krijgt de User nu bepaalde UI te zien (GUI of terminal of iets anders)
+		• Systeem is nu volledig opgestart
+	
+Linux processes & System calls
+------------------------------
+- Process = Programma code in uitvoering
+	→ Kernel creëert, beheert en vernietigd processen in het systeem.
+
+- PID = Proces IDentification number → uniek referentie nummer om processen aan te duiden
+
+- System call: Vraag v/e process die beroep wilt doen op functies van de Kernel
+	→ Kernel beslist of het uitgevoerd wordt
+	→ System calls mbt proces creatie: "Fork()", "Exec()", "Wait()" en "_Exit()"
+
+- Bij opstart opsplitsing van geheugen door Kernel in:
+	• User space: waar User processen runnen ( → User niet beperkt tot de fysieke gebruiker, kan ook bvb. webserver of programma zijn )
+	• Kernel space: waar Kernel zich bevindt en het geheugen dat het gebruikt 
+
+- Forking: het principe dat gebruikt wordt om processen te creëeren ( = nieuw programma opstarten )
+	• Werking:	dmv de system call "Fork()" → parent process wordt gekopiëert in geheugen → child process → eigen PID
+				→ parent process krijgt PID child process als return waarde, child process krijgt 0
+				→ "Exec()" system call varvangt programma code child process door programma dat moet worden opgestart → start de uitvoering hiervan.
+	• Waarom?
+		- Child processen erven zelfde environment parameters
+		- Heel eenvoudig om tweede versie van hetzelfde programma te starten
+		- Bewezen efficiëntie
+	
+	• Programma beëindigen: dmv "_Exit()" system call ( → niet gelijk aan C-functie "exit()" )
+		→ returnedd 0 bij normaal programma einde, error code bij crash (vb.: out-of-memory)
+		
+	• "Wait()" bolkkeert verdere uitvoering van het parent process, tot het child process "_Exit()" aanroept
+
+- 4 Statussen van Processes:
+	1) Running: process loopt of is klaar om te starten ( → klaar voor start = wacht om toegewezen te worden aan de CPU door de Kernel )
+	2) Waiting: process wacht op event of resources
+		→ Interuptible waiting process: kan onderbroken worden door signaal / software interuption
+		→ UNinteruptible waiting process: wacht op juiste hardware condities en kan onder geen enkel beding onderbroken worden
+	3) Stopped: process is gestopt
+		→ na ontvangen van signaal
+		→ process dat ge-debugged wordt kan Stopped zijn
+	4) Zombie: gestopt process dat nog een task struct data structuur heeft in de task vector → dood process
+	
+	!EXAMEN! Kunnen uitleggen adhv tekening zoals op slide 65 sessie 3
+	
+	
+___________________________________________________________________________________________________________________________________________________________________	
+** SESSIE 4 *******************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+Terminals
+---------
+- Terminal: keyboard & monitor, die enkel tekst kan doorsturen & weergeven, naar & van het systeem = input & output streams = stdin & stdout
+
+- Stream redirection: stdout/stdin afleiden naar een ander device
+	→ stdout normaal naar de Terminal monitor
+	→ stdin normaal naar de Shell
+
+Linux Shell
+-----------
+- Shell: commando interpreter tussen terminal & Kernel
+	→ De laag waar de user mee communiceert, processen kan starten en stoppen
+	→ Shell heeft +/-70 commando's (Bash), waarvan meeste externe programma's die enkel gestart worden door de shell (bevinden zich in "/bin")
+	→ Bash = default shell in Linux
+	
+- Bash: éérste programma dat interface met de werkelijke gebruiker als doel heeft.
+	→ Default shell in Linux
+	
+- Interpreter: vertaalt en voert commando's één voor één uit.
+- Compiler: vertaalt een volledig programma in één keer.
+
+Remote Shell
+------------
+- Remote Shell: client-server model om een 'remote host' op een 'local host' te bedienen dmv stream redirection naar de NIC
+	→ NIC = Network Interface Card
+
+- Telnet: Remote Shell in 'plain text' zonder beveiliging
+	→ Oudste remote shell systeem van Linux
+	→ Nog gebruikt voor directe verbindingen, via RS232/485 poort, sommige routers & switches
+	
+- SSH = Secure SHell: Remote Shell met zéér sterke encryptie adhv:						→ https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process
+	• password = symmetrische encryptie
+		→ beide hosts moeten het password kennen → 'shared secret key' = 'symmetric keys'
+		→ gebruikt om de volledige connectie te encrypteren
+		→ minder veilig
+	
+	• 'public-' + 'private-key' = asymmetrische encryptie → authentication
+		→ dmv wiskundige truk kan je een bericht met de 'public-key' encrypteren, maar enkel met de 'private-key' decrypteren
+			→ beide 'public-keys' worden uitgewissled en op basis hiervan wordt een "shared secret key" gevormd
+		→ bericht authentication: adhv 'hashing' met een controle getal obv de inhoud v/h bericht → enkel met 'private-key' encrypteren, en met 'public-key' dercypteren
+		→ veiligste methode
+	
+	→ Meest gebruikte manier voor sys-admin toegang tot remote systemen, servers, routers, ... , ook voor Raspberry-Pi, Beaglebone, ...
+		→ Linux server: OpenSSH-server
+		→ Linus client: OpenSSH-client
+		→ Windows client: Putty, WinSCP
+	
+	→ Commando's:
+		"ssh-keygen"	→ creëert een set sleutels							vb.: ssh-keygen -t rsa
+		"ssh-copy-id"	→ voegt 'public-key' toe aan 'remote host/machine'	vb.: ssh-copy-id -i id_rsa.pub root@192.168.1.1
+		"ssh"			→ terminal verbinding met de 'remote host'
+		"scp"			→ 'secure copy' = cp commando maar tussen 'local' en 'remote host' 
+	
+	
+X-Window System
+--------------- 
+- X-Window System: de grafische omgeving van Linux en Unix, modulair opgebouwd, client-server model.
+	→ Bestaat uit:
+		- X-server: zorgt voor:
+			• communicatie met GPU, keyboard, mouse en monitor.
+			• creëert basis grafische omgeving → leeg scherm waar grafische objecten op kunnen verschijnen
+			• geeft grafische objecten, gekregen van de X-clients, weer
+				
+		- X-clients: 
+			• apps die bovenop de basis omgeving van X-server draaien
+			• geven grafische objecten aan de X-server om weer te geven
+			→ X-clients kunnen ook remote zijn!
+			
+		- Window Manager:
+			• Zorgt voor decoratie X-client apps → Kader + balk bovenaan met min, max en close knoppen
+			• Maakt het mogelijk vensters te verplaatsen
+		
+		- X-fontserver: zorgt voor de verschillende lettertypes
+	
+	→ !EXAMEN! tekening slide 37 sessie 4
+	
+	→ Commando's:
+		"startx"		→ X-Server starten, front-end van "xinit" / script dat "xinit" start → x-client processen starten door forking uit "xinit"
+		"startx kill"	→ X-Server aflsuiten
+		
+- Display Manager:
+	• zorgt voor grafisch login scherm + keuze uit verschillende Window Managers (of volledige desktop omgeving)
+	• éérste X-client app die start na X-server
+	• start de Window Manager en eventuele X-client apps
+	
+- Desktop Environment: vooraf samengestelde collectie van programma's om een volledig fucntionele desktop te creëeren.
+	→ 2 belangerijkste:
+		• GNOME	(gnome3)
+		• KDE (plasma5)
+		
+		
+Building Software
+-----------------
+- Packages: slimme vooraf gecompileerde software
+	→ Waarom: source code compileren kan lang duren (vb.: Linux duurt meerdere dagen)
+	→ Soorten:
+		• Red-Hat → .rpm
+			→ gebruikt door Fedora, OpenSuse, Red-Hat & CentOS
+			→ commando: "rpm" vb.: "rpm  -ivh mijnprogramma.rpm"
+		• Debian → .deb 
+			→ gebruikt door: Ubuntu, Debian, Linux Mint, Trisquel, ...
+			→ commando: "dpkg" vb.: "dpkg -i mijnprogramma.deb"
+	
+		→ Nadelen "rpm" & "dpgk" commando's:
+			• afhankelijk van andere packages
+			• houden geen dependencies/afhankelijkheden bij
+				→ verwijderen van een package kan ander programma breken
+			
+			→ Oplossing = Package Managers
+
+- Pacakge Manager: package installatie en beheer
+	→ Voorbeelden:
+		Naam		Distributie		Commando Installatie				Commando Update
+		----		-----------		--------------------				---------------
+		• yum 		Red-Hat			sudo yum install [programma]		sudo yum check update
+		• apt 		Debian			sudo apt-get install [programma]	sudo apt-get update
+		• zypper 	OpenSuse		sudo zypper install [programma]		sudo zypper up 
+		• pacman 	Arch
+
+- Linux Distributie: verzameling van packages met auto instal tools
+	→ belangerijkste:
+		• Debian
+		• Red-Hat
+		• Ubuntu
+		• Linux Mint
+		• Fedora / CentOS
+		• OpenSuse
+	
+	
+___________________________________________________________________________________________________________________________________________________________________	
+** SESSIE 5 *******************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+Linux Services
+--------------
+- Services: collecties van processen die een bepaalde service/dienst verzorgen	→ vb.: webserver, fileserver, ...
+	→ Deamon: service die onzichtbaar op de achtergrond draait → process naam die eindigt op 'd'
+	→ Services starten en stoppen met "systemd" → algemeen controle commando: "systemctl"
+		→ Commando's:
+			• "systemctl start [servicenaam]"
+			• "systemctl stop [servicenaam]"
+			• "systemctl reload [servicenaam]"
+			• "systemctl restart [servicenaam]"
+			• "systemctl status [servicenaam]"
+			
+			→ Ook met "systemctl":
+				• "systemctl poweroff"
+				• "systemctl reboot"
+
+- Apache httpd: http webserver programma
+	→ 'killer app' waar Linux zijn succes aan te danken heeft
+
+- Mysqld: opensource relationele database, client-server model
+	→ bestaat uit "mysql-server" en "mysql-client"
+	
+- Mariadb: opensource voortzetting van Mysql dmv 'fork' na overname van Mysql door Oracle
+
+- LAMP stack: verzameling van Linux Apache Mysql en Php
+
+- Samba: Linux file-server die ook Windows bestanden kan beheren
+	→ Windows herkent deze als een Windows file-server, maar Samba is veel sneller en stabieler
+		→ Wel minder veilig voor Windows clients omdat Windows geen file-rechten systeem heeft zoals Linux
+	→ 2e 'killer-app'
+
+- Cupsd: printer-server
+
+- vsftp = very secure file transfer protocol: file-server voor toegang via internet
+
+- dovecot + postfix = mail-server
+	→ dovecot: mailbox interface software, gebruikt plug-ins (→ afzonderlijk open-source e-mail server)
+	→ postfix: mail trasnfer agent
+	
+- bind9: DNS = Domain Name Server: vertaald webadressen naar IP-adressen
+
+- nginx: nieuwere klasse webserver tov Apache
+	→ beter in cashing, load balancing en cloud deployments
+	
+	
+!Kernel
+-------
+- Kernel = kern van OS
+	• heeft volledige controle over het systeem
+	• wordt vroeg in boot process gestart
+	• zorgt voor communicatie tussen user software en de hardware resources
+	• beheer van I/O, memory, CPU, ...
+	• bevindt zich in "/boot"
+	
+	→ Commando's:
+		"uname -r" → toont actuele Kernel versie
+
+- Kernel Opbouw:
+	• Process Scheduler	→ Processen beheer
+	• Memory Manager	→ Geheugen beheer adhv 'Virtual Memory'
+	• File System		→ Beheer File systemen
+	• Device Driver		→ Beheer randapparaten
+	• Network Services	→ Zeer uitgebreide set van Services mbt Netwerken
+	• I/O Scheduler		→ I/O verkeer naar randapparaten regelen
+	• IPC = Inter Process Communications	→ Beheer van communicatie tussen processen die van elkaar afhankelijk zijn.
+
+
+	• Process Scheduler: processen beheerder, zowel de lopende als toekomstige
+		→ 'cron' start processen op vooraf bepaalde tijdstippen
+			→ Commando's:
+				"crontab -e" → item toevoegen aan 'cron'
+				"crontab -l" → lijst 'cron' opdrachten bekijken
+	
+	• Memory Manager: werkt met 'Virtual Memory' adhv 'memory mapping'
+		→ 'Virtual Memory': softwarematig gecreëerd geheugen
+		→ 'memory mapping': virtuele geheugen adressen worden gemapt aan fysieke hardware adressen
+!		→ !EXAMEN! tekening slide 74 sessie 5
+			→ Virtual Memory = Virtual addresses → Address translation → Physical adresses (RAM?) & Disk adresses
+		→ Voordelen:
+			+ memory kan geswapped worden naar disk waardoor fysiek limiet verdwijnt
+			+ meer geheugen gebruiken dan fysiek aanwezig is
+	
+	• File System: beheer file systemen ( → zie SESSIE 2 )
+	
+	• Device Driver: beheer van randapparaten
+		→ belangerijk Kernel up-to-date te houden om de laatste drivers te hebben
+		→ Kernel update adhv 'Kernel module': stukje binary dat kan toegevoegd of verwijderd worden uit de Kernel tijdens run-time
+			→ binary = gecompileerde code
+			→ geen herstart nodig zoals vaak het geval is bij Windows
+			→ alle Kernel modules in "/lib/modules"
+			→ Commando's:
+				"insmod [opties][modulenaam]" 	→ binary toevoegen aan Kernel zonder dependencies check
+				"rmmod [opties][modulenaam]"	→ module verwijderen zonder dependencies check
+				
+				"modprobe [opties][modulenaam]"	→ front-end commando van "insmod" + dependencies check
+				"modprobe -r [modulenaam]"		→ veilig verwijderen van module met dependencies check
+				
+				"lsmod"							→ lijst van geïnstalleerde modules
+				"modinfo [modulenaam]"			→ info opvragen over module
+		
+		→ 'In Linux everything is a file!' → User praat met Device file → Device file praat met Device driver → Device driver praat met de hardware
+				
+	• Network Services:
+		→ zeer uitgebreid set in Linux → Je kan volwaardige Router + Firewall maken adhv Network Services
+		→ Configuratie:
+			• adhv bash commando's:
+				- "iproute" commando's: ifconfig, netstat, arp, route, btctl
+				- "iproute2" commando's (!BELANGERIJKSTE, nieuwe manier!): ip, ss, tc, arpd, ...
+			• via GUI: 'Network Manager' = 'netwerking zonder zorgen', wat niet expleciet manueel geconfigureerd wodrt probeert deze automatisch te doen
+				→ voor overgang van Wi-fi en bekabeld netwerk bij laptops
+		
+		→ "ip" commando:
+			"ip link add/delete/show/set/help [interface]"
+			"ip address add/del/change/replace/show/save/flush/showdump/restore/help [interface]"
+			"ip -4 a show [interface]"	→ toon enkel IPv4 adresses
+			"ip -s a show [interface]"	→ toon statistieken
+			"ip route add/append/change/del/flush/get/list/monitor replace/help" → routing functionaliteiten
+			...
+			
+!EXAMEN!	→ Type netwerk interface namen: → !EXAMEN! namen kunnen verklaren / zeggen wat ze zijn!
+				→ 2 eerste letters:
+					• en = ethernet
+					• sl = serial line ip = slip
+					• wl = wlan (= Wi-fi kaart)
+					• ww = wwan
+				→ volgende letters & cijfers:
+					p<port/busNr>s<slotNr>
+				→ voorbeelden:
+					• enp2s1 = ethernetkaart op bus 2 slot 1
+					• wlp1s0 = wifikaart op bus 1 slot 0
+					
+		→ "ss" = 'socket statistics' commando: geeft info over netwerk/socket verbindingen
+			"ss [opties]"
+		
+		→ "tcpdump" commando: network sniffer → leest al het netwerk verkeer
+			"tcpdump [opties][protocol]"
+			
+		→ "traceroute" commando: traject van packet bekijken, van Source Address tot Destination Address
+			"traceroute [ip-address]"
+			
+		→ "nslookup" commando: domain name resolving, checken of DNS werkt en instellingen juist zijn
+			"nslookup [url]"
+			
+		→ "nmap" commando: network mapper, testen van netwerken, security scan's, netwerk audits
+			"nmap [scan type][opties][target]
+!!			!! → OPGELET!! nmap kan subnets en volledige netwerken scannen! Het port-scannen van publieke ip-addresses is in veel landen een ilegale cyber aanval!!
+		
+		→ "iptables" commando: Firewall configuratie
+			"iptables [options][chains][rules]
+	
+	• I/O Scheduler: regelt input/output verkeer naar devices
+		→ Taken:
+			- verkeer bij gebruik van zelfde bus door devices
+			- omgaan met verschillende respons snelheden van devices
+			- omgaan met I/O deadlines, sommige events moeten klaar zijn vóór een ander event
+!		→ Linux defeault = 'CFQ' = 'Completely Fair Queuing'
+	
+	• IPC = Inter Process Communications: 
+		Beheer van communicatie tussen processen die van elkaar afhankelijk zijn → kunnen niet aan elkaars geheugen
+		dmv 'signals' → praktisch voorbeeld is "|" tussen commando's, dit is de IPC aan het werk
+		
+- Kernel Logging:
+	Kernel logt alle events die gebeuren
+	voor debugging indien er iets fout gaat
+	→ meerdere log bestanden te vinden in: "/var/log"
+		• "btmp"	→ volledige status systeem
+		• "utmp"	→ failed login pogingen
+!		• !"dmesg"	→ belangerijkste Kernel logging
+
+___________________________________________________________________________________________________________________________________________________________________
+*******************************************************************************************************************************************************************	
+** LINUX COMMANDOS ************************************************************************************************************************************************
+*******************************************************************************************************************************************************************
+[sudo] dd				→ Formateren	vb.: sudo dd if=/dev/zero of=/dev/sdc bs=512 (count=x)
+
+fdisk -l				→ Lijst met Partities (terminal commando) → MBR = Master Boot Record
+gparted					→ Partities (GUI commando)
+
+mount					→ Disk toevoegen
+unmount					→ Disk verwijderen
+
+stat [file_name] 		→ Toont inode info van bepaald bestand
+ls -i 					→ Toont naast elk bestand het inode nummer
+
+ps commando 			→ Geeft een statische lijst van actuele processen
+top commando 			→ Doet hetzelfde maar een dynamische lijst
+kill commando 			→ Laat de admin toe om zelf een process vroegtijdig stop te zetten.
+pstree commando 		→ Iets grafische weergaven
+pgrep 					→ Toont de processen van een bepaald programma
+
+ssh-keygen				→ creëert een set sleutels							vb.: ssh-keygen -t rsa
+ssh-copy-id				→ voegt 'public-key' toe aan 'remote host/machine'	vb.: ssh-copy-id -i id_rsa.pub root@192.168.1.1
+ssh						→ terminal verbinding met de 'remote host'
+scp						→ 'secure copy' = cp commando maar tussen 'local' en 'remote host' 
+
+startx					→ X-Server starten, front-end van "xinit" / script dat "xinit" start → x-client processen starten door forking uit "xinit"
+startx kill				→ X-Server aflsuiten
+
+rpm 					→ Red-Hat package installeren		vb.: "rpm  -ivh mijnprogramma.rpm"
+dpkg 					→ Debian package installeren		vb.: "dpkg -i mijnprogramma.deb"
+
+- Pacakge installatie en update
+-------------------------------
+Packet Manager		Distributie		Commando Installatie				Commando Update
+--------------		-----------		--------------------				---------------
+yum 				Red-Hat			sudo yum install [programma]		sudo yum check update
+apt 				Debian			sudo apt-get install [programma]	sudo apt-get update
+zypper 				OpenSuse		sudo zypper install [programma]		sudo zypper up 
+
+uname -r 				→ toont actuele Kernel versie
+
+crontab -e						→ item toevoegen aan 'cron'
+crontab -l						→ lijst 'cron' opdrachten bekijken
+
+insmod [opties][modulenaam] 	→ binary toevoegen aan Kernel zonder dependencies check
+rmmod [opties][modulenaam]		→ module verwijderen zonder dependencies check				
+modprobe [opties][modulenaam]	→ front-end commando van "insmod" + dependencies check
+modprobe -r [modulenaam]		→ veilig verwijderen van module met dependencies check				
+lsmod"							→ lijst van geïnstalleerde modules
+modinfo [modulenaam]			→ info opvragen over module

@@ -1,0 +1,1008 @@
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$ BUSINESS PROCESSES $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+→ •
+ONDERDELEN:
+-----------
+1) Intro
+2) HRM = Human Resource Management
+3) Marketing & Sales
+4) Logistiek:
+	- Aankoop
+	- Productie
+	- Opslag & Distributie
+5) Finance
+6) BI & Administratie
+7) IT Governance
+
+______________________________________________________________________________________
+$$ 1) Intro $$
+--------------
+- Bedrijfsproces: een reeks van samenhangende activiteiten die gericht zijn op een klant
+	en afgestemd op de organisatiedoelen.
+	
+	vb.: verkoop, productie, aankoop, marketing, logistiek/warehousing, kwaliteitsbeheer, R&D, HR, IT, Juriddische dienst, ...
+	
+- Typologie: indeling naar soort
+
+- Soorten bedrijfsprocessen volgens typologie:
+	• Primaire bedrijfsprocessen:
+		Houden rechtstreeks verband met de doelen die een bedrijf nastreeft.
+		→ Externe klant: bevinden zich buiten de organisatie = bestaansreden
+			vb.: Hogeschool → onderwijs; Uitzendbureau → werving & selectie, verkoop; Handelsbedrijf → verkoop & logistiek
+		
+	• Besturende bedrijfsprocessen: 
+		Sturen de primaire processen om deze in goede banen te leiden.
+		→ Interne klant: bevinden zich binnen de organisatie. Doet beroep op processen om de eigen processen te ondersteunen.
+			- Richten: strategie, koers bepalen, lange termijn doelstellingen opstellen
+			- Inrichten: organisatie instellen om de opgestelde doelen te behalen
+			- Verrichten: uitvoering v/d primaire bedrijfsprocessen
+	
+	• Ondersteunende/Secundaire bedrijfsprocessen:
+		Houden niet rechtstreeks verband met de doelen v/d organisatie.
+		Ondersteunen het algemeen functioneren en voortbestaan v/d organisatie.
+		→ Interne klant: bevinden zich binnen de organisatie. Doet beroep op processen om de eigen processen te ondersteunen.
+			vb.: beveiliging/anti-diefstal, catering, HR, IT-support, Finances
+
+- Organisatie: doelgerichte menselijke samenwerking.
+	→ Bedrijf: organisatie waarvan de leden een arbeidsovereenkomst hebben.
+		→ Onderneming: bedrijf dat voor eigen rekening en risico werkt.
+		
+- Soorten organisaties volgens typologie:
+	• Handel & Productie → producten
+		Brengen vraag en aanbod bij elkaar.
+		- Productie 	vb.: kecthup producent
+		- Handel		vb.: supermarkt
+		- Distributie	vb.: voedseltransportbedrijf
+		--------------------------------------------------
+		- Bedrijfskolom: het geheel van organisaties die producten van grondstof tot consument brengen.
+		- Waardecreatie: wat een organisatie doet om meerwaarde te creëeren voor een klant.
+	
+	• Dienstverlening → diensten
+		- Zakelijk		vb.: Bank
+		- Persoonlijk	vb.: Tandarts
+		---------------------------------------
+		- Dienst:
+			• Niet tastbaar: na de ervaring is het voorbij
+			• Vergankelijk: kan je niet bewaren
+			• Interactief: dienstverlener en consument moeten samen aanwezig zijn
+			• Heterogeen: verschilt naargelang de consument en omstandigheden
+	
+	• Publiek & Semipubliek → overheden
+		- Gemeenten
+		- Vlaamse & Federale overheid
+		- Ziekenhuizen
+		- Vzw's en Ngo'S
+	
+______________________________________________________________________________________
+$$ 2) HRM = Human Resource Management → Personeel $$
+----------------------------------------------------
+- HRM Activiteiten:
+	• Werving en selectie
+	• Arbeidsvoorwaarden
+	• Training en ontwikkeling 
+	• Evaluatie
+	• Mobiliteit en uitstroom
+	• Administratie
+
+- Personeelsbehoeften Plannen:
+	• Vraag en aanbod inschatten/voorspellen:
+		- Vraag:
+			• In functie van: omzet, personeelsverloop, strategische beslissingen, technologische veranderingen, financiële situatie
+			• Opvolgingsplanning: back-up voor 'onmisbare personen' die de organisatie kunnen verlaten.
+			• Vervangingsdiagram: belangerijkste werknemers en mogelijke vervangingen
+			
+		- Aanbod: 
+			• Intern: doorgroeimogelijkheden, jobrotatie
+			• Extern:
+				- Tijdelijke contracten; interim of bepaalde duur:
+					+ Besparing en flexibiliteit
+					- Werknemer motivatie
+					- Investering in opleiding van tijdelijke werknemers
+					- Juridische en fiscale implicaties (interim = duurder, wetgeving)
+				- Contracten van ONbepaalde duur (vast contract)
+				- Outsourcing: externe expertise, flexibiliteit, kostenbesparing
+				
+- Werving (Meeste naar minste voorkeur manier):
+	• Vacature intern opvullen
+	• Eigen netwerk, via werknemers
+	• Wervingsbureau
+	• Open sollicitaties
+	• Personeelsadvertenties
+	
+	Andere:
+	• Scholen
+	• Wervingsevenementen
+	• Vakbeurzen
+	• Headhunters
+	• Social networking
+	
+- Selectieproces:
+	1) Kandidaten shortlist adhv CV screening
+	2) Gestructureerde kandidaten screening: eerste gesprek, test
+	3) Uitnodiging volgende gespreksronde
+	4) Vergelijking en beoordeling overgebleven kandidaten
+	5) Referentie check
+	6) Keuze van meest geschikte kandidaat
+	
+- Training en ontwikkeling:
+	• Talentontwikkelingsmodel: VAK = Vaardigheden, Attitude en Kennis = Weten Hoe, Waarom en Wat
+	• Oriëntatieprogramma voor nieuwe werkenmers: regels, procedures, verwachtingen
+	• Competentie-inventaris binnen het bedrijf: leidinggevende, kwaliteitsbeheer, klantenservice, veiligheidd, diversiteit
+
+- Prestatiebeoordeling → cyclish gebeuren, meestal over 1 jaar
+	1) Doelstellingen zetten
+	2) Functioneringsgesprek: prestaties bespreking, wederzijdse beoordeling, geen evaluatie = geen invloed op loon
+	3) Beoordelingsgesprek: resultaten evaluatie obv gezette doelstellingen, éénzijdse beoordeling
+		+ nieuwe doelstellingen zetten
+	
+- Compensaties:	
+	• Salaris: vast maandbedrag onafhankelijk van gepresteerde uren.
+	• Loon: vergoeding van gepresteerde uren tegen een vast bedrag per uur.
+	• Bonus: betaling boven op het salaris
+	• Commissie: percentage op gerealiseerde omzet
+	• Winstparticipatie: winstdeling als beloning voor loyaliteit
+		→ Gain sharing: winstdeling na behalen van bepaalde doelen
+	• Prestatieloon: vast lager basis loon + hoger variabel loon adhv gerealiseerdedoelstellingen
+	• Competentieloon: loon gekoppeld aan kennisniveau en vaardigheden van werknemer ipv functie
+	• Secundaire arbeidsvoorwaarden: vast pakket of flexibel (=zelf kiezen uit)
+		vb.: maaltijdcheques, groepsverzekering, laptop, smartphone, bedrijfswagen, kinderopvang, fietsvergoeding
+		
+- Veranderingen in het personeelsbestand:
+	• Promotie:
+		- Intern opvullen van vacature
+		- Beloning en motivatie
+		→ Valkuil: Peter's principle: promotie tot net boven niveau v/d werknemer
+	
+	• Ontslag:
+		Met reden: slechte prestaties, bezuinigingen, ernstige reden
+			→ Afvloeiing: economische redenen
+			→ Outplacement: ontslagen werknemers helpen een nieuwe job te vinden
+	
+	• Pensioen:
+		- Langer werken
+		- Vervroegd pensioen
+		
+- HRM Administratie:
+	• Functies
+	• Posities
+	• Solicitanten
+	• Werknemers
+	• Contracten
+	• Lonen
+	• Fiscaliteit
+	• Sociale zekerheid
+	
+- Rol van HR voor personeel binnen de organisatie:
+	• Voorzien in hun administratieve noden
+	• Zachte functie = vertrouwenspersoon, gesprekspartner en bemiddelaar
+	• Feedback vanuit en aan de organisatie
+	
+- HRM Automatisering:
+	• Employee self-service (voor basis administratie)
+	• E-recruiting
+	• Payroll
+	• Attesten, fiscale fiches, ...
+	• Zachte functie is beperkt automatiseerbaar
+	
+- HRM-uitdagingen:
+	• Right person on the right place
+	• Rightsizing: juist afstemmen v/h personeelsbestand op de zakelijke vereisten
+	• Downsizing: inkrimpen v/h personeelsbestand als nodig
+	• Loyaliteit verbeteren: vaste contracten, incentives, werknemer correct behandelen, carrièredoelen afstemmen op bedrijfsdoelen
+	• Welzijn monitoren en burn-outs voorkomen:
+		- Veel druk rond concurrentie en kostenbesparingen
+		- Door smartphone en laptop 'altijd' bereikbaar voor werk
+		- Kwaliteit belangerijker dan kwantiteit
+	• Work-life balance:
+		- rekening houden met familiale verplichtingen
+		- flexibele werktijden, kinderopvang, quality of (working) life improvements
+		- aanpassingen jobinhoud
+	• Alternatieve werkregelingen:
+		- Flexi-jobs: inroostermethode waarmee werknemers, binnen bepaalde grenzen, hun eigen werkuren bepalen
+		- Tele-werken: via computer & telecom werken van thuis uit of andere locatie, niet op kantoor
+		- Functiedeling = duo-baan: 1 fulltime job opdelen in 2 parttime jobs
+
+______________________________________________________________________________________
+$$ 3) Marketing & Sales/Verkoop $$
+----------------------------------
+- Winst = Inkomsten - Uitgaven
+- Inkomsten = Verkopen + eventuele opbrengsten uit nevenactiviteiten
+- Uitgaven = Aankopen + Lonen + Belsatingen + andere uitgaven
+
+-- Marketing --
+---------------
+- Marketing-functie:
+	Invloed uitoefenen op het keuzeproces van de potentiële klanten
+	en aanzetten tot het afnemen v/h product.
+	
+	→ Ondersteuning en onlosmakelijk verbonden met de Verkoop-functie
+		door stimulering v/d vraag naar het product of dienst.
+		→ VOLUME = Distribution x Intensity
+			→ Distribution → PUSH customer/klant = Sales
+			→ Intensity → PULL consumer/eindklant/verbruiker = Marketing
+			
+- Activiteiten:
+	• Marktonderzoek = Market Research
+	• Positionering → Marketingmix → 4 P's: Product, Prijs, Plaats, Promotie
+	• Klantenrelatiebeheer → CRM = Customer Relationship Management
+	
+	- Marktonderzoek = Market Research:
+		• VRAAG: Analyse en opvolging van klanten, doelgroep, niche adhv:
+			- Trends
+			- Demografie
+			- Budget
+		• AANBOD: Analyse en opvolging van concurenten adhv:
+			- Fusies
+			- Overnames
+			- Startups
+		• NICHE: Segmentering obv:
+			- Budget
+			- Lifestyle
+			- ...
+		→ Verschillende marketing/positionering voor verschillende segmenten/doelgroepen	
+
+	- Positionering:
+		Marketingmix → 4 P's: Product, Prijs, Plaats, Promotie
+		• PRODUCT of dienst:
+			- Moet voldoen aan de behoeftebevrediging v/d klant: functioneel, emotioneel & sociaal
+			- Afgestemd op het gebruik door de consument
+			- Goed ontwerp/design van product noodzakelijk
+				• Product in totaliteit inc. verpakking
+				• Perceptie v/h product zelf
+				• Herkenbaarheid en Imago
+			- USP = Unique Selling Proposition: onderscheiding van gelijkaardige producten of diensten
+				
+		• PRIJS:
+			De juiste prijs voor het bereik v/d markt, en in fucntie van kwaliteit. vb. A merk tov B merk tov Wit product.
+			
+		• PLAATS:
+			- POS = Point of Sales
+			- Distributiekanaal
+			- Afhankelijk van product en klant
+			
+		• PROMOTIE:
+			- Reclame = Extra onder de aandacht brengen van product of dienst
+			- Reclamekanaal: tv, tijdschriften, apps, social media, mail, website, bezoek van marketeer of relatiebeheerder
+			- Creëeren v/e behoefte + opbouwen v/e merk, Imago
+		
+		→ Verschillende niches bereiken dmv
+			verschillende marketingstrategieën obv
+			verschillendde invullingen v/d 4 P's.
+
+	- Klantenrelatiebeheer → CRM = Customer Relationship Management
+		Contacten onderhouden met
+			• Bestaande klanten
+			• Prospecten = potentiële klanten
+		→ adhv:
+			• Persoonlijke contacten
+			• Periodieke updates
+			• Persoonlijke promoties
+			• Goede reputatie, Imago
+			• Sterk merk, herkenbaarheid
+	
+- Afzetmarkt: groep potentiële klanten die de producten of diensten afneemt
+	→ Juist inzicht in de werking van de afzetmarkt is noodzakelijk.
+	
+- Automatisering Marketing:
+	• Marktonderzoek
+	• Promoties beter afstemmen op doelpubliek
+	• CRM = Customer Relationship Management
+	• Data analyse
+		
+-- Sales/Verkoop --
+-------------------
+- Activiteiten:
+	• Prospectie → Leads → Offerte → Sales
+	• Administratie
+	• Levering
+	
+	- Prospectie:
+		• Zoeken naar potentiële vraag, nood, interesse
+		• Resultaat van promotie
+		• Cold calling
+		
+		→ LEADS:
+			- Concrete vraag, nood, interesse
+			- Resultaatvan promotie en/of prospectie
+			- Aanleiding van offerte
+			
+		→ OFFERTE:
+			- Concreet voorstel als antwoord op vraag, nood, interesse
+			- Beschrijving product, extra diensten, ...
+			- Voosrstel prijs, modaliteiten, voorwaarden, ...
+			- Bindend document
+			
+		→ SALES:
+			- Aanvaarding van finale offerte, eventueel na onderhandelingen
+			- Contract tussen klant en leverancier
+			- Bestelling
+	
+	- Administratie:
+		• Klantgegevens
+		• Contracten
+		• Bestellingen
+		• Informatie doorgeven aan en afstemmen met:
+			- Productie
+			- Aankoop
+			- Magazijn
+			- Boekhouding
+			
+	- Levering:
+		• Bestelling voldoen volgens overeengekomen voorwaarden
+		• Bevestiging ontvangst
+		• Facturatie / betaling
+		
+- Automatisering Sales:
+	• Supply Chain Management: Koppeling systemen leveranciers, eigen onderneming, klanten
+	• Uitwisselen informatie verkopen, productie, leveringen, ...
+	• Primaire processen op elkaar afstemmen
+	
+	→ Productie en aankoop kunnen anticiperen op bestellingen
+	→ Klanten krijgen inzicht in verwachtte levertermijnen
+	
+- Verkoop binnen de organisatie:
+	• Drijvendde kracht voor organisatie als geheel
+	• Management wil een zo groot mogelijke omzet realiseren
+	• Interne druk om bepaalde producten te pushen
+	• Klant is koning → waar ligt de grens?
+	• Evenwicht tussen korte en lange termijn
+	
+-- Gastsessie: Deloitte, Salesforce CRM ----------------------------------------------
+
+______________________________________________________________________________________
+$$ 4) Logistiek → Aankoop, Productie & Distributie $$
+-----------------------------------------------------
+- Logistiek proces: verzameling zorgvuldig gerangschikte en aan elkaar gerelateerde elementen en processen
+	waarmee een bedrijf producten of diensten kan produceren.
+	
+	Aan-/inkoop 							  → Productie/Extra waarde    → Opslag/Distributie
+	Inkoop & verwerving → Inkomende logistiek → Operationele activiteiten → Uitgaande logistiek → Sales & klantenservice
+	
+	1) Planning aankoop
+	2) Levertermijn
+	3) Aankoop
+	4) Planning Productie
+	5) Doorlooptijd & BOM
+	6) Productie
+	7) Opslag & Verkoop
+
+- Primary product flow:
+	Supplier → Producer → Customer
+	
+-- Aankoop --
+-------------
+- Aankoop proces:
+	1) Planning aankoop
+	2) Levertermijn
+	3) Aankoop
+	...
+	
+	→ In productiebedrijven gemiddeld 70% van de omzet uitgegeven aan INKOOP.
+		→ Aankoop →  strategisch beleidsgebied
+		→ Potentieel concurrentievoordeel
+		
+- Aankoop activiteiten:
+	1) Behoeften en specificaties formuleren
+	2) Leveranciers selecteren
+	3) Contracten en voorwaarden onderhandelen
+	4) Goederen bestellen
+	5) Leveringen controleren
+	
+	1) Boeheoften en specificaties formuleren
+		• Purchase request (intern) → gedreven vanuit productie, operations, R&D, engineering, ...
+		• Aanvragen beoordelen en vertalen naar de markt
+		• Aanbod en ontwikkelingen in de markt volgen en belanghebbenden binnen de organisatie informeren
+	
+	2) Leveranciers selecteren
+		• Potentiële leveranciers identificeren:
+			- Passief	→ via (openbare) aanbestedingen
+			- Actief	→ leveranciers contacteren en offertes vragen
+		• Leveranciers selecteren obv criteria:
+			- Prijs/kwaliteit
+			- Levertermijn
+			- Betalingsuitstel
+			- Garantievoorwaardden
+			- Dienst na verkoop
+	
+	3) Contracten en voorwaarden onderhandelen
+		• Prijs en kortingen:
+			- Volume
+			- Termijn
+			- Exclusiviteit
+		• Algemene voorwaarden:
+			- Betalingstermijnen
+			- Leveringstermijnen
+			- Garantievoorwaarden
+			- Foutmarges
+			- Boetes
+			- ...
+	
+	4) Goederen bestellen
+		• Specifieke bestellingen:
+			- Datums
+			- Items
+			- Aantallen
+		• Volgens overeengekomen (raam-)contracten
+	
+	5) Leveringen controleren
+		• Ontvangst van goederen of diensten obv:
+			- Kwaliteit
+			- Kwantiteit
+			- Tijdigheid
+			- ...
+		• Bij schending:
+			- Dienst na verkoop
+			- Garantie voorwaardden
+			- Boeteclausules
+			- ...
+			
+- Directe aankoop:
+	Goederen of diensten die rechtstreeks verband houden met de eindproducten of -diensten v/d organisatie
+	voor de primaire processen. 
+	
+		→ BOM = Bill of Materials
+	
+- Indirecte aankoop:
+	Goederen of diensten die ondersteunend zijn aan de primaire processen van de organisatie
+	voor de ondersteunende en besturende processen.
+	
+		vb.: onderhoud, energie, kantoorartikelen, ...
+		
+-- Productie --
+---------------
+- Productie proces:
+	...
+	4) Planning Productie
+	5) Doorlooptijd & BOM
+	6) Productie
+	...
+	
+- Productie activiteiten:
+	1) Inrichten productielijnen
+	2) Onderhouden productiecapaciteit
+	3) Plannen productieorders
+	4) Plannen, bestellen, ontvangen inputgoederen
+	5) Plannen productiemedewerkers
+	6) Uitvoeren productieorders
+	7) Kwaliteitscontrole outputgoederen
+	
+	1) Inrichten productielijnen:
+		• Efficiëntie
+		• Rekening houdend met:
+			- Capaciteit
+			- Doorlooptijd = Production Lead Time
+			- Opeenvolgende productiestappen
+			- Ruimte
+			- Aan- en afvoer
+			- Voorzieningen
+			- ...
+			
+		• Customer order → Production process starts → Product ready for delivery → Customer receives product
+				Order processing time	+	Production Lead Time	+	Delivery Lead Time	=	Total Lead Time
+	
+	2) Onderhouden productiecapaciteit:
+		• Correctief onderhoud: ad-hoc reparaties bij panne, defecten, ...
+		• Preventief onderhoud: periodiek onderhoud machines, transportlijnen, ...
+		
+		→ Plannen zodat productie zo weinig mogelijk gehinderd of onderbroken wordt.
+	
+	3) Plannen productieorders:
+		• Vanuit verkoop/sales forecast
+		• Rekening houdend met:
+			- Capaciteit
+			- Doorlooptijd
+			- Beschikbaarheid productielijnen
+			- Geplandde onderhoudswerken
+			- Nodige inputgoederen
+			- Nodige productiemedewerkers
+			- ...
+	
+	4) Plannen, bestellen, ontvangen inputgoederen:
+		• Obv geplande productieorders
+		• Rekening houdend met:
+			- Beschikbare voorraad
+			- Aankoopproces
+			- Levertermijnen leveranciers
+			- Opslagcapaciteit
+			- ...
+	
+	5) Plannen productiemedewerkers:
+		• Obv geplande productieorders
+		• Rekening houdend met:
+			- Vereiste competenties
+			- Aantal workstations en bemaning
+			- Backups
+			- Regels omtrent ploegen
+			- Feestdagen
+			- Verlofaanvragen
+			- ...
+	
+	6) Uitvoeren productieorders:
+		• Procedures
+		• Veiligheidsmaatregelen
+		• Coördinatie
+		• Contingency = a future event or circumstance which is possible but cannot be predicted with certainty.
+	
+	7) Kwaliteitscontrole outputgoederen:
+		• Vooropgestelde foutenmarges
+		• Steekproeven
+		• Bij afwijking, zo snel mogelijk:
+			- Detecteren
+			- Oorzaak identificeren
+			- Bijsturen
+
+- Type producties:
+	• Stuk
+		- Custom/op maat
+		- Made to order
+		- Vaak arbeidsintensief
+		vb.: bouwwerken, trouwkleed, luxe auto's
+	
+	• Batch
+		- Grote aantallen identieke producten
+		- Beperkte customisatie tussen batches
+		- Instel- en omzetkosten machines
+		- Minder arbeidsintensief
+		- Schaalvoordelen
+		vb.: gewone kleding, industriële bakkerij, meeste auto's
+	
+	• Continu
+		- Non-stop 24/7
+		- Soms seizoensgebonden
+		- Naadloze planning en afstemming productiestappen
+		- Hoge graad automatisatie → lage personeelsbezetting
+		- Uitval en heropstart is duur
+		- Onderhoudswerken
+		vb.: kernenergie, chemische producten, staal hoogovens
+		
+-- Opslag/Distributie --
+------------------------
+- Laatste stap in het logistiek proces:
+	...
+	7) Opslag & Verkoop
+
+-- Opslag --
+------------
+- Opslag:
+	Producten worden na productie opgeslagen tot ze naar de klant kunnen worden gebracht.
+	• Voorraad beperkt houden om kosten te beperken
+		→ - Just in time
+		  - Made to order
+	
+	• Voorraadsbeheer
+		→ - FIFO = First In First Out → Vergankelijke producten → rotatie → rekening houden met vervaldatum
+				vb.: verse groenten, producten met verval datum
+		  - LIFO = Last In FIrst Out  → Sneller en efficiënter
+				vb.: wc-papier, alles wat niet vervalt of snel verouderd
+	
+	• Vandaag veel relevanter → online shoppen = Vandaag besteld, morgen geleverd
+		→ Voorraad is noodzakelijk
+
+- Opslagcentra/Distributiecentra
+	vb.: Fullfilmentcenters van Amazon
+	
+-- Distributie --
+-----------------
+- Distributie: het verplaatsen van producten naar tussenschakels en de consument.
+
+- Tussenschakels: organisaties die goederen en diensten van producenten doorsluizen naar de consument.
+	→ Soorten:
+		• Groothandel: B2B = Business to Business, voor doorverkoop of eigen gebruik
+			- Grossier: onafhankelijk bedrijf, koopt producten producent = verwerft eigendom, doorverkoop met hogere marge aan detailhandel
+			- Distributeur: B2B voor eigen gebruik
+			- Agent en makelaar: geen eigendom, weinig ondersteunende diensten, brengen kopers en verkopers bij elkaar voor commissie
+					
+		• Detailhandel: B2C = Business to Consumer, Consumer = eindgerbuiker, eigen gebruik
+			- Supermakt
+			- Speciaalzaak
+			- Webshop
+			- Outlet
+
+- Automatisering in de distributie:
+	• Supply Chain Management: Koppeling systemen leveranciers, eigen onderneming, klanten
+	• Uitwisselen info verkopen, productie, leveringen, ...
+	• Primaire processen op elkaar afstemmen
+	• Forecasting: Leveranciers kunnen anticiperen op bestellingen
+	• Klanten krijgen inzicht in verwachte levertermijnen
+	• Planning en doorlooptijden worden geoptimaliseerd
+	• Planning transport
+	• Order picking in opslag
+	
+- Automatisering historiek:
+	MRP								→	MRP2 							→	ERP
+	Material Requirements Planning		Manufacturing Resource Planning		Enterprise Resource Planning
+	------------------------------		-------------------------------		----------------------------
+	• Bronnen nodig in productieproces	• Planning							• Personeel
+	• Grondstoffen en inputs			• Kostenopvolging					• Verkoop		
+										• Productontwerp					• Distributie
+										• BOM = Bill of Materials			• Financiën
+										• + alles van MRP					• + alles van MRP2
+
+-- Gastsessie: BASF ------------------------------------------------------------------
+______________________________________________________________________________________
+$$ 5) Finance/Financiën $$
+--------------------------
+- Activiteiten Financiën:
+	• Financiële administratie
+	• Betalingen en kasstromen
+	• Boekhouding en verslaggeving
+	• Kosten beheer
+	
+	• Financiële administratie:
+		- Registratie financiële transacties:
+			→ Betalingsopdrachten
+			→ Betaalbewijzen
+			→ Ontvangstbewijzen
+			→ Kasregister
+			→ Aanmaningen
+			...
+		- Banken, rekeningen, volmachten, kredieten
+	
+	• Betalingen en kasstromen:
+		- Alle inkomsten en uitgaven
+		- Uitvoeren van effectieve betalingen
+		- Registreren van effectieve ontvangsten
+		- Beheer liquide middelen, debiteuren en crediteuren
+	
+	• Boekhouding en verslaggeving:
+		- Externe verslaggeving → Jaarrekening
+		- Interne verslaggeving → Financiële rapporten voor verschillende:
+			departementen, management niveaus, portfolio's, teams, projecten, ...
+	
+	• Kosten beheer = Cost Accounting:
+		- Opstellen van kostprijsberekeningen
+		- Kosten verdelen over verschillende kostenplaatsen:
+			afdelingen, fabrieken, projecten, producten, ...
+
+- Automatisering financiën:
+	• Effectieve administratie/manuele ingave minimaliseren
+	• Ideaal → alle info aanwezig in ERP systeem
+		→ ERP = Enterprise Resource Planning
+			→ Software gebruikt door grotere bedrijven,
+			  Integreert gegevens verschillende bedrijfsprocessen
+
+- Financiën binnen de organisatie:
+	• Transactie:
+		1) Controle
+		2) Authorisatie
+		3) Goedkeuren
+		4) Bevestigen
+	• Transformatie:
+		1) Beleggingen
+		2) Overnames
+		3) Optimalisaties
+		4) Financieringen
+		
+	→ Wordt vaak als veredelde administratie gezien.
+	
+	→ Financiële optimalisatie wordt strategische functie naarmate de kasstromen en/of transacties toenemen.
+	
+	→ Finance = gevoelige informatie → discretie
+		→ "When in doubt, follow the money"
+		
+- Controle van financiën
+	→ Door schandalen rond fraude vb.: WorldCon, Enron, Sarbanes Oxley 2002
+	→ Bestuur organisaties aansprakelijk voor fraude en nalatigheid
+	
+- EBITDA = Earnings Before Interest, Taxes, Depreciation & Amortisation
+	→ Depreciation = waardeverminderingen
+	→ Amortisation = afschrijvingen
+
+-- Gastsessie: Info Support ----------------------------------------------------------
+______________________________________________________________________________________
+$$ 6) BI & Administratie $$
+---------------------------
+-- Administratie --
+-------------------
+
+- Waarom houdt een bedrijf gegevens bij? → Informatiebehoefte
+	• Wettelijke verplichting
+	• Verkoopcijfers van producten en diensten in verschillende markten
+	• Loyale klanten
+	• Tevreden klanten
+	• Rendabiliteit van producten en/of diensten
+	• Restvoorraad
+	• Marge op producten en diensten
+
+- Administratieve proces:
+	Proces waarbij gegevens vastgelegd worden en verwerkt tot betrouwbare en relevante informatie.
+	
+	→ Gegevens = data = feiten of symbolen
+	→ Informatie = gegevens met betekenis, praktisch nut of relevante nieuwswaarde voor de ontvanger
+	
+- Meten is weten:
+	• Winst als enige driver is niet optimaal
+	• Goede rapportages zijn cruciaal om bij te sturen
+	• Moment opnames maken van het beddrijf
+	
+	→ Met info kan je andere bedrijfprocessen ondersteunen om de juiste keuzes te maken.
+	
+- KPI's = Key Performance Indicators
+	→ Info wordt gepresenteerd als KPI's
+		• Per afdeling, locatie, team, ...
+		• Welke en voor wie → belangrijk
+		• Klanttevredenheid, afhandeling serviceaanvragen binnen afgesproken tijd.
+		
+- Samenspel:
+	• Informatiesystemen en technische infrastructuur
+	• Bedrijfsprocessen en organisatiestructuur
+	• Personeel en veranderingen
+	
+	• Informatiesystemen en technische infrastructuur:
+		- Laptops
+		- Netwerken
+		- GSM/smartphones
+		- Servers en Data centers
+		- Fysieke beveiliging
+		
+	• Bedrijfsprocessen en organisatiestructuur:
+		- Bedrijfsprocessen = HRM, Sales, Marketing, Legal, ...
+		- Organisatiestructuur: hoe het bedrijf structureren zodat
+			het effectief en efficient de doelen kan bereiken
+		
+	• Personeel en veranderingen:
+		- Interne veranderingen: reorganisatie, M&A = Mergers & Acquisitions, nieuwe software, ...
+		- Externe veranderingen: nieuwe technologische ontwikkelingen, nieuwe concurrenten, ...
+		- Nieuwe medewerkers: opleiden en assimileren in het bedrijf
+		- Bestaande werknemers: constant bijscholen
+
+- Onderdelen v/h administratieve proces (cirkel vormig):
+	→ Registreren
+	→ Controleren
+	→ Corrigeren
+	→ Rapporteren
+	→ Signaleren
+	
+- Innovatie door digitalisering
+	1) Business Analyse
+	2) Functionele Analyse
+	3) Technische Analyse
+	
+	1) Business Analyse:
+		• Bedrijfsnoden identificeren
+		• Oplossingen formuleren voor bedrijfsproblemen
+		
+	2) Functionele Analyse:
+		• Functionele vereisten verzamelen
+		• Oplossingen uitwerken
+		
+	3) Technische Analyse:
+		• Technische constraints oplijsten
+		• Architectuur ontwerpen
+
+- Bedrijfsprocessen modelleren:
+	• Cruciaal in grote bedrijven
+	• Verschillende frameworks bestaansreden
+	• BPMN = Business Process Model and Notation → bekendste
+	
+- Proces (re)engineering:
+	• Innovatie is de sleutel
+	• Input → Business Analyse
+	• Proces ontwerp
+	• Proces herontwerp
+	
+	→ IT:
+		- Ondersteunen van bedrijfsprocessen
+		- Keuze: outsource, buy, customize, make
+			vb.: Stay on the surfboard principle @KLM
+			
+
+-- BI = Business Intelligence --
+--------------------------------
+- Business Intelligence:
+	Verzamelen van zoveel mogelijk info
+		→ analyseren & rapporteren
+		→ adhv informatieverwerkende systemen
+		→ om er voor de bedrijfsvoering intelligente beslissingen mee/uit te nemen.
+		
+- Datawarehouse:
+	• Integreert, transformeerts en aggregeert gegevens
+		uit verschillende systemen
+		tot een eenduidige informatiebron
+		inclusief de historie van de gegevens.
+	• Vervangt geen bestaande systemen
+	• Bron voor OLAP systemen
+		
+		→ OLAP = OnLine Analytical Processing:
+			Grote hoeveelheden gegevens
+			vanuit een datawarehouse
+			op een zeer snelle wijze tooegankelijk maken
+			via een combinatie van dimensies.
+				→ Dimensie: invalshoek van waaruit de analyse wordt gestart
+	
+- EIS / MIS = Executive / Management Information System
+	Tactisch / strategisch management
+	dat interne en externe trends en patronen
+	analyseert, vergelijkt en zichtbaar maakt.
+	→ Gericht op ad-hoc rapportage.
+	
+- ETL = Extract, Transform, Load
+- OLTP = OnLine Transaction Processing
+- OLAP = OnLine Analytical Processing
+
+- Informatie cyclus:
+	Verzamelen → Analyseren → Rapporteren
+	
+	Data Sources → Staging Area → Data Warehouse → Data Marts → Users
+	
+- Vergelijking:		Data Warehouse						Data Lake
+  -------------		--------------						---------
+	• Data:			Structured, processed				Structured, semi-structured, unstructured, raw
+	• Processing:	Schema-on-write						Schema-on-read
+	• Storage:		Expensive for large data volumes	Designed for low-cost storage
+	• Agility:		Less agile, fixed configuration		Highly agile, configure and reconfigure as needed
+	• Security		Mature								Maturing
+	• Users:		Business professionals				Data scientists and AI
+
+	
+-- Gastsessie: Qframe ----------------------------------------------------------------
+______________________________________________________________________________________
+$$ 7) IT Governance → Informatiemanagement $$
+---------------------------------------------
+IT Governance als tool om de organisatie te sturen.
+
+- Onderdelen IT afdeling:
+	• Governance
+	• Operations
+	• Projects
+
+	• Governance:
+		- Structures			→ Wie doet wat
+		- Processes				→ Hoe doen we het
+		- Relational mechanisms	→ Hoe werken we samen
+		
+		- Structures:
+			• Alle rollen + beschrijving
+			• Organisatie structuur
+			• Wie rapporteert aan wie
+			• RACI = Responsible, Accountable, Consulted, Informed
+			• Adviserende organen:
+				- CAB = Change ADvisory Board → Welke veranderingen gaan we doen
+				- PMO = Project Management Office → Welke projecten gaan we doen
+				
+			→ RACI-moddel/matrix:
+				Rollen van medewerkers in een proces bij bepaalde taken:
+					- Responsible 	= Verantwoordelijk
+					- Accountable	= Eindverantwoordelijk
+					- Consulted		= Geraadpleegd
+					- Informed		= Geïnformeerd
+		
+		- Processes:
+			→ 3 grote families:
+				• Overkoepelend
+				• Operations
+				• Projecten
+				
+				• Overkoepelend:
+					COBIT: Framework voor IT management & governance
+						→ Origine: audit framework
+				
+				• Operations:
+					- Helpdesk
+					- Servers
+					- Monitoring
+					
+					ITIL = IT Information Library
+						→ Te vergelijken met COBIT, maar voor IT operations
+						→ CMDB = Configuration Management Database
+						→ Service Desk
+						→ Origineel uitgebracht als 48 boeken door Britse overheid → Information Library
+						→ ICT beheerprocessen:
+							• Service Strategy
+							• Service Designed
+							• Service Transition
+							• Service Operationele
+							• Continual Service Improvement
+						→ Terminologie:	
+							• Service Portfolio
+							• Service Level → agreement
+							• Service Desk → of Helpdesk
+							• Incidents → Tickets
+				
+				• Projecten:
+					- Project: in tijd en middelen begrensde eenmalige activiteit om iets te creëeren.
+						→ Onderscheid zich van een programma of process door het eenmalige karakter.
+					- Project Management:
+						• Beheer project met doel de producten opleveren in het project
+						• PMBOK & PRINCE2 → Project Management Frameworks
+						• SCRUM → Product Delivery Framework
+							→ Product Delivery is onderdeel van Project Management
+						• Niet enkel software
+						
+						Initiation → Planning & Design → Executing → Monitoring & Controlling → Closing
+		
+		- Relational mechanisms:
+			• Business en IT samen
+			• SCRUM
+			• DevOps
+			
+			→ SCRUM:
+				- Cyclus (Slide 20):
+					Product Backlog → Sprint Planning → Sprint Backlog → 1 SCRUM Team → Daily SCRUM → Sprint Review → Sprint Retrospective → Increment
+				- Roles:
+					• Product Owner
+					• SCRUM Master
+					• Development Team
+				- Values (Slide 22):
+					• Courage
+					• Focus
+					• Commitment
+					• Respect
+					• Openness
+			
+			→ DevOps:
+				Overlapping van:
+					- Development (Software Engineering)
+					- QA = Quality Assurance
+					- Operations
+
+- Terminologie:
+	• CMMI = Capability Maturity Model Integration:
+		Process level improvement training and appraisal programma
+	
+	• ISO 27001:
+		ISO standaart voor informatiebeveiliging
+		→ norm specifieert eisen voor de implementatie van beveiligingsmaatregelen
+	
+	• GDPR = General Data Protection Regulation:
+		Verordening actief sinds mei 2018 die privacy regelt van EU burgers
+	
+______________________________________________________________________________________
+$$ Voorbeeld Vragen $$
+-------------------------------------
+GESLOTEN VRAGEN:
+----------------
+• Vraag 1: Rangschik de onderdelen van het administratieve proces. Start bij 'Registreren'.
+
+	→ Antwoord: Onderdelen van het administratieve proces
+		Registreren → Controleren → Corrigeren → Rapporteren → Signaleren
+
+• Vraag 2: Link de uitspraken aan de juiste term (data warehouse of data lake)
+
+	→ Antwoord: Data warehouse vs data lake
+		Gestructureerd, verwerkt → Data warehouse
+		Business professionals → Data warehouse
+		Gestructureerd / semi-gestructureerd / ongstructureerd, rauw → Data lake
+		Data scientists → Data lake
+
+• Vraag 3: Zet de verkoopsfasen in de juiste volgorde.
+
+	→ Antwoord: Verkoop activiteiten
+		Prospectie → Leads → Offerte → Sales
+
+• Vraag 4: Link de uitspraak aan het juiste governance framework.
+
+	→ Antwoord: Governance frameworks
+		Origineel uitgebracht door de Britse overheid als 48 boeken → ITIL
+		Verordening die de privacy van EU burgers regelt → GDPR
+		Project management framework → PMBOK
+		Van origine een audit framework → COBIT
+
+OPEN VRAGEN:
+------------
+• Vraag 5: In de les bespraken we de uitspraak: 'De financiële optimalisatie wordt een strategische functie'.
+	Wanneer is dit en geef een voorbeeld bij grote technologie bedrijven.
+	
+	→ Antwoord: Financiële optimalisatie
+		De functie wordt strategisch naarmate de kasstromen en of transacties toenemen (als het dus over meer geld gaat).
+		Voorbeeld: Google opent een kantoor in Ierland en Nederland om van de Double Irish Dutch Sandwich gebruik te maken.
+
+• Vraag 6: In de les bespraken we de uitspraak 'Verkoop binnen de organisatie is een evenwicht tussen korte en lange termijn'.
+	Leg uit wat dit betekent en illustreer met een voorbeeld.
+	
+	→ Antwoord: Verkoop binnen de organisatie
+		Er zijn andere doelstellingen op korte en lange termijn:
+		* Op lange termijn wil je stabiel producten verkopen, winst genereren,
+		* Op korte termijn wil je bv marktaandeel verwerven. Dit kan je doen door bv de prijs te verlagen van je product of dienst.
+		Meer klanten wil zeggen: meer invloed in de markt. Dit kan resulteren in schaalvoordeel, vermindering van kosten, ...
+		
+• Vraag 7: 
+
+	→ Antwoord: Aankoop voor productiebedrijven
+		De reden dat dit voor productiebedrijven cruciaal is, is omdat een groot deel van de omzet (tot 70%) 
+		van een producerend bedrijf naar grondstoffen gaat. 
+		Een besparing op de aankoop leidt tot een significante impact op de resultaten. 
+		Verder wordt hier ook bepaald welke kwaliteit van grondstoffen aangekocht worden.
+		Voor een meubelfabriek: de leverancier geeft 5% korting wanneer er een groot volume in één keer wordt afgenomen;
+		de meubelfabrikant kiest een specifiek soort van exotisch hout.

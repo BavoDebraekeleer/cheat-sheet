@@ -1,0 +1,730 @@
+Electronic Systems voorbeeldvragen en antwoorden:
+
+2. Actieve filters
+------------------
+Algemene filterresponse:
+	1. Wat bepaald de bandbreedte van een laagdoorlaatfilter?
+	2. Wat begrenst de bandbreedte van een actieve hoogdoorlaatfilter?
+	3. Hoe verhouden zich de 𝑸-waarden en bandbreedte van een banddoorlaatfilter? 
+		Verklaar hoe de selectiviteit wordt beïnvloed door de 𝑸-factor van een filter.
+	4. Wat is een all-pass filter en welke eigenschap wordt gebruikt om het te specificeren?
+	
+	1. De afsnijfrequentie bepaald de bandbreedte .
+	2. De roll-off rate van de open-lusversterking A_ol beperkt de bandbreedte van de opamp 
+		waardoor de hogere frequenties ook beperkt zullen worden.
+	3. De 𝑄-factor en de bandbreedte verhouden zich omgekeerd. Hoe hoger de 𝑄-factor, 
+		hoe selectiever de filter en bijgevolg hoe smaller de bandbreedte.
+	4. Een all-pass filter laat alle frequenties door 
+		maar veroorzaakt een faseverschuiving geassocieerd met bepaalde frequenties
+		
+Filterresponsekarakteristieken:
+	1. Verklaar hoe de Butterworth-, Chebyshev- en Besselkarakteristiek van elkaar verschillen.
+	2. Wat bepaalt de responsekarakteristiek van een filter?
+	3. Noem de basisdelen van een actieve filter.
+	
+	1. Butterworth heeft een zeer vlakke doorlaatkarakteristiek en een roll-off van −20 𝑑𝐵/decade per pool.
+		Chebyschev vertoont rimpels in zijn doorlaatkarakteristiek en heeft een grotere roll-off dan −20𝑑𝐵/decade per pool.
+		Bessel heeft een lineaire fasekarakteristiek in zijn doorlaatgebied en een roll-off van minder dan −20 𝑑𝐵/decade per pool.
+	2. De dempingsfactor bepaald de responsekarakteristiek.
+	3. Frequentieselectief netwerk, versterkerelement en negatief terugkoppelnetwerk zijn de delen van een actieve filter.
+	
+Actieve LD laagdoorlaatfilters:
+	1. Hoeveel polen heeft een 𝟐𝒅𝒆 orde laagdoorlaatfilter?
+		Hoeveel weerstanden en hoeveel condensatoren worden er gebruikt in het frequentie-selectieve netwerk?
+	2. Waarom is de dempingsfactor van een filter zo belangrijk?
+	3. Waarom wordt er gebruik gemaakt van cascading bij laagdoorlaatfilters?
+	
+	1. 2de orde filter heeft twee polen, 2 weerstanden en 2 condensatoren in het frequentieselectief netwerk.
+	2. De dempingsfactor bepaalt de responsekarakteristiek.
+	3. In cascade plaatsen verhoogt de roll-off rate.
+	
+Actieve HD hoogdoorlaatfilters:
+	1. In hoeverre verschilt een hoogdoorlaat Sallen-Key filter van een laagdoorlaat Sallen-Key filter?
+	2. Om de afsnijfrequentie van een hoogdoorlaatfilter te verhogen, 
+		zou je dan de weerstandswaarden in het frequentieselectief netwerk van de filter verhogen of verlagen?
+	3. Als 3x 2-pool hoogdoorlaatfilters en 1x 1-pool hoogdoorlaatfilter in cascade worden geschakeld, 
+		wat is dan de resulterende roll-off?
+		
+	1. De posities van de 𝑅′𝑠 en de 𝐶′𝑠 in het frequentieselectief netwerk zijn omgekeerd voor de hoogdoorlaatfilter 
+		in vergelijking van de posities in de laagdoorlaatfilter.
+	2. Verlagen van de 𝑅-waarden verhoogt de afsnijfrequentie.
+	3. (((3 x 2) + 1) x -20 = 7 x -20 = −140 𝑑𝐵/decade
+
+Actieve banddoorlaatfilters:
+	1. Wat bepaalt de selectiviteit in een banddoorlaatfilter?
+	2. Een filter heeft een kwaliteitsfactor gelijk aan 5 en een andere filter heeft een kwaliteitsfactor gelijk aan 25. 
+		Welk van beide filters heeft de kleinste bandbreedte?
+	3. Uit welke elementen bestaat een state-variable filter?
+	4. Wat is de versterking van de banddoorlaatfilter in figuur 2-35?
+	
+	1. De kwaliteitsfactor
+	2. 𝑄=25; hoe hoger de 𝑄-factor, hoe smaller de bandbreedte
+	3. Een somversterker en twee integrators vormen samen een state-variable filter.
+	4. 1,38
+	
+Actieve bandsperfilters:
+	1. In welke mate verschilt een bandsperresponse van een doorlaatresponse?
+	2. Hoe kan je een state-variable banddoorlaatfilter omvormen naar een bandsperfilter?
+
+	1. Een bandsperfilter onderdrukt frequenties binnen de sperband, 
+		een banddoorlaatfilter laat de frequenties door binnen het doorlaadband.
+	2. De laagdoorlaatuitgang en de hoogdoorlaatuitgang met een somversterker verbinden. 
+		De uitgang van de somversterker levert dan de bandsperresponse op.
+		
+____________________________________________________________________________________________________________________________________________
+		
+Multiple choice test:
+	1. De term “pool” in filterterminologie betekent :
+		a) een opamp met hoge versterking
+		b) een volledige actieve filter
+	x	c) een 𝑅𝐶-netwerk
+		d) een terugkoppelingschakeling
+		
+	2. Als één weerstand verbonden wordt met één condensator om een filter te bekomen dan is de roll-off van deze filter gelijk aan :
+	x	a) −20 𝑑𝐵/decade
+		b) −40 𝑑𝐵/decade
+	x	c) −6 𝑑𝐵/decade
+		d) −12𝑑𝐵/decade
+	x	e) Antwoorden (a) en (c)
+		f) Antwoorden (b) en (d)
+		g) Antwoorden (b) en (d)
+		
+	3. Een banddoorlaatresponse heeft:
+	x	a) twee afsnijfrequenties
+		b) één afsnijfrequentie
+		c) een vlakke curve in de doorlaatband
+		d) een brede bandbreedte
+		
+	4. De laagste frequentie die doorgelaten wordt bij een laagdoorlaatfilter is :
+		a) 1 𝐻𝑧
+	x	b) 0 𝐻𝑧
+		c) 10 𝐻𝑧
+		d) afhankelijk van de afsnijfrequentie
+		
+	5. De kwaliteitsfactor van een bandoorlaatfilter is afhankelijk van:
+		a) de afsnijfrequenties
+		b) alleen de bandbreedte
+		c) alleen de centerfrequentie
+	x	d) de centerfrequentie en de bandbreedte
+		
+	6. De dempingfactor van een actieve filter bepaald de :
+		a) Spanningsversterking
+		b) Afsnijfrequentie
+	x	c) de responsekarakteristiek
+		d) de roll-off rate
+		
+	7. Een maximaal vlakke frequentieresponse is gekend als :
+		a) Chebyshev
+	x	b) Butterworth
+		c) Bessel
+		d) Sallen-Key
+		
+	8. De dempingfactor van een filter wordt bepaald door :
+	x	a) het negatief terugkoppelnetwerk
+		b) het positief terugkoppelnetwerk
+		c) het frequentie-selectieve netwerk
+		d) de versterking van de opamp
+		
+	9. Het aantal polen in een filter heeft effect op :
+		a) de spanningsversterking
+		b) de bandbreedte
+		c) de centrale frequentie
+	x	d) de roll-off rate
+	
+	10. Sallen-Key filters zijn :
+		a) enkel-pool filters
+	x	b) 2de orde filters
+		c) Butterworthfilters
+		d) banddoorlaatfilters
+	
+	11. Als filters in cascade worden geschakeld dan zal de roll-off rate :
+	x	a) stijgen
+		b) dalen
+		c) niet veranderen
+		d) geen van deze
+	
+	12. Als een laagdoorlaatfilter en een hoogdoorlaatfilter in cascade worden geschakeld om een banddoorlaatfilter te bekomen, de afsnijfrequentie van de laagdoorlaatfilter moet dan gelijk zijn aan :
+		a) de afsnijfrequentie van de hoogdoorlaatfilter
+		b) een waarde lager dan de afsnijfrequentie van de hoogdoorlaatfilter
+	x	c) een waarde hoger dan de afsnijfrequentie van de hoogdoorlaatfilter
+		d) een waarde minstens twee keer lager dan de afsnijfrequentie van de hoogdoorlaatfilter
+	
+	13. Een state-variable filter bestaat uit :
+		a) een opamp met meerdere tergkoppelingspaden
+	x	b) een somversterker gevolgd door twee integrators
+		c) een somversterker gevolgd door twee differrentiators
+		d) drie Butterworthsecties in cascade
+	
+	14. Als de versterking minimaal is bij de centerfrequentie dan is dit filter een :
+		a) banddoorlaatfilter
+	x	b) bandsperfilter
+	x	c) een notchfilter
+		d) antwoorden (a) en (b)
+		e) antwoorden (a) en (c)
+	x	f) antwoorden (b) en (c)
+
+
+		
+____________________________________________________________________________________________________________________________________________
+
+3a. Oscillators
+---------------
+
+Het begrip oscillator:
+	1. Wat is een oscillator?
+	2. Wat type van terugkoppeling heeft een terugkoppelingsoscillator nodig?
+	3. Wat is het doel van het terugkoppelnetwerk?
+	4. Welke zijn de condities (voorwaarden) die nodig zijn om een schakeling te laten oscilleren?
+	5. Definieer positieve terugkoppeling.
+	6. Wat is de spanningsversterkingsconditie voor een oscillator?
+	
+	1. Een oscillator is een schakeling dat aan zijn uitgang een herhalende spanningsgolf creëert met enkel 
+		de 𝐷𝐶-voedingsspanning als invoer.
+	2. Positieve terugkoppeling
+	3. Het positief terugkoppelnetwerk voorziet van de nodige verzwakking en faseverschuiving 
+		om aan de voorwaarden tot oscillatie te kunnen voldoen.
+			- De faseverschuiving langsheen de terugkoppellus moet 0° zijn.
+			- De spanningsversterking langsheen de gesloten lusversterking moet gelijk zijn aan 1.
+	4. De rondgaande faseverschuiving is gelijk aan 0° en de gesloten lusversterking is gelijk aan 1 (na het opstarten van de oscillatie)
+	5. Positieve terugkoppeling is wanneer een deel van het uitgangssignaal wordt teruggevoerd 
+		naar de ingang van de versterker op een zodanige manier dat het zichzelf versterkt.
+	6. De spanningsversterkingsconditie moet voor het opstarten van een oscillator groter dan 1 zijn.
+
+𝑹𝑪-oscillatoren:
+	1. Er zijn twee terugkoppelingen in de Wienbrugoscillator. Wat is de functie van iedere terugkoppeling?
+	2. Een Wiennetwerk bestaat uit twee gelijke weerstanden en twee gelijke condensatoren. 
+		Als aan de ingang van het netwerk een spanning wordt aangelegd met als waarde 𝟓 𝑽𝒆𝒇𝒇 
+		wat is dan de effectieve uitgangsspanning van dit netwerk 
+		als de frequentie van het ingangssignaal gelijk is aan de resonantiefrequentie van het netwerk?
+	3. Waarom is de faseverschuiving van een faseverschuivingsoscillator gelijk aan 𝟏𝟖𝟎°?
+	4. Waarom kunnen frequenties hoger dan de oscillatiefrequentie geen aanleiding geven tot oscillaties bij de twin-T oscillator?
+
+	1. De negatieve terugkoppeling zorgt voor de gesloten lusversterking,
+		de positieve terugkoppeling voor de oscillatiefrequentie.
+	2. 1,67 𝑉𝑒𝑓𝑓
+	3. De spanningsversterker van de faseverschuivende oscillator heeft een faseverschuiving van 180°. 
+		Hierdoor moeten de drie 𝑅𝐶-netwerken samen voor een faseverschuiving van eveneens 180° 
+		zorgen zodat het teruggekoppelde signaal in fase is met het uit ruis opgewekt signaal.
+	4. Omdat deze frequenties met een verkeerde faseverschuiving (niet gelijk aan 0°) 
+		aan de ingang worden teruggekoppeld en bijgevolg een demping voor deze frequenties ontstaat.
+		
+𝑳𝑪-oscillatoren:
+	1. Wat is het verschil tussen een Colpitts- en een Hartley oscillator?
+	2. Wat is het voordeel van een FET-oscillator in een Colpitts- of Hartley oscillator ten opzichte van een transistoroscillator (BJT-oscillator)?
+	3. Hoe kan je een Colpitts oscillator onderscheiden van een Clapp oscillator?
+	4. Hoe kun je een kristal op zijn 7de overtoon instellen?
+	
+	1. Bij een Colpittsoscillator bestaat het 𝐿𝐶-netwerk uit twee in serie staande condensatoren die in parallel staan met een spoel 
+		terwijl bij een Hartley-oscillator het 𝐿𝐶-netwerk bestaat uit twee in serie staande spoelen die in parallel staan met een condensator.
+	2. De 𝐹𝐸𝑇 heeft een hogere ingangsweerstand dan een 𝐵𝐽𝑇. Hierdoor belast een 𝐹𝐸𝑇 een 𝐿𝐶-resonantiekring minder dan een 𝐵𝐽𝑇.
+	3. De Clapp-oscillator heeft een extra condensator in serie met de spoel in het positieve terugkoppelnetwerk van de oscillator.
+	4. Door een 𝐿𝐶-keten toe te voegen in het positief.
+	
+Relaxatie-oscillatoren:
+	1. Wat is een VCO en wat doet deze schakeling?
+	2. Op welk principe werkt een relaxatie-oscillator?
+	3. Wat is een 𝑆𝐴𝑊-filter?
+
+	1. Een 𝑉𝐶𝑂 (spanningsgestuurde oscillator) levert een bepaalde frequentie aan zijn uitgang die kan gevarieerd worden 
+		met een controlespanning.
+	2. Relaxatie-oscillatoren werken op het principe van het laden en ontladen van een condensator.
+	3. 𝑆𝐴𝑊 is een speciale hoogfrequent banddoorlaatfilter dat gebruikt kan worden bij microgolf frequenties.
+
+____________________________________________________________________________________________________________________________________________
+
+Multiple-choice vragen
+	1. Een oscillator verschilt van een versterker omdat deze
+		a) een grotere versterking heeft
+	x	b) geen ingangssignaal nodig heeft
+		c) geen 𝐷𝐶-instelling nodig heeft
+		d) altijd dezelfde vorm van uitgangssignaal heeft
+	
+	2. Een Wienbrugoscillator is gebaseerd op :
+	x	a) positieve terugkoppeling
+		b) negatieve terugkoppeling
+		c) het piëzo-elektrisch effect
+		d) hoge versterking
+	
+	3. Een conditie nodig voor oscillatie is:
+		a) een totale faseverschuiving van 180° langs de terugkoppellus
+		b) een gesloten lus versterkingsfactor van 1/3
+	x	c) een totale faseverschuiving van 0° langs de terugkoppellus
+		d) een gesloten lusversterkingsfactor kleiner dan 1.
+	
+	4. Een tweede conditie voor oscillatie is:
+		a) dat er geen versterking langs de terugkoppelingslus is.
+	x	b) dat er een versterking langs de terugkoppelingslus moet zijn
+		c) dat de verzwakking van het terugkoppelingsnetwerk 1/3 moet zijn.
+		d) dat het terugkoppelnetwerk capacitief moet zijn.
+		
+	5. In een bepaalde oscillator is 𝐴𝑢=50. Dit betekent dat de verzwakking in het terugkoppelnetwerk gelijk is aan :
+		a) 1
+		b) 0,01
+		c) 10
+	x	d) 0,02	-> B = 1/50
+	
+	6. Om een oscillator gestart te krijgen moet de gesloten lus versterking in het begin gelijk zijn aan :
+		a) 1
+		b) minder dan 1
+	x	c) groter dan 1
+		d) gelijk zijn aan 𝐵
+	
+	7. Als in een Wienbrugoscillator de weerstand in het positief terugkoppelnetwerk daalt dan zal de frequentie :
+		a) dalen
+	x	b) stijgen
+		c) gelijk blijven
+		d) geen van deze
+	
+	8. Het positief terugkoppelnetwerk van een Wienbrugoscillator bestaat uit een :
+		a) serie-parallel 𝑅𝐿-netwerk
+		b) 𝐿𝐶-netwerk
+		c) spanningsdeler
+	x	d) serie-parallel 𝑅𝐶-netwerk
+	
+	9. Een faseverschuivende oscillator bestaat uit :
+	x	a) drie 𝑅𝐶-netwerken
+		b) drie 𝐿𝐶-netwerken
+		c) een 𝑇-type netwerk
+		d) een 𝜋-type netwerk
+	
+	10. Colpitts, Clapp en Hartley-oscillatoren zijn:
+		a) Voorbeelden van 𝑅𝐶-oscillatoren
+		b) Voorbeelden van kristal-oscillatoren
+	x	c) Voorbeelden van 𝐿𝐶-oscillatoren
+		d) Voorbeelden relaxatie-oscillatoren
+	
+	11. Het belangrijkste voordeel van een kristaloscillator is:
+		a) economisch voordeling
+		b) grote betrouwbaarheid
+	x	c) grote stabiliteit
+		d) grote bandbreedte
+		
+	12. Een oscillator waarvan de frequentie kan gewijzigd worden aan de hand van een spanning is een :
+		a) Wienbrugoscillator
+	x	b) VCO
+		c) Faseverschuivende oscillator
+		d) Relaxatie-oscillator
+
+
+
+____________________________________________________________________________________________________________________________________________
+
+
+4. Spanningsregelaars
+---------------------
+
+Lineaire Serie-regelaars:
+	1. Wat zijn de basiscomponenten van de serieregelaar?
+	2. Een bepaalde serieregelaar heeft een uitgangsspanning van 𝟖 𝑽. Als de opamp een gesloten lusversterking heeft van 𝟒, 
+		wat is dan de waarde van de aangelegde referentiespanning?
+		
+	1. Regelelement, verschildetectie, terugkoppelnetwerk en referentiespanning
+	2. 2 V
+	
+Lineaire Shunt-regelaars:
+	1. Op welke wijze verschilt het regelelement in een shuntregelaar met dat van een serieregelaar?
+	2. Wat is het voordeel van een shuntregelaar ten opzichte van een serieregelaar? Wat is het nadeel?
+
+	1. Bij een shuntregelaar staat de regeltransistor in parallel met de belasting 
+		terwijl bij een serieregelaar deze in serie staat met de belasting.
+	2. Een shuntregelaar beschikt over een inherente stroombegrenzing. 
+		Het nadeel van een shuntregelaar is dat deze minder efficiënt zijn dan een serieregelaar.
+		
+Schakelende regelaars:
+	1. Noem drie typen op van schakelende regelaars
+	2. Wat is het belangrijkste voordeel van schakelende regelaars ten opzichte van lineaire regelaars?
+	3. Hoe worden veranderingen in de uitgangsspanning gecompenseerd in de schakelende regelaar?
+
+	1. Step-down, step-up en voltage-inverter
+	2. Schakelende regelaars werken op een hogere frequentie waardoor ze minder warmte produceren in het systeem. 
+		Het gevolg hiervan is dat er minder koeling nodig is.
+	3. Door de duty-cycle te variëren wordt de uitgangsspanning geregeld.
+
+____________________________________________________________________________________________________________________________________________
+
+Multiple choice vragen
+	1. Alle van volgende delen maken deel uit van een eenvoudige spanningsregelaar behalve :
+		a) een regelelement
+		b) een terugkoppelnetwerk
+	x	c) een spanningsvolger
+		d) een verschildetector
+		e) een referentiespanning
+	
+	2. Het verschil tussen een serieregelaar en een shuntregelaar is :
+		a) de hoeveelheid stroom dat kan gecontroleerd worden
+	x	b) de positie van het regelelement
+		c) het type terugkoppelnetwerk
+		d) het type verschildetector
+	
+	3. In een eenvoudige serieregelaar wordt de uitgangsspanning bepaald door :
+		a) het regelelement
+		b) het terugkoppelnetwerk
+		c) de referentiespanning
+	x	d) antwoorden (b) en (c)
+		e) antwoorden (a) en (b)
+		f) antwoorden (a) en (c)
+	
+	4. Het belangrijkste doel van stroombegrenzing in een regelaar is :
+	x	a) het regelelement beschermen tegen te grote stroom
+		b) de belasting beschermen tegen te grote stroom
+		c) het voorkomen dat de transformator van de gelijkrichting voor de regelaar opbrand.
+		d) het handhaven van een constante uitgangsspanning
+		
+	5. In een lineaire regelaar geleidt de regeltransitor :
+		a) een klein gedeelte van de tijd dat de schakeling onder spanning staat
+		b) de helft van de tijd dat de schakeling onder spanning staat
+	x	c) de gehele tijd dat de schakeling onder spanning staat
+		d) enkel als er een te zware belasting is aangesloten
+	
+	6. In een schakelende regelaar geleidt de regeltransistor :
+	x	a) een gedeelte van de tijd dat de schakeling onder spanning staat
+		b) de gehele tijd dat de schakeling onder spanning staat
+		c) enkel als de ingangsspanning een bepaalde limiet overschrijd
+		d) enkel als er een overbelasting is
+
+
+____________________________________________________________________________________________________________________________________________
+
+5. Communicatie-schakelingen
+-----------------------------
+
+Basic ontvangers:
+	1. Wat is de betekenis van AM en FM?
+	2. In welke mate verschilt AM van FM?
+	3. Welke zijn de standaard uitzendfrequenties voor AM en FM?
+	
+	1. 𝐴𝑀 is amplitudemodulatie; 𝐹𝑀 is frequentiemodulatie
+	2. Bij 𝐴𝑀 verandert het gemoduleerd signaal door variaties van de amplitude van de draaggolf. 
+		Bij 𝐹𝑀 verandert het gemoduleerd signaal door variaties van de frequentie van de draaggolf.
+	3. 𝐴𝑀∶540 𝑘𝐻𝑧−1640 𝑘𝐻𝑧; 𝐹𝑀∶88 𝑀𝐻𝑧−108 𝑀𝐻𝑧
+
+Lineaire vermenigvuldiger:
+	1. Vergelijk een 4 kwadrant multiplier met een 1 kwadrant multiplie aangaande de ingangen die kunnen worden verwerkt.
+	2. Waarvoor staat SF voor en wat is de waarde hiervan voor AD532?
+	3. Wat definieert de transfertfunctie van een lineaire vermenigvuldiger?
+	
+	1. Een 4-kwadrant vermenigvuldiger (multiplier) kan eender welke combinatie van ingangssignalen 
+		(positieve en negatieve ingangssignalen) verwerken. Een 1-kwadrant vermenigvuldiger kan enkel 
+		twee positieve ingangssignalen verwerken.
+	2. 𝑆𝐹 staat voor Scale Factor. Voor 𝐴𝐷532 is 𝑆𝐹=10
+	3. De transfertfunctie van een lineaire vermenigvuldiger definieert het uitgangssignaal voor een gegeven set ingangssignalen.
+	
+Amplitude modulatie:
+	1. Wat is amplitudemodulatie?
+	2. Wat is het verschil tussen balanced modulatie en standaard AM?
+	3. Welke twee ingangssignalen worden gebruikt bij AM? Geef het doel aan van ieder signaal.
+	4. Wat wordt verstaan onder uper side frequency en lower side frequency?
+	5. Hoe kan je een gebalanceerde modulator omvormen tot een standaard amplitude modulator?
+
+	1. Amplitude modulatie is het proces van het variëren van de amplitude van een draaggolfsignaal 
+		met de amplitude van een te moduleren signaal.
+	2. Balanced modulatie produceert geen draaggolf aan zijn uitgang terwijl een standaard 𝐴𝑀 dit wel doet.
+	3. Het draaggolfsignaal is het te moduleren signaal en heeft een voldoend hoge frequentie voor het verzenden van het signaal. 
+		Het modulatiesignaal is een signaal met een lagere frequentie dat de informatie bevat. 
+		Het modulatiesignaal varieert de draaggolf in functie van de golfvorm van het modulatiesignaal.
+	4. De upper-side frequentie is de som van de draaggolf met de modulatiefrequentie. 
+		De lower-side frequentie is het verschil tussen de draaggolf met de modulatiefrequentie.
+	5. Door een 𝐷𝐶-spanning, gelijk aan de amplitude van de draaggolf, toe te voegen aan het te moduleren signaal 
+		voordat het vermenigvuldigd wordt met de draaggolf.
+		
+Mengschakeling (mixer):
+	1. Wat is de taak van de mixer in een superheterodyne ontvanger?
+	2. Hoe produceert een mixer zijn output?
+	3. Als een mixer 1000 kHz heeft op zijn ene input en 350 kHz op zijn andere input, welke frequenties verschijnen er aan zijn output?
+
+	1. De mengschakeling (mixer) produceert (naast andere frequenties) 
+		een signaal dat het verschil voorstelt van de inkomende draaggolffrequentie met de frequentie van de lokale oscillator. 
+		Dit verschil wordt de middenfrequentie genoemd.
+	2. De mixer vermenigvuldigt het draaggolfsignaal met het signaal van de lokale oscillator.
+	3. 1000 𝑘𝐻𝑧+350 𝑘𝐻𝑧=1350 𝑘𝐻𝑧, 1000 𝑘𝐻𝑧−350 𝐻𝑧=650 𝑘𝐻𝑧	
+	
+𝑨𝑴-demodulatie:
+	1. Wat is de taak van het filter in de lineaire multiplier demodulator?
+	2. Als een 455 kHz middenfrequentsignaal gemoduleerd is met 1 kHz audiofrequentie, 
+		welke frequentie(s) verschijnen er dan aan de output van de demodulator?
+
+	1. Het filter verwijdert alle frequenties behalve de audiofrequenties
+	2. Enkel het 1 𝑘𝐻𝑧-signaal
+	
+Middenfrequent en audioversterkers:
+	1. Wat is het doel van een IF amplifier in een AM ontvanger?
+	2. Wat is de centerfrequentie van een AM IF versterker (MF versterker)?
+	3. Waarom is de bandbreedte van een IF versterker in een AM ontvanger 10 kHz?
+	4. Waarom moet er een audioversterker volgen op de detector in een ontvanger?
+	5. Vergelijk de frequentieresponse van een IF amplifier met dat van een audio amplifier.
+
+	1. Om het 455 𝑘𝐻𝑧 amplitude modulatie middenfrequentsignaal te versterken dat afkomstig is van de mixer.
+	2. De MF-centerfrequentie is 455 𝑘𝐻𝑧
+	3. De 10 𝑘𝐻𝑧-bandbreedte is voldoende om de upper-side- en lower-side-freqenties die de informatie bevatten door te laten.
+	4. De detector is de schakeling die het audio-signaal terug hersteld vanuit het gemoduleerde middenfrequentsignaal. 
+		Om dit herstelde signaal voldoende versterking mee te geven is de audioversterker noodzakelijk.
+	5. De IF-versterker (middenfrequentversterker) heeft een response van ongeveer 455 𝑘𝐻𝑧±5 𝑘𝐻𝑧. 
+		De typische audioversterker heeft een maximale bandbreedte van 20 𝐻𝑧 tot 20 𝑘𝐻𝑧. 
+		In 𝐴𝑀-o,tvangers kan deze bandbreedte wel iets minder zijn.
+		
+Frequentiemodulatie:
+	1. Hoe kan men informatie verzenden via een FM signaal?
+	2. Waarvoor staat VCO?
+	3. Op welk principe werken de meeste VCO’s die gebruikt worden in FM schakelingen
+
+	1. De frequentievariatie van een 𝐹𝑀-signaal bevat de informatie.
+	2. 𝑉𝐶𝑂 is voltage controlled oscillator
+	3. 𝑉𝐶𝑂′𝑠 zijn gebaseerd op het principe van spannings-variabele reactantie.
+	
+Phase-locked loop (PLL):
+	1. Noem de drie basiscomponenten in een phase locked loop
+	2. Welk is een ander basiscomponent (dan de drie in vraag 1) die in PLL schakelingen gebruikt kan worden?
+	3. Wat is de basisfunctie van een PLL?
+	4. Wat is het verschil tussen de lock range en de capture range?
+	5. Wat is het principe opdat een PLL de inkomende frequentie kan volgen?
+
+	1. Fasedetector, laagdoorlaatfilter en 𝑉𝐶𝑂
+	2. Soms bevat een 𝑃𝐿𝐿 een versterker in de lus
+	3. Een 𝑃𝐿𝐿 lockt en volgt een variabele inkomende frequentie.
+	4. Het lock-bereik geeft aan hoeveel een op te “locken” frequentie kan afwijken zonder dat de 𝑃𝐿𝐿 dit signaal verliest. 
+		Het capture-bereik geeft aan hoe dicht de inkomende frequentie ten opzichte van de vrijloopfrequentie van de 𝑉𝐶𝑂 
+		moet komen opdat de 𝑃𝐿𝐿 deze inkomende frequentie kan “locken”.
+	5. De 𝑃𝐿𝐿 detecteert een verandering in fase tussen het binnenkomende signaal en het 𝑉𝐶𝑂-signaal. 
+		Dit faseverschil wordt door de laagdoorlaatfilter omgezet in een spanningswaarde waarmee de 𝑉𝐶𝑂 wordt aangestuurd 
+		om een uitgangsfrequentie te bekomen die gelijk is aan de inkomende frequentie. Wanneer de 𝑉𝐶𝑂-frequentie gelijk is 
+		aan de inkomende frequentie blijft er nog een klein faseverschil tussen beide signalen dat er voor zorgt dat de 𝑃𝐿𝐿 in 
+		lock blijft met het inkomend signaal.
+	
+____________________________________________________________________________________________________________________________________________
+
+Multiple choice vragen:
+	
+	1. Bij een 𝐴𝑀-signaal wordt het patroon dat gevormd wordt door de pieken van het draaggolfsignaal als volgt genoemd:
+		a) de index
+	x	b) de envelope
+		c) het audiosignaal
+		d) bovenzijde frequentie
+	
+	2. Welk van de volgende onderdelen maakt geen deel uit van een 𝐴𝑀-ontvanger?
+		a) menger
+		b) middenfrequentversterker (IF-amplifier)
+	x	c) DC restorer
+		d) detector
+		e) audioversterker
+		f) lokale oscillator
+	
+	3. In een 𝐴𝑀-ontvanger produceert de lokale oscillator steeds een frequentie die hoger is dan de inkomende frequentie met :
+		a) 10,7 𝑘𝐻𝑧
+		b) 455 𝑀𝐻𝑧
+		c) 10,7 𝑀𝐻𝑧
+	x	d) 455 𝑘𝐻𝑧
+	
+	4. Een FM-ontvanger heeft een middenfrequentie die :
+		a) ligt in het bereik tussen 88 𝑀𝐻𝑧 en 108 𝑀𝐻𝑧
+		b) ligt in het bereik tussen 540 𝑘𝐻𝑧 en 1640 𝑘𝐻𝑧
+		c) gelijk is aan 455 𝑘𝐻𝑧
+	x	d) groter is dan de middenfrequentie van een 𝐴𝑀-ontvanger
+	
+	5. De detector of discriminator in een 𝐴𝑀- of 𝐹𝑀-ontvanger :
+		a) detecteert de verschilfrequentie van de menger (mixer)
+		b) verandert het hoogfrequent signaal in een middenfrequentsignaal
+	x	c) herstelt het audiosignaal
+		d) zorgt voor een constante amplitude van het middenfrequentsignaal
+	
+	6. Om alle combinaties van mogelijke ingangs-spannings-polariteiten te kunnen afhandelen moet een vermenigvuldiger (multiplier) 
+		over het volgende beschikken:
+	x	a) 4-kwadrantsmogelijkheid
+		b) 3-kwadrantsmogelijkheid
+		c) Vier ingangen
+		d) Dual supply spanningen
+		
+	7. De interne verzwakking van een vermenigvuldigingsschakeling (multiplier) wordt als volgt genoemd:
+		a) Transconductantie
+	x	b) Scale factor
+		c) Reductiefactor
+		d) Geen van deze
+	
+	8. Als de 𝑋2-ingang van een lineaire vermenigvuldiger (multiplier) met de massa is verbonden dan werkt de 𝑋1-ingang als een :
+		a) verschil-ingang
+		b) differentiaal-ingang
+	x	c) single-ended ingang
+		d) gemiddelde (averaging) ingang
+	
+	9. Amplitude modulatie bestaat in principe uit :
+		a) de som van twee signalen
+	x	b) de vermenigvuldiging van twee signalen
+		c) de aftrekking van twee signalen
+		d) een niet-lineair process
+		e) de deling van twee signalen
+	
+	10. Het frequentiespectrum van een gebalanceerde modulator bevat:
+	x	a) een somfrequentie
+	x	b) een verschilfrequentie
+		c) een draaggolf
+		d) antwoorden (a), (b) en (c)
+	x	e) antwoorden (a) en (b)
+		f) antwoorden (b) en (c)
+		g) antwoorden (a) en (c)
+	
+	11. Een middenfrequentie in een ontvanger is:
+		a) de som van de lokale oscillatorfrequentie met de hoogfrequentdraaggolf
+		b) de lokale oscillatorfrequentie
+	x	c) het verschil tussen de lokale oscillatorfrequentie met de hoogfrequentdraaggolf
+		d) het verschil tussen de hoogfrequentdraaggolf met de audiofrequentie
+	
+	12. Als een onvanger die op een bepaalde draaggolffrequentie is afgestemd wordt verdraaid naar een andere draaggolf dan zal :
+		a) de middenfrequentie veranderen met een hoeveelheid gelijk aan de frequentie van de lokale oscillator
+	x	b) de middenfrequentie hetzelfde blijven
+		c) de lokale oscillatorfrequentie veranderen met een hoeveelheid gelijk aan de audiofrequentie
+		d) zowel de lokale oscillatorfrequentie als de middenfrequentie veranderen
+	
+	13. De uitgang van een 𝐴𝑀-detector is direct verbonden met :
+		a) de middenfrequentversterker
+		b) de menger (mixer)
+	x	c) de audioversterker
+		d) de luidspreker
+		
+	14. Als de controlespanning aan een 𝑉𝐶𝑂 stijgt, dan zal de uitgangsfrequentie van deze 𝑉𝐶𝑂 :
+		a) dalen
+		b) niet veranderen
+	x	c) stijgen
+		d) verwijderd worden
+	
+	15. Een 𝑃𝐿𝐿 blijft in lock door :
+	x	a) de fase van twee signalen te vergelijken
+		b) de frequentie van twee signalen te vergelijken
+		c) de amplitude van twee signalen te vergelijken
+		d) de periode van twee signalen te vergelijken
+		
+
+
+____________________________________________________________________________________________________________________________________________	
+		
+6. Meten en controleren
+-----------------------
+
+Effectieve waarde naar 𝑫𝑪-converters:
+	1. Wat is het basisdoel van een effectieve waarde naar 𝑫𝑪-converter?
+	2. Wat zijn de drie interne functies die worden uitgevoerd door een effectieve waarde naar 𝑫𝑪-converter?
+	
+	1. Een effectieve waarde naar 𝐷𝐶-converter produceert een 𝐷𝐶-uitgangsspanning 
+		dat overeenkomt met de effectieve waarden van het 𝐴𝐶-ingangssignaal.
+	2. Intern een effectieve waarde naar 𝐷𝐶-converter bevindt zich een kwadraatschakeling, 
+		een gemiddelde waarde schakeling en een schakeling die de vierkantswortel bepaald.
+	
+Hoekmeting:
+	1. Hoe noemt men een transducer die de positie van een asrotatie omzet in een elektrisch signaal?
+	2. Wat type van ingangssignalen accepteert een 𝑅𝐷𝐶?
+	3. Wat type van uitgangssignaal produceert een 𝑅𝐷𝐶?
+	4. Wat is de functie van een 𝑅𝐷𝐶?
+	
+	1. Synchro
+	2. Een 𝑅𝐷𝐶 accepteert resolver formaat-spanningen aan zijn ingang.
+	3. Een 𝑅𝐷𝐶 produceert een digitale code die overeenkomt met de positie van de verdraaide as van de resolver.
+	4. Een 𝑅𝐷𝐶 converteert de hoekpositie van de as van een resolver in een digitale code.
+	
+Rek-, druk en bewegingsmeting:
+	1. Beschrijf een eenvoudig rekstrookje.
+	2. Beschrijf een eenvoudige drukmeter.
+	3. Noem drie types van drukmeter.
+	4. 	a) Wat is een 𝐿𝑉𝐷𝑇?
+		b) Wat meet een 𝐿𝑉𝐷𝑇?
+	
+	1. Een rekstrookje is in principe een weerstandselement waarvan zijn fysische afmetingen gewijzigd 
+		kunnen worden ten gevolge van een aangelegde kracht en daardoor er een verandering in zijn weerstandswaarde ontstaat.
+	2. Een eenvoudige drukmeter is opgebouwd uit een rekstrookje dat zich bevindt op een flexibel membraan (diafragma).
+	3. Absolute druktransducer, overdruktransducer en verschildruktransducer
+	4. 	a) een lineair variabele differentiaaltransformator
+		b) verplaatsing
+		
+Regelen van vermogen:
+	1. Hoe verschilt een 𝑺𝑪𝑹 van een 𝒕𝒓𝒊𝒂𝒄 in termen aangaande het leveren van vermogen aan een belasting?
+	2. Verklaar het doel van de nulspanningsschakelaar (zero-voltage switching).
+	3. In welk soort systeem verwacht je een 𝑺𝑪𝑹 aan te treffen of een 𝒕𝒓𝒊𝒂𝒄?
+	
+	1. Een 𝑆𝐶𝑅 is unidirectioneel en laat daarom de stroom naar de belasting door tijdens een halve periode. 
+		Een 𝑡𝑟𝑖𝑎𝑐 is bidirectioneel en laat stroom toe naar de belasting gedurende de ganse periode.
+	2. Nulspanningsschakelen (zero-voltage switching) elimineert snelle stroomovergangen naar de belasting 
+		toe waardoor EMI-stoorsignalen en thermische schokken in het belastingselement worden vermindert.
+	3. In een systeem waarbij vermogen wordt gecontroleerd.
+
+____________________________________________________________________________________________________________________________________________
+
+Multiple-choice vragen:
+
+	1. De effectieve waarde van een 𝐴𝐶-signaal is gelijk aan :
+		a) de maximale waarde
+	x	b) de 𝐷𝐶-waarde die evenveel warmte dissipeert in een verbruiker
+		c) de vierkantswortel van de gemiddelde waarde
+		d) antwoorden (b) en (d)
+	
+	2. Een expliciet type van effectieve waarde naar 𝐷𝐶-conversie bevat:
+	x	a) een kwadratische schakeling
+	x	b) een gemiddelde schakeling
+	x	c) een vierkantswortelschakeling
+		d) een kwadraat/deler schakeling
+		e) alle hierboven genoemde schakelingen
+	x	f) de antwoorden (a), (b) en (c)
+		g) de antwoorden (a) (c) en (d)
+		h) de antwoorden (b) (c) en (d)
+	
+	3. Een synchro produceert :
+	x	a) drie-formaat spanningen
+		b) twee-formaat spanningen
+		c) een-formaat spanningen
+		d) een referentiespanning
+	
+	4. Een resolver produceert :
+		a) drie-formaat spanningen
+	x	b) twee-formaat spanningen
+		c) een-formaat spanningen
+		d) geen van deze
+	
+	5. Een Scott-T-transformator wordt gebruikt voor :
+		a) het koppelen van een referentiespanning aan een synchro of een resolver
+		b) het veranderen van de resolver-formaatspanningen naar synchro-formaatsspanningen
+	x	c) het veranderen van de synchro-formaatspanningen naar resolver-formaatspanningen
+		d) het isoleren van de rotor-winding van de stator-windingen
+	
+	6. De uitgang van een 𝑅𝐷𝐶 is een :
+		a) sinusgolf met een amplitude die overeen komt met de hoekpositie van de resolver-as.
+		b) een digitale code die de hoekpositie voorstelt van de statorbehuizing
+	x	c) een digitale code die de hoekpositie voorstelt van resolver-as
+		d) een sinusgolf met een frequentie die evenredig is met de hoekpositie van de resolver-as
+	
+	7. Als de lengte van een rekstrookje vergroot dan :
+		a) produceert het meer spanning
+	x	b) stijgt zijn weerstand
+		c) daalt zijn weerstand
+		d) gedraagt het zich als een open schakelaar
+	
+	8. Een hogere gage factor duidt op het feit dat het rekstrookje :
+		a) minder gevoelig is in de verandering van lengte
+	x	b) meer gevoelig is in de verandering van lengte
+		c) een grotere totale weerstand heeft
+		d) gemaakt is van een fysisch grotere geleider
+	
+	9. Veel druktransducers zijn opgebouwd met :
+		a) een thermistor
+		b) een RTD
+	x	c) een rekstrookjes
+		d) een venturibuis
+	
+	10. Overdruk wordt gemeten ten opzichte van :
+	x	a) omgevingsdruk
+		b) vacuüm
+		c) een referentiedruk
+		d) geen van deze
+	
+	11. Het debiet van een vloeistof kan onder andere gemeten worden met een
+		a) Vacuüm druktransducer
+		b) referentie druktransducer
+		c) absolute druktransducer
+	x	d) verschildruktransducer
+	
+	12. Nulspanningsschakelen (zero voltage switching) wordt vooral gebruikt bij
+		a) het bepalen van de spanning van een thermokoppel
+	x	b) SCR- en triac vermogenschakelingen
+		c) gebalanceerde brugschakelingen
+		d) generatie van RFI
+	
+	13. Een groot nadeel van nonzero switching (niet nulspanningsschakelen) van vermogen naar een belasting is :
+		a) het gebrek aan efficiëntie
+		b) mogelijke beschadiging van de thyristor
+	x	c) hoogfrequent ruisgeneratie
+		d) er is geen nadeel

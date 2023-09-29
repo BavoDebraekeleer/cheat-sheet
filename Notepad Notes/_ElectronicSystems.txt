@@ -1,0 +1,1057 @@
+  _______  ___       _______   ______  ___________  _______     ______    _____  ___    __     ______        ________ 
+ /"     "||"  |     /"     "| /" _  "\("     _   ")/"      \   /    " \  (\"   \|"  \  |" \   /" _  "\      /"       )
+(: ______)||  |    (: ______)(: ( \___))__/  \\__/|:        | // ____  \ |.\\   \    | ||  | (: ( \___)    (:   \___/  
+ \/    |  |:  |     \/    |   \/ \        \\_ /   |_____/   )/  /    ) :)|: \.   \\  | |:  |  \/ \          \___  \       
+ // ___)_  \  |___  // ___)_  //  \ _     |.  |    //      /(: (____/ // |.  \    \. | |.  |  //  \ _        __/  \\      
+(:      "|( \_|:  \(:      "|(:   _) \    \:  |   |:  __   \ \        /  |    \    \ | /\  |\(:   _) \      /" \   :) 
+ \_______) \_______)\_______) \_______)    \__|   |__|  \___) \"_____/    \___|\____\)(__\_|_)\_______)    (_______/ystems 
+
+• → 
+
+Diode 4148: hoge frequentie diodes
+____________________________________________________________________________________________________________________
+-- Basic OPAMP circuits --
+--------------------------
+• OPAMP = Operational Amplifier
+
+...
+
+• Miller integrator (S17):
+	De integrator met parallelweerstand over de condensator die terug lust naar de +-ingang v/d OPAMP
+
+• Volume regelaar circuit S19:
+	- S1 = meer volume
+	- S2 = minder volume
+	
+• Opamp als Differentiator:
+	
+____________________________________________________________________________________________________________________
+-- Actieve filters --
+---------------------
+• Belangerijk!
+	- Je kan de laagdoorlaat respons beschrijven.
+	- Je kan de kritische frequentie en bandbreedte van een LD-filter bepalen.
+	- Je kan de hoogdoorlaatresponse beschrijven.
+	- Je kan de kritische frequentie van een HD-filter bepalen.
+	- Je kan de banddoorlaatresponse beschrijven.
+	- Je kan het belang van de kwaliteitsfactor aangeven.
+	- Je kan de kritische frequentie, bandbreedte, kwaliteitsfactor en dempingsfactor van een banddoorlaatfilter bepalen.
+	- Je kan de bandsperresponse (band-stop) beschrijven.
+	
+	- Wat bepaald de bandbreedte BW van een LD-filter?
+		Afsnijfrequentie
+	
+	- Wat begrenst de bandbreedte van een actieve HD-filter? S21 30:30
+		De inherent frequentie-beperking begrenst de opamp-versterking, en dus ook de bandbreedte.
+		
+	- Hoe verhouden zich de Q-waarde en de BW van een Band-pass? Verklaar hoe de selectiviteit wordt beïnvloed door de Q-factor van een filter.
+		Q en BW zijn omgekeerd evenredig.
+		Hoe hoger Q, hoe beter de selectiviteit en omgekeerd.
+		
+	- Wat is een All-pass filter en welke eigenschap wordt gebruikt om het te specificeren?
+		All-pass filter laat alle frequenties door, maar veroorzaakt een faseverschuiving voor bepaalde frequenties.
+		
+	- Basisdelen actieve filter (aanvullen begin Q&A 3):
+		1)
+		2)
+		3) Negatief terugkoppelingsnetwerk
+	
+	- Static-variable filter bestaat uit:
+		Een somversterker gevolgd door 2 integratorschakelingen.
+		
+	- De selectiviteit v/e bandfilter wordt bepaald door Q.
+		BW = f_0 / Q → Hoe groter Q, hoe kleiner BW
+
+• Filter:
+	elektronische schakeling die ervoor zorgt dat 
+	de uitgangsspanning gaat variëren in functie met de frequentie van de ingangsspanning.
+	
+	Bepaalde frequenties versterken en andere onderdrukken.
+	Bepaalde frequenties uitfilteren, enkel die overhouden.
+	
+• Categorieën actieve filters:
+	- LD-filter = laagdoorlaatfilter: laat lage frequenties door, tot een bepaald punt. Daarna niets meer.
+	- HD-filter = hoogdoorlaatfilter: laat hoge frequenties door, tot een bepaald punt.
+	- Band-pass = banddoorlaatfilter: enkel bepaald stuk doorlaten tussen twee frequenties in.
+	- Band-stop = bandsperfilter:     enkel bepaald stuk tussen twee frequenties NIET doorlaten, rest wel.
+
+• Response LD-filter:
+	- R/Weerstand achter de U-ingang, Condensator over de U-uitgang.
+	- roll-off: overgangsgebied van afsnijding
+	- bandbreedte BW: gebied tussen 0 Hz (gelijkspanning) en de afsnijfrequentie f_c
+		= doorlaatband
+	- RC combinatie = een pool:
+		roll-off/downing characteristic van -20 dB/decade = -6 dB/octaaf
+			→ 2 polen = 2x RC = 2e orde = -40 dB/decade
+			→ 3 polen = 3x RC = 3e orde = -60 dB/decade
+			
+		→ Hoe meer polen, hoe kleiner de transition region.
+		
+	→ Frequentie selectief netwerk die ervoor zorgt, bij een LD-filter, dat de uitgangsspanning gaat dalen
+		naarmate de frequentie stijgt.
+		
+		Zie schakeling S10, 11:30
+		→ Lage frequentie → lage Xc waarde/weerstand C → lage spanning over C/de uitgangsspanning.
+		→ Hoge frequentie → hoge XC waarde → bijna de volledige bronspanning over R/weerstand.
+		
+	f_c = 1 / 2πRC			→ f_c = afsnijfrequentie 
+	Xc = 1 / 2πfC
+	
+• Sallen-key actieve LD-filter, aka VCVS = Voltage Controlled Voltage Source
+	Meest voorkomende 2e orde/2 polen filter
+		→ 2 polen = 2x RC = 2e orde = -40 dB/decade
+		
+	Opamp ingesteld als niet-inverterende versterkerschakeling
+	
+	Als de verterkingsfactor wordt ingesteld in overeenstemming met de dempingsfactor kan de gewenste karakteristiekvorm bekomen worden.
+	Adhv verhouding R1/R2
+
+• Response HD-filter:
+	- Condensator na de U-ingang, R/weerstand over de U-uitgang.
+		→ Hoge frequentie → lage Xc →  hoge spanning over de uitgang.
+		→ Lage frequentie → hoge Xc en dus grote spanningsval over de Condensator → lage spanning over R en de uitgang.
+		
+			→ bij 0 Hz ingang → Xc wordt oneindig en laat niets meer door.
+			
+• Response Band-pass:
+	Een HD- en LD-filter in cascade/achter elkaar plaatsen = Band-pass.
+	→ response van een Band-pass is de overlap van de responses van een HD- en LD-filter.
+	
+	BW = f_ch - f_cl		→ f_cl = ondergrens, f_ch = bovengrens, BW = bandbreedte (frequenties bij U_out = 70,7%)
+	f_0 = √(f_cl . f_ch)	→ f_0 = center frequentie/grootst mogelijke versterking, bij U_out = 100% 
+									(niet altijd mooi in het midden tussen de grenzen in)
+	
+	- Kwaliteitsfactor/Quality Factor = Q
+		Q = f_0 / BW
+		
+		→ Q en BW zijn omgekeerd evenredig: Hoe groter Q, hoe kleiner de bandbreedte BW, hoe kleiner Q, hoe groter BW = selectiviteit.
+		
+		→ Q >= 10 = smalband-filter
+		→ Q <  10 = breedband-filter
+		
+	- Dempingsfactor = DF (vereenvoudigde manier om waardes te bekomen)
+		Q = 1 / DF
+		
+		→ Bepaalt de response karakteristiek, geeft de doorlaatkarakteristiek van de filter
+		
+	→ Voorbeeld vraag S15 23:20
+		
+• Response Band-stop:
+	→ Band-stop, notch, band-reject of band-elimination filter
+	
+	Omgekeerde Band-pass.
+	
+	BW = f_ch - f_cl		→ f_cl(low) = ondergrens, f_ch(high) = bovengrens, BW = bandbreedte, bij -3 dB (Gain) = 70,7% Vout
+	f_0 = √(f_cl . f_ch)	→ f_0 = center frequentie/grootst mogelijke onderdrukking
+	
+• All-pass filter:
+	Gaat alle frequenties gelijk versterken, maar gaat een fase verschuiving doen.
+	
+	→ All-pass filters worden meestal beschreven bij de frequentie waarbij de faseverschuiving tussen in- en uitgang 90° is, of 1/4 golflengte.
+	→ Kunnen in cascade geschakeld worden om hogere orde filters te bekomen, een grotere faseverschuiving.
+	
+	SSB-SC = single-sideband suppressed carrier = HF-communicatiesysteem gebruikt door radio amateurs en militairen.
+	
+• Filterresponskarakteristieken:
+	- Butterworth 	→ best of both worlds, zit tussenin de andere twee. Geen fluctuaties en redelijk sterke afsnijding.
+						→ faseverschuiving die niet mooi lineair mee verschuift = vervorming. (S29 deel 2 04:30)
+							→ over-shoot doordat de hogere frequenties uit fase zijn tov de lage frequenties
+						→ roll-off:	1e orde = -20 dB/decade
+						→ meest geschikt als je een zoveel mogelijk gelijke versterking wenst.
+						→ 2e orde: DF = √(2) = 1,414 → verhouding R1/R2  = 2 - DF = 2 - 1,414 = 0,586
+	- Chebyshev		→ fluctueert in de te versterken band, maar heeft de beste afsnijding
+						→ rimpel in de doorlaatband
+						→ roll-off:	1e orde = MEER dan -20 dB/decade → steilere roll-off = betere afsnijding
+						→ grote faseverschuiving en niet constante/rimpelende doorlaatband → grote rimpelende over-shoot op uitgangssignaal
+	- Bessel		→ tegen de afsnijfrequentie aan daalt deze als sterk en treed er ongewenste vervorming op
+						→ roll-off:	1e orde = MINDER dan -20 dB/decade
+						→ meest geschikt als je zo mooi mogelijke pulsen wenst te krijgen, zonder over-shoot door mooi lineaire faseverschuiving.
+						
+	
+		→ Herkenbaar aan de vorm van de responsiecurve
+		
+• Dempingsfactor = DF:
+	Bepaald van een actieve filterschakeling welke responskarakteristiek bekomen wordt.
+	
+	DF = 2 - (R1 / R2)		→ waarbij R1 en R2 het negatief terugkoppelingsnetwerk zijn
+	
+	→ Voor Butterworth 2e orde:
+		DF = √(2) = 1,414 → verhouding R1/R2  = 2 - DF = 2 - 1,414 = 0,586
+		
+• Banddoorlaatfilter:
+	Laat alle frequenties door tussen een lager kritische frequentie (f_clow) en een hogere kritische frequentie (f_chigh),
+	en onderdrukken/blokkeren alle andere frequenties buiten dit gebied.
+	
+	→ Kan beschouwd worden als een overlapping van de respons van een LD- met een HD-filter in cascade/achter elkaar.
+	
+• MFB = Multiple feedback banddoorlaatfilter (band-pass filter):
+	Heeft 2 feedback-paden:
+		1) van opamp out → R2 → opamp - ingang
+		2) van opamp out → C1 → tussen kruising R1 (van U_in), R3 (aan GND) → C2 → opamp - ingang 
+		
+	f_0 = (1 / 2πC) . √((R1 + R3) / (R1 . R2 . R3))	 → als C1 = C2 = C, R1 en R3 staan parallel
+	    = √(f_cl . f_ch)
+	Q = f_0 / BW
+	
+	→ Bepalen van R1, R2 en R3:
+	
+		R1 = Q / (2π . f_0 . C . A_0)
+		
+		R2 = Q / (π . f_0 . C)
+		
+		R3 = Q / (2π . f_0 . C . (2 . Q² - A_0))
+		
+	→ Maximale versterking A_0:
+		
+		A_0 = R2 / (2 . R1) → moet kleiner zijn dan 2.Q² om ervoor te zorgen dat de noemer van R3 positief blijft.
+		
+	→ Ontwerpen:
+		1) Centrale frequentie f_0 bepalen: f_0 = √(f_cl . f_ch)
+		2) Q-factor bepalen: Q = f_0 / BW; BW = f_ch - f_cl
+		3) R1, R2 en R3 bepalen, waarbij A_0 = (R2 / (2 . R1)) < 2.Q²
+		
+		→ Opmerking, we kiezen voor kleine condensators zodat de weerstanden na berekening niet te klein uitvallen. vb C = 1 nF = 1 . 10^-9 F
+		
+	vb.: RFID-ontvanger (deel 3 23:50):
+			1) Signaal vragen van RFID tag
+			2) MFB/band-pas filter, f_0 = 123 kHz 
+			3) Versterker/Amplifier
+			4) Rectifier
+			5) Low-pass filter, f_c = 14,5 kHz
+			6) Comparator
+			7) Digital date to processor (signal)
+		
+• Bode Plotter (XBP1 in Multisim):
+	Om bandfilter te controleren.
+	
+• State-Variable Band-Pass Filter:
+	- 3 onderdelen: Somversterker + Integrator + Integrator
+		→ met backloop van de laatste Integrator terug naar de "-"-ingang van de Somversterker
+			→ dit backloop-signaal is met 180° fase-verschuiving,
+			  zodat dit signaal in tegen fase is met het ingangs-signaal
+			  en deze frequenties onderdrukt worden.
+			  
+			→ Als de LD-response v/d Integrators daamt (na f_c), vermindert het 180° in tegenfase tegengekoppeld signaal,
+			  waardoor het ingangssignaal door de Integrators gelaten wordt.
+			  Dit geeft als resultaat dat de banddoorlaat-output sterk piekt bij f_c = f_0
+	
+	- Heeft 3 mogelijke uitgangen, maar slechts één tegelijk bruikbaar:
+		1) HD-uitgang, aan uitgang Somversterker (HD = Hoogdoorlaat filter)
+		2) BD-uitgang, aan uitgang 1e Integrator (BD = Banddoorlaat filter)
+		3) LD-uitgang, aan uitgang 2e Integrator (LD = Laagdoorlaat filter)
+		
+	Voor beide Integrators:
+		f_c = 1 / (2π . R4 . C1) = 1 / (2π . R7 . C2)	→ zijn de RC paren van een pool
+		
+		BW = F_0 / Q
+		
+		Q = 1/3 . (R5/R6 + 1)	→ waarbij R5/R6 de weerstanden in het Negatief terugkoppelingsnetwerk v/d 1e Integrator-Out naar de "+"-ingang v/d Somversterker
+
+			→ Om Butterworth te krijgen: Q = 0,707
+			
+• Multiple feedback Bandsperfilter (band-stop filter) (deel 3 32:10):
+	Vergelijkbare schakeling aan banddoorlaat, maar van U_in, via R3 en extra weerstand R4, ook naar de "+"-ingang v/d opamp
+	
+	f_0 = 1 / (2πC . √(R1 . R2))
+	
+	BW = 1 / (π . R2 . C)
+	
+• State-variable Bandsperfilter (band-stop filter):
+	- 4 onderdelen: State-Variable Band-Pass Filter + nog een Somversterker
+	
+	→ formules hetzelfde als State-Variable Band-Pass Filter
+	
+
+____________________________________________________________________________________________________________________
+-- RC Oscillatoren --
+---------------------
+• Belangerijk!
+	- Werkingsprincipes oscilatoren verklaren.
+	- De rol van terugkoppeling bij oscillatoren verklaren.
+	- Beschrijven en analyseren van RC- en LC-oscillatoren.
+	
+	- Je kan de noodzaak voor een oscillator verklaren.
+		Het opwekken van een oscillatie golf uit het niets als uitgang, vb. clk van microcontroller, functie-generator (labo)
+	- Je kan twee belangerijke classificaties van oscillatoren bespreken.
+		Feedback en relaxation oscillatoren.
+	- Je kan de basiselementen van een feedback oscillator opnoemen.
+	
+	- Welk type terugkoppeling heeft een terugkoppelings-oscillator?
+		Positieve terugkoppeling ( om signaal in fase te brengen)
+		→ Negatieve terugkoppeling om versterker te bouwen.
+	- Doel terugkoppelnetwerk:
+		Feedback op het netwerk zorgt voor verzwakking en faseverschuiving
+		→ Uitgangs-signaal verzwakken dat het de grote heeft v/h ingangs-signaal zodat het terug kan versterkt worden.
+			Teruggekoppelde signaal moet in fase zijn met het ruis-signaal op de ingang dat de frequentie is die we wensen te hebben.
+			
+	- Principe positieve terugkoppeling omschrijven.
+		Een lus, waarin het ingangs-signaal wordt versterkt,
+		dat uitgangs-signaal wordt teruggekoppeld, 
+		amplitude wordt verzwakt en in fase gebracht, dmv een eventuele fase-verschuiving, met het ingangs-signaal.
+		Zo houdt het signaal zichzelf in stand, en dit is de oscillatie.
+		
+	- Algemene voorwaarden nodig om tot oscillatie te komen omschrijven.
+		1) Totale faseverschuiving terugkoppellus = 0°
+			vb. versterking zorgt voor 90° faseverschuiving, dan moet het terugkoppelcircuit 270° faseverschuiving hebben, zodat we uitkomen op 360° = 0°
+		2) A_gl = 1 → De gesloten lus spanningsversterking A_gl gesloten terugkoppellus = 1 (unity).
+		
+			A_gl = A_VOL . B 		waarbij: A_VOL = open lusversterking, B = verzwakking terugkoppelcircuit
+		
+	- Feedback-oscillator start-up condities omschrijven.
+		Aanvankelijk (t_0) moet A_gl > 1 om de amplitude v/h output-signaal op te bouwen tot het gewenste niveau.
+		Van zodra het gewenste amplitudeniveau bereikt is (t_1), moet de versterking zakken tot A_gl = 1
+		
+	- Hoe onstaat een oscillatiesignaal:
+		Via thermische ruis in weerstanden (of andere componenten), of via overgangsverschijnselen van het opzetten van de voedingsspanning.
+		Voor één bepaalde frequentie is het teruggekoppeld signaal in fase met het input-signaal, en dit is de oscillatiefrequentie.
+		
+	- Welke typen oscillatoren met RC-circuit voor sinusoïdale output-signaal:
+		• Wienbrug-oscillator
+		• Phase-shift oscillator
+		• Twin-T oscillator
+		
+		→ Gebruik: RC-oscillatoren tot frequenties van ongeveer 1 MHz, meestal Wienbrug.
+			→ Hogere frequenties interessanter met LC-circuits of kristallen.
+	
+	- Je kan oscillatoren herkennen.
+	- Resonantiefrequentie bepalen
+	- Start-up condities analyseren
+	- Zelfstartende Wienbrug beschrijven
+	- Twin-T oscillator werkingsprincipe verklaren.
+	
+• Oscillator:
+	- Schakeling die periodieke golfvorm produceert aan zijn uitgang obv thermische ruis met enkel DC-voedingsspanning als ingang.
+	- Herhalend ingangssignaal kan gebruikt worden om de oscillaties te synchroniseren.
+	- Twee grote classificaties:
+		• Feedback oscillatoren
+		• Relaxation oscillatoren
+		
+	- Basic:
+		DC-bron → weerstanden opwarmen → thermische ruis → versterken tot sinusgolf
+			→ sinusgolf via comparator afblokken → blokgolf
+			→ blokgolf door integrator sturen → zaagtandgolf
+	
+	- Relaxation oscillatoren:
+		Gebruikt RC-timing circuit (met comparator) om een golfvorm te produceren.
+		
+		→ Blokvorm of andere niet-sinusoïdale golfvorm.
+		→ Maakt typisch gebruik v/e Schmitt trigger die verandert van status naargelang een condensator via een weerstand op- en ontlaad.
+		
+• Feedback oscillatoren:
+	vb. functie-generator
+		→ frequentie selectie adhv condensator waarde selectie knoppen
+		→ regelbare weerstand/potentiometer om RC-waarde in te stellen
+		
+	Uitgang-signaal wordt in fase gebracht door de positieve terugkoppeling, en zorgt zo voor een versterking van het ingangssignaal.
+		→ Nadat de oscillator is gestart wordt de lusversterking op 1,0 gehouden.
+		
+	Terugkoppelings-oscillator bestaat uit:
+		- versterker (discrete transistor/opamp) om de nosige versterking te bekomen
+		- positief terugkoppelingsnetwerk dat een verzwakking en faseverschuiving veroorzaakt,
+			zodat de totale faseverschuiving 0° is.
+
+	- Wienbrug:
+		Wiennetwerk in positief terugkoppellus v/d opamp.
+		Niet inverterende versterker met ingangs-signaal afkomstig van Wiennetwerk en spanningsversterking.
+		
+		A_gl = 1 / B     		waarbij: B = verzwakking terugkoppelcircuit
+			 = (R3 + R4) / R4	waarbij R3 en R4 de weerstanden in de negatieve terugkoppelling zijn.
+		
+		Wienbrug =
+			Wiennetwwerk (of frequentie-selectief-netwerk): spanningsdeler van R1-C2 parallel aan ground, en R2-C1 in serie positieve terugkoppeling
+			+ Spanningsdeler RR negatieve terugkoppeling
+			
+			→ R1-C1 = LD-filter, U_out naijlend op U_in, faseverschuiving +90°, lag network, serieschakeling RC
+			→ R2-C2 = HD-filter, U_out voorijlend op U_in, faseverschuiving -90°, lead network, serieschakeling RC
+			 bv 
+		f_r = resonantie frequentie = 1 / 2πRC = 0°
+		
+		U_uit/U_in = 1/3
+			→ U_out(max) = 1/3 . U_in
+			→ verzwakking van 1/3
+			
+		A_gl = 3 → om signaal stabiel te houden
+			→ R1 = 2 . R2
+			
+		→ Startconditie:
+			A_gl > 3, manieren:
+			
+			- manueel regelbare weerstand
+			- zelf startende Wienerbrug met 2 zenerdiode en extra weerstand R5/R6
+				t_0 → A_gl = 1 + ((R3 + R5) / R4) → R3 = 2 . R4
+				t_1 → A_gl = 1 + (R3 / R4) = 3
+				
+		- Zelfstartende Wienbrug-oscillator, opties:
+			1) met 2 zenerdiodes en weerstand R5:
+				opstart lage spanning → zenerdiodes sperren → Rv parallelschakeling is ongeveer R5
+				→ spanning hoog → beide diodes in geleiding = doorlaat- en zenerspanning) → Rv is ongeveer lage R zenerdiodes
+				
+				Start: 	A_gl = 1 + ((R3 + R5) / R4)
+				Einde:	A_gl = 1 + (R3 / R4) = 3
+				
+				Amplitude afhankelijk van zenerdiode doorlaatspanning, vb. 5,1 V doorlaat + 0,7 V zenerspanning = +5.8 V - (-5.8 V) = 11,6 V amplitude
+				
+			2) met JFET (diode en elco), afhankelijk van r_DS weerstand v/d JFET:
+			
+				Start:	A_gl = 1 + ((2 . R3) / (R4 + r_DS) > 1
+				Einde:	A_gl = 3
+
+• Faseverschuivings-oscillator, phase shift oscillator:
+
+	Verzwakking B = 1 / 29
+	
+	A_gl = 29 = R4 / R3
+		→ R4 = 29 . R3
+	
+	f_r = 1 / 2π√(R2.R3.(C1.C2 + C1.C3 + C2.C3) + R1.R3.(C1.C2 + C1.C3) + R1.R2.C1.C2)
+	 OF
+	f_r = 1 / 2π√(6 . RC)  als R1 = R2 = R3 en C1 = C2 = C3
+	
+	
+• Twin-T oscillator:
+	De negatieve terugkoppellus bestaat uit een LD-filter parallel met een HD-filter.
+	
+	Verzwakking B = 1/3
+	f_r = resonantie frequentie = 1 / 2πRC = 0°  als R3 = R4 = R en R5 = R/2 en C2 = C3 = C en C1 = 2C
+
+
+____________________________________________________________________________________________________________________
+-- LC Oscillatoren --
+---------------------
+• Welke type oscillatoren mer LC-circuit:
+	- Voor hoge oscillatie frequenties.
+	
+	- Meestal bestaat versterker-element ui discrete transistoren, BJT of FET, vermits opamps lagere unity gain frequenties hebben dan de gewenste oscillatie.
+	
+	- 5 types LC-oscillatoren:
+		Colpitts, Clapp, Hartley, Armstrong, en crystal gecontroleerde oscillatoren.
+		
+• Belangrijk!
+	- Identificeren en analyseren v/e Colpitts, Clapp en Hartley oscillator. (Armstrong niet meer zo belangrijk.)
+	- Werking kristal-oscillator omschrijven.
+	
+18:00
+
+
+____________________________________________________________________________________________________________________
+-- Kristal Gecontroleerde Oscillatoren --
+-----------------------------------------
+• Piëzo-elektrisch effect:
+
+• Opbouw kristal:
+	- quartz wafer ...
+	
+	- kan gezien worden als serie-parallel RLC-circuit,
+		met L_s, C_s en R_s in serie, en deze drie in parallel met C_p
+	
+	- Serie- en parallel-resonantiefrequentie = f_(r)s en f_(r)p
+		→ f_p minstens 1 kHz hoger dan f_s, niet meer dan enkele tientallen kHz
+	
+	- Grootvoordeel = Zeer hoge Q-factor, vb 5.000 of 10.000
+	
+	→ Serie-resonantie bouwen:
+		kristal in serie met C_c = kristaltuning-condensator
+		→ afregelen door f_r v/h kristal licht naar boven of onder te regelen
+		
+	→ Parallel-resonantie bouwen:
+		Colpits-oscillator: kristal in parallel met C1 en C2 in serie verbonden met GND, waarbij C1 = C2 (zoals we bij MCU gedaan hebben)
+		
+• Modes:
+	- Fundamentele mode:
+	
+	- Overtone mode:
+		Voor meer dan 20 MHz,
+		met harmonische
+		→ kristal moet dunner = gemakkelijker breekbaar
+	
+• IC NE602:
+	laag vermogen dubbel-balanced menger met ingangsversterker, oscillator en spanningsregelaar.
+	oscillator tot 200 MHz en kan uitgevoerd worden als kristal-oscillator
+
+
+____________________________________________________________________________________________________________________
+-- Relaxatie Oscillatoren --
+----------------------------
+
+f = (1 / (4 . R1 . C)) . (R2 / R3)
+
+...
+
+• Spanningsbestuurde zaagtand-oscillator = VCO = Voltage Controlled Oscillator:
+	relaxatie-oscillator waarbij de frequentie kan worden aangepast via een variabele DC-controlespanning,
+	met PUT = Programmable Uni-junction Transistor.
+	
+32:00
+
+
+____________________________________________________________________________________________________________________
+-- Gelijkrichting --
+--------------------
+Een golfspanning omzetten in een vlakke spanning. AC → DC
+
+Netspanning AC = 230 V_eff, 50 Hz
+
+• Belangrijk!
+	- Kunnen verklaren hoe een gelijkrichter-schakkeling werkt.
+	- Hoeveel rimpel zit er nog op na gelijkrichting
+	- Wat is het verschil tussen enkelzijdige en dubbelzijdige gelijkrichting
+	
+
+• Enkelzijdige gelijkrichter = Half-Wave Rectifier:
+	adhv 1 diode + R_L belastingsweerstand
+	→ halve periode wordt doorgegeven aan de belasting (R_L weerstand)
+	
+	• Rimpelfactor K_r:
+		De maat voor de kwaliteit v/d gelijkrichter. 
+		Hoe dicht bij een constante-DC spanning komt de gemiddelde uitgangsspanning v/d gelijkrichter.
+		
+		- Bij rimpelfrequentie: 50 Hz (waarbij de meeste Multimeters correct meten, bij hogere frequenties heb je specifieke/betere meters nodig)
+		
+		- In functie van stroom: K_r = 1,21 of 121% (= effectieve waarde v/h geheel der harmonischen / gemiddelde waarde)
+		- In functie van spanning: K_r = (U_reff / U_gemiddeld) * 100% (= effectieve spanning over R_L / gemiddelde spanning over R_L)
+		
+		- Vormfactor a: verhouding tussen effectieve en gemiddelde waarde
+		
+			a = I_eff / I = 1,57 	(→ halve periode, frequentie afhankelijk) 
+
+	• U_R(Lmax) = maximale uitgang-spanning over belastingweerstand R_L:
+		U_R(Lmax) = U_in(max) - U_D(iode) = U_bron - 0,7 V
+		
+	• PIV = Peak inverse voltage =  maximale sper-spanning over de diode
+		PIV = U_in(max) of -U_in(max)
+	
+• Principe werking Transformator (22:20):
+	Omzetten van netspanning naar een veel lagere spanning. Zo wordt het gelijkrichten veel gemakkelijker.
+	
+	- Transformatorkern uit blik, krijgt een magnetische flux
+	- n_p = Primaire wikkeling aan ééne kant v/d kern, waar een U_p spanning over staat, hier meestal dus een netspanning van 230 V_eff.
+	- n_s = Secundaire wikkelingen aan de andere kant v/d kern, waar een U_s spanning over staat = de gewenste spanning.
+	
+	n = n_s / n_p = aantal n_s wikkelingen / aantal n_p wikkelingen = U_s / U_p = I_p / I_s
+		→ n = wikkeling-verhouding
+		→ n = U_s / U_p: de verhouding v/h aantal wikkelingen is gelijk aan de verhouding van de netspanning en de gewenste spanning.
+		→ n = I_p / I_s: voor de stroom geld het omgekeerde. Om een x-keer kleinere spanning te bekomen, krijg je een x-keer grotere stroom.
+			→ U_p . I_p = U_s . I_s (ideaal, in werkelijkheid eerder 90-80% aan de secundaire kant)
+			
+	- Vermogen:
+		P_p = P_s (+ P_dissipatie) → dissipatie meestal verwaarloosbaar
+
+• Dubbelzijdige gelijkrichter (31:00):
+	1) Adhv diode-brug met midden-aftakking:
+		transformator + 2 diodes + R_L belastingweerstand + midden-aftakking vanaf de transformator naar GND
+
+		• PIV = U_s = n . U_p = (U_s / U_p) . U_p
+			→ spanning die tussen de twee diodes komt te staan.
+			
+	2) Adhv brug-gelijkrichter:
+		transformator + 4 diodes in vierkant + R_L belastingweerstand
+		
+		• PIV = U_s(max)
+		• U_uit = U_s - 1,4 V (Doordat we twee keer door een diode gaan verliezen we 2 . 0,7 V = 1,4 V)
+		
+	Formules:
+		- gemiddelde stroom: I = 2 . (I_max / π)
+		- effectieve stroom: I_eff = I_max / √(2)
+		- nuttige gelijkstroom-vermogen aan de belasting geleverd: P = R_L . I²
+		- n = rendement: n = 0,812 of 81,2%
+		
+		- K_r = Rimpelfactor: K_r = 0,482 of 48,2 %
+			→ frequentie uit 50 Hz netspanning wordt 100 Hz uit de dubbelzijdige gelijkrichter
+			
+• Afvlak-filters:
+	om variaties die nog uit de gelijkrichters komen verder af te vlakken.
+	→ we willen een gelijke spanning, dus filteren met RC-keten
+	→ grote condensatoren nodig, orde 4,7 mF of meer
+	
+	- Principe van afvlak-filter met condensator = Capacitor-Input Filter:
+		Condensator achter de diode plaatsen (en aan ground).
+	
+	- 2 manieren van afvlakking:
+		1) Load Regulation:
+			Belastingregeling bepalen bij een belaste en onbelaste uitgangsspanning.
+		
+		2) Line Regulation:
+			Lijnregulatie bepalen bij een gegeven verandering in uitgangsspanning ten opzichte v/e gegeven verandering v/d ingangsspanning.
+		
+		→ beide iets die we kunnen berekenen en dus ook gebruiken om voedingen met elkaar te gaan vergelijken.
+		
+	- R_surge weerstand of NTC om condensator te beschermen tegen piek stromen (57:00).
+		In eerste instantie is de weerstand relatief groot, maar naarmate deze opwarmt door de stroom doorvloei, wordt de weerstand kleiner.
+		→ Nadeel! Bij het uitschakelen v/d schakeling heeft de weerstand een bepaalde hersteltijd nodig om af te koelen en terug zijn initiële weerstandswaarde te bekomen.
+	
+• IC-regulatoren
+
+-- STABILISATIE --
+
+• Zener Diode (stabiliseert de spanning):
+	Is speciaal verontreinigd zodat deze in een deel van het breakdown-gebied kan werken.
+	Vanaf de 'knee region' krijgen we hat avalanche effect waar er een grote stroom gaat vloeien.
+	
+	De Zener-spanning U_Z varieert bijna niet in de 'knee region' tot aan de zener maximum stroom I_ZM.
+	
+	Een Zener diode parallel met een belastings-weerstand  R_L zorgt ervoor dat er over R_L een spanning gelijk aan U_Z staat
+	ongeacht de spanning U_in aan de ingang, en constant blijft, op voorwaarde dat:
+		- de stroom door de diode tussen I_ZK en I_ZM ligt (groter gaat de diode stuk)
+		- R_L mag niet te klein zijn, zodat I_Z niet te kleiner dan I_ZK wordt
+		- R_L mag niet te groot zijn, zodat I_Z niet te groter dan I_ZM wordt
+	
+	U_Z = Zener Spanning = V_Z = Zener Voltage
+	I_Z = Zener Stroom, de stroom door de diode
+	I_ZK = Zener Knee Stroom/Current
+	I_ZT = Zener Test Stroom, meestal erug te vinden op de Datasheet v/d diode
+	I_ZM = Zener Maximum Stroom
+	
+	Z_Z = Zener Impedantie = ΔU_Z / ΔI_Z
+		ΔI_Z = I_ZM - I_ZK
+		ΔU_Z = (U_Z @ I_ZM) - (U_Z @ I_ZK)
+		
+	Een zener diode equivalent circuit/kunnen we zien als:
+		een batterij met spanning U_Z
+		+ een weerstand met impedantie Z_Z (die de helling in stroom op de karakteristiek geeft)
+		
+		U_Z-werkelijk varieert tussen U_Z en U_Z + de spanning over de weerstand
+		→ spanning over de weerstand is meestal zeer klein 1-3 Ω
+
+• Zener-stabilisatie = Line Regulation (7:30):
+	Verhouding van de rimpel op het ingang-signaal, ten opzichte van de rimpel die nog overblijft op het uitgang-signaal.
+	→ uitgedrukt in percentage %
+	
+	Zener diode + stroombegrenzings-weerstand (moet ook diode beschermen tegen over-spanning)
+	
+• Principe Elementaire Stabilisatie (15:00)
+
+	... AANVULLEN
+	
+____________________________________________________________________________________________________________________
+-- Spanningsregelaars  (serie- en shuntregelaar) --
+---------------------------------------------------
+
+
+____________________________________________________________________________________________________________________
+-- Communicatie circuits AM & FM --
+-----------------------------------
+harmonischen = veelvouden van de fundamentele- of oscillatie-frequentie
+C = draaggolf / carrier signal, laat toe dat de ontvanger kan afstemmen op een specifieke frequentie.
+M = modulatie
+
+• Wat bepaald de keuze v/d frequentie v/d hoogfrequente-draaggolf?
+	- Frequentie kiezen zodat maar enkel één zender op deze frequentie werkt, interferentie minimaliseren.
+	- Frequentie hoog genoeg voor efficiënte antennekeuze.
+		1/4 v/d frequentie voldoende om antennes op te bouwen, op voorwaarde dat ze in de grond staan > 1/4 v/d golflengte wordt door de grond gevormd.
+	
+	vb.: 50 Hz, λ = C/f = 300.000 km/s / 50 Hz = 6.000 km -> 1/4 = 6.000 km / 4 = 1.250 km -> antenne van 1.250 km lengte nodig
+			-> 50 Hz is hoorbaare frequentie, kan een geluid maken, dus niet interessant!
+			
+	vb.: 100 MHz, λ = C/f = 300.000 km/s / 100 MHz (10^6) = 0,3 km -> 1/4 = 75 cm -> antenne van 75 cm lengte
+
+• Op welke manier modulatie tot stand brengen?
+	- Modulatie = draaggolf/carrier wave vervormen door er data aan toe te voegen, vb. een digitaal signaal.
+	
+	Wiskundige vergelijking sinusgolf (vb. hoogfrequente draaggolf):
+	
+		u = U_p . sin(ω.t + Φ) = U_p . sin(2.π.f.t + Φ)
+		
+			waarbij:	u = momenteele waarde (instantaneous) v/d draaggolf
+						U_p = amplitude of U_max v/d draaggolf
+						ω = de hoeksnelheid = 2.π.f
+						Φ = fasehoek
+
+	- AM = Amplitude Modulatie, als U_p varieert op het ritme v/d LF-informatie.
+	- FM = Frequentie Modulatie, als de frequentie v/d draaggolf varieert op het ritme v/d LF-informatie.
+	- PM = Phase Modulatie, als Φ varieert op het ritme v/d LF-informatie.
+
+• Shift key-ing modulatie:
+	- ASK = Amplitude Shiftkey-ing:
+		0 = amplitude 0
+		1 = amplitude v/d golf
+		
+	- FSK = Frequentie Shift Key-ing:
+		0 = bepaalde lage frequentie
+		1 = bepaalde hogere frequentie
+		
+	- PSK = Phase Shift Key-ing:
+		0 = -90°
+		1 = 90° fase-verschuiving verschillende van 0
+		
+• AM = Amplitude Modulatie, als U_p varieert op het ritme v/d LF-informatie.
+	- Voor het verzenden van hoorbare informatie, vb. radio = stem en muziek
+	- Hoe? Via elektromagnetische golven die in de atmosfeer worden uitgezonden.
+	
+	- Amplitude modulated envelope: zit boven- en onderaan de golf = lage frequentie sinus signaal (lager dan de draaggolf)
+		-> hiertussen bevind zich een hoge frequentie draaggolf die dus gemoduleerd wordt
+		
+		f_upper = bovenband-frequentie / upper-side frequency = f_c + f_m (bovenkant v/d envelope)
+		f_lower = onderband-frequentie / lower-side frequency = f_c - f_m (onderkant v/d envelope)
+		
+	- Frequentieband AM-ontvangst: 540 kHz tot 1640 kHz
+	
+	- Toepassingen:
+		- Lange afstand broadcast transmissions, vb. wereld-omroep:
+			golf de atmosfeer ingestuurd, weerkaatst in de atmosfeer, komt veel verder en voorbij de kroming v/d aarde terug,
+			wordt daar opgevangen en kan weer verder gesturd worden om zeer grote afstanden te overbruggen.
+		-> Nadeel: ergens anders in de werled kan dezelfde draaggolf gebruikt worden, wat voor interferentie zorgt.
+		
+		- Luchtvaartradio, VOR = VHF Omni-directional Range station:
+			zendstation luchthaven voor nauwkeurige radionavigatie en hulpmiddel luchtvaart om met AM richting v/d luchthaven te kunnen bepalen.
+			
+	- Enkel-zijband AM:
+		Omdat bij AM de draaggolf 1/3 v/h vermogen verbruikt en de twee banden elk ook 1/3,
+		kan men om vermogen te besparen slechts één band moduleren.
+			vb. walkie-talkie, radio amateurs
+			
+	- QAM = Kwadratuur amplitude-modulatie:
+		Gevormd door twee dragers 90° uit fase. > inefficiënte gebruik van spectrum en vermogen.
+		Bits worden opgedeeld onder amplitude en fase verschuiving.
+		Digitale data wordt analoog doorgestuurd.
+		
+	- AM ontvanger basic signal flow:
+		1) Antenne
+		2) RF amplifier: tuned to f_c
+			> audio modulated carrier f_c signal
+		3a) Mixer with 3b) Local Oscillator = LO > gives f_c + 455 kHz signal
+			> 455 kHz modulated IF
+		4) IF Amplifier
+			> 455 kHz modulated IF amplified
+		5) Detector
+			> Audio
+			< back-loop to RF amplifier
+		6) Audio and power amplifiers
+			> Amplified media
+		7) Speaker
+		
+	- Superheterodyne AM-ontvanger:
+		1) Antenne: spoel/opgewikkelde draad, pikt de zeer kleine signalen op.
+		2) RF amplifier / HF versterker: tuned to f_c, afstemmen op een draaggolf frequentie.
+			> audio modulated carrier f_c signal
+		3a) Mixer / Menger: twee ingangen, mengt de signalen zodat een frequentie gelijk aan het verschil tussen de twee overblijft, IF of MF = midden-frequentie = 455 kHz
+			with 3b) Local Oscillator = LO > gives f_c + 455 kHz signal: signaal 455 kHz hoger dan de afgestemde draaggolf.
+			> 455 kHz modulated IF
+		4) IF Amplifier / MF versterker: versterkt het AM-signaal
+			> 455 kHz modulated IF amplifier
+		5) Detector: demoduleert het AM-signaal om de informatie eruit te halen.
+			> Audio
+			< AGC = Automatic Gain Control back-loop to RF and IF amplifiers:
+				Levert een DC-niveau v/d detector dat overeenkomt met de sterkte v/h AM-signaal.
+				Op die wijze kan een automatische versterking v/h signaal bekomen worden,
+				waardoor zwakkere ontvangst (verder afgelegen zenders) meer versterkt worden dan sterkere zenders.
+		6) Audio and power amplifiers / Audio- en vermogen-versterkers: versterkt het audio signaal zodat het aan een speaker kan aangelegd worden.
+			> Amplified media
+		7) Speaker
+
+
+• FM = Frequentie Modulatie (deel 1 30:53), als de frequentie v/d draaggolf varieert op het ritme v/d LF-informatie.
+	- Toepassingen:
+		FM-radio, telemetrie, radar, seismische prospectie, EEG-monitoring, gebruikt in muzieksynthese, videotransmissie, magnetische bandopnemers. 
+
+	- Frequentieband FM-ontvangst voor radio: 88 MHz tot 108 MHz
+	
+	- Voordeel: breedte band mogelijk rond een FM-draaggolf tegenover AM = betere kwaliteit
+	- Nadeel: FM kan niet over de horizon geraken, AM wel.
+	
+	- FM ontvanger basic signal flow:
+		1) Antenne: staafje of draadje
+		2) RF amplifier: tuned to FM f_c
+			> audio modulated carrier f_c signal
+		3a) Mixer with 3b) Local Oscillator = LO > gives f_c + 10.7 MHz signal
+			> 10.7 MHz modulated IF
+		4) IF Amplifier
+			> 10.7 MHz modulated IF amplified
+		5) Limiter: storingen wegwerken
+			> 10.7 MHz limited
+		6) Discriminator
+			> Audio
+		7) De-emphasis network: RC-filter, LD + HD-filter
+			> Compensated audio
+		8) Audio and power amplifiers: vb. LM386
+			> Amplified audio
+		9) Speaker
+		
+	- SuperheteroFM ontvanger basic signal flow:
+		1) Antenne: staafje of draadje
+		2) RF amplifier: versterkt alles tussen 88-108 MHz, zodat enkel f_c en de zijbandfrequenties die de audio bevatten doorgelaten worden.
+			> audio modulated carrier f_c signal
+		3a) Mixer with 3b) Local Oscillator = LO > gives f_c + 10.7 MHz signal:
+			enkel f_osc - f_c = 10,7 MHz wordt doorgelaten
+			> 10.7 MHz modulated IF
+		4) IF Amplifier: vesrterkt het 10,7 MHz middenfrequentiesignaal
+			> 10.7 MHz modulated IF amplified
+		5) Limiter: storingen wegwerken, verwijdert ongewenste variaties v/d amplitude,
+			en zorgt voor een constante amplitude FM-output op de 10,7 middenfrequentie (IF-frequentie)
+			> 10.7 MHz limited
+		6) Discriminator of Detector: zet de verandering van frequentie (FM-zwaai) terug om in een audiosignaal
+			> Audio
+		7) De-emphasis network: RC-filter, LD + HD-filter.
+			In de FM-zender worden hogere frequenties sterker versterkt dan de lagere = emphasis-netwerk.
+			Het de-emphasis-netwerk zorgt ervoor dat deze hogere frequenties terug hun normale amplitude krijgen.
+			> Compensated audio
+		8) Audio and power amplifiers: vb. LM386, zelfde als bij AM. Bij een dual AM/FM configuratie kunnen deze versterkers door beide modulatie systemen gedeeld worden.
+			> Amplified audio
+		9) Speaker
+
+
+• Delineaire vermenigvuldiger = Multiplier IC's:
+	vb. AD532 = 4-kwadrant vermenigvuldiger
+	
+	- Transfertfunctie bepaald het uitgangssignaal voor een gegeven set van ingangen.
+		
+		van AD532: 	U_out = ((X1 - X2).(Y1-Y2)) / SF
+		
+						waarbij: SF = Scale Factor = 10 V = 1/K -> K = scale factor = 0,1
+								 
+	- Output-offset compensatie adhv 20 kOhm potentiometer tussen +U_s en -U_s (optioneel)
+
+• Amplitude modulatie:
+	- Som- en verschilfrequenties (deel 1, 48:32)
+	
+	- Lineaire multiplier als Gebalanceerde modulatie (deel 1, 52:35)
+		= Supressed-carrier modulation / onderdrukte draaggolf modulatie: want geen draaggolf aanwezig
+		
+		gebruikt in single side-band systemen
+	
+• Aansluiten van de Wattmeter:
+	de zijde van de meter gemarkeerd met V parallel met de belasting aansluiten,
+	en de rechterkant in serie met de belasting.
+
+	
+-- DEEL 2 --
+
+IF = middenfrequent
+
+• Mixer of Mengschakeling (deel 1, 1:01:00)
+	met lineaire vermenigvuldigings-schakeling (wiskundige formule)
+	in principe is een mixer een frequentie-convertor,
+	de boven- en onder-zijband van een AM signaal worden behouden.
+	
+	2-ingangen:
+		- modulated carrier signal f_C, vanuit de RF versterker of antenne
+		- local oscillator signal f_O = middenfrequent = 455 kHz voor AM, 10,7 MHz voor FM
+	1-uitgang: middenfrequent gemoduleerd signaal, modulated sum and difference frequenties: f_O + f_C en f_O - f_C
+		-> f_O - f_C is heel makkelijk met een LD-filter af te filteren, alle frequenties tot dit verschil of midden kunnen doorgelaten worden.
+	
+	- AM:	
+		u_in = ( U_p )sin 2π ( f )t
+		
+		(sin A)(sin B) = 1/2 [cos(A - B) - cos(A + B)]
+		
+		=> U_out = (U_pA . U_pB) / 2)cos 2π(f_B - f_A)t - (U_pA . U_pB) / 2)cos 2π(f_B + f_A)t
+
+	- FM:
+		Band-filter -> LC-keten die via transfo overkoppeling doen,
+		meestal in IC vorm,
+		kan voor FM ook met crystal zijn
+		
+• AM-demodulatie:
+	- Wat is het?
+		Neemt de audio modulated IF, en trekt hier de draaggolf vanaf zodat enkel het audio-signaal overblijft.
+		Het filtered de golf van de verschilfrequentie eruit, en wat overblijft zijn de amplitude variaties.
+	
+	- Basis AM-demodulatie verklaren.
+		Kan opgebouwd worden met lineaire multiplier gevolgd door LD-filter.
+		De kritische frequentie, of afsnijfrequentie v/d LD-filter, is de hoogste audio-frequentie die nodig is voor de gegeven toepassing.
+		
+		Alternatief: diode + condensator naar massa.
+		
+	- Adhv frequentiespectrum demodulatie omschrijven (deel 2, 9:28).
+		Het informatie signaal tov de draaggolf voor, en het gemoduleerde signaal tov de middenfrequent na de IF middenfrequent-versterker, zijn gelijk in frequentie.
+		Vervolgens worden door de demodulator de som- en verschilfrequenties geproduceerd en kan gefilterd worden op de voorgenoemde gelijke frequentie.
+		Om dit te verwezenlijke moet pure IF middenfrequent geproduceerd worden om te mengen met de gemoduleerde middenfrequent.
+		De laagfrequent informatie wordt doorgelaten, en alle andere frequenties worden geblokkeerd.
+		
+		vb.:	1) AM signaal: 			990 kHz onderband, 	1000 kHz carrier, 	1010 kHz bovenband 	-> modulatie frequentie = 10 kHz 
+				2) Converteerd in IF:	445 kHz				455 kHz				465 kHz				-> zelfde 10 kHz verschil
+				3) Verschil- en somfrequenties:
+					455 - 445 = 10 kHz	-> onderband informatie
+					455 + 445 = 900 kHz
+					465 - 455 = 10 kHz	-> bovenband informatie
+					465 + 455 = 920 kHz
+				4) LD-filter op vb. 15 kHz -> laat 10 kHz door, maar de 900 en 920 kHz niet.
+					De laagfrequent informatie wordt doorgelaten, en alle andere frequenties worden geblokkeerd.
+		
+• MF (IF) en audio-versterkers (deel 2, 11:46)
+
+• AGC = Automatic Gain Control
+
+• LM386 (deel 2, 21:52)
+	
+• FM = Frequentie Modulatie (deel 2, 24:22)
+	- Principe werking:
+		De draaggolf frequentie vergroot naargelang de modulatiesignaal amplitude stijgt en omgekeerd.
+		De draaggolf frequentie verandering/deviation snelheid is afhankelijk van de modulatiesignaal frequentie.
+
+	- VCO = Voltage-Controlled Oscillator / Spannings gestuurde Oscillator
+		bevat een speole en 2 VariCap of Capaciteitsdiode >||
+			→ varicap/varactor: hoe groter de sper-spanning, hoe kleiner de junctie-capaciteit.
+		→ VCO is zeer ruisgevoelig, de DC bronspanning moet zeer ruisarm zijn om goed te werken.
+		
+• MAX2605 tot MAX2609: IC als FM-zender (IC = Integrated Circuit) (deel 2, 29:48)
+
+• FM-demodulatie (deel 2, 33:54)
+	- Kan ook digitaal software-matig
+	- PLL = Phase Locked Loop demodulatie, is belangerijkste hardware manier
+		Belangrijk!
+			- blokschema tekenen (fase-detector -> LD-filter -uitgang + backloop-> VCO -> terug naar fase-detector)
+			- doel fase-detector
+			- doel VCO
+			- doel LD-filter
+			- lock en capture range omschrijven
+				capture range is de BW v/d LD-filter, wat deze doorlaat
+				lock is als de VCO het ingang-signaal volgt
+		
+45:44
+	
+
+____________________________________________________________________________________________________________________
+-- Meten & Controleren --
+-------------------------
+-- Deel 1 --
+• Effectieve spanning/stroom = evenveel vermogen alsof er DC spanning/stroom aanwezig is.
+	Effectieve waarde van een wisselspanning AC is gelijk aan de waarde v/e gelijkspanning DC
+	die in een bepaalde verbruiker evenveel vermogen dissipeert.
+
+	eff = vierkantswortel van de kwadratische gemiddelde
+		= root mean square
+		→ eff = rms
+
+	Periodieke sinusstroom met amplitude I ontwikkeld momentaan in een weerstand R een vermogen I² . R
+
+	P_eff = I² . R
+	I_eff = I_max / √(2)
+	
+	U_eff = √(gemiddelde U_in²)
+	Theoretische stappen:
+		1) U_in kwadrateren
+		2) U_in² gemidddelde bepalen
+		3) Vierkantswortel bepalen
+		4) U_out = √(gemiddeldeU_in²)
+		
+	Praktische stappen:
+		1) U_in op X en Y ingang van een Mixer aansluiten, X.Y = U_in . U_in = U_in²
+			→ U_in heeft positieve en negatieve amplitude, vb +1 en -1
+				U_in² gaat dan van 0 naar +1
+				
+		2) Gemiddelde bepalen door U_in² door een filter te sturen, vb LD-filter met RC, gebuffered door een spanningsvolger
+		3) 
+	
+	→ Impliciet: gebruik v/e terugkoppellus naar kwadrateer-deelschakeling, werkt met logaritme
+	→ met AD637: dient als kwadrateer-deelschakeling
+
+• Hoekmeting, verschillende manieren:
+	1) Synchro
+	2) Resolver
+	
+	1) Synchro
+		- Rotor + Stator
+		- Faseverchil meten om hoek te bepalen
+		
+	2) Resolver
+		
+	Omzetting naar digitale code:
+		adhv Scott-T transformator die referentiespanning krijgt uit Synchro of Resolver
+		
+		SDC = Synchro to Digital Converter
+		RDC = Resolver to Digital Converter, vb AD2S90
+		
+		→ er bestaan RDC's met Scott-T transfo intern, maar dikwijls een afzonderlijke transfo nodig om een Synchro aan te sluiten
+		
+	Toepassing vb. windrichting
+	
+-- Deel 2 --
+• Rekstrookjes:
+	Dmv verandering in weerstand
+	Meandervorm voor voldoende lengte.
+	Aangebracht in de richting waarin de kracht inwerkt om rek te veroorzaken op het voorwerp.
+	→ Temperatuur afhankelijk door thermische uitzetting.
+		→ Oplossing: dummy plaatsen 90° gedraaid om de basis weerstand te beppalen.
+	
+	R = p . (l / A)
+	
+	→ waarbij:	l = lengte van de rekstrook
+				A = de doormeter (diameter?)
+				p = ?
+				
+	Toepassing vb. wegen van enveloppes of reiskoffers, weegbrug voor wegen van vrachtwagens
+	
+	→ GF = Gage-factor:
+		De verhouding v/d fractionele verandering in weerstand ten opzichte van de de verandering in de lengte.
+		
+		GF = (ΔR / R) / (Δl / l)
+		
+		→ waarbij:	R = nominale weerstand van het rekstrookje
+					ΔR = weerstandsverandering
+					Δl / l = fractionele verandering in lengte
+						= aangewezen rek = ε
+						in ppm = parts per million
+						= microrek = µε
+						
+• Druktransducer Ψ:
+	Dmv rekstrookje op membraam die een holle drukkamer afsluit.
+	Het membraam zal bol komen te staan als de druk verandert.
+	
+	Drie soorten:
+		- Absolute druktransducer: 	meet toegepaste druk tov vacuüm
+		- Overdruktransducer: 		meet druk tov omgevingsdruk
+		- Drukverschiltransducer:	meet toegepaste druk tov een andere toegepaste druk
+		
+	Symbool: opamp driehoek met Ψ in
+		- Absolute druktransducer: 	enkel output
+		- Overdruktransducer: 		één input + één output
+		- Drukverschiltransducer:	twee inputs + één output
+
+• Verplaatsingstransducer/displacement transducer
+	- werkend met contact, meestal sensoras + koppelingsapparaat om gemaakte verplaatsing te kunnen vastleggen
+	
+		LVDT = Lineare Variabele Differentiaal Transformator
+			ferrite core
+			spanning meting langs beide kanten tov de core
+		
+	- werkend contactloos
+	
+		- Glasvezelsensoren:
+			Zeer snel en op korte afstand, tot 1 μInch
+			Nadeel: Licht inval kan foute resultaten geven, beperkt bereik hierdoor
+		
+		- Capacitieve sensors:
+			Heel gevoelige verplaatsings- en nabijheidstransducers
+			ΔC door één plaat te laten bewegen tov de andere
+			
+			Toepassing: condensator microfoon, frequentie v/e resonantieketen regelen
+			
+• Acceleratie transducer:
+	Om trillingen te meten.
+	Relatieve beweging tussen een seismische massa en een behuizing, en de massa op veren, is evenredig met de versnelling.
+	
+	→ Resistieve verplaatsingstransducer of LVDT wordt gebruikt om de relatieve beweging in een elektrisch uitgangssignaal om te zetten.
+	
+	→ Accelerometer op basis van LVDT kan ook gebruikt worden om trillingen op te meten.
+	
+	→ Accelorometer op basis van piëzo-elektrisch kristal, om hoogfrequente trillingen te meter
+	
+• Regelen van Vermogen
+	naar een belasting, dmv SCR of triac (toepassing voor energiebeheer),
+	zijn thyristoren.
+	
+	Thyristoren:
+		Elektronische schakelaar die snel een grote stroom kan in- en uitschakelen naar een belasting toe.
+	
+		→ Toepassingen: industriële regelsystemen voor motoren, fasecontrollers
+		
+		- SCR = Silicon Controled Rectifier:
+			Soort gated diode (diode symbool met een tweede aansluiting op het streepje = gate)
+			PNPN-kristalstructuur met Anode aan P-kant en Kathode aan N-kant, en Gate op de tweede P.
+			
+			Werking vergelijkbaar met diode.
+			Vanaf een bepaalde breekspanning = U_B0, komt de thyristor in geleiding.
+			Tussen 0V en U_B0 = voorwaarts blokkeringsgebied
+			Vanaf U_B0 bereikt is en de stroom begint te vloeien zakt de spanning naar de doorlaatspanning.
+			
+			Omgekeer aansluiten = sperrende diode
+			
+		- Triac:
+			Gelijkaardig aan SCR, maar effect in positieve en negatieve spanning
+			
+			Symbool: twee diodes in tegengestelde richting met gate vertakking
+			
+			Toepassing: lamp dimmer door pulsen te sturen, de duty-cycle bepaald de spanning ann de lamp
+			
+		- Nulspanningsschakelaar/zero-voltage switch:
+			

@@ -1,0 +1,357 @@
+
+ ▒█████   ▒█████   ██▓███   ██▓███ ▓██   ██▓▄▄▄█████▓ ██░ ██  ▒█████   ███▄    █ 
+▒██▒  ██▒▒██▒  ██▒▓██░  ██▒▓██░  ██▒▒██  ██▒▓  ██▒ ▓▒▓██░ ██▒▒██▒  ██▒ ██ ▀█   █ 
+▒██░  ██▒▒██░  ██▒▓██░ ██▓▒▓██░ ██▓▒ ▒██ ██░▒ ▓██░ ▒░▒██▀▀██░▒██░  ██▒▓██  ▀█ ██▒
+▒██   ██░▒██   ██░▒██▄█▓▒ ▒▒██▄█▓▒ ▒ ░ ▐██▓░░ ▓██▓ ░ ░▓█ ░██ ▒██   ██░▓██▒  ▐▌██▒
+░ ████▓▒░░ ████▓▒░▒██▒ ░  ░▒██▒ ░  ░ ░ ██▒▓░  ▒██▒ ░ ░▓█▒░██▓░ ████▓▒░▒██░   ▓██░
+░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒▓▒░ ░  ░▒▓▒░ ░  ░  ██▒▒▒   ▒ ░░    ▒ ░░▒░▒░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
+  ░ ▒ ▒░   ░ ▒ ▒░ ░▒ ░     ░▒ ░     ▓██ ░▒░     ░     ▒ ░▒░ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░
+░ ░ ░ ▒  ░ ░ ░ ▒  ░░       ░░       ▒ ▒ ░░    ░       ░  ░░ ░░ ░ ░ ▒     ░   ░ ░ 
+    ░ ░      ░ ░                    ░ ░               ░  ░  ░    ░ ░           ░ 
+                                    ░ ░                                          
+________________________________________________________________________________________________________________
+§§ Handige dingen §§
+--------------------
+Working With JSON Data in Python: https://realpython.com/python-json/
+Working With Files in Python: https://realpython.com/working-with-files-in-python/
+A Practical Introduction to Web Scraping in Python: https://realpython.com/python-web-scraping-practical-introduction/
+
+
+• Library installeren in PyCharm:
+	1) Naam intypen + Alt-Enter
+	2) Selecteer 'Install and Import package'
+
+• Escape characters: https://www.python-ds.com/python-3-escape-sequences
+	→ Text markup:
+		BLACK 		\033[0;30m
+		RED 	 	\033[0;31m
+		GREEN 	 	\033[0;32m
+		BROWN 	 	\033[0;33m
+		BLUE 	 	\033[0;34m
+		PURPLE 	 	\033[0;35m
+		CYAN 	 	\033[0;36m
+		YELLOW 	 	\033[1;33m
+		BOLD 	 	\033[1m
+		FAINT 	 	\033[2m
+		ITALIC 	 	\033[3m
+		UNDERLINE 	\033[4m
+		BLINK 	 	\033[5m
+		NEGATIVE	\033[7m
+		CROSSED	 	\033[9m
+		END 	 	\033[0m
+
+• string.len()			→ geeft lengte van een string
+
+• String concatenatie: https://realpython.com/python-f-strings/
+	1) "" + ""		→ "x=" + str(self.x) + ", y=" + str(self.y)
+	2) "{}".format	→ "(x={0}, y={1})".format(self.x, self.y)
+	3) f"{}"		→ f"x={self.x}\n, y={self.y}"				→ \n = escape character new line
+	
+• import datetime: https://realpython.com/python-datetime/#using-the-python-datetime-module 
+
+• import time 
+	time.sleep(secs)
+
+• Specify class attribute and return types:	https://docs.python.org/3/library/typing.html
+	def name(attributeName: type) -> returnType
+	
+		→ types: 	Any			default
+					str			"Text"
+					int			13
+					float		2.3
+					Vector		[1.0, -4.2, 5.4]
+					tuple		tuple[str, int]
+					dict 		dict[str, str]
+					bool 		False
+					list		["apple, "banana", "nananananana", "Batman!"]	OF	[ClassName]
+					
+	→ Specify own type:
+		from typing import NewType
+		
+		UserId = NewType('UserId', int)
+		some_id = UserId(524313)
+		
+• Naam klasse opvragen:
+	self.__class__.__name__
+	
+• Tuples are typically used to contain a heterogeneous sequence of values, 
+such that the tuple represents one object: a person, a building, a country, etc. 
+So one use case would be reading a row from a database into a tuple, with the result looking something like this,
+that is, employee represents the various attributes of one single employee:
+
+	>>> employee 
+	('Smith', 'Mary', 1023, True) 
+	>>> employee[0] 
+	'Smith' 
+
+• JSON file lezen en schrijven:
+	https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
+	https://www.delftstack.com/howto/python/initialize-a-dictionary-python/
+	
+• User input:
+	- yes/no:
+		choice = input("[y/n]: ").lower()	# convert to all lowercase
+        if choice[0] == 'y':				# only look at first char of the string
+		
+• Print list with seperator:
+	print(*a, sep="\n")
+	
+• Don't edit/append/remove while looping over a list!	https://www.reddit.com/r/learnpython/comments/jbb16e/why_is_my_for_loop_not_iterating_over_the_whole/
+	Possible solutions:
+		1) Make a shallow copy, loop over the copy while modifying the original.
+			import copy
+			list_copy = copy.copy(list_original)
+			for item in list_copy:
+				list_coppy.remove(item)
+	
+		2) Loop backwards:
+			for item in reversed(list):
+			
+		3) Add items to delete to a new list
+
+• list comprehension:	https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
+	list = [item for item in list if item != "#"]
+
+________________________________________________________________________________________________________________
+§§ Les 1 §§
+-----------
+
+→ slide.zone	(gemaakt met MarkDown voor presentaties in HTML)
+→ Theorie bekijken voor het Labo op maandag, Q&A op dinsdag.
+
+→ Boek: Shaping Things by Bruce Sterling
+→ LEGO Mindstorms	https://www.lego.com/nl-be/product/lego-mindstorms-ev3-31313
+	
+• DRY principe: Don't repeat yourself	https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+	→ refactoring, recursie
+	
+• 3 soorten scope, waarin variabalen bestaan en bruikbaar zijn:
+	- Global scope
+	- Local scope
+	- Object scope (= Class scope, Instance scope)
+	
+• Class = Klasse: template/blauwdruk/mal (cakevorm) van een object.
+	Code die beschrijft wat een object zal herinneren (data of state)
+	en de zaken die het object zal kunnen doen (de functies of behavior).
+	
+	→ Syntax:	class <KlasseNaam>():
+				def __init__(self, <optionele param1>, ..., <optionele paramN>):		# = Initialisatie-method/Constructor
+					# extra initialiseringscode
+					# Instance properties/instantievariabelen declareren.
+				
+				# Alle functies nodig om toegang te krijgen tot de data
+				# Elke heeft de volgende gedaante:
+				def <functieNaam1>(self, <optionele param1>, ..., <optionele paramN>):
+					# functie-gerelateerde statements
+
+				# ... meer functies
+				def <functieNaamN>(self, <optionele param1>, ..., <optionele paramN>):
+					# functie-gerelateerde statements
+	
+	
+	vb.:	class LichtSchakelaar():
+				def __init__(self):
+					# zet de schakelaar aan
+					self.schakelaarIsAan = True
+					
+				def zetUit(self):
+					# zet de schakelaar uit
+					self.schakelaarIsAan = False
+
+			oLichtSchakelaar = LichtSchakelaar()			# Object namen beginnen met "o" (optioneel)
+			print(oLichtSchakelaar.schakelaarIsAan)
+			oLichtSchakelaar.zetAan()
+			print(oLichtSchakelaar.schakelaarIsAan)
+		
+		
+	→ Data Types = Klassen
+		Kunnen we achterhalen met de type() functie.
+	
+		vb.:	mijnString = 'abcde'
+				print(type(mijnString))
+				# <class 'str'>
+				
+				print(type(oLichtSchakelaar1))
+				# <class 'LichtSchakelaar'>
+	
+	
+• Objecten: instance/instantie van een klasse.
+	- Properties/Instantievariabelen: State/Data
+	- Methods/Functies: Behavior/Gedrag/Acties
+	
+	→ Aanmaak: <object> = <klassenaam>(optionele argumenten)
+	
+	→ Method aanroeping: <object>.<methodnaam>(optionele argumenten)
+	
+________________________________________________________________________________________________________________
+§§ Les 2 §§
+-----------
+• Module importeren:
+	
+	import moduleName
+	oInstanceName = moduleName.className()
+
+• Klasse importeren uit een module:
+
+	from moduleName import className
+	oInstanceName = className()
+	
+	OF ALLEMAAL: from moduleName import *
+
+• Eigenschappen/attributes beperken tot klasse:
+	_attributeName	→ enkel voor gebruik binnen de klasse bedoeld
+	__attributeName	→ verborgen, niet toegankelijk van buiten de klasse, class attributes,
+						om te delen over alle instances en te voorkomen dat sub-klassen deze overschrijven.
+						
+						→ S14
+
+	→ hasattr()		→ testen als een attribuut aanwezig is
+	
+• Instance type nakijken in runtime:
+	type(oInstanceName)						→ Nakijken in runtime welk type of klasse een object is
+	isInstance(oInstanceName, className)	→ om een specifieke instance te vergelijken met een gekend type
+	
+• Exception handeling:
+
+	try:
+		operation_that_may_fail()
+	except:
+		print ("An exception occurred")
+	finally:
+		print ("I run regardless")
+		
+	
+	raise
+	
+		vb.: def __init__(self, titel, boektype):
+				self.titel = titel
+				if (not boektype in Boek.BOEK_TYPES):
+					raise ValueError(f"{boektype} is geen toegelaten boektype")
+				else:
+					self.boektype = boektype
+					
+		vb.2: def __lt__(self, waarde):
+				if not isinstance(waarde, Boek):
+					raise ValueError("Kan geen boek vergelijken met een niet-boek type")
+				return self.prijs < waarde.prijs
+			
+				
+• Overerving ("is een"-relatie):
+	- Super-class:
+		class SuperClassName:
+			def __init__(self, attrs):
+				self.attrs = attrs
+				...
+	
+	- Sub-class
+		class SubCLassName(SuperClassName1, SuperClassName2): # Je kan van meerdere klassen overerven
+			def __init__(self, attrs):
+				super().__init__(self, attrs)	# Constructor SuperClass aanroepen, bij meerdere classes → method resolution order
+				self.attrs = attrs
+				...
+				
+		→ method resolution order opvragen: oInstanceName.__mro__
+				
+	- Methode implementatie afdwingen bij overerving:
+		from moduleName import className, abstractmethod
+		
+		@abstractmethod			# is een decorator
+		def methodName(self)
+			pass
+			
+	- Interfaces, niet expleciet ondersteund, maar kunnen klasse gebruiken als interface
+		door enkel abstract methods te definiëren en leeg te laten met "pass".
+		
+		vb.:	class JSONify(ABC):
+					@abstractmethod
+					def toJSON(self):
+						pass
+	
+• Object compositie ("heeft een"-relatie):
+	Het bouwen van complexe objecten uit andere meer eenvoudige objecten = objecten in objecten.
+	
+• Magical methods (metaobjecten):
+	Standaard operaties overschrijven.
+	
+	- Strings:
+		__str__		stringvoor werking: print(oInstanceName) OF print(str(oInstanceName))
+		__repr__	string voor debugging: print(repr(oInstanceName))
+
+	- Math operations:
+		__add__		+	addition						__mul__		*	multiplication
+		__sub__ 	-	subtraction						__truediv__ / divition
+		__mod__		%	modulus							
+	
+	- Comparetiv	e operations:
+		__eq__ 		==	equal to 						__ne__ 	!=	not equal
+		__le__ 		<=	less than or equal to 			__lt__	<	less than
+		__ge__		>=	greater than or equal to		__gt__	>	greater than
+	
+	- Checks:
+		__len__		length value
+		__bool__	boolean check
+	
+	- Attribute access:
+		__getattribute__	Wordt opgeroepen telkens een attribuut wordt opgevraagd.
+		__setattribute__	Wordt opgeroepen telkens een attribuut wordt aangepast.
+		__getattr__			Wordt opgeroepen telkens een __getattribute__ opvraging faalt, method bestaat niet.
+		
+	- Garbage collection:
+		__del__		
+		
+		vb.:	class Boek:
+					def __init__(self, titel, auteur, prijs):
+						super().__init__()
+						self.titel = titel
+						self.auteur = auteur
+						self.prijs = prijs
+						self._korting = 0.1
+						
+					def __str__(self):
+						return f"{self.titel} door {self.auteur}, kost {self.prijs}"
+					
+					def __getattribute__(self, naam):
+						if (naam == "prijs"):
+							p = super().__getattribute__("prijs")
+							k = super().__getattribute__("_korting")
+							return p - (p * k)
+						return super().__getattribute__(naam)
+						
+					def __setattr__(self, naam, waarde):
+						if (naam == "prijs"):
+							if type(waarde) is not float:
+								raise ValueError("Het 'prijs' attribuut moet een float zijn")
+						return super().__setattr__(naam, waarde)
+					
+					def __getattr__(self, naam):
+						return naam + " is hier niet!"
+						
+						
+	- Oproepbare objecten:
+		__call__	Zorgt ervoor dat het object kan aangeroepen worden zoals eender dewelke functie.
+					Zelfde aantal parameters zoals de init-functie.
+					Voor objecten hebt wiens attributen vaak wijzigen, of vaak samen worden gewijzigd.
+					Compactere en eenvoudigere code.
+
+		vb.:	class Boek:
+					def __init__(self, titel, auteur, prijs):
+						super().__init__()
+						self.titel = titel
+						self.auteur = auteur
+						self.prijs = prijs
+					
+					def __str__(self):
+						return f"{self.titel} door {self.auteur}, kost {self.prijs}"
+					
+					def __call__(self, titel, auteur, prijs):
+						self.titel = titel
+						self.auteur = auteur
+						self.prijs = prijs
+						
+
+________________________________________________________________________________________________________________
+§§ Beautiful Soup §§
+--------------------
+Library to get the data of HTML, XML and other markup languages.
+
+

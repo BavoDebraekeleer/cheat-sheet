@@ -1,0 +1,449 @@
+          _____                    _____                    _____                    _____          
+         /\    \                  /\    \                  /\    \                  /\    \         
+        /::\    \                /::\    \                /::\    \                /::\    \        
+       /::::\    \              /::::\    \              /::::\    \              /::::\    \       
+      /::::::\    \            /::::::\    \            /::::::\    \            /::::::\    \      
+     /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \     
+    /:::/__\:::\    \        /:::/__\:::\    \        /:::/  \:::\    \        /:::/__\:::\    \    
+   /::::\   \:::\    \      /::::\   \:::\    \      /:::/    \:::\    \      /::::\   \:::\    \   
+  /::::::\   \:::\    \    /::::::\   \:::\    \    /:::/    / \:::\    \    /::::::\   \:::\    \  
+ /:::/\:::\   \:::\    \  /:::/\:::\   \:::\____\  /:::/    /   \:::\ ___\  /:::/\:::\   \:::\    \ 
+/:::/  \:::\   \:::\____\/:::/  \:::\   \:::|    |/:::/____/  ___\:::|    |/:::/  \:::\   \:::\____\
+\::/    \:::\   \::/    /\::/    \:::\  /:::|____|\:::\    \ /\  /:::|____|\::/    \:::\  /:::/    /
+ \/____/ \:::\   \/____/  \/_____/\:::\/:::/    /  \:::\    /::\ \::/    /  \/____/ \:::\/:::/    / 
+          \:::\    \               \::::::/    /    \:::\   \:::\ \/____/            \::::::/    /  
+           \:::\____\               \::::/    /      \:::\   \:::\____\               \::::/    /   
+            \::/    /                \::/____/        \:::\  /:::/    /               /:::/    /    
+             \/____/                  ~~               \:::\/:::/    /               /:::/    /     
+                                                        \::::::/    /               /:::/    /      
+                                                         \::::/    /               /:::/    /       
+                                                          \::/____/                \::/    /        
+                                                                                    \/____/         
+	Extra uitleg VHDL: NAND LAND website
+																									   
+	FPGA = Field Programmable Gate/Grid Array
+	VHDL = VHSIC Hardware Description Language
+	VHSIC = Very High Speed Integrated Circuit
+	RTL = Register Transfer Logic
+	FF = Flip-Flop = Register
+		→ Latches controlled by a clock transition = flip-flops
+	IC = Integrated Circuit
+	LUT = Look-Up Table
+	FSM = Finite State Machine
+
+	Onze FPGA:
+	----------
+	Part: xc7a35tcpg236-1
+	Product: Artix-7
+	Family: Artix-7
+	Package: cpg236
+	Speed Grade: -1
+	Board Name: Basys3
+
+	20k LUT's & 40k FF's
+
+	Buffer's dienen om de spanningsniveaus stabiel te houden.
+
+	Values:
+	-------
+	U = Undefined
+	Z = High impedance
+	X = Unwanted/dangerous → You are shorting the FPGA
+	'0' single byte
+	"0001" multiple bytes
+
+	<= toewijzingen gebeuren pas bij end process
+	:= variabele toekenning gebeurt onmiddellijk
+
+____________________________________________________________________________________________________________________________________________
+1 - FF = FLIP-FLOPS:
+--------------------
+	
+	• Sequential Logic:
+		- Combinatorial system:
+			all inputs in the sensitivity list of a process
+			new state determined by independent inputs
+		
+		- Sequential system:
+			only clock and asynchronous inputs in the sensitivity list of a process
+			new state determined by independent inputs + system state (through memory elements)
+				→ one or more outputs are fed back as inputs
+				→ memory element in system? = sequential
+			
+	• Soorten systemen met FF's:
+		- Synchronous → naar volgende state op signaal van/synchroon met de clock
+		- Asynchronous → Geen clock signaal
+		
+	• Terminologie:
+		- Flip-flop = register: → Clock input/synchroon = FF
+			- werkt met signaal overgangen/transitions → synchronous
+			- Amount of FF’s is determined by amount of states
+			- one bit memory = base element of sequential circuits
+			- Amount of FF’s is determined by amount of states	
+			- Flip-flop kan gemaakt worden uit twee teruggekoppelde NAND of NOT poorten → De clock is baas
+			
+		- Latches: basic storage element → Geen clock input/asynchroon = Latch
+			werkt met signal levels, level sensitive devices
+	
+		- Exitatie tabel / Exitation table:
+			Welke input ccombinatie is nodig om van één toestand naar een andere te gaan.
+			→ héél belangerijk voor ontwerpen
+		
+		- Toestand tabel / State table:
+			Alle mogelijke toestanden
+			→ ook de ongewenste = waarheidstabel
+		
+	• Soorten FF & Latches:
+		- SR Latch: meest eenvoudige
+			→ Heeft forbidden state, asynchronous
+			• Opbouw:
+				- 2x NOR-poorten
+					R	Q
+					S	/Q
+					→ Forbidden-state/verboden toestand = 0000
+					→ / of streep boven = inverse
+					
+					• Toestanden-tabel NOR: (X als toestand niet uitmaakt, om tabel te verkleinen)
+						-----------------------------------------
+						|	S	|	R	|   QT	|  QNT  | /QNT	|	→ QT = current state, QNT = output, /QNT = inverse/active-low output
+						|-------|-------|-------|-------|-------|
+						|	0	|	0	|   0	|   0	| 	1	|	→ GEHEUGEN = waarde behouden
+						|	0	|	0	|   1	|   1	|  	0	|	→ GEHEUGEN
+						|	0	|	1	|   X	|	0	|	1	|	→ RESET
+						|	1	|	0	|   X	|  	1	|   0	|	→ SET
+						|	1	|	1	|   X	|  	0	|   0	|	→ VERBODEN
+						-----------------------------------------
+						
+						Verdere verkleining:
+						---------------------------------
+						|	S	|	R	|  QNT  | /QNT	|	→ QT = current state, QNT = output, /QNT = inverse/active-low output
+						|-------|-------|-------|-------|
+						|	0	|	0	|   QT	|  /QT	|	→ GEHEUGEN
+						|	0	|	1	|	0	|	1	|	→ RESET
+						|	1	|	0	|  	1	|   0	|	→ SET
+						|	1	|	1	|  	0	|   0	|	→ VERBODEN
+						---------------------------------
+						
+					• Exitatie-tabel NOR:
+						---------------------------------
+						|	QT	|	QNT	|  	S  	| 	R	|	→ QT = current state (input), QNT = next state (output)
+						|-------|-------|-------|-------|
+						|	0	|	0	|   0	| 	X	|	→ VERBODEN of RESET
+						|	0	|	1	|   1	|  	0	|	→ SET
+						|	1	|	0	|	0	|	1	|	→ RESET
+						|	1	|	1	|  	X	|   0	|	→ GEHEUGEN of SET
+						---------------------------------
+				
+				- 2x NAND-poorten
+					S 	Q 
+					R 	/Q
+					→ Actief-laag/active-low (NOT driehoekje op inputs)
+					→ Forbidden-state = 0011 (S,R,Q,/Q)
+			
+					• Toestanden-tabel NAND:
+						---------------------------------
+						|	S	|	R	|  QNT  | /QNT	|	→ QNT = output, /QNT = inverse/active-low output
+						|-------|-------|-------|-------|
+						|	0	|	0	|   1	| 	1	|	→ VERBODEN
+						|	0	|	1	|   1	|  	0	|	→ SET
+						|	1	|	0	|	0	|	1	|	→ RESET
+						|	1	|	1	|  /QT	|   QT	|	→ TOGGLE
+						---------------------------------
+						
+					• Exitatie tabel NAND:
+						---------------------------------
+						|	QT	|	QNT	|  	S  	| 	R	|	→ QT = current state (input), QNT = next state (output)
+						|-------|-------|-------|-------|
+						|	0	|	0	|   1	| 	X	|	→ RESET of TOGGLE
+						|	0	|	1	|   0	|  	1	|	→ SET
+						|	1	|	0	|	1	|	0	|	→ RESET
+						|	1	|	1	|  	X	|   1	|	→ SET of TOGGLE
+						---------------------------------
+				
+			• Toepassingen:
+				- Anti-dender schakeling
+				- Start/stop schakeling
+				
+		- JK Flipflop:
+			→ Heeft GEEN forbidden state, synchronous
+			→ kan asynchronous set & reset hebben
+			
+			• Soorten:
+				- Flankgevoelig
+				- Master/Slave
+				- Asynchrone Set & Reset
+			
+			• Toestanden-tabel:
+				-----------------------------------------
+				|  CLK	|	J	|	K	|  QNT  | /QNT	|	→ QNT = output, /QNT = inverse/active-low output
+				|-------|-------|-------|-------|-------|
+				|	0	|	X	|	X	|   QT	|  /QT	|	→ GEHEUGEN
+				|	1	|	0	|	0	|   QT	|  /QT	|	→ GEHEUGEN
+				|	1	|	0	|	1	|	0	|	1	|	→ RESET
+				|	1	|	1	|	0	|	1	|	0	|	→ SET
+				|	1	|	1	|	1	|  /QT	|   QT	|	→ TOGGLE
+				-----------------------------------------
+				
+			• Exitatie tabel:
+				---------------------------------
+				|	QT	|	QNT	|  	J  	| 	K	|	→ QT = current state (input), QNT = next state (output)
+				|-------|-------|-------|-------|
+				|	0	|	0	|   0	| 	X	|	→ GEHEUGEN of RESET
+				|	0	|	1	|   1	|  	X	|	→ SET of TOGGLE
+				|	1	|	0	|	X	|	1	|	→ RESET of TOGGLE
+				|	1	|	1	|  	X	|   0	|	→ GEHEUGEN of SET
+				---------------------------------
+				
+			• Toepassingen:
+				- 3-bit asynchronous counter:
+					3x asynchrone R & S, op dalende flank, JK-FF's achter elkaar om bits op te tellen.
+					Output v/d 1e is clock voor de 2e, en output 2e is clock voor de 3e → verandering op dalende flank
+					→ Telkens vertraging van FF naar FF
+					→ Down-counter gebruikt INVERSE output → verandering op stijgende flank
+
+				- 3-bit synchronous counter:
+					→ Clock is doorverbonden naar elke FF
+
+				- 5 counter:
+					3-bit synchronous counter circuit + een asynchronous RESET
+					→ asynchronous RESET = active-low!
+					
+		- T Flipflop (Toggle):
+			JK flipflop waarbij de J&K verbonden zijn,
+			kan zo enkel TOGGLE (T = 1) of GEHEUGEN (T = 0) doen.
+
+		- D Flipflop (Data/Delay): Data synchroniseren met de clock.
+			Vereenvoudigde JK flipflop, ipv J & K heb je enkel D-input die op J komt, en /D (invers) op K
+			→ state change on rising edge clock signal
+			→ Forbidden state: 00x? (S,R,D,QNT)
+			
+			• Exitatie tabel:
+				De toestanden die van belang zijn van J & K combineren, X mag weg.
+				
+				-------------------------
+				|	QT	|	QNT	|  	D  	|	→ QT = current state (input), QNT = next state (output)
+				|-------|-------|-------|
+				|	0	|	0	|   0	|	→ GEHEUGEN of RESET
+				|	0	|	1	|   1	|	→ SET of TOGGLE
+				|	1	|	0	|	0	|	→ RESET of TOGGLE
+				|	1	|	1	|  	1	|	→ GEHEUGEN of SET
+				-------------------------
+
+			• Toepassingen:
+				- 2-bit synchrone teller
+				
+				- 4-bit shift register → FIFO = First In, First Out:
+					Data schijft door
+					
+				- Ring counter:
+					Het laatste signaal wordt terug naar de eerste gestuurd.
+
+				- 4-bit serial to parallel register = SIPO = Serial In Parallel Out = Paralleliser:
+					→ Enkel als READ = 1 worden de uitgangen doorgeschakelt
+					
+					PISO = Parallel In Serial Out = Serialiser
+					PIPO = Parallel In Parallel Out
+					
+				- D latch → clock reageert gevoelig, not edge sensitive but LEVEL sensitive
+					geklokte SR latch met S = D, R = /D (invers)
+
+____________________________________________________________________________________________________________________________________________
+2 - Combinatorial Building Blocks VHDL:
+---------------------------------------
+	Uitleg VHDL code.
+	Zie labo.
+
+____________________________________________________________________________________________________________________________________________
+3 - Counters: !!EXAMEN!! HELFT PUNTEN THEORIE!! Verschillende stappen kunnen doorlopen!!
+-------------
+	• Synchroon = alle uitgangen veranderen op dezelfde klokflank
+	• Asynchroon = tijdsverschillen tussen uitgangsveranderingen, kunnen we spikes door krijgen die ongewenste klokflanken kan geven.
+
+	• Counter/Teller is soort Finite State Machine.
+	
+	• Draad lengte van bvb de clock geeft ook bepaalde vertraging!
+	
+	• 3-bit synchronous counter with JK flipflops:
+		Stappen (niet vanbuiten kennen, wel kunnen):
+			
+			1) Hoeveel FF's? → 3-bit = 3x FF
+				→ uitgang FF = teller-uitgang
+			
+			2) Waarheids-tabel opstellen:
+				a) Wat is de huidige toestand/current state? (Begin situatie)
+				b) Wat is de volgende toestand/next state?	 (Toestand na clock pulse)
+			
+			3) Exitatie-tabel opstellen:
+				Wat zijn de waardes voor J & K voor de gewenste overgangen?
+			
+			4) Toestanden-tabel opstellen:
+				De waarheidstabel en exitatietabel samenvoegen om zo alle toestanden te kunnen zien.
+			
+			5) K-map/Karnaugh kaart:
+				1 K-map opstellen per uitgang = elke J of K,
+				op basis van de current states Q2, Q1 en Q0.
+			
+			6) Vergelijkingen:
+				Vergelijking per uitgang = elke J & K:
+				Zoek de meest eenvoudige vergelijking met de K-map.
+				
+			7) Logisch circuit maken.
+			8) Reset toevoegen indien nodig.
+			
+			----------------------------------
+			
+			1) 3-bit → state van 0-7
+				→ binair optellen met Q2, Q1, Q0: 000, 001, 010, 011, 100, 101, 110, 111
+				→ Q of QT = current state
+				  QN = next state
+			
+			2) Waarheids-tabel:
+				Van huidige toestand opschijven naar de volgende toestand = +1
+					current state Q2,  Q1,  Q0:  000, 001, 010, 011, 100, 101, 110, 111
+					next state    QN2, QN1, QN0: 001, 010, 011, 100, 101, 110, 111, 000
+				
+			3) Exitatie-tabel:
+				---------------------------------
+				|	Q	|	QN	|	J	|	K 	|	→ J & K = ingangen v/d FF, Q naar QN zijn de overgangen die we willen
+				|-------|-------|-------|-------|
+				|	0	|	0	|	0	|	X	|	→ 0 naar 0 = GEHEUGEN of RESET		→ K=0 = GEHEUGEN	K=1 = RESET
+				|	0	|	1	|	1	|	X	|	→ 0 naar 1 = TOGGLE of SET			→ K=0 = SET, 		K=1 = TOGGLE
+				|	1	|	0	|	X	|	1	|	→ 1 naar 0 = TOGGLE of RESET		→ J=0 = RESET, 		J=1 = TOGGLE
+				|	1	|	1	|	X	|	0	|	→ 1 naar 1 = GEHEUGEN of SET		→ J=0 = GEHEUGEN, 	J=1 = SET
+				---------------------------------
+
+			4) Toestanden-tabel opstellen:
+				Counter - Current states: Q2 Q1 Q0 - Next state: Q2→QN2 = J2 K2, Q1→QN1 = J1 K1, Q0→QN0 = J0 K0
+				0  000  0→0=0X  0→0=0X  0→1=1X
+				1  001	0→0=0X  0→1=1X  1→0=X1
+				2  010	0→0=0X  1→1=X0  0→1=1X
+				3  011	0→1=1X  1→0=X1  1→0=X1
+				4  100	1→1=X0  0→0=0X  0→1=1X
+				5  101	1→1=X0  0→1=1X  1→0=X1
+				6  110	1→1=X0  1→1=X0  0→1=1X
+				7  111	1→1=X0  1→0=X1  1→0=X1
+				
+				→ Q2, Q1, Q0 = ingangen combinatorische schakeling
+				  J2 K2, J1 K1, J0 K0 = uitgangen ""
+			
+			5) K-map/Karnaugh kaart:
+				→ K-map voor J2, K2, J1, K1, J0 en K0.
+					→ J0 en K0 kunnen we direct aflijden uit de toestandentabel.
+					
+				Zie Theorie 3 (DF6) tekst PDF p15
+					
+			6) Vergelijkingen:
+				J2 = QT1 & QT0
+				K2 = QT1 & QT0
+				J1 = QT0
+				K1 = QT0
+				J0 = 1
+				K0 = 1
+				
+			7 & 8) Zie Theorie 3 (DF6) tekst PDF p16-17
+			
+	Zie FPGA Programming - Theorie 3 (DF6) Counters EXERCISES
+
+____________________________________________________________________________________________________________________________________________
+4 - FSM = Finite State Machine:
+-------------------------------
+Loopt door een eindig aantal toestanden.
+	
+	• Onderdelen:
+		-input(s) & current state→ (current state decoder) -next state & clock→ (state register) -current state→ (output decoder) -output(s)→ 
+		-Sw & cs→ (current state decoder) -ns & CLK→ (state register) -cs (+Sw voor Mealy)→ (output decoder) -out→ 
+		
+	
+		- Next state decoder / Volgende toestandsdecoder:
+			Volgende toestand wordt bepaald door de huidige toestand,
+			en eventueel door ingangs-voorwaarden.
+			
+			vb.: input die op- of aftellen bepaald.
+		
+		- State register / Toestands register:
+			Klokgestuurde flipflops.
+			Aantal FF's afhankelijk van het aantal toestanden/states.
+		
+		- Output decoder / Uitgangs decoder:
+
+
+	• Mealy:
+		Output hangt af van current state en inputs.
+		Stuurt input(s) naar output decoder.
+		→ Input gestuurd = asynchroon, riskanter
+		
+		-Sw & cs→ (current state decoder) -ns & CLK→ (state register) -cs + Sw→ (output decoder) -out→ 
+	
+	• Moore:
+		Output hangt enkel af van current state.
+		→ Clock gestuurd
+		
+		-Sw & cs→ (current state decoder) -ns & CLK→ (state register) -cs→ (output decoder) -out→ 
+	
+	• State & Bubble diagram:
+		Schematische grafische weergave van de verschillende states en de overgangen.
+
+	• Stappen: (Examen: je krijgt een diagram die je moet aanvullen)
+		1) Aantal FF's in state register bepalen.
+		2) State diagram opstellen
+		3) State table opstellen adhv state diagram
+		4) Next states toevoegen
+		5) Outputs toevoegen
+		6) FF-inputs, voor de gewenste next state overgang te bekomen, bepalen adhv exitatie-table van de gebruikte FF's.
+			→ D flipflop = next state
+		7) K-maps → vanuit current state (MODE & QT)
+		8) Logical equations / logische vergelijkingen
+		9) Non-defined/forbidden states mogelijk?
+			Waarheidstabel van deze toestanden opstellen.
+			→ Zelf startend of niet? Anders reset/preset toevoegen om alles op 0 te zetten.
+		
+	• How to find a bit sequence in VHDL
+		1) Bubble diagram	S62
+		2) Zelf type aanmaken voor de verschillende toestanden + signals current_state and next_state van dit type.
+		3) Processees
+
+____________________________________________________________________________________________________________________________________________
+5 - FPGA Architecture:
+----------------------
+	- LUT's met 6-variabelen
+	- Programmable interconnections dmv SRAM cellen in Switch boxes
+	- I/O Block:
+		• Input path
+		• Output path
+		• Tri-state path
+
+	• Resourcess:	
+		- Logic Resources:
+			• Slices = ? (CLB = Configurable Logic Blocks)
+				Contains 4x LUT's, 8x FF's
+			• Memory
+			• Multipliers
+		- Interconnect Resources
+			• Programmable interconnections
+			• IOB'sensitivity
+		- Other resources
+			• Clock
+			• ...
+
+	• Configuration:	
+		- Configuration Mode:
+			Different modes config data is written to the FPGA, 7 in total, 3 most important:
+			• Serial Peripheral Interface = SPI
+			• Slave Serial, from a processor
+			• Boundary Scan (JTAG = Joint Test Action Group), downloaded from a processor or system tester
+		
+	• IOBs = Input/Output Blocks:
+		- DDR = Double Data Rate: bij rising én falling flank v/d clock.
+		- MUX = Multiplexer: input selecteren om als output door te sturen.
+		
+		- Why so many FF's? => Pipelining!
+		- ESD = Electro-Static Discharge, becherming met diodes
+
+		- Zeer lage stroom (~16 mA). Je kan geen zware lasten aansturen met een FPGA. Enkel wat LED's.
+		
+		- Slew Rate Control and Drive Strength
+		- Type of I/O Banks => HR = High Range: veel tegelijk kunnen aansturen.
+		- Digitally Controlled Impedance: 
+		- 5 Banks with max 50 pins = max 250, onze heeft 160
+		- ISERDESE2 = Input Serial-to-Parallel Logic Resources
+		- OSERDESE2 = Output Parallel-to-Serial Logic Resources

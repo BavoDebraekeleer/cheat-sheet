@@ -56,6 +56,7 @@ Practical:
 - Classes should have a limited number of instance variables.
 - Class methods should manipulate one or more of these instance variables.
 
+*SRP does bother if you mix implementation details into otherwise high level code.*
 ### Key Takeaways
 
 - Practice pain driven development, meaning don't force using SOLID before you have written some code. Apply them when pain points begin to emerge.
@@ -139,6 +140,8 @@ public class Triangle : Shape
 *Abstraction* can be achieved by using an `abstract class` or and interface.
 They are both a sort of template for other classes.
 An abstract class can implement basic functionality and variables all inheriting classes should have. While an interface describes the properties and methods, a class should have to implement the interface.
+
+*For bugfixes, it is OK to modify existing code, this has nothing to do with OCP.*
 ### OCP Simple Factory Pattern
 
 In a factory pattern, you create an object without exposing the creation logic. An interface can be used for creating an object, but lets the subclass decide which class to instantiate. Rather than defining each object manually, you can do it programmatically.
@@ -285,6 +288,12 @@ class MovieFactory
 }
 ```
 
+### Detecting LSP Violations
+
+Identify problems by looking for:
+- Type checking
+- `null` checking
+- `NotImplementedException`
 
 ### Fixing LSP Violations
 
@@ -746,17 +755,4 @@ Example folder structure:
 
 ---
 
-
-## Strategy Pattern
-
-Strategy is **a behavioral design pattern that turns a set of behaviors into objects and makes them interchangeable inside original context object**. The original object, called context, holds a reference to a strategy object. The context delegates executing the behavior to the linked strategy object.
-
-Example, where the `DoDamage` method is moved to an interface `IDoDamage`. This interface is implemented in a strategy class. The interface is then used as a property in the `WeaponBase` base class so each subclass that inherits from it  -TO DO-
-![[Pasted image 20230928163436.png]]
-
-![[Pasted image 20230928163732.png]]
-
-![[Pasted image 20230928163758.png]]
-
-[YouTube: Change Behaviors with the Strategy Pattern - Unity and C# by One Wheel Studio](https://www.youtube.com/watch?v=yjZsAl13trk)
 

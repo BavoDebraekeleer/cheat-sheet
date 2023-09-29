@@ -1,0 +1,1589 @@
+   ___                  _____           _       _   → • 
+  |_  |                /  ___|         (_)     | |  
+    | | __ ___   ____ _\ `--.  ___ _ __ _ _ __ | |_ 
+    | |/ _` \ \ / / _` |`--. \/ __| '__| | '_ \| __|
+/\__/ / (_| |\ V / (_| /\__/ / (__| |  | | |_) | |_ 
+\____/ \__,_| \_/ \__,_\____/ \___|_|  |_| .__/ \__|
+                                         | |        
+                                         |_|        
+_______________________________________________________________________________________________________________________________										 
+-JS- Hotkeys -JS-
+-----------------
+Browser Debugging		Ctrl+Shift+J of F12
+Extentie runnen			Ctrl+P → >Quokka.js: Run on Save for current file
+Selectie in commentaar	Ctrl + :
+
+_______________________________________________________________________________________________________________________________										 
+-JS- Handige dingen -JS-
+------------------------
+• Bij werken met <script> tag in HTML doc:
+	document.write()	→ Tekst naar scherm schrijven
+							→ Je kan ook HTML tags en code gebruiken tussen ""
+								vb.: document.write("De teller is: " + teller + "<br>")	→ teller is een 'let'
+								
+• CSS style toepassen op Console log:
+	console.log(`%cLog %cinfo`, "CSS properties 1", "CSS properties 2")
+	
+		→ Vanaf waar je een %c zet kan je met ,".." nieuwe CSS propertties toekennen.
+		→ ,"" leeg laten resets to default
+	
+	vb.: console.log(`%c${Description} with taxes: %c€${total}`, "font-weight: bold", "color: red")
+
+• Conditional (ternary) operator
+	The conditional (ternary) operator is the only JavaScript operator that takes three operands:
+		1) a condition followed by a question mark (?)
+		2) an expression to execute if the condition is truthy followed by a colon (:)
+		3) and finally the expression to execute if the condition is falsy.
+		
+	This operator is frequently used as a shortcut for the if statement.
+	→ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+	
+• Optional chaining:
+	?. → If what you write before does not exists = is null or undefined, then do nothing.
+	
+	vb.: 	function printPersonStreet(person) {
+				console.log(person?.address?.street)	→ The ? checks if the object or parameter exists → "if not undefined, continue reading"
+			}												to avoid undefined errors, and instead just get undefined.
+			
+• Object Literal keys with same name as variable:
+	vb.:	favouriteFood = "Chocolate"
+			const bavo = {					→ bavo = Literal
+				favouriteFood,				→ Same as: favouriteFood = favouriteFood,
+			}
+
+• Script file link with defer in the head: https://www.w3schools.com/tags/att_script_defer.asp 
+	<script src="script.js" defer></script>		→ Loads faster bc the download start as the browser reads the top of the HTML, not bottom.
+	
+• Type variabelen:
+	getal, bool, string, object, functie
+	
+_______________________________________________________________________________________________________________________________										 
+-JS- Comparison and Logical Operators -JS-
+------------------------------------------						
+• Comparison Operators:
+	==	Equal to (does type conversion)		>	Greater than
+	===	Equal value AND type (does not)		<	Less than
+	!=	Not equal							>=	Greater than or equal
+	!== Not equal value OR type				<= 	Less than or equal
+
+• Logical Operators:
+	&&	AND
+	||	OR						vb.: taxes = taxes || 0.05	→ if taxes == 0 then taxes = 0.05
+	??	Is null OR undefined	vb.: taxes = taxes ?? 0.05	→ if taxes == 0 then taxes = 0; if taxes == undefined then taxes = 0.05
+	! 	NOT
+
+• Conditional (Ternary) Operator:
+	variablename = (condition) ? valueIfTrue : valueIfFalse 
+	
+	vb.1: 	age = Number(age);
+			if (isNaN(age)) {	→ isNaN() checks if age is a number
+			  voteable = "Input is not a number";
+			} else {
+			  voteable = (age < 18) ? "Too young" : "Old enough";
+			}
+					
+	vb.2:	let age = prompt("What is your age?", 18);
+			let welcome = (age < 18) ?
+			  () => alert('Hello') :
+			  () => alert("Greetings!");
+			welcome();
+
+	vb.3:	function changeButton() {
+				let container = document.getElementById("containerThatChangesColor");
+				container.style.backgroundColor = (container.style.backgroundColor == "yellow") ? "" : "yellow";
+			}
+	
+_______________________________________________________________________________________________________________________________										 
+-JS- Terminologie -JS-
+----------------------
+• Web evolution:
+	1) Static Web
+	2) Dynamic Website
+	3) Basic User Interaction
+	4) Advanced USer Interaction
+	5) SPA = Single Page Application
+	6) RIA = Rich Internet Applicationn
+	7) Native Mobile Application
+	8) Hybrid Mobile Application
+
+	1) Static Web:
+		Statische HTML → inhoud wijzigt niet.
+	
+	2) Dynamic Website:
+		Inhoud wordt op de server opgebouwd adhv. bvb. data uit een databank.
+	
+	3) Basic User Interaction:
+		HTML Formulier, HTTP Post
+	
+	4) Advanced User Interaction:
+		Mbv. Client side JavaScript kan er meer interactie zijn.
+	
+	5) SPA = Single Page Application:
+		Enkel de initiële pagina wodrt volledig ingeladen. De overige "views" via 'ajax'.
+	
+	6) RIA = Rich Internet Application:
+		De interface wordt steeds uitgebreider, en het verschil met desktop apps wordt steeds kleiner.
+	
+	7) Native Mobile Application:
+		Een app specifiek ontwikkeld voor bepaald platform.
+	
+	8) Hybrid Mobile Application:
+		Gedraagt zich als Native app, maar is SPA of RIA die in onzichtbare browser-schil draait.
+		
+• URL = Uniform Resource Locator
+	Bevat minstens 2 delen:
+		1) Protocol	→ vb.: HTTP = HyperText Transfer Protoccol
+		2) Domain name van de web server
+	Verder
+		3) Directory → mappen op de server
+		4) Filename → de bestanden in de mappen, vb.: help/index.html
+	
+• Sandboxing:
+	- Isoleren van een programmeer omgeving.
+		→ Security redennen → de browser beperkt wat JavaScript kan doen op je systeem
+		
+	- Voorbeeld van een mogelijk gevaar, of van zaken die in het verleden al eens voorgekomen zijn:
+		???
+		
+• Client-side = Front-end:
+	Interface naar de gebruiker.
+	
+• Server-side = Back-end:
+	- Bevat alle bestanden van de website.
+	- Behandelt requests en stuurt (= response) de gewenste bestanden naar de client.
+	
+• ECMASCRIPT (ECMA of ES):
+	Standaard waarop JavaScript is gebaseerd.
+		→ Post-ES6 = moderne JavaScript, na 2015
+			→ eerst enkel var, nu let en const
+			→ toevoeging van klasse
+			→ export ipv exports, import ipv require voor modules
+
+• Variabelen:
+	- const	→ Voor onveranderlijke waardes
+	- let		→ Voor alle andere variabelen
+	- var 	→ Oude pre-ES6 manier → NIET GEBRUIKEN! → Heeft uitgebreidere scope die globaal vervuilt
+	
+	→ Niet initialiseren == undifined (in C# == null)
+	
+	→ Wat is het verschil tussen let, const en var declaraties? Toon dit aan met voorbeelden.
+		???
+	
+• Strict Mode:
+	Waarom belangerijk?
+		???
+	
+• Scope: https://javascript.info/closure
+	→ Lexical scoping
+	- Global scope:
+		Voor hele programma.
+	- Local/Block scope:
+		Enkel binnen de {} code block
+	- Function scope:
+		Binnen de function {}
+		→ Al wat hierbinnen blijft vervuilt de globale scope niet.
+
+• Call Stack:
+	Voor "context" te onthouden = waar we zaten in de code.
+	Als er een functie wordt aangeroepen gaan we terug in de code naar de fucntie code,
+	en daarna moet er worden verder gegaan waar we zaten.
+	
+	→ JavaScript = "single threaded":
+		Er kan maar 1 ding gebeuren. Niets tegelijkertijd/paralel.
+		
+• Event Loop:
+	???
+		
+• IIFE = "immediately-invoked function expression":
+	(zie slide Theorie2-22)
+	(function() {
+		code
+	})() 			→ function declareren in onmiddelijk uitvoeren door () om de global scope niet te vervuilen
+	
+• Hoisting:
+	Code wordt herordent voor het uitvoeren.
+	→ Aangeroepen functies worden bovenaan gezet.
+	→ Variabele declaratie wodrt bovenaan gezet, maar initialisatie niet!
+		→  Dus Function Expressions werken niet als de aanroeping boven de fucntie code staat!
+		
+• Closures: https://javascript.info/closure
+	Laat zien hoe de scope van fucnties werkt.
+	Een Lexical Environemnt kan de variabelen van de Global Environmrnt gebruiken, maar niet omgekeerd.
+	
+• Lexical Environment:
+	Object van aangeroepen functies waarbinnen de variabelen van de functie zitten → Function scope
+
+• Environment Record:
+	
+• OOP = Object Oriented Programming:
+	- Class:		Defines the characteristics of the object
+	
+	- Object:		An instance of a class
+
+	- Property:		An object characteristic, such as a color	→ Met DOT-notatie (object.property) OF Array-notatie (object[property])
+																→ Object.keys(objecctNaam) → geeft array met alle properties
+	
+	- Method:		An Object capability, such as walk
+	
+	- Constructor: 	A method called at the moment of instantiation
+	
+	- Inheritance:	A class can inherit characteristics from another class
+	
+	- Encapsulation:A class defines only the characteristics of the object, a method defines only how the method executes
+	
+	- Abstractionn:	The conjunction of complex inheritance
+	
+	- Polymorphism:	Different classes might define the same method of property
+	
+• Oude manieren om klassen te immiteren (Pre-ECMAS6): 	→ In ECMAScript bestaan klassen niet.	
+	- Object constructor:								→ Objecten zijn een ongeordende lijst van properties die een waarde, object of methode bevatten.
+
+	- Factory patroon:		Gebruik van een functie om een object aan te maken.
+								→ Encapsuleren in een fucntie.
+								→ Returned object
+	- Constructor patroon:
+		→ Constructor funnction:	"this." om properties en functies binnen de constructor van dit object aan te spreken.
+
+	- Typeof operator:
+
+	- Object literals:		Om één object aan te maken zonder hebruikbaarheid.
+
+	- Prototype patroon:
+
+• Class support:
+	- class definition
+	- get/set
+	
+• DOM = Document Object Model
+	Boomstructuur v/d html code
+	
+• Event listeners:
+	- Luisteren op een gebeurtenis, of er iets gebeurt.
+		vb.: muisklik
+	
+	- "document" object geeft mogelijkheid om het DOM te parsen/doorzoeken 
+		→ .ElementById("")	→ Zoeken op ID
+		
+	- De DOM moet eerst geladen zijn vooraleer je deze kan parsen!
+		→ Event listener gebruiken om te wachten tot de DOM geladen is:
+			document.addEventListener("DOMContentLoaded", function)
+				OF
+			document.addEventListener("DOMContentLoaded", (event)=>{	→ "event" is variabele die return data v/d listener bij houdd
+				console.log(event)											(wordt ook "arg" genoemd, maar kan eender welke naam hebben)
+			})
+			
+			
+_______________________________________________________________________________________________________________________________
+-JS- Web Tech Samenvatting van JavaSccript gedeelte -JS-
+--------------------------------------------------------
+Variabele:			let getal1, getal2 = 4, string1, string2 = 'Bavo', straing3 = 'Fien', getal3 = 1;
+					→ Altijd let gebruiken, niet var → var is oude manier (pre-ES6) → heeft uitgebreidere scope
+					→ Een var kan van datatype veranderen door toekenning vb.: let getal = 1 → getal = 'twee';
+					→ Verschillende datatypes aan elkaar hangen vb.: 	let waarde = 1;
+																		let tekst = "waarde is: ";
+																		let output = tekst + waarde;
+																		alert(output);
+																		→ waarde is: 1
+
+Operators: +, -, *, /, %, ++, --
+Toekenningsoperators: +=, -=, *=, /=, %=
+Vergelijkingsoperators op waarde: ==, !=, >, <, >=, <=
+Vergelijkingsoperators op waarde & datatype: ===, !==
+Logische operators: &&, ||, !
+
+Array aanmaken: 	let arrayNaam = [waarde0, waarde1, waarde2, ... waardeN];
+Array aanspreken:	arrayNaam[0];
+Array lengte:		arrayNaam.length → Geeft de langte als waarde
+					arrayNaam.length = getal; → Stelyt de lengte in op waarde van getal
+
+Object aanmaken: 	let objectNaam = {
+						property1: 'stringWaarde',
+						property2: 1564,
+						...
+						propertyN: 'einde'
+					};
+Object aanspreken:	objectNaam.propertyNaam;
+
+if: 				if(voorwaarde) {
+						code
+					} else {
+						code
+					}
+
+Variabele waarde toekennen aan HTML ID:					
+	let varNaam  = "tekst";
+	let varElement = document.getElementById("htmlId");
+	busElement.textContent = varNaam;
+	
+alert(value) → Geeft melding venster met de waarde
+
+console.log(value) → Om waarde af te drukken in de console in de browser → om te debuggen
+
+prompt(value)
+_______________________________________________________________________________________________________________________________
+-JS- Datatypes -JS-
+-------------------
+- Loose typing (loosely typed):
+	Je moet geen Datatypes definiëren en je kan een variabele van datatype veranderen door toekenning.
+	→ prompt geeft String terug
+
+- Parsing:	vb.: parseInt()
+
+_______________________________________________________________________________________________________________________________
+-JS- Ingebouwde Functies & Objecten -JS-
+----------------------------------------
+Math object:
+------------
+Math.PI
+Math.sqrt(value)
+Math.random()
+	→ Math.random()							→ Getal tussen 0 en 1
+	→ Math.random()* maxGetal 				→ Getal tussen 0 en maxGetal
+	→ Math.round(Math.random()*maxGetal) 	→ Afgerond getal
+	→ Math.random()* maxGetal + minGetal	→ Getal tussen minGetal en (minGetal + maxGetal)
+
+Math.round()	→ Standaard afronding
+Math.floor()	→ Afronding naar beneden
+Math.ceil()		→ Afronding naar boven
+
+Pop-ups:
+--------
+prompt()		→ om invoer van de gebruiker te vragen
+confirm()
+
+	→ .toUpperCase() of .toLowerCase() om case insensitive te zijn!
+
+Text:
+-----
+alert("Tekst")			OF	alert(string)
+console.log("Tekst")	OF	log(string)
+
+HTML code schrijven met JS:
+---------------------------
+document.write("..")
+
+	vb.:	let oef2 = (tafelVan, color1, color2) => {
+				 for(i=1; i<=10; i++) {
+					 if(i%2 == 0) {
+						document.write("<span id='row" + i + "'><tr><td>" + i * tafelVan + "</tr></td></span><br>")
+						document.getElementById('row' + i).style.color = color1
+					 } else {
+						document.write("<span id='row" + i + "'><tr><td>" + i * tafelVan + "</tr></td></span><br>")
+						document.getElementById('row' + i).style.color = color2
+					 }
+				 }
+			 }
+			 
+	vb. zelfde door docent:
+			<style>
+				.even{
+					background-color: red;
+				}
+				.oneven{
+					background-color: yellow;
+				}
+			</style>
+
+			<script>
+				const getalVermenigvuldiging = 10;
+				const maxVermenigvuldiging = 10;
+
+				document.write("<table>")
+				for(let i = 1; i <= maxVermenigvuldiging; i++)
+				{
+					if(i%2==0){
+						document.write("<tr class=\"even\">")
+					}
+					else{
+						document.write("<tr class=\"oneven\">")
+					}
+					document.write("<td >")
+							document.write(i*getalVermenigvuldiging);
+						document.write("</td>")
+					document.write("</tr>")
+				}
+				document.write("</table>")
+			</script>
+_______________________________________________________________________________________________________________________________
+-JS- Loops -JS-
+---------------
+• switch(expression) {
+	case n:
+		//code
+		break
+	default:
+		//code
+  }
+  
+• while(expression) {
+	//code
+  }
+  
+• do {							→ zelfde als until
+	//code
+  } while(expression)
+
+• for(i=0; i<10; i++) {
+	//code
+  }
+  
+• for Each:
+	for(item of arrayNaam) {	→ loopt door elk element in de lijst
+		//code
+	}	 
+
+	object.listName.forEach(	→ Oude manier
+		//code					
+	)
+_______________________________________________________________________________________________________________________________
+-JS- Functions -JS-		https://eloquentjavascript.net/03_functions.html
+-------------------
+→ Functies in het .html document binnen de <head>	
+	→ In .js document boven de aanroeping
+
+• Basic syntax:
+	function naam(argumenten) { → bij argumenten moet je geen Datatype voor de variabele definiëren
+		code
+		return
+	}
+
+• Modern gebruik van functies:
+	- Function Expressions: https://javascript.info/function-expressions
+		Functie code toewijzen aan een variabele, zodat de aanroeping kan gebeuren met deze variabele.
+		
+		vb.:
+		let sayHi = function() {
+			alert("Hello!")
+		}
+		
+		sayHi() → aanroeping
+	
+	- Higher Order fucntionn: https://eloquentjavascript.net/05_higher_order.html
+		
+	- Callback function:
+		Functie gebruiken als argument voor een andere functie.
+		
+		Vb.:	
+		function ask(question, ok, notOk) {
+			if(confirm()) ok()
+			else notOk()
+			
+		function ok() {
+			code
+		}
+		
+		function notOk() {
+			code
+		}
+		
+	- Arrow function: https://javascript.info/arrow-functions-basics
+		let naam() => returnWaarde
+		
+		vb.: let sum(a, b) => a + b				→ Geen {} nodig voor enkele lijn code!
+			 let sum(a, b) => {					→ Voor meerdere lijnen wel!
+				a + b
+				log("sum uitgevoerd")
+			}
+		vb.: let double = n => n * 2 			→ Bij één argument moeten de ronde haakjes niet
+		vb.: let sayHi = () => alert(Hello!")
+		
+_______________________________________________________________________________________________________________________________
+-JS- Arrays -JS- 	https://www.w3schools.com/jsref/jsref_obj_array.asp
+----------------
+vb.:	const namen = [];
+		namen[0]	= "Willem";
+		namen[1]	= "Cindy";
+		namen[2]	= "Butter";
+		
+		for(let i = 0; i < namen.length; i++) {
+			console.log(namen[i]);
+		}
+		
+		for(let naam of namen) {	→ For Each loop
+			console.log(naam)
+		}
+
+→ Ingebouwde methoden:
+
+		.every		→ 
+		.some		→ 
+		.filter		→ 
+		.map		→ 
+		.forEach()	→ Oude manier, forEach-loop gebruiken → for(item of arrayNaam) {}
+
+	• Volgorde:
+		.reverse()	→ Volgorde omdraaien, verandert het origineel, maar returned deze ook
+		.sort()		→ Elementen sorteren, default = alfabetisch, werkt ook voor getallen kleiner dan 10, loopt fout bij grotere
+						→ array.sort(compareFunction)
+						
+							vb.:	function sortByPriceAscending(jsonString) {
+										let list = JSON.parse(jsonString)
+										console.log(list.sort((a, b) => {
+											if ((a.price - b.price) != 0)
+												return a.price - b.price
+											else {
+												if (a.name < b.name)
+													return -1
+												if (a.name > b.name)
+													return 1
+												return 0
+											}
+										}))
+									}
+									console.log(sortByPriceAscending('[{"name":"eggs","price":1},{"name":"coffee","price":9.99},{"name":"rice","price":4.04},{"name":"abc","price":4.04}]'));
+	
+	• Samenvoegen:
+		.concat()	→ Arrays samenvoegen	→ array1.concat(array2*, array3, ..., arrayX)
+		.join()
+	
+	• Verwijderen:
+		.pop()		→ Returned & verwijderd laatste element
+		.shift()	→ Returned & verwijderd eerste element
+		.splice()	→ Toevoegen en/of verwijderen op specifieke index	→ array.splice(start index*, aantal elementen verwijderen, element om toe te voegen)
+		
+	• Selecteren	
+		.slice()	→ Returned nieuwe array	met geselecteerde elementen → array.slice(startIndex, length/end) → negatieve getallen om van achteren te beginnen
+	
+	• Elementen Toevoegen;
+		.splice()	→ Toevoegen en/of verwijderen op specifieke index	→ array.splice(start index*, aantal elementen verwijderen, element om toe te voegen)
+		.unshift()	→ Vooraan toevoegen
+		.push()		→ Element toevoegen achteraan, returned nieuwe lengte 	→ array.push(item1, item2, ..., itemX)
+	
+	• Zoeken:
+		.indexOf()		→ Returned index, -1 als niets gevonden	→ array.indexOf(item*, start)
+		.lastIndexOf()	→ 
+		
+		.find()			→ returned het eerst gevonde element dat overeenkomt
+		.findIndex()	→ returned de index van het eerst gevonden element
+		
+		.includes()		→ returned een Boolean
+	
+	
+→ String methoden:	https://www.w3schools.com/jsref/jsref_obj_string.asp
+
+	string.split("..") 	→ String opsplitsen, returned array van strings
+		vb.: let splitStr = zin.toLowerCase().split(" "); → Maakt van een zin(=string) een array van woorden (elk woorde=string)
+	
+	string.charAt(i)	→ Returned de char op die index in de string
+		vb.:	let woord = "hogeschool";			→ Letters onder elkaar
+				for(let i=0;i<woord.length;i++)
+				{
+					console.log(woord.charAt(i)); // + enter = <br>
+				}
+				
+		vb.2:	let woord  = "brussel";				→ Woord steeds met 1 letter minder
+				let str    = "";
+				for(let i=0; i<woord.length;i++)
+				{
+					for(let j=0;j<woord.length-i;j++)
+					{
+						str += woord.charAt(j);
+
+					}
+					console.log(str);
+					str="";
+
+				}
+
+	string.substring(startIndex*, end)	→  Extract characters from a string
+
+_______________________________________________________________________________________________________________________________
+-JS- DOM = Document Object Model -JS-
+-------------------------------------
+• Events:
+	mouseover		→ muisaanwijzer boven element			keydown		→ toets wordt ingedrukt
+	mouseout		→ muisaanwijzer verlaat element			keyup		→ toets wordt losgelaten
+	mousemove		→ muisaanwijzer beweegt					submit		→ formulier wordt verstuurd
+	mousedown		→ muisaanwijzer wordt ingedrukt			reset 		→ formulier wordt gereset
+	mouseup			→ muisaanwijzer wordt losgelaten		focus		→ element krijgt de focus
+	click			→ muisklik								blur		→ element verliest de focus
+	dbclick			→ dubbelklik							load		→ element is geladen
+	resize			→ afmetingen element veranderen			unload		→ element is niet meer geladen
+
+• Inline event-handler (HTML):
+	JavaScript aanroepen met de event-handler in HTML-tags door "on" voor event	naam.
+		vb.: <input type="button" onclick="JSFunction()">
+
+• Event listeners (JS):
+	Event-handler toevoegen in JS code die wacht op een event.
+	
+	document.addEventListener("eventNaam", <function>)
+		→ <function> kan bestaande zijn, of één dat je hier schrijft ("<>" weglaten)
+		→ fucntion(event){} OF (event)=>{}
+			→ "event" of "arg" = Event Object of argument = object die info van het event bevat. (Kan eender welke naam hebben.)
+			
+	document.removeEventListener("eventNaam", <function>)
+		→ <function> kan enkel externe function zijn die is toegevoegd
+	
+	- "document" object geeft mogelijkheid om het DOM te parsen/doorzoeken 
+		→ .ElementById("")	→ Zoeken op ID
+		→ DOM = Document Object Model: Boomstructuur v/d html code
+		
+	- De DOM moet eerst geladen zijn vooraleer je deze kan parsen!
+		→ Event listener gebruiken om te wachten tot de DOM geladen is:
+			document.addEventListener("DOMContentLoaded", function(event){
+				console.log(event)
+			})
+		→ OF met Arrow function:
+			document.addEventListener("DOMContentLoaded", (event)=>{
+				console.log(event)											
+			})
+			
+• Window object (browser venster):
+	(window.)document 	→ = DOM document
+	(window.)console	→ Console in browser aanspreken
+	(window.)history
+	(window.)location
+	(window.)localStorage
+	(window.)sessionStorage
+
+• (window.)document	getters & selectors:
+	- document.getElementByTagName()								→ returned array
+		vb.: let header = document.getElementByTagName('h1')[0]		→ De eerste <h1> tag
+	
+	- document.getElementByClassName()											→ returned array
+		vb.: let linkHeader = document.getElementByClassName('linkheader')[0]	→ De eerste class="linkheader"
+	
+	- document.getElementById()
+		vb.: let kar = document.getElementById("WinklKarTable")
+	
+	- document.querySelector()				→ Zoeken zoals CSS selectors	→ returned array
+		vb.:	function changeTable() {
+					let cells = document.querySelectorAll("#exercise4 td");
+					for (let i = 0; i < cells.length; i++) {
+						if (cells[i].innerText > 10)
+							cells[i].style.backgroundColor = "red";
+					}
+				}
+	
+	- document.querySelectorAll()
+
+• Node Types:
+	- document		root v/d tree
+	- element		HTML-tag
+	- attr			attribuut v/e tag
+	- text			tekst inhoud v/e element of attr node
+	- comment		HTML commentaar
+	
+	→ Elk element heeft 1 parent, opvragen:	Node.parentNode() OF Node.parentElement
+	→ Kijken om een node childs heeft:		Node.hasChildnodes() 	→ returned bool
+											Node.childNodes			→ returned de elementen
+											Node.firstElementChild	→ returned eerste child element
+											Node.lastElementChild	→ returned laatste child element
+
+• DOM editeren:						vb.:
+	document.createElement()			const div = document.createElement('div')
+	document.createTextNode()           div.appendChild(document.createTextNode("Hello world!))
+	document.appendChild()              document.body.appendChild(div)
+	
+	(document.)element.prepend(newChild)				→ append before other childs
+	element.replaceChild(newChild, existingChild)
+	element.insertAdjecentElement(position, newElement)
+	element.removeChild(node[index])
+	
+	document.insertBefore(newNode, existingNode)	vb.: list.insertBefore(newItem, list.childNodes[2])
+	
+	element.textContent = 'new text'
+	
+	class name toevoegen:	document.querySelector("tagName").classList.add("newClassName")
+	HTML content opvragen:	document.getElementById("idName").innerHTML = "vb tekst van een p-tag veranderen"
+	
+	JavaScript - 5 - Browser.pptx	→ ik zit aan S36 van 57
+
+• HTML DOM Events:
+	https://www.w3schools.com/jsref/dom_obj_event.asp
+	
+_______________________________________________________________________________________________________________________________
+-JS- Classes -JS-		https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+-----------------
+class ClassName {
+	constructor(parameter1, parameter2) {
+		this.property1 = parameter1;
+		this.property2 = parameter2;
+	}
+  
+	FunctionName(parameters) {
+		// Do something
+	}
+  
+	get propertyAccessorsName() {		// Get & Set Accessors
+		return this.propertyName
+	}
+	set propertyAccessorName(newValueVarName) {
+		this.propertyName = newValueVarName
+	}
+}
+
+class SubClassName extends MainClassName {					// Subclass
+	constructor(parameter1, parameter2, parameter3) {		// If the class doesn't have parameters you don't have to add a constructor here since it's first purpose is to pass parameters
+		super(parameter1, parameter2)						// call the super class constructor and pass the parameters, has to be called first before any additional properties
+		this.property3 = parameter3;
+	}
+  
+	FunctionName(parameters) {
+		// Add specific functions for this Sub class
+	}		
+}
+
+--------------------------------------------------------------------------	
+vb.1:	class Animal {
+			constructor(name) {
+				this.name = name;
+			}
+
+			speak() {
+				console.log(`${this.name} makes a noise.`);
+			}
+		}
+
+		class Dog extends Animal {
+			constructor(name) {
+				super(name); // call the super class constructor and pass in the name parameter
+			}
+
+			speak() {
+				console.log(`${this.name} barks.`);
+			}
+		}
+
+		let d = new Dog('Mitzie');
+		d.speak(); // Mitzie barks.
+
+--------------------------------------------------------------------------	
+vb.2:	class Cat {
+			constructor(name) {
+				this.name = name;
+			}
+
+			speak() {
+				console.log(`${this.name} makes a noise.`);
+			}
+		}
+
+		class Lion extends Cat {
+			speak() {
+				super.speak();
+				console.log(`${this.name} roars.`);
+			}
+		}
+
+		let l = new Lion('Fuzzy');
+		l.speak();
+		// Fuzzy makes a noise.
+		// Fuzzy roars.
+
+--------------------------------------------------------------------------	
+vb.3:	class Screen {
+
+            constructor(w, h) {
+                this.w = w
+                this.h = h
+            }
+
+            diagonal() {
+                console.log(this.width + " x " + this.height)
+                return Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2));
+            }
+
+            get width() {
+                return this.w
+            }
+
+            set width(w) {
+                this.w = w
+            }
+
+            get height() {
+                return this.h
+            }
+
+            set height(h) {
+                this.h = h
+            }
+
+            dimensions(definition) {
+                let dimensions = definition.split('x')
+                this.width = parseInt(dimensions[0]);
+                this.height = parseInt(dimensions[1]);
+                console.log(this.height + "x" + this.width)
+            }
+        }
+--------------------------------------------------------------------------	
+
+Class Definition: Classes as functions:
+---------------------------------------
+vb.:	function Summer() {
+            this.amount = 0;
+            this.add = function (input) {
+                this.amount += input;
+            }
+            this.getCurrentSum = function () {
+                return this.amount;
+            }
+        }
+        let s1 = new Summer();
+		
+
+_______________________________________________________________________________________________________________________________
+-JS- Object Literals -JS-		http://dyn-web.com/tutorials/object-literal/
+-------------------------		http://dyn-web.com/tutorials/object-literal/properties.php
+
+	objectName = {
+		propertyName: propertyValue,	→ propertyValue can be any data type, including array literals, functions, and nested object literals
+	}
+
+	vb.1 same as above:
+		s1 = {
+            amount: 0,
+            add: function (input) {
+                this.amount += input;
+            },
+            getCurrentSum: function () {
+                return this.amount;
+            },									→ This last komma is optional, but makes it easier to add another property later on
+        }
+		
+	vb.2:
+		var Swapper = {
+			// an array literal
+			images: ["smile.gif", "grim.gif", "frown.gif", "bomb.gif"],
+			pos: { // nested object literal
+				x: 40,
+				y: 300
+			},
+			onSwap: function() { // function
+				// code here
+			},
+		};
+
+→ Object Literal property with same name as variable:
+	vb.:	favouriteFood = "Chocolate"
+			const bavo = {					→ bavo = Object Literal
+				favouriteFood,				→ Same as: favouriteFood = favouriteFood,
+			}
+			
+→ Properties toevoegen of aanpassen met .dot-notatie of []
+	myObject.propertyName = propertyValue
+	myObject['property name'] = propertyValue	→ Voor property names met spaties, speciale tekens, reserved keywords of variabel
+	
+	vb.: 	for (var i=0; i<=4; i++) {
+				myObject['prop' + i] = i;
+			}
+
+→ Properties uitlezen:
+	console.log(myObject.propertyName)
+	let varNaam = myObject['property name']
+
+_______________________________________________________________________________________________________________________________
+-JS- Canvas -JS-
+----------------
+→ x=0,y=0 punt links bovenaan
+
+<style>
+	canvas {
+	width: 500px;															// Grote van canvas definiëren. Height & width kan hier in CSS, of in de HTML tag
+	height: 500px;
+	
+	border: 1px solid black													// Canvas boord geven om zichtbaar te maken
+	}
+</style>
+<script>
+	document.addEventListener("DOMContentLoaded",(event)=>{ 				// Vanaf de DOM boomstructuur geladden is, voer deze functie uit (call-back methode) → Nodig om document.iets te kunnen doen
+        let canvas = document.querySelector("canvas")						// Selecteer de <canvas>-tag uit het DOM boomstructuur document 
+		let context = canvas.getContext('2d')								// Zeggen dat we 2D gaan tekenen
+		
+		let context = document.querySelector("canvas").getContext('2d')		// Zelfde als hierboven, maar in één lijn
+		
+		context.fillRect(0,0,200,200) 										// Rechthoek tekenen van 200x200px
+    })
+</script>
+<body>
+	<canvas width="500" height="500" ></canvas>								// Height & width kan hier in de HTML-tag, of in CSS
+</body>
+
+• Soorten lijnen tekennen = path:
+	- Recchte lijn tussen pixels
+		1) start nieuwe lijn		context.beginPath()
+		2) Start coördinaten		context.moveTo(x, y) 
+		3) Eind coördinaten			context.lineTo(x, y)
+			Lijn dikte				context.lineWidth = <int>
+			Lijn kleur				context.strokeStyle = "<color>"
+		4) Wat voor lijn			context.stroke()
+		
+	- Cirkel:
+		..
+		2) context.arc(centerX, centerY, radius, startingAngle, endingAngle, antiClockWise) 
+			vb.: context.arc(80,100,50,0,Math.PI,false)
+				→ Halve cirkel, hele cirkel = Math.PI*2
+		..
+		
+	vb. Paint:
+		<script>
+			document.addEventListener("DOMContentLoaded",(event)=>{ 
+				let context = document.querySelector("canvas").getContext('2d')
+				let hasMouseClicked = false
+				
+				document.addEventListener("mousedown",(mouseDown)=>{	// Wacht tot er geklikt wordt met de muis
+					hasMouseClicked = true
+					context.beginPath()									// Begint een nieuwe lijn, anders springt de vorige lijn naar het nieuwe begin punt
+				}
+				
+				document.addEventListener("mousedown",(mouseDown)=>{	
+					hasMouseClicked = fasle
+				}
+				
+				document.addEventListener("",()=>{						// Nog aanvullen
+					if(mousClicked) {
+						context.linTo(mouseEvent.pageX, mouseEvent.pageY)
+						context.stroke()
+					}
+				}
+			})
+		</script>
+		<body>
+			<canvas width="500" height="500" ></canvas>
+		</body>
+	
+• Afbeelding plaatsen:
+	const img = new Image()
+	img.src = "path.fileType" 		→ OF let img = document.createElement ... (zie theorie opname)
+	img.onload = ()=>{
+		context.drawImage(img,x,y)
+		
+• Animation / Game Loop:
+	function Animate() {
+		//Clear
+		context.clearRect(0,0,canvasWidth,canvasHeight)
+		
+		//Update
+		
+		//Draw
+		
+		//Framerate
+		setTimeout(Animate,33)	// Minimum om vloeiende animaties te krijgen
+	}
+	
+	vb. Bewegend vierkant:
+		<script>
+			class Rechthoek{
+				constructor(xPos,yPos,width,height,xSnelheid,ySnelheid){
+					this.x = xPos
+					this.y = yPos
+					this.w = width
+					this.h = height
+					this.vx = xSnelheid
+					this.vy = ySnelheid
+				}
+				
+				Update(){
+					this.x += this.vx
+					this.y += this.vy
+					
+					// Collision detection
+					if(this.x < 0 || this.x >= 500){	// Als positie buiten canvas komt
+						this.vx *= -1					// Tegengestelde richting
+					}
+					
+					if(this.y < 0 || this.y >= 500){	// Als positie buiten canvas komt
+						this.vy *= -1					// Tegengestelde richting
+					}
+				}
+				
+				Draw(ctx){
+					ctx.fillRect(this.x,this.y,this.w,this.h)
+				}
+			}
+			
+			document.addEventListener("DOMContentLoaded",(event)=>{ 
+				let context = document.querySelector("canvas").getContext('2d')
+				
+				// Variabelen
+				let r1 = new Rechthoek(10,10,20,30)				// Enkele rechthoek
+				
+				let rechthoeken = []							// Meerdere in een array
+				rechthoekenn.push(new Rechthoek(10,20,20,30,2)	// Nieuwe rechthoek in array steken
+				rechthoekenn.push(new Rechthoek(50,60,15,25,3)
+				
+				function Animate() {
+					//Clear
+					context.clearRect(0,0,500,500)
+					
+					//Update
+					r1.Update()									// Enkele
+					
+					for(let i=0; i<rechthoeke,.length; i++){	// Meerdere, Update en Draw kunnen uiteraard beter in dezelfde for-lus
+						rechthoeken[i].Update()
+					}
+					
+					//Draw
+					r1.Draw(context)							// Enkele
+					
+					for(let i=0; i<rechthoeke,.length; i++){	// Meerdere
+						rechthoeken[i].Draw(context)
+					}
+					
+					//Framerate
+					setTimeout(Animate,33)
+				}
+			})
+		</script>
+		<body>
+			<canvas width="500" height="500" ></canvas>
+		</body>
+
+• Collision Detection:
+	
+	- Rechthoeken:
+		function CheckCollision(kogel,obst)
+		{
+			if(  ((B.x + B.width) > A.x) && ((A.x+A.width)>B.x) && !((B.y+B.height) < A.y) && !((A.y+A.height) < B.y) )
+			{
+				return true;
+			}
+			return false;
+		}
+	
+	- Cirkels:
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<title>Document</title>
+			<style>
+				div{
+					border:1px solid black;
+					width:200px;
+				}
+			</style>
+			
+			<script>
+			var ctx;
+			var b;
+				var textTijd;
+				var textY;
+			function start(){
+				var canvas = document.getElementById("myCanvas")
+				ctx = canvas.getContext('2d');
+				b = new bal(30,20,2,2);
+				textTijd = document.getElementById("t");
+				textY = document.getElementById("y");
+				Animate();
+			}
+				function bal(x,y,vx,vy){
+					this.x = x;
+					this.y = y;
+					this.vx = vx;
+					this.vy = vy;
+					
+					this.draw = function(context){
+						context.beginPath()
+						context.arc(this.x,this.y,20,0,Math.PI*2,true);
+						context.fill();
+					}
+				}
+				var t = 0;
+				var delta = 0.5;
+				var a = 9.81;
+				var y0=0;
+				var z0=0;
+				var factor=0.1;
+				var tNieuw=0;
+				function Animate(){
+					
+					ctx.clearRect(0,0,300,500);
+					
+				   // b.y+=b.vy;
+					b.y= y0+a/2*t*t
+				   console.log(b.y)
+					if( b.y > 500){
+						//b.vy*=-1;
+						delta = -delta;
+						
+						//y0 = y0 + factor*((500)-y0);
+						//t=Math.sqrt((500-y0)*2/a);
+					}
+					b.draw(ctx);
+					
+					t+=delta;
+					textTijd.innerHTML = "tijd=" +t + " "+ tNieuw;
+					textY.innerHTML = "Y = " + z0;
+					setTimeout(Animate,100);
+				}
+			</script>
+		</head>
+		<body onload="start()">
+		   <div id="t"></div>
+		   <div id="y"></div>
+			<canvas width="300" height="500" id="myCanvas"></canvas>
+		</body>
+		</html>
+
+	
+• Translaties:
+
+	- Rotatie:
+		context.save()						// Huidige context opslagen
+		context.translate(xPos,yPos)		// Context verplaatsen
+		context.beginPath()
+		context.moveTo(0,0)
+		context.rotate(45*Math.PI/180)		// Context roteren. Staat in rad dus omzetten van graden nodig *Math.PI/180
+		context.lineTo(0,length)
+		context.stroke()
+		context.restore()					// Opgeslagen context terug inladen
+		
+_______________________________________________________________________________________________________________________________
+-JS- Full Stack Development - Begin NodeJS -JS-
+-----------------------------------------------
+• Traditionele web development:
+	Presentation layer:		← request		Business Logic layer:		↔		Data Access layer:
+	-------------------						---------------------				------------------
+	HTML, CSS & JavaScript 					Ruby, Phyton, Java, C++, PHP		DBMS
+	
+• Full Stack JavaScript Development:
+	Presentation layer:		←				Business Logic layer:		↔		Data Access layer:
+	-------------------						---------------------				------------------
+	Single page Apps using					NodeJS								MongoDB
+	JS frameworks/libraries					NodeJS modules						JSON documents
+	like Angular or React
+
+_______________________________________________________________________________________________________________________________
+-JS- MODULES -JS-
+-----------------
+Code opsplitsen in verschillende files.
+
+• Terminal commando's (zoals bij Linux):
+	- node bestandsnaam.js 	→ Voert bestand uit → als error wss in de foute map bezig
+	- cd /mapNaam 			→ gaat naar die map
+
+• 3 soorten Modules:
+	- File based: eigen node module definiëren in een bestand:
+	- Core: interne modules in node
+	- External: 3rd party libraries		→ Installeren in Terminal: 			npm i --save libraryName 		vb.: npm i --save lodash
+										→ Toevoegen voor gebruik in file: 	const _ = require("lodash")
+										→ Functie van library gebruiken:	let getal = _.random(100, 300)
+										
+	→ npm = Node Package Manager
+		→ wordt geïnstalleerd samen met Node.js
+	
+• Module exports/require Pre-ECMASCRIPT5/ES2015:
+	Variabelen exporteren in het ééne bestand en importeren in een ander.
+	- Exporteren:		(module.)exports.varNaam = "Iets"
+	- Importeren:		const naam = require("./bestandsNaam")
+	- Gebruiken:		naam.varNaam
+	
+	Kan ook voor klasse:
+	- Exporteren:		module.exports.klasseNaam
+	- Importeren:		let naam = require("./bestandsNaam")
+	- Gebruiken:		AANVULLEN
+	
+• Module export/import Post-ECMASCRIPT5/ES2015:					https://learning.ap.be/mod/page/view.php?id=462149
+	- Exporteren:		(module.)export.varNaam = "Iets"		→ onderaan het bestand, onder de klasse code
+	- Importeren:		const naam = import("./bestandsNaam")
+	- Gebruiken:		naam.varNaam
+	
+	→ Specifieke functie of classe:
+		vb.: 	export function log(msg){ 
+					console.log(msg); 
+				}
+				----------------------------
+				import {log} from "./logger.js"; 	→ selecteren met {naam}
+				log("test");
+					
+				export class Person{..}
+				---------------------------------
+				import {Person} from "./Person.js"; 
+				let p = new Person("Tom", "Peeters"); 
+				p.Print();
+
+				
+	→ Default exports:
+		vb.:	export default Print(msg){ 
+					console.log(msg); 
+				}
+				------------------------------
+				import printer from "./default.js"; → je kan zelf een naam geven, geen {}
+				printer("test"); 
+				
+	→ Multiple exports:
+		vb.:	export function Error(msg){ 
+					console.log("error"+msg); 
+				} 
+				export function Warning(msg){ 
+					console.log("warning"+msg); 
+				} 
+				export function Info(msg){ 
+					console.log("info"+msg);
+				}
+				---------------------------------
+				import {Error as err, Info, Warning } from "./Logger.js";	→ Import met alias
+				import * as logger from "./Logger.js"; 						→ Import all
+	
+_______________________________________________________________________________________________________________________________
+-JS- WEB SERVER -JS-
+--------------------
+• Default ports:
+	- http 	:80
+	- https :443
+	- local	:5500 (development server van Live-server in VS Code)
+	- mysql: 3306
+	
+• Werking:
+	1) Browser stuurt request naar de web server
+	2) Web-server stuurt response terug
+	→ kan met index.html, maar kan ook 
+
+• API = Application Programming Interface
+	Laat programma's, of onderdelen, toe met elkaar te communiceren en data te delen in eender welke vorm. vb. json code, html code, een afbeelding
+
+• Express: Web Framework Module om API's te maken.
+	Installeren:
+		1) Open de Terminal
+		2) npm init 				→ package.json aanmaken
+		3) npm i express --save		→ map node_moddules aanmaken 	→ module.exports = require('./lib/express'); → = Pre-ES5 dus importeren met "require"
+		4) server.js aanmaken
+		5) express gebruiken, vb:
+									const express = require("express")
+									const app = express() 						// Express object aanmaken
+									app.listen(3000, err => {
+										if(err)
+											console.log(err)
+										console.log("Listening on port 3000")
+									} )
+		6) Laten draaien → in Terminal: node server.js
+		7) Afsluiten met Ctrl+C
+		
+• Routes maken waar de server naar moet luisteren:
+	→ door maken van Endpoints vb:
+									app.get("/producten", (req, res) => { 		// req = request object, res = respons object
+										console.log(req)
+										res.send("<h1>Producten lijst</h1>")    // Route Endpoint localhost:3000/producten
+									})
+	
+	→ Parameters meegeven:			app.get("/iets/:param1/:param2", (req, res) => {
+										console.log(req.params) 				// Toont parameters in Terminal
+									})
+									
+• Redirect voor oude requests:	vb:
+									app.get("/old", (res, res) => {
+										res.redirect(301, "producten)")         // Redirect
+									})
+									
+• HTTP verbs:
+	- HTTP Methods:	https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+		vb: method="POST" in html tag of app.post → data sturen ipv krijgen
+		
+		GET		requests a representation of the specified resource. Requests using GET should only retrieve data.
+		POST	is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
+		PUT		is used to send data to a server to create/update a resource.. It replaces all current representations of the target resource with the request payload.
+					→ PUT always has the same effect, where POST has side effects of creating the same resource multiple times.
+		HEAD	asks for a response identical to that of a GET request, but without the response body.
+		DELETE	deletes the specified resource.
+		CONNECT	establishes a tunnel to the server identified by the target resource.
+		OPTIONS	is used to describe the communication options for the target resource.
+		TRACE	performs a message loop-back test along the path to the target resource.
+		PATCH	is used to apply partial modifications to a resource.	
+		
+	- HTTP response status codes: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+		1xx)	Information responses
+		2xx)	Successful responses
+		3xx)	Redirection messages
+		4xx)	Client error responses
+					401 Unauthorized: "unauthenticated", the client must authenticate itself to get the requested response. Bvb. bij verkeerd wachtwoord.
+		5xx)	Server error responses
+
+• Body-parser (=middleware, extensie module)
+	- Instaleren:	npm i --save body-parser
+	- Gebruiken:	const bp = require("body-parser")
+					app.use(bp.json())
+					
+	vb.:	HTML	<form method="POST" action="http://localhost:3000/users">
+						id:<input type="text" name="id">
+						<label for="naam">Naam:</label>
+						<input type="text" id="naam" name="naam"><br><br>
+						<input type="submit">
+					</form>
+		
+			JS		app.post("/users", (req,res)=>{
+						
+					})
+					AANVULLEN
+					
+
+_______________________________________________________________________________________________________________________________
+-JS- MYSQL SERVER -JS-
+----------------------
+SQL = Structured Query Language om data in een database tabellenn te manipuleren. (MySQL = database merknaam, zoals Oracle)
+MySQL default op poort 3306, je kan dit aanpassen via config file in XAMP
+
+Nieuw project opzetten:
+-----------------------
+	1) Nieuwe map aanmaken en openen
+	2) Terminal openen:
+		2.1) npm init -y
+		2.2) npm install -save express mysql body-parser
+		2.3) npm install -save-dev nodemon
+	3) Aan package.json toeveogen onder "scripts": {:
+		"start": "nodemon server.js",
+		"runnen": "npm start",
+	4) Setup basic webserver:
+		4.1) "server.js" file aanmaken
+		4.2) code:
+		
+const express = require("express")
+const bp = require("body-parser")
+const mysql = require("mysql")
+const app = express()
+
+app.use(bp.urlencoded({extended:false}))
+app.use(bp.json())
+
+app.get("/",(req,res)=>{
+    res.send("ok")
+})
+
+app.listen(3000,err=>{
+    if(err)
+        console.log(err)
+    console.log("running #3000")
+})
+
+	5) Server runnen in Terminal:
+		node server.js
+	
+-------------------------------------------------------------------------------------------------------------------	
+Conncetions & End-points:
+-------------------------
+const express = require("express")
+const bp = require("body-parser")
+const mysql = require("mysql")
+const app= express()
+app.use(bp.urlencoded({ extended:false}))
+app.use(bp.json())
+
+//mySQL - connection
+// we gaan een conneciton pool maken, die is sneller omdat  connecties kunnen herbruikt worden
+// en zijn performanter (= cache van db connectie)
+//1 maak connection
+const pool = mysql.createPool({
+    connectionLimit :10, //max nr of connectie die in 1 keer worden gemaakt
+    host            : "localhost",
+    user            : "root",
+    password        : "",
+    database        : "voetbal"  //specifieer db die je gebruikt
+})
+
+//start writing first request (get all teams)
+app.get("/teams",(req,res)=>{
+    pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+        if(err)
+            throw err
+        
+        console.log("connected as id " + connection.id)
+        console.log(`connected as id ${connection.id}`)
+
+        connection.query("select * from teams",(err,rows)=>{ //je krijgt een error of rijen terug
+
+            connection.release() //return to the conneciton pool
+            if(!err)
+                res.send(rows)
+            else
+                console.log(err)
+        })
+    })      
+})
+
+app.get("/teams/:id",(req,res)=>{
+    pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+        if(err)
+            throw err
+
+        connection.query(`select * from teams where id = ${req.params.id}`,(err,rows)=>{ //je krijgt een error of rijen terug
+
+            connection.release() //return to the conneciton pool
+            if(!err)
+                res.send(rows)
+            else
+                console.log(err)
+        })
+    })      
+})
+
+//delete een team met een specifiek id
+app.delete("/teams/:id",(req,res)=>{
+    pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+        if(err)
+            throw err
+
+        connection.query(`delete from teams where id = ${req.params.id}`,(err,rows)=>{ //je krijgt een error of rijen terug
+
+            connection.release() //return to the conneciton pool
+            if(!err)
+                res.send(rows)
+            else
+                console.log(err)
+        })
+    })      
+})
+
+app.post("/teams",(req,res)=>{
+
+    const newTeam = req.body;
+    console.log(newTeam)
+    pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+        if(err)
+            throw err
+        let str = `insert into teams(id,Name) values(${newTeam.id}, "${newTeam.name}")`
+        console.log(str)
+        connection.query(str,(err,rows)=>{ //je krijgt een error of rijen terug
+
+            connection.release() //return to the conneciton pool
+            if(!err)
+                res.send(rows)
+            else
+                console.log(err)
+        })
+    })      
+})
+
+app.put("/teams",(req,res)=>{
+
+    const newTeam = req.body;
+    console.log(newTeam)
+    pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+        if(err)
+            throw err
+        let str = `update teams set name = "${newTeam.name}" where id = ${newTeam.id} `
+        console.log(str)
+        connection.query(str,(err,rows)=>{ //je krijgt een error of rijen terug
+
+            connection.release() //return to the conneciton pool
+            if(!err)
+                res.send(rows)
+            else
+                console.log(err)
+        })
+    })      
+})
+
+
+app.listen(3000,err=>{
+    if(err)
+        console.log(err)
+    console.log("running #3000")
+})
+
+---------------------------------------------------------------------------------------------------------
+Refactoring code: Routes:
+-------------------------
+Aparte file database.js en in map "routes", aparte files voor bepaalde endpoints met zelf meerdere endpoints.
+
+-----------------------------------------
+- BASIS CODE VOOR database.js:
+
+const mysql = require("mysql")
+
+const pool = mysql.createPool({
+    connectionLimit :10, //max nr of connectie die in 1 keer worden gemaakt
+    host            : "localhost",
+    user            : "root",
+    password        : "",
+    database        : "databaseNaam"  //specifieer db die je gebruikt
+})
+
+module.exports = pool
+
+-----------------------------------------
+- BASIS CODE VOOR ROUTE FILES: 
+
+const express = require("express")
+const pool = require("../database")
+let router = express.Router()
+
+router
+    .route("/")
+    .get()
+	
+module.exports = router
+	
+- VOORBEELD:
+// GET toon alle spelers
+router
+    .route("/")
+    .get((req,res)=>{
+        pool.getConnection( (err,connection) =>{//om naar pool te connecteren
+            if(err)
+                throw err
+            
+            connection.query(`select * from spelers`,(err,rows)=>{ //je krijgt een error of rijen terug
+    
+                connection.release() //return to the conneciton pool
+                if(!err)
+                    res.send(rows)
+                else
+                    console.log(err)
+            })
+        })
+    })
+
+------------------------------------------
+- CODE IN server.js:
+
+const pool = require("./database")
+const spelers = require("./routes/spelers")
+const teams = require("./routes/teams")
+
+app.use("/spelers",spelers)
+app.use("/teams",teams)
+
+_______________________________________________________________________________________________________________________________
+-JS- XMLHttpRequest() -JS-
+--------------------------
+In vier stappen.
+
+GET:
+----
+<script> // In html file
+	document.addEventListener("DOMContentLoaded",(arg)=>{
+		// 1. Maak een XMLHttpRequest object aan
+		let request = new XMLHttpRequest()
+		
+		// 2. Open een connectie naar een endpoint
+		request.open("GET","http://localhost:3000/endpointName")
+		
+		// 3. Vang de response van het endpoint op, en plaats het resultaat ergens in je html bestand
+		request.onload = ()=>{
+			let response = request.response		// response = een string
+			console.log(response)
+			
+			// response serialiseren
+			let jsonData = JSON.parse(response)
+			console.log(jsonData)	// log JSON array in zijn geheel
+			
+			for(let i=0; i<jsonData.length; i++){
+				console.log(jsonData[i]) // log object per object
+				document.querySelector("p").innerHTML += jsonData[i].id + ", "
+			}
+		}
+		
+		// 4. Voer de request uit
+		request.send()
+	}
+</script>
+
+POST of PUT:
+------------
+function PostDataWithXMLHttpRequest(){
+
+	let request = new XMLHttpRequest()
+	request.open("POST","http://localhost:3000/endpointName") // zelfde voor "PUT"
+	request.onload = ()=>{
+		let response = request.response
+		console.log(response)
+		let jsonData = JSON.parse(response)
+		console.log(jsonData)
+	}
+	const newDataRow = {teamnr:10,spelersnr:6,divisie:"test"}
+	console.log(newDataRow)
+	request.setRequestHeader("content-type","application/json) // Meegeven wat voor data er in de request wordt meegegeven.
+	request.send(JSON.stringify(newTeam))
+}

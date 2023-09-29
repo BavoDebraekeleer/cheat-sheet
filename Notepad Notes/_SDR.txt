@@ -1,0 +1,957 @@
+Software Defined Radio
+---------------------
+
+-- LABO --
+----------
+1.
+--
+GNU Radio Companion:
+
+	F6 = Execute flowgraph
+	F7 = Kill flowgraph
+
+	- Blokken
+		Kleur: 	Type variabele:
+		------	---------------
+		Blauw 	Complex
+		Oranje 	Float
+		Groen 	Integer
+		Geel 	Short
+		Paars 	Byte
+		
+		-> Als blok geslecteerd is met UP en DOWN toetsen van type veranderen
+		
+		selecteren + "b" = bypass block
+		
+	rational resampler block = combinatie interpolator en decimator
+	
+	D - disable block
+	E - enable block
+
+2.
+--
+antenne -> 300 / MHz = meter
+totale lengte = halve golf
+mechanische lengte is niet gelijk aan elektrische lengte -> fysiek korter maken -> verkortingsfactor = 10%
+
+300 / 446 	= 0,672645... m
+*100 		= 67,264.. cm
+/4 			= 16,8161... cm
+*0,9 		= 15,1345... cm
+	
+_________________________________________________________________________________________________________________
+
+-- THEORIE --
+-------------
+
+LES 1.
+------
+
+Wat is SDR?
+===========
+
+Alles in een radio zender/ontvanger zo kort mogelijk tegen de antenne vervangen door software
+tegenover discrete componenten in een klassieke radio.
+
+HackRF One by Great Scott Gadgets (€400)
+
+Alle signaal bewerkingen digitaal.
+
+SDR kan ook in FPGA. Het software gedeelte wordt in de chip van de FPGA gestoken -> zonder PC
+
+In smartphones, cubesats (10 cm²) en radar wordt SDR gebruikt.
+Bij smartphones om alles in een kleine behuizing te krijgen (Wifi, 4G, 5G, BLE, NFC, ...)
+Bij cubesats om aanpassingen te kunnen uitvoeren via firmware updates vanop afstand.
+Bij radar omdat pulsen die terug komen van elkaar moeten kunnen onderscheiden worden.
+Elke puls moet dus een ander type zijn.
+Ook bij bijkomende protocollen is het gemakkelijker zender/ontvanger SDR's te maken zodat ze meerdere aankunnen 
+ipv voor elk protocol een nieuwe paal te moeten zetten.
+
+Radio golven:
+- Wet van Lenz -> magnetisch veld, elektrisch magnetisme
+	Een mechanische kracht die iets kan wegduwen.
+	
+- Antenne: zelfde principe als condensator,
+	maar de platen naast elkaar tov over elkaar
+	en op AC tov DC
+	Zo krijg je elektrische veldlijnen die bewegen door de lucht -> wordt magnetische veld
+	Door de verandering in polariteit door AC gaat het vorige magnetische veld met omgekeerde polariteit zichzelf sluiten 
+	en worden weggeduwd door het nieuwe magnetische veld met omgekeerde polariteit.
+	
+	Magnetische velden staan op 90° tegenover de elektrische velden.
+	
+	Reflector en Director
+	
+- Golflengte/Wavelength = hoe ver de golf gaat in 1 seconden.
+
+	wavelength (griekse letter) = velocity op propagation (v) / frequency of signal (f)
+	
+- Soorten antennes -> zie slides
+	Dipole maakt halve golf?
+	
+	- Yagi:
+	- Log Periodic: Richtingsgevoelige antenne voor breede golflengtes
+	- Ground Plane:
+	
+- Modulatie en Demodulatie:
+
+	Modulatie = toevoegen van informatie aan een draaggolf:
+	- CW (Morse)
+	- On/Off keying binary code:
+		als signaal te zwak kan 1 gezien worden als 0, en einde is moeilijk te weten zonder afspraken.
+	- AM = Amplitude Modulatie:
+		Uit het sterker en minder sterk worden van het signaal krijg je de informatie.
+	- FM = Frequentie Modulatie:
+		Met VCO = Voltage Controlled Oscillator -> andere frequentie naargelang de spanning die binnenkomt
+		Formule van het modulerend signaal (info) invullen als de omega (w) in de draaggolf formule.
+	- PSK modulatie:
+		Adhv fase verandering.
+		B-PSK (2 stappen) Q-PSK (4-stappen), 8-PSK (8-stappen), 16-PSK, ... -> fase sprongen/stappen worden steeds kleiner.
+		
+	(formules niet kennen voor examen, enkel ter illustratie)
+	
+- Direct Conversion ontvanger (werkwijze met discrete componenten):
+	Werking:
+		1) Ingangsfilter:
+			filteren op wat we willen ontvangen, banddoorlaat/band-pass filter, spoel + condensator
+			Moet filter zijn met goede selectiviteit zodat aanliggende zenders niet doorgelaten worden.
+			
+		2) Mengtrap:
+			Mengen met ingebouwde oscillator op de resonantiefrequentie
+			-> inkomende frequenties die gewenst zijn worden doorgelaten -> oneindig grote weerstand in filter
+			-> niet gewenste frequenties aan de antenne worden kort gesloten -> weerstand van filter = 0
+			
+			+ Low-pass/Laagdoorlaat filter
+			
+		-> Zeer moeilijk om ingangsfilter te maken die én zeer selectief is én regelbaar én stabiel! -> Moeten we vanaf
+			Oplossing: Super heterodyne principe, werken met IF = midden-frequentie
+			-> regelbare oscillator ipv regelbare filter
+			
+		-> Double Syperheterodyne ontvanger: tweemaal filter + mengtrap
+		-> Triple heterodyne ontvanger: eerst frequentie heel hoog omhoog brengen, vb. met 50 MHz voor een 7 MHz signaal, wordt 57 MHz
+			om daarna terug naar beneden te brengen in frequentie. -> Groter bereik
+	
+_________________________________________________________________________________________________________________
+			
+LES 2.
+------
+
+2. Radio Signal Sampling
+========================
+
+FT = Fourier transform:
+	Berekennen uit welke sinussen een bepaald signaal is samengesteld.
+	
+	-> Blokgolf, en elke ander signaal, is samenstelling van sinussen en/of cosinussen.
+	
+	FFT = Fast Fourier Transform:
+		- Snellere manier om sinussen te berekenen, met kleine toegift.
+		- Gemakkelijk om in code te schrijven. (De Laplace transform (=meer correcte manier) niet.)
+		- FT = van tijdsdomein (oscilloscoop) naar frequentie domein (spectrum analyser:
+			doorloopt alle frequenties in de tijd en geeft weer wanneer er iets ontvangen wordt.).
+			
+Sampling theorema:
+	Sampling is het omzetten van een continu of analoog signaal naar discreet of digitaal equivalent.
+		-> er gaat altijd informatie verloren tussen de samples.
+		
+	Samplen adhv een Sample & Hold (S/H) schakeling
+		-> schakelaar met condensator, met opamp als signaalvolger erachter
+			om de condensator niet te veel te belasten -> C moet zo traag mogelijk ontladen
+			met daarachter een ADC.
+		
+	Nyquist-Shannon theorema:
+		-> Conversie snelheid of sample rate = de snelheid waarin een sample wordt genomen (ADC heeft tijd nodig)
+			MOET hoger zijn dan de helft van de frequentie of sample frequentie fs MOET 2x het te samplen signaal
+			of 2x zo hoog als het hoogste frequentie component v/h signaal.
+			De bandbreedte is hierbij de frequentie-afstand tussen de laagste en hoogste frequentie component.
+			
+			fs >= 2x BW		waarbij fs = sample frequentie, BW = bandbreedte/bandwidth
+			
+Meng schakeling en spiegelfrequentie:
+	F1 -> |---|
+		  |	X | -> F2 + F1 of F2 - F1 -> filter voor de mengtrap zodanig dat je een positief getal krijgt en de negatieve spiegelfrequentie wegfilterd.
+	F2 -> |---|
+	
+	onder-mengen: F2s onder F1 behouden, en die boven wegfilteren
+	boven-mengen: F2 boven F1 behouden, en F2s eronder wegfilteren
+	
+Aliasing & Oversampling:
+	Anti-aliasing filter = om aliasing te voorkomen moet je een filter hebben die alles boven fs/2 wegfilterd.
+		De alias F2a, of spiegel in het frequentie domein, wegfilteren.
+		De alias F2a kan ook tussen F1 en F2 liggen.
+	
+	Oversampling = signalen meten die ver boven de capaciteit van de ADC liggen, mits correct filteren.
+		F2 onderdrukken met filter en alias F2a doorlaten met filter.
+	
+		-> elke nieuwe mogelijk frequentie ligt in een nieuwe "nyquist zone".
+		-> nyquist zones van bvb.: fs/2 -> fs -> 3/2fs -> 2fs
+		vb een wiel in film, het aantal frames per seconden is hier de fs,
+			in bepaalde nyquist zones lijkt het wiel achteruit te gaan
+		vb vouwend print papier op elkaar geeft hetzelfde beeld in het frequentiespectrum,
+			opengevouwen krijg je elke tweede blad het spiegelbeeld
+			
+Complex Signals:
+	Door cosinus ook te samplen krijg je twee getallen bij het samplen.
+	 -> Dit tweede (Q) is fase-informatie.
+	
+	Complex signaal = I & Q -> complexe samples
+	
+	f2s = spiegelfrequentie
+	
+	Laat toe om te zien of de sample boven of onder de 0 Hz ligt (center frequentie)
+		-f_IF = F2s - F1
+		+f_IF = F2 + F1
+		
+Formule bij I/Q sampling (sinus en cosinus):	
+	fs >= BW	want bij elke sampling krijg je een Q en I sample = 2 samples
+	
+	Bij overgang nyquist zones krijg je nu afwisselend positieve en negatieve frequenties.
+	
+_________________________________________________________________________________________________________________
+	
+LES 3.
+------
+
+3. Complexe getallen
+====================
+
+Getallen die niet op dezelfde as liggen projecteren op een zelfde as.
+Om een geometrische vorm voor te stellen op een enkele as.
+-> driehoek plat leggen
+
+Driehoek = a²+b²=c²
+a = √(c²-b²)
+-> als c=0 en b=1
+a = √(0²-1²) = √(-1)
+-> i = √(-1)
+-> in elektronica werken met "j" om verwarring met stroom te vermeiden.
+
+Bij sinus, motor die sinus vormt (vector), de pijl is de schuine zijde van de driehoek
+I + jQ	 -> waarbij I = In Phase (reëele gedeelte, x-as of a)
+					Q = Quadrature (imaginair gedeelte, y-as of b)
+					
+Complexe getallen maken berekeningen minder complex, want we kunnen gewoon de signalen/sinussen optellen.
+
+sampling-rate = 2x BW v/h IF
+
+
+
+4. SDR Ontvanger
+================
+
+Twee keer mengen (=vermenigvuldigen) en twee keer samplen om I en Q te bekomen = complexe samples
+I = signaal mengen met sinus van LO (Lokale Oscillator)
+Q = signaal mengen met cosinus LO = 90° verschoven.
+
+Sample frequentie = bandbreedte/bandwidth
+
+
+
+5. Sample rates
+===============
+
+1 Ms/s (mega samples per sec.) met 100 MHz -> geeft 99,5 MHz tot 100,5 MHz
+-> projecteren naar 0HZ geeft -0,5 MHz tot +0,5 MHz
+
+- Decimation (decimator):
+	overgaan van een hogere sample-rate naar een lagere
+	door niet nodige samples weg te gooien.
+	
+	-> decimatie-factor = maat van reductie
+	
+	-> om aantal berekeningen die moeten gebeuren drastisch te verminderen door overbodige samples weg te gooien.
+	-> regelmatig uitvoeren gedurende het gehele process
+	
+- Interpolation (interpolator):
+	overgaan van een lagere sample-rate naar een hogere
+
+	-> ipv waarde dupliceren is het beter een 0-waarde te gebruiken, dit voor latere berekeningen
+		(moet je niet verder begrijpen voorlopig)
+		
+-> Als je vb. 0,6 samples zou moeten verwijderen -> dit gaat niet, tis 1 of geen
+	Dus eerst interpoleren om extra samples te verkrijgen zodat we tot 1 uitkomen om dan te verwijderen
+	om de gewenste sample-rate te bekomen.
+	
+-> vb. radio station heeft BW van 200 kHz, maar hebben gesampled met 1Ms/s -> 100 MHz,
+		om één radio station te hebben moet je filteren maar we zitten nog altijd om 1 Ms/s, dus dit moet ook gereduceerd worden.
+		
+	Vb. sample-rate van 72k naar 48k
+		-> 48/72 = 2/3
+		-> 72 * 2 = 144
+		-> 144 / 3 = 48
+		
+- Throttle:
+	vb.: Film met sample-rate 25 frames/s van een uur, duurt geen uur om te kopiëren in de vorm van een mp4 bestand.
+	Bij Software defined onderdelen is de snelheid afhankelijk van de verwerkingssnelheid van de hardware.
+	Een virtuele sample generator produceerd meestal veel sneller samples dan de sample-rate aangeeft.
+	Dit moet soms afgeremd worden. Dit doet een throttle-blok. De verwerkingssnelheid van de samples reduceren.
+
+
+LES 4.
+------
+
+6. Filters
+==========
+
+Discrete reeks: een benadering voor continue analoge signalen.
+	Iteratieve benadering met acceptabele foutmarge.
+	
+Laag doorlaat filter:
+	integraal berekenen, vergelijkbaar met rechthoek over het signaal schijven en de oppervlakte
+	berekenen binnen de rechthoek en onder het signaal.
+	
+	Digitaal met discrete samples is dit enkel het gemiddelde van twee of een aantal samples nemen:
+		(sample1 + sample2) / 2  -> sample1 + (sample2 + sample3)
+	
+Hoog doorlaat filter:
+	Wiskundige afgeleide, vergelijkbaar met het kijken of er een verandering in signaal is.
+	Stijging als einde rechthoek hoger is als begin. -> output pulse hoog
+	Daling als einde rechthoek lager is als begin. -> output pulse hoog
+	Geen verandering -> output laag
+	
+	Digitaal is dit een verschil berekenen tussen twee samples:
+		sample2 - sample1
+		
+Digitale Filter:
+----------------
+	Impulse om karakteristieken weergeven:
+		Dirac pulse: theoretische pulse die is samengesteld uit alle mogelijk frequenties van sinussen.
+		-> fijn lijntje, theoretisch oneindig lange pulse
+		-> aangelegd aan een filter geeft dit de karakteristiek van de filter als uitgang (frequentie domein)
+	
+		-> digitaal equivalent = 1 sample
+		
+	FIR = Finite Impulse Response:
+		Relatief grote roll-off
+	
+		LD = sample1 + (sample2 + sample3) -> (sample2 + sample3) = vorige berekening
+		HD = sample1 + (sample2 x -1) = sample1 - sample2
+		
+		Gewicht geven adhv coefficiënten.
+		
+		-> elke berekening = 1 TAP
+		
+		GNU Radio Companion:
+			-> Decimating FIR Filter: voor LD, want sample rate mag verlaagt worden,
+				want deel samples wordt weggefilterd waardoor de bandbreedte verkleint
+			-> Interpolating FIR Filter: voor HD?
+			-> Frequency Xlating FIR Filter: combinatie met freq. verschuiving (vergelijkbaar met Mixer) + filter + decimator
+	
+	IIR = Infinite Impulse Response:
+		Relatief kleine roll-off/scherpe karakteristiek, maar met overshoot.
+			-> door oscillatie principe
+	
+		Infinite = Mogelijk tot oneindig durend signaal aan uitgang.
+		-> feedback-loop
+	
+		-> Eén pulse op deze filter geeft oscillatie, en hiervan komt de term Infinite
+		
+		->  FORWARD TAPS -> eerste berekening
+			FEEDBACK TAPS -> feedback-loop
+			
+		GNU Radio Companion:
+			-> IIR Filter
+			-> Single Pole IIR Filter: equivalent voor LC-filter met resonantie frequentie
+			
+		Colpits-oscillator = 2x C -> Colpits
+		Harthly-oscilator = C + L -> L is in Henry -> H -> Harthly
+		
+	Decimator is als LD filter bruikbaar -> minder berekeningen,
+	maar heeft geen TAPS dus geen instelbare respons karakteristiek.
+	
+	
+LES 5.
+------
+7. De SDR Transmitter: Basis principe v/d zender
+================================================
+
+Hoge frequentie door DAC werking -> trapspanning
+-> geeft vele hoge frequenties -> wegfilteren met LP filter om mooi signaal te bekomen.
+
+I -> analoge samples -> float
+Q -> discrete samples -> complex
+
+sample_rate = bandbreedte
+
+Eerst IF en BB Gain verhogen -> RF Gain zo laag mogelijk want versterkt ruis heel hard.
+
+
+8. Digitale Modulatie
+=====================
+
+Spectrum allocatie
+	-> hoe meer data overbrengen, hoe meer bandbreedte nodig
+	-> hoe slechter signaal-ruisverhouding
+	-> moeilijkere ontvangst -> minder data doorsturen om ontvangst te verbeteren
+	
+FDM = Frequency Division Multiplexing:
+	Elke gebruiker krijgt stukje uit beschikbare frequentieband, vb. radio zenders elke 200 kHz.
+	-> stukje = kanaal/channel
+	
+TDM = Time Division Multiplexing:
+	Volledige bandbreedte beschikbaar voor beperkte tijd, vb. gsm en telefoon netwerken.
+	-> tijd slots, gebruiker krijgt volledig frequentie spectrum voor korte duur
+	
+Spread Spectrum:
+	Bandbreedte opdelen bij verzenden in gelijke delen, vb. 8Mhz BW -> opdelen met 8 carriers -> 8x 1MHz delen
+	-> frequentie slots
+	-> Als één weg valt door storing blijft de rest intact. Zoals digitale communicatie.
+	
+Data & Symbol rate:
+	Data rate in bits per seconden
+		-> snelheid waarmee de data wordt overgedragen
+	Symbol rate in symbols (symbol = meerdere bits in één keer) per seconde
+		-> snelheid van effectieve overdracht
+		
+
+Modulatie types
+------------------
+
+ON/OFF Keying
+
+FSK = Frequency Shift Keying
+	Frequencie Modulatie (FM)
+	-> Frequency Mod block -> FM signaal
+	-> FM Demod block
+	
+	-> Sherpe overgangen (fourier) -> veel bandbreedte voor nodig, want veel frequentie componenten
+	
+GFSK = Gaussian Frequency Shift Keying
+	-> Gaussian filter geeft zachte overgangen -> minder bandbreedte nodig dan FSK
+		-> geen blokgolf met rechte flanken, maar met schuine flanken
+	
+PSK = Phase Shift Keying
+	Phase/Fase modulatie 
+	-> PSK Mod block
+	-> PSK Demod block
+
+BPSK = Bi Phase Shift Keying
+	-> slechts 2 fase toestanden gebruikt, 180° uit elkaar
+	
+QPSK = Quadrature Phase Shift Keying
+	-> 4 fase teostanden, 90° uit elkaar
+	-> symbol-rate = helft data rate, vb. 1 Mega-bit = 2 Mega-symbol
+	
+n-PSK -> symbol-rate = log2 n x data-rate
+	-> Hoe hoger n (opdelingen) hoe meer data kan verstuurd worden, maar hoe foutgevoeliger
+	
+	-> Constellatie-plot:
+		Visuele weergaven van de fases in een cirkel
+		Elke fase = constellatie-punt
+		-> constellatie-wolk = afwijkingen van het punt door ruis
+		-> hoe dichter de punten bij elkaar liggen, hoe meer kans de wolken elkaar gaan overlappen.
+		
+DPSK ?
+	DPSK Mod en Demod blocken
+
+GMSK = Gaussian Minimum Shift Keying
+	-> Bandbreedte minimaliseren
+	-> GMSK Mod en Demod blocken
+	vb. GSM netwerk
+	
+QAM = Quadrature Amplitude Modulation
+	Amplitude Modulatie (AM) + PSK
+	
+n-QAM:
+	Elke vector geeft bit-combinatie -> amplitude en fase
+	-> geeft soort van grid met punten
+	-> Op andere manier verdeeld als PSK, punten liggen op andere plaatsen, ook bij zelfde n.
+	
+OFDM = Orthogonal Frequency-Division Multiplexing
+	Combinatie van andere modulatie types.
+	vb. ADSL of VDSL lijnen. -> vaak 1024 carriers of meer
+	
+	
+Fout Correctie
+------------------
+FEC = Forward Error Correction
+	-> werkt met soort van checksum -> data herstel mogelijk adhv de checksum (tenzei er heel veel fouten inzitten)
+	
+	FEC-factor: verhouding tussen checksum bytes tov data-bytes
+	vb. FEC 3/4e = 3 bytes data wordt verzonden als 4 bytes (met de checksums in)
+	-> in realiteit niet zo eenvoudig als checksums, enkel ter illustratie
+	
+	FEC Encoder en Decoder blocken
+	
+
+Clock Recovery
+--------------
+	Clock uitzenden om oscillators te synchroniseren tussen zender en ontvanger.
+	Clock Recovery MM block
+	Polyphase Clock Sync block -> reeks van filters
+	
+Channel Simulation
+------------------
+	Software simulatie van hoe het zou zijn om een draadloze transmissie uit te voeren.
+	Channel Model block
+	
+
+EXTRA. RF Hacking
+=================
+
+Radio Hacking: Cars, Hardware, and more! - Samy Kamkar - AppSec California 2016
+	https://www.youtube.com/watch?v=1RipwqJG50c
+	https://www.youtube.com/c/SamyKamkar/videos
+	http://samy.pl
+
+FCC ID -> fcc.io & apps.fcc.gov
+	- Internal photos -> you can find out the chips inside
+	- Used frequencies and modulation type
+	- Test report
+	- User manual
+	
+Hardware tools:
+	- HackRF
+	- RTL-SDR
+	- Yard Stick One -> use with rfcat
+	- Mattel IM-ME (TI CC1101 chipset, sub-GHz tranceiver)
+		-> GoodFET42
+	- Logic Analyzer -> SMD micro probes
+	- Multi-meter -> to find GND en Power pins to map out the chip
+
+Software tools:
+	- GNU Radio
+	- GQRX (not Windows)
+	- SDR# (only Windows)
+	- rtl_fm (recording with RTL-SDR)
+	- Audacity (audio editing software)
+	- rfcat -> to use with Yard Stick One
+	- mallory (SSL MITMA -> Man in the middle attack tool)
+	
+Modulation types (digital)
+	- ASK -> Amplitude Modulation
+	- FSK -> Frequency Modulation
+	- PSK -> Phase Modulation
+	
+Lessons:
+	- Don't use small key sauce
+	- Require a preamble/sync
+	- Use rolling codes
+		-> Roll jam: jam two codes but record them and replay the first.
+			The second one can be used later.
+	
+	- Use certificate pinning and ignore CA's
+	- Hash password with random salt on authentication
+	- Assume you're on a hostile network
+	
+	- Encrypt/hash key + command, don't leave command readable
+	- HMAC to prevent bit flipping if encrypted
+	- Use time-based algorithms
+	- Challenge/response instead of one-way communication
+	
+	
+9. Sample data-array's
+======================
+
+FFT = Fast-fourier-transform
+	kan enkel berekend worden op een data-reeks of groep van samples
+	-> in software een array van samples
+	
+	bin = frequentie interval als resultaat van een FFT
+	-> aantal bin's dat een FFT berekening kan produceren is afhankelijk van de grote van de samples array en sample-rate
+
+Sample flow
+	vertraging = latency:
+		afhankelijk van de grote van de array,
+		en de rekenkracht ter beschikking voor dat block.
+		
+Disk I/O
+	Samples wegschrijven naar disk,
+	heeft voordeel van de samples met een andere frequentie te kunnen afspelen dan origineel opgenomen.
+	
+	file source block
+	
+Netwerk I/O
+	Samples naar netwerk kaart sturen.
+	Packets versturen met bvb TCP/IP protocol.
+	Zeer grote latency.
+	
+	Laat toe de samples zonder te bewerken door te sturen over een netwerk om ergens anders te verwerken.
+	Bvb Diversity ontvangst = meerdere antennes plaatsen en kijken welke het beste ontvangst heeft.
+	
+	TCP Sink block
+	TCP Source block
+
+
+
+10. Data Operations
+===================
+
+Data types
+	integer:
+		int   = 32-bit signed
+		short = 16-bit signed
+		char  = 8-bit  signed (vroeger 7-bit)
+		
+	byte: 8-bit unsigned, compatibel met char binnen GRC
+	
+Vector = array, achterliggend is alles een vector in GRC,
+		of eerder tuple of list omdat het in python is geschreven.
+		
+		Vector source block
+			-> vector-lengte:
+				ligt oranje -> lengte = 1
+				donker oranje -> lengte > 1
+				
+		Stream to Vector block
+		Vector to Stream block
+		
+		Groepeert samples -> samples worden tegelijkertijd doorgegeven.
+		
+Bits & Bytes
+------------
+	CPU on-efficient om met bits te werken.
+	Bits bestaan niet in python om deze reden.
+
+		Unpack K Bits block
+			byte input en output,
+			maar bij output is enkel de eerste K-aantal bit(s) data, de overige bits worden 0.
+			K geeft aan hoeveel bytes aan de uitgang zullen komen.
+			
+		Pack K Bits block
+			omgekeerde van Unpack
+			K geeft nu aan hoeveel bytes aan de ingang moeten samengevoegd worden naar één enkele output byte.
+			
+		Repack Bits block
+			Herverdeling van bits, Unpack gevolgd door Pack in één block eigenlijk.
+			
+		-> Endianness: geeft aan of MSB of LSB de eerste bit zal zijn waar het proces in start,
+			richting van verwerking door de input byte.
+			
+		-> Deze blocks bestaan ook voor andere datatypes dan bytes!
+	
+	Packet Encoder block
+	
+		pre-amble: code voorgaand aan de effectieve data,
+			vb om clock te synchroniseren
+			
+Sample reeksen
+
+	Skip ahead block
+	
+	Keep 1 in N block
+		Hou om de N-samples 1 sample over.
+		
+	Keep M in N block
+		Exact de payload uit een packet halen.
+		
+	QT GUI Number Sink block
+		De effectieve waarde van een sample of sample reeks zien.
+		
+		
+11. Routing
+-----------
+Stream routing
+	Selector block
+		input index: welke input gebruikt wordt
+		output index: naar welke uitgang het moet
+		
+	Stream MUX block
+		Samples van twee of meerdere bronnen samenvoegen
+		
+		-> Length: 1,1 = 1 smaple van de ééne bron, en 1 van de andere afwisselend
+			1,2 = 1 sample van de één, 2 van de ander
+
+Tools	
+	Virtual Sink block
+	Virtual Source block
+		-> doorverbinden van flows zonder lijnen overal te hebben, netter
+			werkt met Stream-ID om aan te geven welke waar moeten komen.
+			
+	Variable Config block
+		Houdt de waardes van variabelen bij na het afsluiten van een flowgraph
+		schrijft weg naar disc.
+		
+	XMLRPC Client block
+	XMLRPC Server block
+		Laat toe variabelen aan te passen vanop afstand over TCP/IP
+		
+	Filter Design
+
+
+
+GNU Radio code
+--------------
+Companion is in Python, dit is echter een interface taal.
+Onderliggend in c en C++ geschreven.
+
+Generate the flowgraph = compile
+Run flowgraph = compile and run
+
+Flowgraph is achterliggend een XML file.
+Bij compileren wordt er nog Python-code aangemaakt
+	-> vroeger top_block.py file
+	-> nu zelf naam geven = ID van het Options block
+	
+Bij run flowgraph wordt deze .py file uitgevoerd, de main of top (top_block) van de code.
+Deze roept dan de nodige C, C++ of Python block code aan.
+
+Top block code:
+	Import gedeelte
+	Bevat top_block klasse -> verandert mee met ID van het Options block.
+	Variables gedeelte
+	Blocks gedeelte
+	Connections gedeelte
+	main gedeelte
+
+
+GNU Radio Companion niet nodig om flowgraph te runnen.
+Op SBC kan je ook enkel GNU Radio instaleren en Python file van ergens anders draaien, of zelf de code schrijven.
+Je kan ook gemakkelijk eigen Python code toevoegen. -> bestaat enkel in code, kan niet weergegeven worden in de Companion.
+	-> kan ook via Embedded Python Block of Module.
+	-> wordt aparte file voor aangemaakt + import in top block.
+	
+
+gr.size_of_complex*1 -> speciaal soort variabele, geen Python variabele
+import numpy as np
+from gnuradio import gr
+.pyc = gecompileerde python code, "python compiled bytecode"
+
+Python variabele zijn niet gelijk aan C/C++ variabelen
+hiervoor heeft GNU Radio eigen variabelen gemaakt die kunnen doorgegeven worden van Python naar C/C++, in gr gedeelte
+Ook mogelijk zelf C++ modules en blocks te schrijven voor GNU Radio, maar veel meer kennis van C++ en GNU Radio voor nodig.
+
+
+14. Digitale RX (receive / ontvangst)
+-------------------------------------
+
+Multipath probleem:
+	Door weerkaatsing van het verzonden signaal kan hetzelfde signaal meerdere keren
+	samen toekomen op de ontvangst antenne, al dan niet in fase.
+	
+	ISI = Inter Symbol Interference, overlappende signalen worden opgeteld met elkaar, 
+	bekomen een samengesteld signaal
+	
+	Oplossing bij stationaire toepassingen:
+		1) Clock recovery -> Polyphase Sync block
+		2) Sterkte over gehele kanaal gelijk maken -> Linear Equilizer
+		3) Bij PSK modulatie, constelatie punten en dus fase en/of frequentie corrigeren/compenseren -> Costas Loop
+	
+Clock recovery
+	Recupereren van de klok belangrijk om data correct te kunnen lezen.
+	
+	-> syncburst aan het begin van signaal
+		PLL om aan te locken
+		
+		 ‘syncburst’ = een patroon van enen en nullen die specifiek wordt uitgezonden om bij ontvangst de klok te reconstrueren
+	
+	-> FFT op de bit-train om frequentie wiskundig te berekenen
+		Polyphase Sync block:
+			bevat een hele reeks filters
+			
+Equalizers
+	Zorgt ervoor dat de sterkte van een kanaal hetzelfde is.
+	Gelijk signaal sterkte over heel kanaal.
+	
+	-> Lineair Equalizer block
+		Hoe meer TAPS hoe vlakker het wordt.
+		
+Costas Loop
+	Verschuiving van constellatie punten corrigeren.
+	Moet weten wat de gebruikte modulatie is.
+	
+Mobiele verbindingen - Flutter
+	Kan over heel de bandbreedte van het kanaal veranderingen te weeg brengen
+	vb. door een rijdende auto die voor reflectie zorgt,
+	of het verplaatsen van de zender of ontvanger (huisdier gps tracker)
+	
+	Flutter = snel variërende ontvangst sterkte met permanente schommelingen
+	
+	-> dynamische correcties nodig! Die zichzelf gaan tunen.
+	
+	-> AGC (Automatic Gain Control) block
+		versterking van zwakke signalen, door terugkopel-lus,
+		hoe sterker het signaal aan de uitgang wordt hoe minder het versterkt wordt.
+		tipisch een trage schakeling
+		
+		Fast-AGC kunnen we gebruiken om Flutter tegen te gaan.
+		
+		Instellingen AGC block
+			Rate: de reactie snelheid
+			Gain - Max Gain: de versterkingen waartussen de AGC gaat werken.
+			Rate: snelheid in microseconden (zelf bepalen snelle of trage AGC)
+			
+Demodulatie
+	Liefst zo proper mogelijk signaal, alle voorgaande stappen waren om tot een goed signaal te komen.
+	
+	-> Demodulation block
+	
+	Stappen:
+		1) AGC
+		2) Clock Recovery MM
+		3) LMS DD Equalizer
+		4) Costas Loop
+		5) Quadrature Demod
+	
+Inter Channel Interference
+	Filter gebruiken met betere selectiviteit
+
+Doppler-shift
+	vb. sirene die voorbij komt, verandering in toon
+	
+	c/fr = lambda
+	c = snelheid van de golf (400 m/s) + beweging voertuig
+		-> beweging geeft langere golflengte = lagere frequentie
+	
+	geluidsgolf is samengedrukte lucht met variatie
+	
+	-> IoT over Satellite:
+		vb. wereldwijde tracking van containers dmv satellieten
+		
+		Geo-stationaire satelliet:
+			beweegt zo snel rond de Aarde dat ze vanaf de Aarde gezien op dezelfde plaats blijft staan.
+		
+		Hier wordt de dobbler-shift zeer belangrijk.
+		Maar ook al bij vliegtuigen bijvoorbeeld.
+		
+	Dit kan betekenen dat de frequentie van het signaal bij ontvangst lager of hoger zit dan de frequentie waar men het signaal zou verwachten, dit afhankelijk of dat de satelliet zich naar ons toe of van ons weg beweegt.
+	Onze ontvanger zal dus moeten compenseren voor deze frequentieverschuiving die mogelijks tijdens de uitzending ook nog kan veranderen.
+		
+		
+		
+Out Of Tree (OOT) Blocks
+------------------------
+Geen universele methode om te installeren.
+Sommige via apt-get op Linux, de meeste moeten nog gecompileerd worden met een Makefile.
+Soms ontbreekt ook de Makefile, dus wordt het al moeilijk.
+
+Worden oa ontwikkelt voor
+	- IoT
+	- Broadcast & Satelite
+	- IoT over Satelite: voor toepassingen zoals container tracking wereldwijd.
+	- Radar: veel nut bij SDR, civiel en militair
+	- Militair: GNU Radio zelf is een DARPA project. Futuristische technologie project instelling binnen defensie van de VS.
+		classified open-source
+	- SETI = Search for Extra-Terrestrial Intelligence project: gebruik van radio telescopen.
+	- Security
+	
+OOT voor IoT:
+	- LPWAN (Low Power Wide Area Network)
+		- LoRaWAN
+		
+			Traditioneel telefonie werkt met "polling", om de zoveel tijd vragen of het telefoontoestel nog beschikbaar is.
+			 -> is een relatief grote belasting voor de batterij.
+			 -> automatische watermeters bijvoorbeeld moeten 17 jaar meegaan om economisch winstgevend te zijn.
+			 
+			Mobiele netwerken zoals 2G/3G/4G hebben heel grote bandbreedte en vaak slechte coverage.
+			
+			LoRa Modulatie
+				LoRa (Long Range) = modulatie technologie van SemTech (chip producent, moet winst maken door chip verkoop, proprietary technologie)
+				
+				Chirp Spread Spectrum
+					-> weergeven met "Waterfall Display", toont signaal in de tijd en frequentie, met de amplitude in kleur
+					
+					SF = Spreading Factor: hoe snel de chirp van de laagste tot hoogste frequentie gaat.
+					-> SF7 en SF12
+					-> Beperkt storingen door signalen met andere SF
+					-> lagere SF = tragere data-rate -> grotere afstand
+					
+					vb. SF7:  5470kbps, 2km, 61ms
+						SF10: 980kbps,  8km, 371ms -> ook minder vermogen, dus minder stroom verbruik
+						
+					Link-budget van LoRa is 154dB
+					 de totale verzwakking tijdens volledige traject van de zending
+					 
+					 vb 702,6km ver, met slechts 25mW
+			
+			LoRaWAN = het netwerk, open standaard
+				Providers:
+					- The Things Network
+					- Wireless Belgium
+					- Proximus LoRa (niet actief)
+			
+				EU 868MHz ISM band (Industrial, Scientific and Medical), vergunningvrij, mogelijks veel storingen door ander gebruik.
+					- max vermogen = 14dBm (25mW)
+					- 1% hourly duty-cycle (zending per uur, slechts enkele minuten per dag)
+					
+				-> EU 433MHz is voor directe communicatie met LoRa modulatie, zonder netwerk!
+					
+				Modes of Operation:
+					- Class A: bidirectional communication (bijna ongebruikt door hoge energie kost)
+					- Class B: bidirectional with scheduled receive slots
+					- Class C: bidirectional with receive window after transmission
+					
+					250bps tot 50kbps
+					
+					Client devices sturen naar LoRa Concentrator Gateway
+					Geen polling
+					Alle gateways luisteren constant
+					Sturen enkel data door naar een Network Server
+					
+			LoRa Receiver block enkel voor ontvanging (zender is proprietary technologie, kan enkel met SemTech chips)
+		
+		- SigFox
+			Combinatie van reeds bestaande technologie:
+				- BPSK modulatie
+				- Pseudo-random frequency hopping
+					succes van transmissie verhogen door tegelijkertijd zenden op 3 verschillende random frequenties
+				
+				- Ultra-narrowband technologie
+					-> weinig vermogen nodig, maar zeer weinig data, data-rate van 100bps, maximum 12 bytes
+					
+					-> downlink msg max. 8 bytes, client stuurt zelf request voor een downlink
+					
+				Max 140 messages per dag, max. 6 per uur, per zender
+				
+			OOT projecten:
+				- USRP (sigfox-usrp-phy) van Ettus Research (commerciële aftakking van DARPA, high-end markt, zeer duur)
+				- renard-phy: open-source implementatie van SigFox in Python
+				
+				Ook mogelijk met bestaande blocken eigen flowgraph te maken, omdat het bestaat uit bestaande technologie.
+				
+		- LR-WAN (Low-Rate) of Short Range IoT
+			- Zigbee (IEEE 802.15.4) standaard
+				Bereik 10-15 meter afstand
+				2.4GHz
+				250kbps datarate
+				
+				Verschillende topologiën:
+					- cluster
+					- star
+					- mesh -> afstand en connectiviteit uitbreiden/verbeteren
+					
+				Niet IP gebaseerd
+				
+				Zigbee Alliance onderhoudt en ontwikkelt de standaard verder, als ook certificiëring
+				Nadeel: niet altijd compatiebel tussen andere chips of fabrikanten
+				
+				vb.: Philips Hue, Amazon Echo
+				
+				GNU Radio blocken: zie slides theorie10
+				
+		- ZWave
+			Gelijkaardig aan Zigbee
+			Mesh topologie
+			max. 4 relays, 232 knooppunten
+			868 ISM band
+			Bereik tot 20m
+			
+			Gesloten standaard, Sigma Designers proprietary technologie
+			Voordeel: 100% compatibiliteit
+			
+			OOT project: EZ-Wave op github (niet alles werkt)
+			
+		- Conventioneel:
+			- Bluetooth protocol
+			- WiFi
+		
+		- Near Field
+			RFID 125-134 kHz
+				-> NFC 13,56 MHz
+				
+			Trans-verter: combinatie van een up-converter en down-converter
+				signaal conversie in twee richtingen (RX en TX)
+				
+			OOT projecten:
+				nfc-laboratory op github
+			
+			
+_________________________________________________________________________________________________________________
+
+-> Heel steile roll-off = heel veel TAPS
+
+-> Piek in het midden = center frequentie -> centrale oscillator
+	Kan signaal dat je zoekt verstoren, best iets hoger of lager dan signaal dat je zoekt
+	
+-> Low Pass filter werkt in twee richtingen rond de center frequentie
+			

@@ -1,0 +1,78 @@
+NodeRED		→ 
+-------
+
+• base64 decoding
+	npm i node-red-node-base64
+
+• Installatie via Node.JS:
+	cmd: npm install –g node-red
+
+• Opstarten:
+	cmd: node-red
+	browser: 127.0.0.1:1880 of localhost:1880
+	
+• Node-Red Concepts:
+	- Node
+	- Wire
+	- Flow
+	- Message
+	- Context
+	- Interface
+
+	- Node:
+		Basic building block of a Flow.
+		1 input, many outputs
+		→ Triggered by:
+			• Message from previous node
+			• External event (waiting)
+			
+	- Wire:
+		Connect nodes and represent how msgs pass through the flow.
+	
+	- Flow:
+		Single set of connected nodes
+		OR everything within a Flow tab in the editor workspace
+		
+		→ Subflow: collapsed flow into a single node in the workspace.
+	
+	- Message = msg:
+		What passes between nodes
+		payload property containing most useful info
+		
+	- Context:
+		A way to store and share info.
+		Three types:
+			• Node:		msg.		only visible to the node that sets the value.
+			• Flow:		flow. 		visible to all nodes within the same flow or tab.
+			• Global:	global.		visible to all nodes.
+		
+	- Interface
+
+• Editor:
+	- Palette: left side, nodes panel
+	- Workspace: main area middle, flow tabs panel
+	- Sidebar: right side, tools panel
+	
+Node-Red tutorial, best practices: https://www.youtube.com/watch?v=V0SmNcIYCtQ
+LoRaWAN workshop: https://lorawan-workshop.99bugs.be/node-red/ 	https://www.thethingsindustries.com/docs/integrations/node-red/
+
+-----------------------------------------
+The Things Stack with Node-RED & LoRaWAN:
+-----------------------------------------
+• Tutorial: https://www.thethingsindustries.com/docs/integrations/node-red/setup/
+
+• Node-RED: http://localhost:1880/
+• Console: https://console.cloud.thethings.network/	>	https://eu1.cloud.thethings.network/console/
+	> Application
+		> Integrations
+			> MQTT			> Note on Using the Tenant ID: https://www.thethingsindustries.com/docs/integrations/mqtt/#note-on-using-the-tenant-id
+	- MQTT server host:
+		Public address:		eu1.cloud.thethings.network:1883
+		Public TLS address: eu1.cloud.thethings.network:8883
+		
+	!- Connection credentials:
+		Username: 			ttn-nodered@ttn
+		API-key/password: 	NNSXS.ZTOB5QOVXPQVPZ3V4E5WIHQNQC5G6VR4FMUIHWY.QLYGUD26HQGSUHDY5GJ7W3OKBB26KNS4GI3OYG7OZEW6TI4Q6JOA
+		
+		Username: 			tamm-testing@ttn
+		API-key/password: 	NNSXS.XZKDLU6CGN3OJWN3N4QC7OZRO3GN6O2MLJQJ6LQ.X5N5ELBGU7FOJXI45JXM2FDFHHEHIPLFGDB7PZM35EJHUB24CVOQ

@@ -1,0 +1,221 @@
+PROGRAMMING C# SAMENVATTING
+***************************
+TERMINOLOGIE:
+-------------
+literal			→ Expleciet ingegeven waarde in je code
+constante		→ Iets dat één keer een waarde krijgt in de code en niet meer van waarde verandert vb const int WAARDE = 2;
+declareren		→ variabele aanmaken
+initialiseren	→ variabele een waarde toekennen
+identifier		→ naam die je geeft aan een variabele
+widening 		→ uitbreiden van datatype dmv casting vb.: int 3 → double 3.0, doet de compiler omdat er gaan dataverlies is
+narrowing 		→ verkleinen van datatype dmv casting vb.: double 3.2 → int 3, kan tot datat verlies leiden, in dit geval de 0.2
+casting			→ typeconversie door de coder, deze neemt de verantwoordelijkheid voor eventueel dataverlies voor conversies die de compiler niet wilt doen omdat dataverlies mogelijg is.
+	→ 3 soorten:	1) casting vb.: (int)3.4 → 3
+					2) Convert. bibliotheek vb.: Convert.ToInt32(3.4) → 3 OF Convert.ToInt32("3") → zet de string "3" om in een int 3
+					3) Parsing vb.: Int32.Parse("3") → int 3
+					
+relationele vergelijkings operators: >, <, ==, !=, >=, <=
+logische operators: && = AND, || = OR, ! = NOT
+scope → levensduur van een variabele → Error boodschap die spreekt over "context" heeft met de scope van een gebruikte variabele te maken.
+fallthrough → Bij een Switch geen break gebruiken zodat deze case het zelfde resultaat krijgt als een onderliggende case.
+
+Loops:
+------
+loop						→ code block die herhaling van code uitvoert
+loop bode					→ code binnen de loop {}
+definitive/counted loop		→ aantal iteraties bekend
+indefinite/sentinel loop	→ beperkte loop door actie of invoer gebruiker
+oneindige loop & empty body	→ meestal niet gewenst, vermijden
+nesting → loops binnen loops → outer en inner loops
+	→ teller inner loop moet steeds gereset worden in de outer loop!
+
+Methodes:
+---------
+methode (= functie) → Code block, met eventuele statements, die herhaaldelijk kan worden opgeroepen.
+	vb.: static double(=returntype) BMI(double gewicht, double lengte(=parameters)) { return gewicht / (lengte * lengte); }
+returntype → Wat een methode als resultaat terug geeft. → eender welk datatype OF void → geeft niets terug, doet enkel iets.
+	→ return _ → hier wordt de code gestopt en de waarde erachter alsresultaat gegeven → elk code pad moet hiermee eindigen of error "Not all code paths return a value"
+parameters → Waardes die mee worden gegeven aan een methode
+	→ 2 manieren: 1) By value: kopie van de actuele parameter zijn waarde wordt meegegeven en toegekend aan de formele parameter → Het origineel wordt niet aangepast.
+				  2) By reference: geeft een pointer mee naar het adres van de variabele (vb bij een array) → Het origineel wordt hier rechtstreeks gebruikt EN aangepast!
+	→ Actuele parameter: de variabele of literal die je als waarde meegeeft bij het AANROEPEN van een methode.
+	→ Formele parameter: de variabele die gedeclareerd wordt voor gebruik binnen een aangeroepe methode en die de waarde mee krijgt van de actuele parameter.
+		→ VOLGORDE BELANGERIJK! De toekenning van de actuele aan de formele parameters gebeurt op volgorde zoals ze staan en er kunnen geen parameters worden overgeslagen.
+	→ Named paramteres: hierbij geef je de naam mee van de formele paramtere om er een actuele parameter aan toe te kennen
+		vb.: PrintDetails(orderNum: 31, product: "Red Mug", seller: "Shop");
+		→ Hierbij kan je de volgorde veranderen omdat je zegt waar de toekenning moet gebeuren. Kan ook leesbaarder zijn.
+		→ Mag gemixt met unnamed, maar hier moet je weer letten op de volgorde van de unnamed parameters.
+	→ Optionele parameters: formele parameter waar een waarde is aan toegekend die wordt geïnitialiseerd indien er geen actuele parameter wordt meegegeven.
+		vb.: static double GewichtAdhvPlaneet(double gewichtOpAarde, int g = 9.81, string planeet = "Aarde") {...}
+				→ GewichtAdhvPlaneet(60); 			 → Dit mag.
+				→ GewichtAdhvPlaneet(60, 22.9); 	 → Dit mag.
+				→ GewichtAdhvPlaneet(60, "Jupiter"); → Dit mag NIET! Je mag geen parameters overslaan.
+				→ GewichtAdhvPlaneet(60, planeet: "Jupiter"); → Dit mag WEL, want met named paramtere gewerkt.
+		→ Enkel van achter naar voor default waardes toekennen, anders moeilijkheden met toekenningen met unnamed parameters. Anders werken met named parameters vanaf je één overslaat.
+		
+method overloading → Meerdere methodes met dezelfde naam en returntype, maar met verschillende formele parameters qua datatypes en/of namen.
+	→ Overload resolution: proces adhv regels om de juiste overload versie uit alle 'toepasbare methoden' te selecteren.
+		Deze regels zijn:
+		1) Betterness rule: de best passende methode op basis van de actuele parameters, wordt gekozen.
+		2) Als niet werkt wordt er gekeken naar de 1e parameter.
+		3) Als ook niet werkt krijg je een error ivm conversie → 'ambigious overload':
+			"The best overloaded method match for ... has some invalid arguments, Argument 2: cannot convert from 'double' to 'int'"
+
+recursie → Methode die in zijn code zichzelf aanroept, maar wel op een gegeven moment stoppen. → Wanneer het zichzelf aanroept wordt de methode opnieuw van het begin gestart.
+	vb.: 	static int BerekenSomRecursief(int start, int stop)
+			{
+				int som = start;
+				if(start < stop)
+				{
+					start++;
+					return som += BerekenSomRecursief(start, stop);
+				}
+				return som;
+			}
+methode summary → Geeft weer als pop-up venstertje bij aanroeping
+	vb.:	/// <summary>
+			/// Berekent de macht van een getal.
+			/// </summary>
+			/// <param name="grondtal">Het getal dat je tot een bepaalde macht wilt verheffen</param>
+			/// <param name="exponent">De exponent van de macht</param>
+			/// <returns></returns>
+			
+Arrays:
+-------
+Initialiseren → datatype[dimensie] identifier = new datatype[grote] { waarde0x1D, {waarde0x2D, waarde1x2D}, ... {waardeNx0, waardeNx1, ... waardeNxM} };
+	→ 'dimensie' moet bij declaratie worden opgegeven. vb.: [,] = 2D, [,,] = 3D
+	→ 'grote' bij een 1D array moet niet worden opgegeven als de grote duidelijk is adhv het N-aantal waardes die wordt opgegeven.
+		→ Bij multidimansional arrays moet dit wel.
+		→ De grote kan niet meer worden aangepast aangezien het geheugen voorbij het gereserveerde geheugen in gebruik kan zijn. Je moet dus een nieuwe array aanmaken.
+	→ '{waardes}' moeten niet worden meegegeven bij het initaliseren omdat je enkel de pointer aanmaakt. Deze moet wel de 'grote' weten om het nodige geheugen te reserveren.
+	
+Werkt 'by reference' → De variabele identifier bevat een 'pointer' met het geheugen adres in waar de effectieve waardes in het geheugen staan.
+_______________________________________________________________________________________________
+Hotkeys:
+--------
+Ctrl+R			→ Rename selected identifier: verandert de naam overal waar het gebruikt wordt in één keer
+Ctrl+F2			→ Find & Replace selection
+F1				→ Cursor op naam methode + F1 geeft de help files van die methode	 			
+_______________________________________________________________________________________________
+NAAMGEVING:
+-----------
+variabelen		→ kleineLetterCamelCasing
+constanten		→ HOOFDLETTERS_GESCHEIDEN_DOOR_UNDERSCORES
+methoden		→ HoofdletterCamelCasing
+
+_______________________________________________________________________________________________
+COMMENTAAR:
+-----------
+//Voor één lijn.
+/*Voor
+meerdere
+regfels.*/
+///Voor samenvatting/summary methode
+_______________________________________________________________________________________________
+DATATYPES:
+----------
+Startend met 's' = signed, 'u' = unsigned
+Gehele getallen:
+----------------
+Naam		#bits	Met		Bereik
+sbyte		8				-128 tot 127
+byet		8				0 tot 255
+short/Int16	16				-32 768 tot 32 767
+ushort		16				0 tot 65 535
+int/Int32	32				-2 147 483 648 tot 2 147 483 647
+uint		32		_U		0 tot 4 294 967 295
+long/Int64	64		_L		-9 223 372 036 854 775 808 tot 9 223 372 036 854 775 807
+ulong		64		_UL		0 tot 18 466 744 073 709 551 615
+
+char		16		'_'		0 tot 65 535 →  Unicode character die bijgehouden wordt als een getal
+
+Komma getallen:
+---------------
+Naam		#bits	Met		Bereik		Precisie/aantal beduidende of significante cijfers vb.: 1,2345 heeft 5 precisie
+float		32		F		gemiddeld	~6-9 digits
+double		64				meeste		~15-17 digits
+decimal		128		Met		minste		28-29 digits
+
+https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types
+
+Operaties:
+----------
+Bij het mengen van datatypes kiest de compiler dat met het meest aantal bits. vb.: double result = 3 / 5.6 → 3 = int =  32bit; 5.6 = double = 64bit
+Binaire operator voert operatie uit op 2 operanden. vb.: 3 + 2
+Unaire operator op 1 operande om bvb van teken te wisselen. vb.: -1
+'a' + 'b' → telt hun unicode waardes bij elkaar → 65 + 66 = 131
+
+Waardes:
+--------
+Hexadecimaal	0x_		vb.: int myAge = 0x0024;
+Binair			0b_		vb.: int myAge = 0b001001001
+
+Formateren:
+-----------
+Getallen als String weergeven en formateren:
+getal/var:[formaat letter][precisie getal]
+	→ [formaat letter]:		D = geheel getal						vb.: 123:D5 → 00123
+							E = wetenschappelijke notatie			vb.: 12000:E2 → 1,20E+004 → 1,2 x 10^7
+							C = Currency: gelezen als geld bedrag	vb.: 12,34:C → $ 12.34 → Valuta is afhankelijk van de systeem instellingen, als ook . of , voor een komma getal
+	→ [precisie getal:
+	
+vb.: Console.Write($"Dit is een geformateerd getal: {getal:F2}");
+	→ F2 = Float met 2 cijfers na de komma
+	
+Afronden:
+---------
+Default afronding = Banker's rounding: naar dichtsbijzijnde EVEN getal. vb.: 3.5 → 4, 2.5 → 2
+Math.Round([double of decimal][, MidpointRounding.AwayFromZero of .ToZero]);
+
+Random getal genereren:
+-----------------------
+static Random randGen = new Random([constante]); → Boven en buiten de Main voor de beste resultaten (volgens Mevr. Coutrijn)
+												 → [constante] geeft een vaste reeks getallen, default wordt de huidige tijd gebruikt.
+int getal = randGen.Next([min, max]); → Lees van min tot max → NIET tot en met! → is optioneel
+int double = randGen.NextDouble() * bereikGetal + startGetal; vb.: .NextDouble() * 10 + 5 → geeft getal tussen 5 en 15
+	→ .NextDouble genereerd een kommagetal < 1 met max bereik van een double → precisie 15
+_______________________________________________________________________________________________
+STRINGS:
+--------
+Strings samenvoegen:
+--------------------
+1) string voorbeeld = "Dit is een string" + stringVariabele + "nog wat tekst.";
+2) string interpolatie = $"Dit is een string {stringVariabele} nog wat tekst."; → Leesbaarder
+3) string oudeManier = String.Format("Dit is een string {0} nog wat tekst {1}.", stringVar0, stringVar1);
+
+Escape characters: Laat toe iets dat normaal als code geinterpreteerd wordt, of genegeerd, in een string te zetten OF speciale acties.
+------------------ 
+\' → '
+\" → "
+\\ → \
+\a → Systeem beep
+\n → Nieuwe lijn/[Enter]
+\t → Horizontale [Tab]
+\u → Unicode character, hexadecimale code achter zetten vb.: "\u02e7" → Om op te slaan in een char variabele de code casten vb.: char charVar = (char)02e7;
+@  → Voor een string geplaatst geeft \ weer, waar het normaal als een escape character gezien wordt. vb.: @"C:\temp\file.txt" → Merk op dat je " nu niet kan gebruiken in je zin._______________________________________________________________________________________________
+_______________________________________________________________________________________________
+NUTTIGE ARRAY METHODEN: Uit de System.Array bibliotheek
+-----------------------
+arrayIdentifier.Length; → Geeft de grote van de array. vb.: [4] = 4, [2,3] = 6, [2,2,2] = 8
+arrayIdentifier.GetLength(dimensie); → Geeft de grote van de opgegeven dimensie. vb.: [2,3] .GetLength(0) = 2
+
+Array.Sort(identifier)
+Array.Reverse(identifier)
+Array.Clear(identifier, int index, int length); → Van index tot index+length alles waardes op default zetten → default int = 0, default bool = false
+Array.Copy
+Array.BinarySearch
+
+stringIdentifier.ToCharArray();
+
+System.IO.Path.Get ...
+_______________________________________________________________________________________________
+ERRORS:
+-------
+"Use of unnasigned local variable"
+	→ Een gebruikte variabele heeft geen waarde. Altijd waarde meegeven (= initialiseren) bij het declareren.
+"The name ... does not exist in the current context"
+	→ Scope van een gebruikte variabele is te klein. Maak deze aan in een hoger liggend code block.
+"Not all code paths return a value"
+	→ Een methode heeft een code pad die mogelijks geen waarde returned.
+"The best overloaded method match for ... has some invalid arguments, Argument 2: cannot convert from 'double' to 'int'"
+	→ Ambigious overload: 'overload resolution' kan geen selectie maken van de 'toepasbare methoden' op basis van de huidige actuele parameters.

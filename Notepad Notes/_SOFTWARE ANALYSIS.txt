@@ -1,0 +1,559 @@
+  /$$$$$$             /$$$$$$   /$$                                                                                     /$$                     /$$          
+ /$$__  $$           /$$__  $$ | $$                                                                                    | $$                    |__/          
+| $$  \__/  /$$$$$$ | $$  \__//$$$$$$   /$$  /$$  /$$  /$$$$$$   /$$$$$$   /$$$$$$         /$$$$$$  /$$$$$$$   /$$$$$$ | $$ /$$   /$$  /$$$$$$$ /$$  /$$$$$$$
+|  $$$$$$  /$$__  $$| $$$$   |_  $$_/  | $$ | $$ | $$ |____  $$ /$$__  $$ /$$__  $$       |____  $$| $$__  $$ |____  $$| $$| $$  | $$ /$$_____/| $$ /$$_____/
+ \____  $$| $$  \ $$| $$_/     | $$    | $$ | $$ | $$  /$$$$$$$| $$  \__/| $$$$$$$$        /$$$$$$$| $$  \ $$  /$$$$$$$| $$| $$  | $$|  $$$$$$ | $$|  $$$$$$ 
+ /$$  \ $$| $$  | $$| $$       | $$ /$$| $$ | $$ | $$ /$$__  $$| $$      | $$_____/       /$$__  $$| $$  | $$ /$$__  $$| $$| $$  | $$ \____  $$| $$ \____  $$
+|  $$$$$$/|  $$$$$$/| $$       |  $$$$/|  $$$$$/$$$$/|  $$$$$$$| $$      |  $$$$$$$      |  $$$$$$$| $$  | $$|  $$$$$$$| $$|  $$$$$$$ /$$$$$$$/| $$ /$$$$$$$/
+ \______/  \______/ |__/        \___/   \_____/\___/  \_______/|__/       \_______/       \_______/|__/  |__/ \_______/|__/ \____  $$|_______/ |__/|_______/ 
+                                                                                                                            /$$  | $$                        
+                                                                                                                           |  $$$$$$/                        
+                                                                                                                            \______/                         
+																															
+______________________________________________________________________________________________________________________________________________________________
+-- Examen Vragen --
+-------------------
+
+• Wat is Black Boxing?
+	Wat er in gebeurt interesseert ons niet. Is niet van belang voor de diagram.
+	Enkel interactie tussen gebruiker en systeem.
+	Functionele decompositie op hoog niveau.
+	We zijn enkel bezig met wat erin gaat, en wat eruit komt = interactie tussen gebruiker en systeem
+
+• Wat is Functionele Decompositie?
+	- In stukken opsplitsen van functionaliteiten. vb.: proces in Context Diagram (DFD L1) opsplitsen in deelprocessen
+	- Opsplitsen van beschrijving of perspectief van het systeem in fijnere details.
+	- Elk opgesplitst proces is kandidaat voor decompositie.
+	- Decompositie kan gaan tot geen enkel logisch deelproces nog verder opgesplitst kan worden (of tot hoe ver de klant wilt gaan).
+	- Balanceren: invoer en uitvoer voor bepaald proces moeten behouden blijven (Bring balance to the DFD, you must!).
+
+• Welk van deze zinnen past niet binnen een Agile ontwikkelproces?
+	"Ik wil duidelijke en door de klant afgetekende analyse alvorens we beginnen programmeren." = Waterfall
+	
+• Volgorde projectontwikkeling waterfall:
+	1) Initiatie
+	2) Analyse
+	3) Ontwikkelingsmethodologieën
+	4) Testen
+	5) Afsluiten
+	
+• Wat voor soort diagrammen gebruik je om de requirements van de klant te weten?
+	Use Case diagram
+	
+• Wat is het kritieke pad (critical path)?
+	De acties die moeten gebeuren, in een bepaalde volgorde, om een project efficiënt tot een goed einde te brengen.
+	
+	Keywords: project, acties, volgorde, efficiëntie
+
+______________________________________________________________________________________________________________________________________________________________
+-- UC = Use Case --
+-------------------
+
+• Waarvoor?
+	- Uitzoeken wat de klant wilt:
+		begrijpbaar,
+		eenvoudig als controle,
+		scopen of het juist is wat je denkt dat de klant wilt,
+		geen specifieke taal,
+		verschillende scenario's: happy flow + alternatieve scenario's
+		
+	- Voor testers als Test Case, wat ze moeten testen.
+	- Design
+	- Acceptatie
+	
+• Veronderstellingen? Vragen aan klant, zij zijn specialist in hun vak!
+
+• DO								vb.:										| DON'T								vb.:
+	- algemene benaming voor Actors		Klant, Boekhouder, Externe Firma		|	- Specifieke personen				Jonas
+	- algemene handelingen				"beëindigt de transactie"				|	- UI kenmerken, code				"drukt op de BEËINDIGEN-knop"
+	- zekerheden, onduidelijkheden vragen aan de klant							|	- veronderstellingen maken
+	
+• Wanneer?
+	Requirements gathering
+		- Verstaanbaar voor ontwikkelaar, gebruiker, klant
+		- Hoe vollediger en precieser, hoe beter (moet kunnen dienen voor design, testen en acceptatie)
+		- Open,
+			enkel functionele requierments,
+			ruimte tot mogelijke oplossingen laten vb.: webshop → schoen kiezen,
+			geen specifieke technologiën of technische oplossingen
+			
+• Hoe?
+	1) Enkel Functionele systeemeisen:
+		- Functionele systeemeisen: functionaliteit van systeem beschrijven, opties/mogelijkheden
+		- Niet-functionele systeemeisen: responsetijden, bestaande omgeving(software, hardware, databases v/d klant), voor haalbaarheidsstudie
+	
+	2) Use Case in ontwikkelingstraject:
+		- Beschrijving hoe het systeem gebruikt zal worden
+		- Hulpmiddel communicatie
+		- Als uitgangspunt voor Sequentiediagramen
+		- Als Test Case voor het systeem
+		
+	3) Gebruikersgeoriënteerd werken:
+		- Systeem = zwarte doos:
+			Enkel interactie tussen gebruiker en systeem.
+			Functionele decompositie op hoog niveau.
+			Wat er in gebeurt interesseert ons niet. Is niet van belang.
+			
+• Onderdelen:
+	- Systeem (rechthoek) = Zwarte Doos:
+		Wat er in zit is niet van belang.
+		We zijn enkel bezig met wat erin gaat, en wat eruit komt = interactie tussen gebruiker en systeem
+		→ Functionele decompositie op hoog niveau.
+		
+		Systeem naam = algemene beschrijving van wat het is, geen app Namen. vb.: Metersysteem, Atletiekapplicatie, Zelfbedieningskassa
+		
+	- Actor (stick-figure):
+		Entiteit buiten het systeem,
+		die direct communiceert met het systeem.
+		Is zelf een mens of ander systeem. → 1 mens kan verschillende actoren zijn.
+		
+		→ Overerving:
+			Ik kan alles wat die → andere kan + nog iets meer. (aangeven met pijl → in die richting)
+			
+	- Use Case (ovaal):
+		Zelfstandignw. + werkwoord
+		
+	- Relaties (verbindingen):
+		-) Lijn tussen Actor en Use Case 	→ NOOIT!! tussen Actor en Actor, of Use Case en Use Case
+			Actor triggert Use Case
+		→) Pijl van Child naar Parent (Ik kan alles wat die → andere kan + nog iets meer.)
+		
+		--→) <include> stippellijn pijl:
+			als de ééne Source Use Case gebeurt, gebeurt → deze Target Sub-case ook altijd.
+			Kan door meerdere Source Use Cases gebruikt worden → herbruikbaarheid (zoals een fucntie in code).
+				→ De realistische volgorde is niet van belang! vb.: appeltaart maken -<include>→ Deeg maken.
+			
+			Target Use Case mag niet afhankelijk zijn van Source Use Case, moet op zichzelf kunnen bestaan.
+				vb.: Source = Document goedkeuren → Target = mail versturen, zijn twee afzonderlijke handelingen.
+				
+		--→ ) <extend> stippellijn pijl:
+			voor uitzonderingen (als er iets mis loopt.)
+			Creëert een Extension Point bij de Source Use Case die beschrijft wanneer de Extended Sub-Case moet worden uitgevoerd.
+				→ Pijl gaat van Extended Sub-Case naar Source Use Case,
+				want de Extended Sub-Case is een extension/uitbreiding OP de Source.
+				
+		include vs extend:
+			Extend is EXTENSION/uitbreiding → op Source
+			Source INCLUDES → Target
+			
+• Stappenplan:
+	- Identificeer grens systeem, en vind actoren
+	- Vind Use Cases per Actor
+	- Bepaal (per UC) de aannamen, interactie, mogelijkeuitzonderingen
+	- Splits de veelvoorkomende sub-cases uit
+	
+• Scenario: (ZO BEKNOPT MOGELIJK!)
+	Naam: Use Case naam (UC001)
+	(samenvatting: in het kort, wat geberut er)
+	Actor(en): Actoren die deelnemen aan het scenario
+	Aannamen: Wat is de voorwaarde om dit scenario te startn, wat moet er al gebeurt zijn
+	Beschrijving: 
+	1. De eerste stap: Actor afkorting (indien deze een handeling doet) + kort wat er gebeurt
+	2. ..
+	3. ..
+	Resultaat: Wat is er bereikt door de stappen uit te voeren.
+	
+	Uitzonderingen:
+	2a [extention point tekst] (Eventueel korte beschrijving v/h extension point)
+	3a [extention point tekst] → 3 = stap waar de uitzondering gebeurt, a = 1e AS die vanaf 3 begint
+	3b [extention point tekst] → 3b = 2e AS die vanaf stapp 3 begint
+	
+	Alternatief scenario (AS)
+	AS 2a [extention point tekst]
+		1. Eerste stap binnen AS
+		2. ..
+		3. ..
+		→ hierna gaan we terug naar de volgende stap in de beschrijving/happy flow scenario
+		
+	AS 3b [extention point tekst]
+		1. Eerste stap binnen AS
+		2. ..
+		3. ..
+		4. We volgen het primary scenario vanaf stap 1 → Als het niet gewoon terug verder gaat vanaf de volgende stap in de happy flow, specifiëren!
+		
+	...
+
+
+______________________________________________________________________________________________________________________________________________________________
+-- Analisten --
+---------------
+
+• Taken Systeemanalist:
+	- Communiceren met externen (vergaderingen, andere afdelingen, externe klant of partner
+	- Communiceren met team (klant, programmeurs, DBA, architect, andere analisten, andere teams)
+	- Analyse
+	- Problemen aanpakken
+	
+• Vaardigheden:
+	- Communicatief
+	- Technisch inzicht
+	- Analytisch
+	- Probleemoplossend
+	- Teamplayer
+	- Vertrouwen en respect
+	- Openstaan voor nieuwe inzichten
+
+• 3 soorten Analysten
+	- Business Analyst (Business case)
+		Wat willen we bereiken en is het haalbaar?
+			→ Wat gaan we doen?
+			→ Gaan we er iets aan verdienen? De moeite, en dus geld, waard?
+		
+	- Functional Analyst (Functionaliteiten)
+		Wat moet het doen?
+			→ Verdere uitwerking van wat het moet zijn.
+			→ Use Cases, Activity Diagrams, Data-Flow Diagrams
+			
+	- Technical Analyst (Design)
+		Hoe gaan we het doen?
+			→ ERD, Class Diagrams, Sequention Diagrams
+			
+• Methodologie:
+	Hoe gaan we het aanpakken?
+		Eerst analyseren? Direct programmeren? ...
+		
+• Technieken:
+	- UML of BPMN Diagrammen tekenen
+	- Alleen programmeren of pair programming
+	- Test driven development: eerst alleen testen schrijven
+	
+• Ontwikkelingsmethodologieën:
+	- Waterfall: Stap per stap, de volgende begint pas als de vorige volledig voltooid is.
+		1) Analysis (Functional Analyst)
+		2) Requirement Specification → Goedkeuring klant (in bloed tekenen)
+		3) Design (Technical Analyst)
+		4) Development (programmeren)
+		5) Testing and integration (terug naar de klant)
+		6) Implementation/Deployment
+		
+		• Voordelen:
+			- Makkelijk te managen
+			- Duidelijke deadlines
+			
+		• Nadelen:
+			- Geen flexibiliteit bij aanpassingen of fouten
+			- Moeilijk in te grijpen bij problemen
+			- Herpriotisering is onmogelijk
+			
+		• Geschikt voor:
+			- Kleine projecten van lage complexiteit 					vb.: website voor de bakker
+			- Organisaties die een volledige fixed-price willen 		vb.: overheid
+			- Organisaties met strikt afgelijnde verantwoordelijkheden	vb.: 1 firma doet analyse, andere programmeert het
+			
+	- Agile: heel flexiebel, cirkelvormig, vb.: scrum = sprints van 1/2/3 weken
+		Scrum Sprint = Plan → Design → Develop → Test → Release → Feedback
+		
+		• Kenmerken:
+			- Iteratief en incrementeel
+			- Regelmatiger
+			- Intens testen
+			- Minder overhead
+			- Enkel ddocumenteren wanneer nodig
+			- Experten continu betrekken
+			- Hoge risico's eerst
+			
+		• Agile Manifesto:							NIET
+			- Individuals and interactions			over Processes and Tools
+			- Working Product						over Comprehensive Documentation
+			- Customer Collaboration				over Contract Negotiation
+			- Responding to change					over Following a (set) plan
+		
+		• Voordelen:
+			- Minder overhead en documentatie
+			- Face-to-face met klant
+			- Regelmatig oplevering (IKIWISI)
+			
+		• Nadelen:
+			- Moeilijk te plannen en budgetteren
+			- Belasting voor de klant
+			- Zelf regulerend team (geen managers, meestal wel team-leads)
+			- Zeer intensief testen (elke sprint)
+			
+		• Geschikt voor:
+			- Grote projecten van midden/hoge complexiteit
+			- Bedrijven waar geen rigide verantwoordelijkheden gelden
+			- Bedrijven waar management er mee achter staat
+			
+		• Methodoligiën:
+			Scrum, Kanban, Use case driven, Extreme programming, Test driven, ...
+		
+
+______________________________________________________________________________________________________________________________________________________________
+-- AC = Activity Diagram -- (White boxing)
+---------------------------
+
+• Wat?
+	- Procesgerichte bescrijving van deel van systeem
+	- Workflow beschrijven
+	- Activiteiten van één of meer "objecten"
+	- Business Processes en workflow modellering
+	- Parallellisme in workflow modeling en multi-threaded systemen
+		(Er kunnen dingen tegelijkertijd gebeuren. Als al deze dingen gebeurt zijn gaan we pas verder.)
+		
+• Toepassingen?
+	- Workflow (je wilt dat dingen in bepaalde volgorde gebeuren)
+	- Bestaand of nieuw proces omschrijven
+	- Als algoritme (eerst die stap, dan die stap, ...)
+	
+• Onderdelen:
+	- Activiteit (rechthoek met afgeronde hoeken)
+		Zelfstandignw. + werkwoord → Wat de actor moet doen, commando vb. Klantenkaart geven 
+		Proces (activiteit of samenstelling activiteiten)
+		
+	- Decision and Merge/Beslisingspunt en Samenkomst (diamond/ruit)
+		([Ja]/[Nee]) vraag en opsplitsing volgens antwoord
+		→ [] zijn guards, hier mag je niet voorbij tenzei de voorwaarde tussen [] voldaan is
+		Nadien moet de flow terug samenkomen om verder te kunnen gaan.
+		
+	- Fork & Join:
+		Parallelle activiteiten
+		
+	- Swmilane:
+		Verantwoordelijke aanduiden voor activiteiten
+		
+	→ Gebruiken wij niet, maar bestaat:	
+		- Externe activiteit (bij werken zonder swimlanes)
+			Zelfde als activiteit maar begint met <<external>> 
+			Activiteite die door een extern systeem gebeurt
+			
+		- Flow of control (pijlen →)
+			Volgorde van activiteiten, stap voor stap
+			
+		- Activiteitsparameter (rechthoekje, links overlappend met activiteit)
+			Input en/of output voor activiteit
+			
+		- Connector (→(a))
+			We gaan naar volgen blad
+			
+...
+
+
+______________________________________________________________________________________________________________________________________________________________
+-- MML = Modelling Maturity Levels --
+-------------------------------------
+
+• Hangt af van doel, 6 levels:
+	Lvl 0: Geen specificaties
+		- specificaties in hoofd van ontwikkelaar
+		- Gebruiker-Ontwikkelaar
+		
+	Lvl 1: Tekstuele specificaties
+		- Specs in doc in natuurlijke taal (andere interpretaties mogelijk, ambigu)
+		- Moeilijk up-to-date te houden
+		- Expleciete afspraken ontwikkelaar met gebruiker
+		
+	Lvl 2: Tekst met diagrammen
+		- Specs in tekst + diagrammen op hoog niveau
+			→ algemene architectuur
+		- Diagrammen gebruikt om tekst te structureren
+		
+	Lvl 3: Modellen met tekst
+		- Specs in modellen
+		- UML, Z, DFD
+		- Tekstdocumenten beschrijven details en motivatie
+		- Modellen zijn afspiegeling van systeem
+			→ worden met de hand omgezet naar code
+			
+	Lvl 4: Exacte modellen
+		- Modellen belangerijkste voor specs
+		- Samenhang tussen onderdelen (diagrammen)
+		- Code kan auto gegenereerd worden (, ook reverse engineering)
+			→ iteratief werk
+			
+	Lvl 5: Alleen modellen
+		- Modellen beschrijven alle details
+		- Modelleertaal is hogere programmeertaal
+		- Enkel in zeer specifieke domeinen
+
+
+______________________________________________________________________________________________________________________________________________________________
+-- Soorten Diagrammen --
+------------------------
+
+• 9 soorten diagrammen, onderverdeeld in 4 classificaties:
+	- Requirementsdiagram
+	  -------------------
+		• Use Case diagram:
+			Systeem gebruikt door EXTERNEN (mensen die van buitenuit aan u systeem iets gaan aanpassen)
+
+	- Statische diagram
+	  -----------------
+		• Klassediagram:
+			- Statische structuur (er verandert niks)
+			- Systeem weergegeven als klassen en hun relaties (en hun functies, methoden, hoe je gaat programmeren)
+			
+		• Objectdiagram:
+			- Statische structuur
+			- Systeem weergegeven als klassen en hun relaties
+				→ zelfde als Klassediagram, maar per object en waarden invullen
+
+	- Dynamisch diagram
+	  -----------------			
+		• Sequentiediagram:
+			Volgorde in tijd van events die in een systeem verstuurd/ontvangen worden
+			
+		• Communicatiediagram:
+			Hoe objecten samenwerken om doel te bereiken
+			
+		• Toestandidagram:
+			Alle mogelijke toestanden waarin een object zich kan bevinden gedurende levensloop
+			
+		• Activiteitsdiagram:
+			Activiteiten door deel van systeem uitgevoerd (inclusief parallelisme)
+
+	- Implementatie diagram:
+	  ----------------------	
+		• Componentendiagram:
+			Verdeling van systeem in componenten en relaties tussen componenten
+			
+		• Deploymentdiagram:
+			Software-componenten worden gebruikt in bepaalde systeemconfiguratie
+			(Hoe ga je juist deployen)
+			
+• Diagrammen groeien steeds mee met de ontwikkeling
+
+• Fases:
+	1) Requirements vergaren:
+		Wat wil de klant? → Use Case diagram
+		Structureren van systeemvereisten
+			→ Alle vereisten te weten komen: 
+				- Nieuwsgierigheid
+				- Onpartijdigheid
+				- Beperkingen verminderen
+				- Aandacht voor detail
+				- Herbezinning (Is het wel juist wat ikk getekend heb?)
+			→ Hoe te wtene komen?
+				- Brainstorming
+				- Interviewing
+				- Vragenlijsten, online survey
+		
+	2) Analyse:
+		Wat zijn de functionele concepten? → Klassediagram, Sequence diagram
+		Proces? → Activiteitsdiagram
+		
+	3) Ontwerp:
+		Welke architectuur?
+			Niet functionele eisen
+			→ aanpassingen klassediagram en sequence diagram
+			→ toestandsdiaghram, activiteitdiagram
+			→ communicatiediagram
+			
+	4) Implementatie:
+		Programmeren van alle klasse uit klassediagram
+		Opdelen in componenten → component diagram, deploymentdiagram
+
+______________________________________________________________________________________________________________________________________________________________
+-- DFD = Data-Flow Diagram -- (Gegevensstroomschema) (black boxing)
+-----------------------------
+
+• DFD voor interfaces voor te stellen.
+	Van waar komt er overal data in de processen?
+
+• Wat?
+	Grafische presentatie van processen die gegevens
+		verzamelen
+		bewerken
+		opslaan
+		verdelen
+		
+• Stelt voor:
+	- Opslagplaatsen van gegevens
+	- Verplaatsing van gegevens tussen processen en externe entiteiten (source/sink)
+	- Structured Systems Analysis and Design Method (gestructureerde analysetechnieken)
+
+• Onderdelen:
+	- Sourcce/Sink (RECHTHOEK) (Bestemming/Bron of Externe Entiteiten)
+		Waar data van komt of in toe komt. 
+		Naamgeving: Zelfstandignw. → type gebruiker, vb. Klant, Manager, Keuken, Bank (zoals Actor in UC)
+		→ Je kan niet van Rechthoek naar rechthoek gaan. Er moet onderweg iets gebeuren met de data in een process (bol), anders interesseert het ons niet!
+		
+		→ Black boxing:
+			Wat er in een entiteit gebeurt interesseert ons niet.
+		
+		→ Wat nog niet:
+			Wat entiteiten onderling doen buiten het systeem, interacties, zoals bvb. naar elkaar bellen, ook niet, want er gebeurt niets met de data.
+			Toegang van entiteiten op bestanden is niet van belang.
+			Hoe een entiteit herontworpen moet worden is ook niet belang.
+		
+	- Process (BOL (of AFGERONDE HOEKEN))
+		Moet altijd input en output data hebben.
+		Naamgeving: Zelfstandignw. + werkwoord
+		
+	- Data Flow (PIJL MET TEKST)
+		De data die wordt verstuurd/ontvangen.
+		Naamgeving: (Afkortingen vertrek-eindpunt) Zelfstandignw. vb. KL-BV Bestelling = "Klant" stuurt bestelling door naar het "Bestelling Verwerken" proces
+		
+		!WEL van entiteit naar proces en omgekeerd, van process naar datastore.
+		!NOOIT van entitiet naar entiteit, of van entiteit naar datastore
+		!!Er moet altijd iets met de gegevens gebeuren in het systeem.
+		Zo niet, interesseert het ons niet!!
+		
+		• Vertakking (1 pijl worden meerdere pijlen):
+			Data van 1 Sources, via Proces, naar meerdere andere processen/Sinks/Data Stores
+			
+		• Samenvoeging (meerdere pijlen worden 1 pijl):
+			Meerdere data flows/pijlen, uit verschillende Processen/Sinks/Data Stores, die samenkomen en als één pijl op een locatie toekomen.
+			
+		→ Flows met dezelfde naam moeten exact hetzelfde zijn.
+		→ 1 pijl kan ook een pakket van verschillende data flows zijn, zoalng deze data flows dezelfde richting hebben, en gelijktijdig gebeuren.
+		
+	- Data store (RECHTHOEK DIE OPEN IS AAN RECHTERZIJDE)
+		Database waar data in opgeslagen wordt.
+		
+		Vanaf level 1.
+		Data moet opgeslagen worden in, of gehaald worden uit, een Data Store, of verplaats van de ééne naar de andere Data Store, via een Process.
+		Data kan niet rechtstreeks van Data Store naar Entitiet, of tussen Data Stores, zonder eerst langs een Proces te gaan.
+		
+		→ Database = soort Data Store waarin je ook kan programmeren.
+
+• DFD Stappen/niveau's/levels:
+	L0: Context Diagram = 1 process, geen Data Stores
+		(Start niveau, sommigen beginnen te tellen bij 1, dus dan is het level 1)
+	
+	L1 - L.: Functionele decompositie → Process bollen opbreken in meer detail, in stappen/in stukjes kappen van functionaliteiten
+		Begin 1 bol (Context diagram) → opsplitsen naar vb. 3 → deze 3 nog is opsplitsen
+		+ Data Stores
+		
+		Balanceren: invoer en uitvoer voor bepaald proces moeten behouden blijven (Bring balance to the DFD, you must!).
+		
+• DD = Data Dictionary (projectwoordenboek):
+	Verduidelijken van wat data flows juist inhouden.
+	
+	Flow-naam = .. + .. → Samenstelling
+			vb.: Lid = naam + adres + lidnr + ingangsdatum
+	
+	{..} → herhalende gegevens, eventueel met min{..}max
+			vb.: Jaaroverzicht = 1{Maandoverzicht}12 → Jaaroverzicht omvat tussen de 1 en 12 Maandoverzichten
+			
+	[../..] → keuzelijst
+			vb.: Boeksoort = [roman/detective/studieboek/strip]
+			
+	(..) → Optioneel
+			vb.: Boek = titel + auteur + (inhoudsopgave)
+	
+• Richtlijnen voor het maken van een DFD:
+	- Volledigheid:
+		Moet alle componenten noodzakelijk voor het systeem bevatten.
+		Als het belangerijk is, of de klant het wil, moeten data flow volledig beschreven zijn in de DD.
+		
+	- Consistencie
+		Je begint altijd met een L0/Context Diagram
+		Hogere niveaus blijven steedsd compatibel met de andere.
+		
+	- Tijdsfactor:
+		DFD representeert geen tijd. Data flows zijn er gewoon, ze beginnen of eindigen niet.
+		
+	- Iteratieve ontwikkeling:
+		Herteken je DFD meerdere keren om tot beste voorstelling van het systeem te komen.
+		Check bij dde klant tussentijds.
+		
+• GAP Analysis:
+	Wat klopt er niet? (Tussen meerdere DFD's, of binnen één enkele DFD.)
+	
+	Waarom?
+		- Overtollige gegevensstromen opsporen
+		- Gegevens ddie op dezelfde manier worden aangepast op verschillende locaties
+		- Niet gebalanceerd
+		- Inefficiënties opsporen (foute toepassing van regels, lussen aan processen, doorgeefluik nodig?, ...)
+		
+	

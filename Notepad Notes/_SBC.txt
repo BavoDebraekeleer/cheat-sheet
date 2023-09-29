@@ -1,0 +1,815 @@
+Single Board Computers	• 
+----------------------	→ 
+
+Files overdracht over SSH:				https://howchoo.com/pi/how-to-transfer-files-to-the-raspberry-pi	https://www.raspberrypi.com/documentation/computers/remote-access.html
+	SSH activeren: sudo raspi-config
+	
+	scp [source files] [user]@[host]:[path]
+	
+	CMD on Win:	pscp.exe -P 22 pi@192.168.3.3:/home/pi/sbc/lab2/lab2_2.2.2.py "D:\Electronica-ICT\2IT_IOT\Single_Board_Computers\Labo\lab2"
+	On RPi:		
+	
+	SHA256:GggRN+KDh2Shi6M4MbzyzhBjMPS5fCwUf+2JqMQZgcs pi@raspberrypi
+
+-- Les 1 --
+------------------------------------------------------------------------------------------------------------------------------------------
+SBC : Single Board Computer
+
+• Situering en geschiedenis:
+	MCU = Real time: er gebeurt maar één process tegelijkertijd, ja kan exact zeggen hoelang commandos gaan duren
+	SBC = NIET real-time, te complex, onzekerheid wanneer commando's exact worden uitgevoerd
+	
+	Industriële toepassingen, sinds de jaren '80, duur to héél duur door uitgebreide testing
+	
+	Standaarden:
+	- PC/104:
+		SBC standaard, form factor 90x96mm, stabelbare PCB's
+		
+	- ITX:
+		ITX standaarden door VIA Technologies, vb. Mini-ITX, Nano-ITX, Mobile-ITX
+		
+	- BeagleBoard (Open Source):
+		• BeagleBoard 2008:
+			Open Source Hardware door Texas Instruments
+			75x75mm
+			TI 3530 ARM Cortex CPU
+			DVI video
+			256 Mb RAM
+			Héél goedkoop voor een SBC op het moment
+			Eerste SBC met Linux, Angström Linux OS
+			
+		• BeagleBoard xM 2010:
+			Upgrade van het origineel
+		
+		• BeagleBone (White) 2011:
+			Non-industrial low-cost versie van de xM
+			GPIO 2x46 pin header
+			256 Mb RAM
+			geen video
+			USB client
+			Eerste low-cost SBC
+			$80
+			
+		• BeagleBone Black 2013:
+			Meerdere OS mogelijk: debian, Android, ubuntu
+			OS op on board FLASH geheugen
+			512 Mb RAM
+			2 GB eMMC on board FLASH
+			HDMI
+			...
+			
+	- RaspberryPi (Closed Source Hardware, Open Source OS):
+		• RaspberryPi 1 2012:
+			Open Source OS Raspbian
+			256 Mb RAM
+			Niet ontworpen als SBC maar als low-cost computer voor ontwikkelingslanden
+			$35
+			S-video connector voor op TV aan te sluiten
+			Library voor aansturing (vergelijkbaar met Arduino)
+			
+		• Rpi 2 2015:
+			1 GB RAM
+			ARM Cortex A7
+			HDMI ipv S-video
+			
+		• Rpi Model 3B 2016:
+			BCM43438 wireless LAN en Bluetooth
+			40-pin extended GPIO connector (pinout.xys)
+			28 digitale in- of uitgangen
+!!!		!!!	3.3V, max 16 mA per pin!!!
+			Slechts 1 beschikbare hardware PWM, elke pin kan wel software PWM
+			Elke pin kan interrupt (zoals bij Arduino)
+			
+		• Rpi Model 3B+ 2018:
+			5 GHz LAN, Bluetooth 4.2, BLE
+			PoE support (vereist PoE HAT)
+			
+		• Rpi Model 4B:
+			1.5 GHz ARM COrtex-A72
+			1-2-4-8 GB LPDDR4 SDRAM
+			Bluetooth 5
+			2 x USB3
+			USB-C voeding
+			Dual monitor support, micro HDMI, 4K mogelijkheid
+			Ondersteund Windows 10 IoT Core (maar bijna niemand gebruikt het ...)
+			
+		• Rpi Zero
+			USB client
+	
+		• Rpi Pico = GEEN SBC, maar MCU board
+		
+	- Banana Pi:
+		Met SATA aansluiting voor NAS mogelijkheden
+		Versie met meerdere LAN poorten
+		Versie met FPGA integratie
+		...
+		
+	- Pine64:
+		Eerste met 64-bit CPU
+		Nu Linux smartphones en tablets
+		
+	- Udoo:
+		Udoo NEO integreert ATMega chip waardoor Arduino code draaiaar is, maar ook real-time
+		
+	- Odroid:
+		Android als OS
+		
+	- TPU SBC's:
+		TPU = Tensor Processing Unit
+		Google Coral Edge TPU
+		
+-- Les 2 --
+------------------------------------------------------------------------------------------------------------------------------------------
+• SoC = System on a Chip
+	→ Bevat meestal:
+		- CPU + Cache geheugen L1 / L2
+			→ Cache geheugen is geheugen recht bij de CPU om sneller te zijn.
+		- GPU + Graphics Encoders H.264 H.265
+		- ... AANVULLEN
+		
+• RPi 4 blokschema
+	→ zie slides!
+	
+• GPIO:
+	Linux Kernel laat niet toe dat User Apps rechtsreeks communiceren met hardware.
+	De Kernel gaat als intermediary dienen.
+	User Space <> Kernel Space
+	Adhv System Calls kan de User Space vragen stellen aan de Kernel Space.
+	→ Voorkomen van conflicten doordat meerdere apps gelijktijdig hardware willen gebruiken.
+	
+	→ Kernel moet rekening houden met, om hang-ups/vastlopen v/h systeem te voorkomen:
+		- toegangstijd
+		- transfer snelheid
+		- prioriteit (hardware volgorde)
+		- data richting
+		- nodige aanspreektijd v/d hardware
+		- enz...
+		
+	Everything is a file in Linux, dus ook de GPIO.
+	Om deze te gebruiken wordt er dus naar een file geschreven of gelezen.
+	
+	Toegang GPIO via GPIO Libraries.
+		→ Bij een taal als Python gaat de communicatie met extra stappen door de Interpreter:
+			Kernel > Bash → Python Interpreter > Interpreter Python App
+			Interpreter Python App > Python Module → Python Library → Kernel
+			
+		→ GPIO bash files = GPIO-chips: gpiochip0, gpiochip100, ...
+		
+			GPIO17 bereikaar maken: $> echo "17" > /sys/class/gpio/export
+			→ hierdoor wordt er een directory 17 aangemaakt voor de pin met files als representatie voor de hardware.
+			
+				/sys/class/gpio/gpio17/
+				Files:
+					direction	=	in/out
+					value		=	1/0 of high/low
+					
+					→ waarde bekijken met: $> cat filename		vb. $> cat value → 0
+					
+				→ Bash relatief traag om hardware aan te spreken!
+				
+• GPIO aanspreken met Python met RPi.GPIO library:
+
+	import RPi.GPIO as GPIO		# GPIO moet in hoofdletters
+	
+	→ Biedt twee mogelijkheden om pinnen aan te spreken:
+		- BCM: Broadcom SoC, zoals ze op de SoC zelf zijn	vb. GPIO17 op de SoC
+		- Board: Fysieke connector op de PCB				  = PIN 11 op de PCB
+		
+	GPIO.setup(pinnr, GPIO.OUT/IN, [pull_up_down/up=??])
+		→ meerdere pinnrs kan je in een list zetten, maar kan niet bij input/output
+	GPIO.output(pinnr, ??)
+	GPIO.input(pinnr)
+	
+	→ GPIO resources terug vrijgeven op het einde! De library reserveerd de nodige GPIO voor lopend programma. Anders warning!
+		GPIO.cleanup()
+		→ Kan je ook doen in de catch van een error opvanging.
+		
+• Drie typische IoT toepassingen:
+	- Besturing van hardware actuatoren via webtoegang
+	- Presentatie van hardware data via webtoegang 
+	- Webdata opvragen:
+		webscraping
+		via API
+	
+		
+		
+-- Les 3 --
+------------------------------------------------------------------------------------------------------------------------------------------
+• IoT communicatie protocollen:
+	M2M = Machine to Machine protocollen
+	
+	- CoAP = Contstrained Application Protocol, vb. Philips Hue lampen
+		AioCoAP en CoAPthon library in Python
+		
+		DTLS = Datagram Transport Layer Security
+			→ CoAPthon heeft géén DTLS
+			
+		Gebruikt UDP, die geen handshake of reply stuurt in tegenstelling tot TCP
+		4 bytes header = zeer klein
+		
+		Werkt volgens request/response
+		Met HTTP verb achtige methoden
+			→ Andere methoden:
+				- observe:		blijft responses krijgen, tot een stop request wordt gestuurd.
+				- CON-GET:		server antwoord steeds met ACK + gevraagde data.
+				- NON-GET:		de server antwoord enkel als er iets te sturen valt.
+				- discovery:	
+				
+		URI = Uniform Resource Identifier
+			in vorm: protocol://path	vb.: coap://hostname:port
+			
+	- MQTT = Message Queue Telemetry Transport
+		Ontwikkeld door IBM in de jaren '90 voor oliepijplijnen in de woestijn.
+		
+		Low resources
+		
+		- agnostisch, het datatype maakt niet uit, grote = 1 byte - 256 Mb, + 1 byte header
+		- lightweight: weinig geheugen en beperkte cpu capaciteit nodig
+		- Ingebouwde QoS = Quality of Service niveaus
+		
+		LoRa = 16 bytes berichten
+		
+		Werking:
+			- Clients = publishers of subscribers
+			- Broker = zorgt voor de transfer Messages tussen Clients
+				Kan publiek of privaat toegankelijk zijn.
+				Een SBC is ideaal als Broker.
+				
+				→ HiveMQ: gratis test gedeelte + heel goede documentatie: www.hivemq.com/hivemq
+					Websocket client tool voor testing
+					Maakt Client-ID aan bij elke verbinding, maar alle vorige Client-ID's blijven wel geldig.
+				
+			- Messages = data tussen Clients
+				→ Message queing met QoS Quality of Service niveaus:
+					0	At most once
+					1	At least once
+					2	Exactly once
+					
+				→ LWT-message = Last Will and Testament
+					Bij verbreking van de verbinding tussen Broker en Client
+					Zegt wat er moet gebeuren als de verbinding breekt.
+					Ziet eruit als een normaal QoS bericht
+					
+				→ Message retention flag:
+					Laatste bericht van een publisher wordt door de Broker bewaard indien de flag=True
+					zodat deze kan worden verzonden naar nieuwe subscribers
+					
+				→ Message duplication flag:
+					Als publisher geen ACK krijgt (en deze verwacht) kan deze een duplicaat verzenden,
+					deze heeft dezelfde msg id met de duplicate flag op true
+				
+			- Topics = waar publishers in sturen, en waar de Broker verdeeld naar de juiste subscribers
+				vb.: thuis/gelijkvloers/living/temperatuursensor
+				
+				→ Wildcards:
+					+ signle-level	vb.: thuis/gelijkvloers/+/temperatuursensor		→ Alle temperatuursensors op de "gelijkvloers", zonder extra onderverdelingen
+					# multi-level	vb.: thuis#/lamp								→ Alle lampen "thuis"
+			
+			→ 1883 = default poort
+			  8883 = default secure line poort
+			
+		RoS = Robot Operating System
+			→ gebasseerd om MQTT
+			
+		Mosquitto
+			→ Paho: python module voor Mosquitto
+			
+	AMQP = Advanced Message Queuing Protocol
+		Peer2peer protocol, maar uitbreidbaarheid naar netwerk met Brokers.
+		
+		Producer en Consumer
+		Nodes met Links
+		verstuurd Frames
+		
+		Optionele Broker = Rabbit-MQ
+		
+		Kan complexere situaties aan dan MQTT, met routing mogelijkheden en uitgebreide security.
+		
+		
+-- Les 4 --
+------------------------------------------------------------------------------------------------------------------------------------------
+• Interrupts:
+	- Hardware interrupts:
+		Adhv Interrupt Controller → nested interrupt controller bij SBC's
+			→ kan meerdere interrupt tegelijk afhandelen
+			→ met bepaalde prioriteiten, het ééne is al belangrijker dan het ander.
+			
+			→ Afhandeling door het OS.
+			
+		Over het algemeen sneller, en minder CPU belasting.
+			
+	- Software interrupts:
+		Vraag aan de kernel om gewone programma uitvoering te onderbreken
+		voor het afhandelen van een subroutine.
+		
+		Interrupt gaat van User Space → Kernel Space
+		
+		Kan voorrang krijgen op een hardware interrupt.
+		
+		Werkt met deamon process.
+		polling = normale lees-opdracht
+		
+	→ De Kernel weet niet of het Hardware of SOftware interrupts zijn.
+	
+	→ Bij RPi op alle GPIO pins mogelijk op pin change, up en down flanks,
+		omdat het allemaal Software Interrupts zijn.
+		
+	- RPi GPIO code, zie slides:
+		• Met Callback functie:
+			def icb(channel):
+				# channel bevat het pin nr waarop de interrupt was, zo kan je deze functie voor meerdere pins gebruiken.
+				# moet niet beperkt zijn, mag zoveel code bevat als gewenst
+		
+			GPIO.add_event_detect(<channel>, <edge>, callback=<functie_naam>, bouncetime=<int>)
+			
+				→ waarbij:	channel = pin nr
+							edge = GPIO.RISING, GPIO.FALLING, GPIO.BOTH
+							callback = Callback functie
+							bouncetime = debounce delay in ms, vb 30
+							
+			→ Opruimen: GPIO.remove_event_detect(pin_nr)
+			
+		• Wacht op interrupt:
+			GPIO.wait_for_edge(..aanvullen)
+			
+• PWM = Pulse Width Modulation:
+	t = t_on + t_off
+	f = 1 / t
+	
+	Linux = non-real-time OS → exacte tijd van uitvoering van instructies kan variëren.
+		→ waar timing belangrijk is, PWM ofloaden naar hardware.
+		
+		→ BeagleBone voegt gewoon 2 extra MCU's toe voor PWM
+		
+	- RPi Software PWM:
+		→ GPIO libraries: RPi.GPIO, RPIO, Pigpio
+		
+		mijnpwmpin = GPIO.PWM(<pinnr>, <frequentie in Hz>)
+		mijnpwmpin.start(<duty cycle in %>)
+		
+		mijnpwmpin.ChangeDutyCycle(<duty cycle>)
+		mijnpwmpin.ChangeFrequency(<freq>)
+		
+		mijnpwmpin.stop()
+		GPIO.cleanup()
+	
+	- RPi Hardware PWM:
+		Ofloaden naar externe generatie unit.
+		
+		Hardware abstraction layer:
+			Meestal gebeurt communicatie via de DMA bussen van de SoC. DMA regelt verkeer tussen PWM chip en de SoC.
+			Kan ook enkel mogelijk zijn met SPI of I²C op sommige chips.
+			Hier merk je als gebruiker echter niks van. Dit gebeurt achter de schermen met drivers.
+			
+			Vanuit User space, de app, library gebruiken om de hardware aan te spreken.
+			
+		→ Pigpio library gebruiken voor Hardware PWM (RPi.GPIO kan diet niet).
+		
+			→ In Linux eerst deamon activeren: $> sudo pigpiod
+			
+			mijnpinobject = pigpio.pi()
+			mijnpinobject.hardware_PWM(<pin>, <freq in HZ>, <duty cycle in int, niet %!>)
+				→ duty cycle 10% = 100000, 50% = 500000
+				→ stuurt deze data door naar de chip, geen start commando nodig.
+				
+-- Les 5 --
+------------------------------------------------------------------------------------------------------------------------------------------
+• SBC Comms = Communicatie mogelijkheden (UART, I²C, ...)
+	Vaak direct aanwezig op de SoC
+	
+	- Device Tree Overlay:
+		Device Tree = Omschrijving van hoe de hardware in elkaar steekt.
+		Overlay = Hoe deze Device Tree te gaan manipuleren.
+		
+		→ raspi-config programma gaat dingen aanpassen in de Device Tree.
+		
+	- I²C (is examen vraag geweest!):
+		Slechts één aanwezig.
+		
+		→ HAT heeft EEPROM met daarop wat de HAT is en hoe het werkt.
+			De RPi gaat deze EEPROM uitlezen via I²C om de HAT aan te sturen.
+			
+			HAT is niet hetzelfde als Cape's of Shield's.
+		
+		Hardware activeren:
+			1) raspi-config
+			2) 5 Interfacing Options
+			3) I²C Enable/Disable
+			
+		In Python libraries nodig:
+			- sudo apt-get install -y python-smbus
+			- ..aanvullen
+			
+			sudo i2cdetect 
+				→ I²C poort 0 = EEPROM
+				→ geeft HEX code, vb. 1A of 23
+				→ 3.3V !!! Trukjes voor andere voltages te gebruiken.
+					Master zeker op 3.3V,
+					Slave kan eventueel met 5V met pull-up weerstand die naar 3.3V trekt
+					→ zie slides
+				
+		→ I²C voeding altijd met pull-up weerstand!
+		
+	- SPI:
+		2x Interfaces aanwezig
+		
+		→ Enkel 5V devices aansluiten adhv "level-shifters",
+			niet mogelijk met pull-up weerstand.
+			
+			level-shifter = 2 MOSFETs of Transistor + pull-up weerstand.
+				→ geven delay bij hoge snelheden!
+			
+		Hardware activeren:
+			1) raspi-config
+			2) 5 Interfacing Options
+			3) SPI Enable/Disable
+			
+		Python library:
+			>>> import spidev
+			...aanvullen
+			
+	- SDIO:
+		SD-kaart lezer protocol.
+		Gebruikt voor het OS.
+		
+		Nog één port vrij, dus extra SD-kaart lezer aansluiten is mogelijk.
+		
+		Hardware activeren:
+			Niet mogelijk via raspi-config,
+			maar moet met Device Tree Overlay/DTO.
+			
+	- I²S:
+		Inter Integrated-circuit Sound
+		Digitale audio protocol, korte afstanden op de PCB zelf.
+		
+		PCM = Pulse Code Modulation
+		
+			Quantisatie niveau / dynamisch bereik = versterking of verzwakking (volume)
+				om gelijk niveau te verkregen om aan de ADC aan te leggen en een goede kwaliteit signaal te bekomen.
+				
+		Hardware activeren:
+			Niet mogelijk via raspi-config,
+			maar moet met Device Tree Overlay/DTO.
+			
+		volumio = music player voor audio HAT met I²S
+		
+	- JTAG:
+		Joint Test Action Group
+		Debugging interface, gebruikt als programmer en PCB tester.
+		
+		openOCD = Open On-Chip Debugger applicatie voor ARM7 & 9 CPU's zoals de RPi gebruikt.
+		
+	- UART:
+		"Gewone" serial.
+		Logische niveaus zijn 0V en 3.3V.
+		TX en RX lijnen.
+		
+		5x ter beschikking.
+		
+		Hardware activeren:
+			Slechts 1 te activeren via raspi-config
+				→ login shell mogelijk via deze lijn.
+				→ ttyS0 in /dev directory op Linux.
+			
+			De andere 4 via de Device Tree Overlay/DTO
+			
+		Python library:
+			$> sudo pip3 install pyserial
+			
+			>>> import serial
+			
+			..aanvullen
+			
+		USB serial adaptor
+			→ GND!
+			
+		Terminal emulator:
+			Tera Term op Windows
+			CoolTerm opWindows, MacOS en Linux.
+			
+-- Les 6: BeagleBone --
+------------------------------------------------------------------------------------------------------------------------------------------
+• SBC's voornamelijk gebruikt als Headless Computer
+	vaak wel video outputs aanwezig, maar enkel voor de user applicaties.
+	
+	vb. bank automaat
+	
+• Beaglebone:
+	- Ethernet over USB → driver aanwezig op de BeagleBone.
+	- eMMc geheugen aanwezig voor OS, ipv SD-kaart bij RPi
+	- Debian Linux pre-installed, eerste white versie zelf nog flashen met Angstrom Linux
+	
+	- Belangerijkste: BeagleBone Black (Wireless)
+	
+	- BeagleBone Blue door Seeed Stduio:
+		- "grove" connectors
+		- battery interface voor LiPo heroplaadbaar
+		
+	- Defaults:
+		IP-adres:	192.168.7.2
+		Username:	debian
+		Password:	temppwd
+		
+		Webserver draaid default en automatisch.
+			→ Node.JS app met documentatie.
+				→ non-blocking, geeft resources auto terug vrij als ze niet meer gebruikt worden.
+					→ laat toe GPIO over meerder apps te delen.
+				→ event-driven met call-back functies.
+					
+	- Cloud9 IDE:
+		Werkt in de browser en ondersteund allerlei programmeertalen waaronder Node.JS
+		
+	- Bonescript:
+		Arduino-achtige javascript library om de BeagleBone aan te sturen.
+		
+		→ Video bekijken, zie slides: werken met threads in Python.
+		
+		GPIO Commando's, uitleg zie slides:
+			→ beaglebone-config open-source project
+			
+			obj.pinMode(pin, direction, [mux], [pullup], [slew], [callback])
+			
+			obj.digitalWrite(pin, value, [callback])
+			
+			obj.digitalRead(pin, [callback])
+				→ returned geen data, maar data wordt opgevangen in de callback functie.
+					vb.:	b.digitalRead('P8_19', printStatus)
+							function printSTatus(x)
+							...AANVULLEN
+							
+			Interrupt:	obj.attachInterrupt(pin, handler, mode, [callback])
+							→ handler = expressie
+							
+							callback(x) properties:
+								x.pin
+								x.output
+								x.value
+								
+							→ software interrupts
+				
+			ADC:		obj.analogRead(pin, [callback])
+							→ MAX. 1.8V !!! Altijd spanningsdeler gebruiken.
+							→ Elke PIN is enkel analoog of digitaal
+							
+			PWM:		obj.analogWrite(pin, value, [freq], [callback])
+							→ 8x PWM uitgangen die mee op de SoC zitten.
+							
+							→ PRU = Programmable Realtime Unit:
+								Soort MCU, maar die ook directe toegang heeft tot het geheugen van de SoC.
+								→ Zeer snelle uitwisseling van data tussen MCU's want delen geheugen.
+								→ Geeft realtime mogelijkheden!
+								→ 32-bit 200MHz
+								→ PRU-ICSS = Programmable Realtime Unit - Industrial Controlled SubSystem
+								
+		→ Expansion Header ipv "GPIO-connector"
+		→ Device Tree Overlays om de mode van de pinnen te configureren.
+		
+-- Les 7: Device Tree -- (Opname)
+------------------------------------------------------------------------------------------------------------------------------------------
+- Device Tree (DT):
+	Omschrijving, in XML-achtig document, van de aanwezige hardware.
+	→ ARM CPU's ondersteunen geen "Device Discovery"
+	→ Op SBC's geen PCI aanwezig
+	
+	→ Hoe schrijven op devicetree.org
+		Bestaat uit verschillende "nodes" met "child-nodes".
+		
+	- Device Tree Source (DTS):
+		"Leesbare tekst" versie van de DT die geschreven wordt.
+		File exstention .dts
+		
+	- Flattened Device Tree (FDT):
+		Binaire gecompileerde versie van de DTS, gecompileerd door de Device Tree Compiler.
+		Gebruik van includes om DT met Overlays te combineren.
+		File exstention .dtb = Binary Large Object of Blob (groot stuk binaire code)
+	
+- Device Tree Overlay:
+	Omschrijft de verschillen met de bestaande Device Tree. Kunnen meerdere zijn.
+	vb. Raspberry Pi en Orange Pi zijn identiek, buiten dat de Orange de mogelijkheid heeft om een SSD aan te sluiten.
+		In de Overlay zal enkel deze SSD staan.
+		
+- Device Tree Overlay Stack:
+	Het geheel van de Device Tree en alle Overlays.
+	Als de node die de Overlay beschrijft al aanwezig is in de Device Tree gaat de Overlay deze "maskeren". 
+	Als er bvb een Gbit ethernet poort is ipv van een Mbit gaat de overlay zijn stukje voor deze node over het vorige leggen.
+	De bovenliggende laag heeft altijd prioriteit op de laag eronder.
+	
+- Device Tree Blob Overlay (DTBo):
+	Gecompileerde Device Tree Overlay die bruikbaar is in runtime.
+	Hiervoor worden geheugen slots leeg gehouden in het geheugen.
+	In deze slots kunnen blobs ingeladen worden terwijl de SBC aan het draaien is.
+	
+- RPi Bootloader = Start.elf die config.txt leest tijdens boot.
+	Raspi-config past deze config.txt aan, maar slechts beperkte mogelijkheden.
+	Zelf aanpassen geeft veel meer opties.
+	Geen ondersteuning voor memory slots (voorlopig).
+	vb.: dtparam, dtoverlay
+	
+	- HAT's:
+		Hebben EEPROM geheugen met UUID (= Universaly Unique IDentifier, 128-bit getal, zelfde als GUID = Global Unique IDentifier)
+		volgens de RFC 4122 norm (zelfde als PCI).
+
+- BeagleBone gebruikt Das U-Boot bootloader.
+	Deze ondersteund wel DTBo inladen tijdens runtime.
+	
+	- CAPE's (HAT voor een BeagleBone):
+		EEPROM bevat ook een DTBo die nodig is voor de werking.
+		Deze is dus plug'n'play want deze DTBo kun tijdens het draaien ingelezen worden.
+
+
+-- Les 8: Beagle GPIO --
+------------------------------------------------------------------------------------------------------------------------------------------
+Gemist (niet noodzakelijk)
+
+-- Les 9: Machine Learning SBC's --
+------------------------------------------------------------------------------------------------------------------------------------------
+Gemist (niet noodzakelijk)
+
+-- Les 10: C
+------------------------------------------------------------------------------------------------------------------------------------------
+Lijken enorm op elkaar, maar toch volledig apparte talen die afzonderlijk blijven evalueren.
+
+- ANSI C = de standaard C versie die het meest gebruikt wordt
+
+	returntype function();		→ prototype declarations: om return waardes van functies mogelijk te maken
+	main(){..}
+	void function(){..}			→ functies moeten na de main() komen!
+	returntype function(){..}
+	
+→ C-programma op een SBC bovenop het OS
+
+	int main(int argc, char *argv[]){..}
+	
+		→ int main:
+			main zelf returned waarde bij afsluiten zodat OS weet dat het programma gestopt is.
+			vb. 0 = correct afgesloten, ander dan 0 is error code door vroegtijdig afsluiten, kan door gebruiker zelf, met Ctrl+C
+	
+		→ int argc:
+			geeft aan hoeveel parameters zijn meegegeven bij starten programma
+		
+		→ char *argv[]:
+			array van pointers
+			naar de paramaeters die zijn meegegeven door de gebruiker
+			en nu bruikbaar/leesbaar in het programma zelf
+			
+- Instructies:
+	Basis instructie set heel beperkt!
+	
+	→ #include <stdio.h>
+		library om input/output streams te kunnen verwerken, extra commandos
+		
+		printf("Hello world!");
+		printf(%d, int_var);		→ %6d voorziet 6 chars op het scherm
+		printf(%f, float_var);		→ %4f voorziet 4 chars na de komma
+		printf(%c, char_var);
+		printf(%d, boolean_var);
+		
+		printf(%d, %c, %f, int_var, char_var, float_var);	→ Bij meerdere dingen afprinten eerst datatypes opgeven, doet geen auto type conversie!
+		printf("Zo werkt interpolatie! Hier komt iets %d, en hier %f en hier %c.", vard, varf, varc);
+		
+	→ GEEN strings! Meerdere characters dmv pointers!
+	
+		char* tekst;
+		*tekst = "Hello world!";	→ pointer slaagt geheugen adres op van "H"
+		char* geenkopie = *tekst;	→ geenkopie bevat nu hetzelfde geheugen adres! Bij aanpassing wordt de tekst waar beide pointers nu naar verwijzen aangepast.
+
+		
+		printf(%s, *tekst);			→ stopt bij escape char 0
+		
+		→ volgende lijn "\n"
+			
+	→ #include <string.h>
+		char arrays ipv strings!
+	
+		char tekst[] = "Hello world!";	→ variabele zelf is eveneens een pointer naar eerste letter "H"
+		
+		→ gets(char_array_var);		→ keyboard input lezen
+		
+		→ Kopie maken
+			char tekst[] = "Hello world!";
+			char kopie[20];
+			
+			strcpy(kopie, tekst);
+			
+	→ Veel moeilijker om complexe zaken te coderen, maar enorme snelheidswinst tegenover andere talen!
+
+	→ malloc:
+
+		Andere talen gebruiken vaak Dynamic memory allocation.
+		Dit laat toe dat geheugen niet gereserveerd moet worden.
+		Programmer wordt hierdoor echter afgeschermd en kan zelf niet aan het geheugen.
+		
+		→ in C heb je directe toegang aan het geheugen met pointers.
+		
+		→ malloc functie laat toe geheugen ruimte te reserveren zonder te gebruiken.
+		
+			ptr = ([type]*) malloc ([byte-grote]);
+			vb. chptr = (char*) malloc (20);
+			
+	→ sizeof:
+		functie die teruggeeft hoevel bytes een var in beslag neemt
+		→ voordeel voor werken op verschillende systemen met bvb 16-bit of 64-bit → ander geheugen grote
+		
+		..AANVULLEN
+		
+	→ calloc:
+	
+		..AANVULLEN
+		
+	→ realloc:
+		Her-alloceren van geheugen. Geheugen van een pointer uitbreiden of verkleinen.
+		
+		..AANVULLEN
+		
+	→ DMA:
+		Geheugen schrijven naar I/O poort.
+		→ virtuele adressen/geheugen
+		→ in Kernel-space, niet User-space
+		
+		
+-- Les 11: C++, gcc en g++
+------------------------------------------------------------------------------------------------------------------------------------------
+- C en C++ met afzonderlijke compilers door de verschillen.
+
+Verschillen van C++ tov C:
+	- C++ is object georiënteerd
+	- C++ nog steeds volop in ontwikkeling
+	- Streams voor datastromen:
+		I/0 met <iostreasm>
+		
+		cin >> variabele;
+		cout << variabele;
+		
+		cout << "tekst" << endl;
+		cout << "teks" << var << "tekst" << var;
+		
+		cout << setw(5) << var;  → maakt kolom van 5 chars breed
+		
+	- Memory management:
+		bij andere talen meestal "garbage collection"
+		bij C++ zelf doen, risico tot memory leaks (geheugen niet meer vrij geven, enkel meer reserveren waardoor uiteidenlijk het geheugen op geraakt)
+		
+		new() voor data te reserveren in hoeveelheid van bepaald datatype
+		type veilig, kan alleen van dat datatype ingeschreven worden
+		wat met new() is aangemaakt moet ook weer verwijdert worden met delete(), vrijgeven met free() gaat een memory leak creeëren of het systeem sneller al doen crashen
+		
+			vb.: int *arr_pntr = new int(aantal);
+		
+		malloc() en free() bestaan ook nog steeds, maar liever new() en delete() gebruiken
+		
+		→ objecten werken wel dynamisch met een garbage collector, maar de programmeur heeft de controle
+			je hebt geen controle over wanneer de garbage collector iets verwijderd,
+			en je kan efficiënter werken = sneller programma als resultaat.
+			
+	- Assembler code kan rechtstreeks geïntegreerd worden in C++ code (in C wel gelijkaardig)
+		Assembler code om iets specifieks te doen is altijd sneller.
+		
+		__asm__{ Assembler code hier }
+		
+		asm("assembler code titel"
+			:output operator
+			:input operator
+			:...
+		);
+		
+
+- gcc compiler:
+	werkt voor verschillende talen
+	voor C++ een hele hoop opties ingeven nodig. (Volgorde van opties maakt niet uit.)
+	Voor C code geen opties nodig.
+	
+	Creëert a.out file, runnen met "./a.out"
+	Zelf naam geven: gcc -o resultaatcodeNaam tecompilerencode.c
+	
+- g++ compiler:
+	specifieke compiler voor C++
+	
+	g++ -o resultaatcodeNaam tecompilerencode.cpp
+	
+	Assembler code maken, niet verder naar binair:
+		
+		g++ -S tecompilerencode.cpp -o asmcode.s
+		
+	Object code:
+		Onderdelen van een applicatie, vb voor libraries, al compileren naar binair.
+		Dit geeft geen uitvoerbare code. Het samenstellen tot een geheel is nog niet gebeurd.
+		Vb library code is nog niet ingevoegd.
+	
+		g++ -c tecompilerendeelcode.cpp resultaat.o
+		g++ resutaat.o anderedeel.o lcd.o -o appnaam
+		
+	make-file:
+		Te vergelijken meet een recept. Wat het resultaat moet zijn en hoe dit te bekomen.
+		Oplijsting van de object-files die gebruikt moeten worden.
+		Verandert één van de object-files moet de code terug samengesteld worden.
+		
+		Vervolgens welke cpp-files de object-files van afhankelijk zijn.
+		Verandert er hier één van moet de object-file opnieuw gecompiled worden.
+		
+		"make" runnen in de make-file directory.
+		
+		Kan ook bevatten:
+			clean 	→ make clean
+			install → make install
+			move 	→ make move
+	

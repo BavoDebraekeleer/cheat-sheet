@@ -1,0 +1,920 @@
+→ •
+	█████╗ ██████╗ ██████╗ ██╗   ██╗██╗███╗   ██╗ ██████╗ 
+	██╔══██╗██╔══██╗██╔══██╗██║   ██║██║████╗  ██║██╔═══██╗
+	███████║██████╔╝██║  ██║██║   ██║██║██╔██╗ ██║██║   ██║
+	██╔══██║██╔══██╗██║  ██║██║   ██║██║██║╚██╗██║██║   ██║
+	██║  ██║██║  ██║██████╔╝╚██████╔╝██║██║ ╚████║╚██████╔╝
+	╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+ 
+__________________________________________________________________________________________________________________________________________________	
+__________________________________________________________________________________________________________________________________________________	
+-- OVERZICHT KENNIS EXAMEN --
+-----------------------------
+De kennistoets voor het examen zal bestaan uit een aantal meerkeuzevragen,
+"waar/niet waar"-vragen en open vragen uit de theorie.
+
+• Arduino hardware platform / IDE / Code / GPIO
+• Basisinstructies in C
+• Seriële Monitor
+• Interrupts
+• Libraries
+• Arduino memory
+• Arrays & char arrays
+• Strings in C++
+• "Serial read" & "Serial write"
+• Pointers in C/C++
+• AVR toolchain
+• Preprocessor commando's
+• Arduino OOP
+• Verschillen tussen C++ & C#
+• Inleiding op datacommunicatie & seriële protocollen
+• Sturen van zware verbruikers
+_________________________________________________________
+-- OVERZICHT LABO EXAMEN --
+---------------------------
+De vaardigheidstoets voor het examen zijn vergelijkbaar met de labo-testen.
+Je krijgt een opgave die je in hardware moet bouwen en waar je code voor schrijft in de Arduino IDE.
+In deze test maak je een filmpje van je resultaat, waarin je de werking van de hardware demonstreert
+en de communicatie met de seriële monitor. Je hoeft de code niet uit te leggen.
+
+De inhoud is de volgende:
+• Arduino GPIO
+• Elektrisch gedrag van Arduino-schakelingen
+• Seriële Monitor & Interrupts
+• Rotary encoder & 7-segment display
+• EEPROM & "serial read" via de terminal
+• Afstandssensor & servomotor
+• Pointers
+• Interfacing met de PC via Processing
+• LCD & menustructuur
+• Bluetooth & AT-commando's
+
+__________________________________________________________________________________________________________________________________________________	
+__________________________________________________________________________________________________________________________________________________	
+-- ARDUINO TERMINOLOGIE --
+--------------------------
+• IDE = Integrated Development Environment (software package)
+• GPIO = General-Purpose Input/Output (PIN's)
+• PCB = Printed Circuit Board
+• μc of MCU = Microcontroller = "computer in 1 chip" (microprocessor/CPU, memory, I/O system, serial communication)
+• AVR-GCC = Alf and Vegard's RISC processor (8-bit RISC line Atmel AVR microcontrollers) - GNU Compiler Collection
+• TTL Levels = Transistor-Transistor Logic Levels:
+	Threshold Voltage Levels = spanningswaarden die als HIGH of LOW worden gezien = geleidingsgrenzen v/d transistoren.
+	
+	- V_OH = min Voltage for Output High
+	- V_IH = min Voltage for Input  High
+	- V_OL = max Voltage for Output Low
+	- V_IL = max Voltage for Input  Low
+	
+	https://learn.sparkfun.com/tutorials/logic-levels/ttl-logic-levels 
+	
+• RX = Receiver
+• TX = Transmitter
+• ISR = Interrupt Sub Routine (= soort C-function)
+• EEPROM = Electrically Erasable Programmable Read-Only Memory:
+	A read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.
+	Non-volatile, limited amount of rewrites.
+
+• Sketch files → .INO (or .PDE → old version)
+• Code based on C++
+
+• Statement:
+	command ending with ;
+	
+• PWM = Pulse Width Modulation → Servo motor
+	Dit wil zeggen dat de servo elke 20ms een puls verwacht en dat de breedte van deze puls de positie zal bepalen.
+	
+_________________________________________________________
+-- ARDUINO BOARD PARTS --
+--------------------------
+• Digital PIN's:
+	→ Can be INPUT or OUTPUT / read or write voltage
+	- PWM~ PIN's: ~3, ~5, ~6, ~9, ~10 & ~11
+		→ Can use "Pulse width modulation" → Can adjust the voltage between 0V - 5V
+	- PIN 1 → TX = Transmit → LED
+	- PIN 0 → RX = Receive 	→ LED
+		→ For communication with the Arduino board and other deveices
+• Analog PIN's → A0 - A5
+	A3 = analoog-digitaal converter, 10-bits = 0 tot 1023 voor 0V tot 5V
+	→ To convert analog signals to digital → Digitizer
+• Power PIN's:
+	3.3V
+	5V
+	GND = Ground / Aarding
+	Vin
+	RESET → Apply 0V to reset → Same as RESET button
+
+_________________________________________________________
+-- 7 SEGMENTS DISPLAY --
+------------------------
+Aansluiten:
+	1) Anode   = 7-segments + ":" = active-HIGH → 5V + tussen weerstand 330 Ohm
+	2) Cathode = 4-digits		  = active-LOW  → GND / 0V
+		→ voor ":" → bovenste bolletje met anode 2, onderste met 3
+	
+• Code:
+	const byte nrOfAn = 7;
+	const byte nrOfCat = 4;
+	const byte seg7_an[nrOfAn] = {6, 7, 8, 9, 10, 11, 12}; // Anodes abcdefg = active-high
+	const byte seg7_cat[nrOfCat] = {5, 4, 3, 2}; // Cathodes 1234 = active-low
+
+	const int delayTime = 100;
+							  
+	void setup() {
+	  for(int i = 0; i < nrOfAn; i++) {
+		pinMode(seg7_an[i], OUTPUT);
+		digitalWrite(seg7_an[i], LOW);
+		if(i < nrOfCat) {
+		  pinMode(seg7_cat[i], OUTPUT);
+		  digitalWrite(seg7_cat[i], HIGH);
+		}
+	  }
+	}
+	
+_________________________________________________________
+-- BLUETOOTH MODULE --
+----------------------
+• Aansluiten:
+	- TXD-pin module → rechtstreeks op RX0-pin Arduino
+	- RXD-pin module → via spanningsdeler voor max. 3.3V op TX1-pin Arduino
+		TX0 → 1kΩ R °→ 2kΩ R → GND
+					°→ RXD
+					
+	!! → RX & TX pin connecties uitrekken om sketch te uploaden naar Arduino!!
+					
+• AT Commando-mode: https://www.instructables.com/How-to-Set-AT-Command-Mode-for-HC-05-Bluetooth-Mod/ 
+	1) Knop op module ingedrukt houdden terwijl USB aansluiten op Arduino
+		→ LED op module knippert nu traag.
+	2) Lege sketch uploaden.
+	3) Seriële monitor instellen op "Zowel New Line als Carriage Return" en 38400 baud
+	4) EN-pin module aansluiten op +5V
+	5) RX en TX-pin connectors op de module van plaats wisselen, NIET op de Arduino! zodat de spanningsdeler nog steeds op de TX1-pin staat!
+	
+_________________________________________________________	
+-- PULL-UP & PULL-DOWNN RESISTORS (SWITCHES)-- 	https://www.seeedstudio.com/blog/2020/02/21/pull-up-resistor-vs-pull-down-differences-arduino-guide/ 
+----------------------------------------------	https://www.instructables.com/Arduino-Interrupts/
+• Pull-UP Resistors:
+	- Connect: +5V → Pull-UP Resistor → Cross-section → Switch → GND
+													  → digital INPUT pin
+	- Keeps the input HIGH when unpressed, LOW when pressed.
+
+• Pull-DOWN Resistors:
+	- Connect: +5V → Switch → Cross-section → Pull-DOWN Resistor (10kΩ) → GND
+											→ (100Ω Resistor) → digital INPUT pin
+	- Keeps the input LOW when unpressed, HIGH when pressed.
+
+__________________________________________________________________________________________________________________________________________________	
+__________________________________________________________________________________________________________________________________________________	
+-- ARDUINO HARDWARE PLATFORM / IDE / Code / GPIO --
+---------------------------------------------------
+• Arduino platform onderdelen:
+	- Arduino development environment
+	- Arduino programmer:
+		Hardware/software combinatie om een microcontroller the programmeren.
+		Kan met de chip en een PC communiceren, als ook de chip in programming mode zetten
+	- Arduino hardware:
+		Microcontroller, programmer, bootloader, USB controller, supply voltage regulator
+
+• The Arduino IDE (= Integrated Development Environment):
+	Software package die de design environment en een deel van de programmer bevat.
+	
+	Internal build-up:
+		1) Graphical interface: Arduino code → 2) AVR-GCC: C-compiler 			  → 3) Arduino Hardware
+		1) Translation to C code		     → 2) Translation to MCU instructions → 3) Arduino Hardware
+
+• Code:
+	Zie hierop volgende samenvatting hoofdstukken	
+
+• GPIO = General-Purpose Input/Output (PIN's)
+	
+
+_________________________________________________________
+-- ARDUINO (NANO) VARIABLES --
+------------------------------
+• PIN variables:
+	A# = Analoge PINnr	vb: A3
+	D# = Digitale PINnr vb: D2
+	
+	Use: #define PinName NR
+	→ Vervangt voor het compileren overal in de code de PinName door de NR
+
+• Base types:
+	bool		"boolean"			0 or 1 = True or False = High or Low
+	byte		"byte"				8-bit number
+	int			"integer"			2's complement 16-bit number, from -32768 to 32767 decccimal, 0000 to FFFF hexadecimal	→ 32-bit on Arduino Duo & SAMD
+	float		"floating point"	32-bit number, scientific notation, from 3.4028235 E+38 to -3.4028235 E+38
+	double		"double"			32-bit kommagetal	→ 64-bit on Arduino Duo & SAMD
+	
+	char		"character"			8-bit ASCII character → '.'
+	char[]		"char array"		Array van 8-bit chars
+	String		"String object"		Array die '\0' of null-character heeft als end char om einde van de zin aan te duiden → ".."
+	String[]	"Array van Strings"	Array van String objecten
+	
+• Special types (placed before base var type):
+	const		"constant"			Var dat niet verandert, eens gedeclareerd kan het niet van waarde wijzigen
+	volatile	"volatile"			Voor gebruik in ISR van Interrupts, kan tegen code jumps
+	
+_________________________________________________________
+-- ARDUINO FUNCTIONS --
+-----------------------
+pinMode(pinNumber, OUTPUT/INPUT);	→ Setup a PIN as OUTPUT or INPUT → D-PIN
+									→ Digital PIN just the number, analog with A# vb.: A3
+
+digitalRead(pinNumber);				→ Read the digital signal from PIN → HIGH or LOW
+digitalWrite(pinNumber, HIGH/LOW);	→ Set a PIN to OUTPUT a digital HIGH or LOW signal
+
+analogRead(pinNumber)				→ Waarde van 0 - 1023 → A-PIN → 0V-5V → Step = 5V/1024 = 0.00488V = 4.88mV
+analogWrite(pinNumber, value) 		→ Waarde van 0 - 255
+
+Serial.begin(9600); 				→ baude rate of 9600, serial monitor op PC hieraan gelijk zetten!
+Serial.print & Serialprintln in code voor de Seriële Monitor
+
+delay(t);							→ Stop code for t time in milliseconds
+	t = millis();					→ Time since power-on or reset in milliseconds
+	t = micros();					→ Time since power-on or reset in microseconds
+	
+_________________________________________________________
+-- ARDUINO OPERATORS & Comments --
+----------------------------------
+• Math: 		+, -, *, /, %, ^, ++, --, +=, -=, *=, /=
+• Logic:		==, !=, &&, ||
+• Comparison:	==, >, <, !=, <=, >=
+
+• Comments:		// Single line
+				/* Multi-line */
+	
+_________________________________________________________
+-- ARDUINO CONDITIONALS & LOOPS --
+----------------------------------
+• If else:
+	if(bool/condition) // single-line statement code
+	else if(bool/condition) {
+		// multi-line statement code
+	} else {
+		// statement code
+	}
+	
+• Switch case:
+	switch(var) {
+		case 1: // single line statement code
+			break;
+		case 2: {
+			// multi-line statement code
+			break;
+		default:
+			// optional
+	}
+	
+• Do while:
+	do {
+		// statment code
+	} while(bool/condition)
+
+• While:
+	while(bool/condition) {
+		// statment code
+	}
+	
+• For:
+	for(int i = 0; i < value/var; i++) {
+		// statement ccode
+	}
+
+__________________________________________________________________________________________________________________________________________________
+-- SERIAL MONITOR --
+--------------------
+Seriële communicatie poort (met twee draadjes),
+waarlangs de Arduino IDE 8-bit ASCII chars kan sturen en ontvangen,
+om zo interactie met de gebruiker mogelijk te maken.
+
+• Serial data = sequentie van 0 & 1 aan bepaalde transmissie snelheid.
+	8-bit chars → elke 8 bits ontvangen worden omgezet in een char.
+	TTL Levels bepalen welke spanningen gelezen worden als een 0 of 1. (Zie volgende hoofdstuk.)
+
+• Transmission speed/baud-rate in BAUDs/sec (komt hier overeen met de bit rate in bits/sec).
+	Meest gebruikt: 1200, 9600, 19200, 115200
+	
+	- Baud rate in bauds/sec:
+		aantal signaal of symbool veranderingen per seconden.
+		
+	- Bit rate in bits/sec:
+		de snelheid van de data.
+		
+	→ Niet overeenstemmende baud-rates langs Arduino en IDE zijden resulteren in foutieve data, 
+	  omdat dan de verkeerde bits worden samengevoegd tot een char.
+		
+• Commands:
+	Serial.begin(9600); → baude rate of 9600, serial monitor op PC hieraan gelijk zetten!
+	Serial.print & Serialprintln in code voor de Seriële Monitor
+	
+• Connecties:
+	TX IDE Serial Monitor → RX Arduino Nano
+	TX Arduino Nano → RX IDE Serial Monitor
+	GND → GND
+
+	TX = Transmitter
+	RX = Receiver
+	
+• FT232RL:
+	Converts USB signal to a COM port.
+	
+__________________________________________________________________________________________________________________________________________________
+-- ARDUINO & ELECTRICAL FUNDAMENTALS --
+---------------------------------------
+• Microcontroller: "a computer in one chip"
+	Contains:
+		- CU = Control Unit; or CPU = Central Processing Unit
+		- ALU = Arithmetic Logic Unit → V-vormig: 2x integer operand inputs, Result output, F-input = functieselector , D-output = uitvoerstatus (= carry, zero-bits en foutcondities)
+		- I/O = Input/Output System
+		- Index + Instruction Memory
+		- Data memory
+	   (- Serial Communication)
+	   
+	Does NOT contain:
+		- Input for a keyboard
+		- Output for a monitor
+		- Connection for a hard disk
+		- No internal software to drive the hardware above
+			→ Programmer device needed for this!
+   
+	→ Manufacturers: MicroChip, Atmel, Intel, Analog devices, ...
+	→ Baked in programming language
+	
+• Programmer:
+	Device that:
+		- can communicate with the chip
+		- can communicate with the PC
+		- Contains soft-/hardware which can put the chip in programming mode
+	
+	→ We develop software on the PC in a higher programming language
+	  the PC compiles our code into instruction(s) of the microcontroller
+	  
+	! → Arduino = Microcontroller + Programmer + Baked in software to program the microcontroller on one PCB!
+
+• TTL Levels = Transistor-Transistor Logic Levels / Logische Niveaus:
+	Threshold Voltage Levels = spanningswaarden die als HIGH of LOW worden gezien = threshold/geleidingswgrens spanning v/d transistoren.
+	Voltages moeten niet exact 0V en 5V zijn om als '0' of '1' geïnterpreteerd te worden.
+		→ Voordeel digitale systemen
+		→ Kunnen storingen verdragen zonder fouten te krijgen
+		
+		→ 1-bit = Vcc = Voedingspanning → bij Arduino Nano, USB spanning = 5V, Arduino spanning = 3.3V
+		  0-bit = GND = Ground / massa = 0V → komt hier ook van de USB
+
+	- V_OH = min Voltage for Output High
+	- V_IH = min Voltage for Input  High
+	- V_OL = max Voltage for Output Low
+	- V_IL = max Voltage for Input  Low
+
+• Digitale Input:
+	Kan enkele hoog/laag of '1'/'0' detecteren.
+		→ Kan zonder probleem op een voeding aangesloten worden.
+			→ Output NOOIT rechtstreeks, zonder verbruiker (vb.: weerstand) op een voeding aansluiten.
+		→ Input PIN nooit los laten hangen. Het niveau (hoog/laag) is onbepaald. De minste (RF) storing kan het niveau laten omslagen.
+
+• Pull-up & -down resistors: https://www.electronics-tutorials.ws/logic/pull-up-resistor.html
+	- A pull-up resistor connects unused input pins (AND and NAND gates) to the dc supply voltage, (Vcc) to keep the given input HIGH.
+	- A pull-down resistor connects unused input pins (OR and NOR gates) to ground, (0V) to keep the given input LOW.
+	
+	→ The resistance value for a pull-up resistor is not usually that critical but must maintain the input pin voltage above VIH.
+		The use of 10kΩ pull-up resistors are common but values can range from 1k to 100k ohms.
+	→ Pull-down resistors are a little more critical because of the low input voltage level, VIL(max) and the higher IIL current.
+		The use of 100Ω pull-down resistors are the most common but they can range in resistive value from 50 up to 1k ohms.
+	
+	
+__________________________________________________________________________________________________________________________________________________
+-- INTERRUPTS -- 	 !! → Bij Nano enkel mogelijk op D2 & D3!!
+----------------
+	Onderbreekt de normale lopennde programma executie / interrupts code flow → Saves program state,
+	voert ISR functie uit,
+	en gaat terug verder waar het zat in de program code → Restores program state.
+
+	- Syntax: attachInterrupt(digitalPinToInterrupt(PIN), ISR, mode);
+	
+		→ PIN: Enkel op PIN D2 & D3 op NANO → best PIN3 gebruiken
+			→ MICRO: D0, 1, 2, 3 en 7
+			→ MEGA: D2, 3, 18, 19, 20 en 21
+		
+		→ ISR = Interrupt Sub Routine (= soort C-function)
+			→ altijd "volatile" variabele gebruiken voor gebruik in ISR's, zeker als de waarde hierin verandert wordt! Deze kan tege code jumps.
+			→ Zo kort mogelijk, want onderbreekt code! Ideaal 1 regel, geen loops!
+			
+		→ mode of detection:
+			- LOW		PIN value = 0 (als waarde hetzelfde blijft, blijft deze dus een interrupt produceren)
+			- HIGH		PIN value = 1 ("")
+			- CHANGE	PIN verandert van value, 0 → 1 of 1 → 0
+			- RISING	PIN verandert van 0 → 1 (exacte moment wanneer dit gebeurt, enkel op de overgang)
+			- FALLING	PIN verandert van 1 → 0 ("")
+	
+	- Code Flags:
+		Booleans die in een ISR aangepast worden, ideaal is dit enkel wat er in een ISR gebeurt.
+		Afhankelijk van de waarde van deze flags wordt er in de loop() code al dan niet uitgevoerd (met if of switch).
+		
+	vb.: 	volatile bool button = false;
+			void setup() {
+				attachInterrupt(digitalPinToInterrupt(pin), buttonisr, RISING);
+			}
+			void loop() {
+				digitalWrite(7, button);
+			}
+			void buttonisr() {
+				button = true;
+			}
+
+__________________________________________________________________________________________________________________________________________________
+-- DEBOUNCE --
+--------------
+• Contact Bounce / Dender: https://www.allaboutcircuits.com/textbook/digital/chpt-4/contact-bounce/
+	Een dender is het stuiteren van een contact dat sluit of verbreekt.
+	When a push button is released the spring inside will oscillate shortly before coming to a standstill,
+	switching rapidly between LOW en HIGH during this "bouncing".
+	→ Multiple ways of debouncing both with hardware and software.
+
+• Hardware De-bounce:
+	1) 	RC circuit as a low-pass filter. (RC = Resistor/Weerstand & Capacitor/Condensator)
+		Condensator parallel met de switch, in serie met een Weerstand (Resistor) tussen de Vcc.
+		
+	2)	Lacth (zie FPGA: Flipflops)
+		→ Voordeel: Geen timing delay, betere user experiencce
+		→ Nadeel: two-way switch nodig
+		
+	→ Advantage: No timing delay → Better, more pleasant user experience.
+	→ Disadvantage: you need a two-way switch.
+
+• Software De-bounce:
+	1)	Delay: if(digitalRead(..) ) { delay(delayTime); ... }
+	3)	Delay with flag:
+			if(digitalRead(PIN)) { ts = millis(); flag = true; }
+			if(flag) ..
+			if(( millis() - ts - > delayTime) { flag = false; }
+
+__________________________________________________________________________________________________________________________________________________
+-- LIBRARIES --
+---------------
+#include <in standaart map> 						vb.: #include <Servo.h>
+#include "in zelfde map als.ino/sketch folder" 		→ .zip file, locally stored/zelf geschreven
+
+• Memory layout (on the ATMega328p MCU):
+	32 kBytes FLASH		(https://ecomputernotes.com/fundamental/input-output-and-memory/explain-flash-memory)
+		Soort EEPROM geheugen dat leest/schrijft in Sectors/Blocks,
+		verwijdert/overschrijft op byte level door korte pusle met hogere spanning = flash erasure.
+		→ non-volatile/niet-vluchtig = can be re-written 10k times + data is kept without power.
+		→ program + bootloader sections
+	
+	2 kBytes SRAM (= Static Random-Access Memory)
+		Type of RAM that uses latching circuitry (flip-flop) to store each bit.
+		→ volatile/vluchtig = no writing limitation + data is lost when power is removed
+		→ secties voor registers
+	
+	1 kByte EEPROM (= Electrically Erasable Programmable Read-Only Memory)
+		A read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.
+		→ non-volatile/niet-vluchtig = can be re-written 100k times + data is kept without power.
+		→ Alleen toegankelijk via libraries
+		→ electrical erasable
+		→ storage after power down
+		
+		
+• Personal Libraries:
+	Divide in 3 docs:
+		- headder file 	.h
+		- code file 	.cpp
+		- keyword file	.txt
+
+		- headder file 	.h
+			preprocessor commands
+			global variables
+			forward declarations of all used functions, classes and methods 
+		
+		- code file 	.cpp
+			The bulk of your code
+			C++ code, so needs #include "Arduino.h" to write Arduino code
+		
+		- keyword file	.txt
+			Define the color scheme of your code
+			
+	→ Voorbeeld Theorie 5 S89
+	→ Bruikbaar maken voor de IDE en/of Arduino community:
+		meta-data schrijven in de library.properties file = Arduino IDE Library Specifications
+			
+_________________________________________________________
+-- EEPROM Library --	https://www.arduino.cc/en/Reference/EEPROM 
+--------------------
+#include <EEPROM.h>
+
+EEPROM Clear: Clear the bytes in the EEPROM.
+
+EEPROM Read: Read the EEPROM and send its values to the computer.
+	value = EEPROM.read(address);		// read a byte from the current address of the EEPROM, address = int
+	!!Serial.print(EEPROM.read(address); PRINTS THE ADDRESS, SAVE IN char var FIRST!!
+	
+EEPROM Write: Stores values from an analog input to the EEPROM.
+	int value = analogRead(0) / 4;		// Need to divide by 4 because analog inputs range from 0 to 1023 and each byte of the EEPROM can only hold a value from 0 to 255.
+	EEPROM.write(address, value);
+
+EEPROM Crc: Calculates the CRC of EEPROM contents as if it was an array.
+
+EEPROM Get: Get values from EEPROM and prints as float on serial.
+
+EEPROM Iteration: Understand how to go through the EEPROM memory locations.
+
+EEPROM Put: Put values in EEPROM using variable semantics.
+
+EEPROM Update: Stores values read from A0 into EEPROM, writing the value only if different, to increase EEPROM life.
+	EEPROM.update(address, value);		// Equal to:
+											if( EEPROM.read(address) != val ){ EEPROM.write(address, val); }
+
+EEPROM Length
+	address = address + 1;								// Advance to the next address, 
+	if (address == EEPROM.length()) { address = 0; }	// when at the end restart at the beginning.
+
+_________________________________________________________
+-- NewPing Library --	https://bitbucket.org/teckel12/arduino-new-ping/wiki/Home#!methods
+---------------------
+NewPing sonar(trigPin, echoPin, maxDistanceInCm);
+
+sonar.ping([max_cm_distance]) - Send a ping and get the echo time (in microseconds) as a result. [max_cm_distance] allows you to optionally set a new max distance.
+sonar.ping_in([max_cm_distance]) - Send a ping and get the distance in whole inches. [max_cm_distance] allows you to optionally set a new max distance.
+sonar.ping_cm([max_cm_distance]) - Send a ping and get the distance in whole centimeters. [max_cm_distance] allows you to optionally set a new max distance.
+sonar.ping_median(iterations [, max_cm_distance]) - Do multiple pings (default=5), discard out of range pings and return median in microseconds. [max_cm_distance] allows you to optionally set a new max distance.
+sonar.convert_in(echoTime) - Convert echoTime from microseconds to inches.
+sonar.convert_cm(echoTime) - Convert echoTime from microseconds to centimeters.
+sonar.ping_timer(function [, max_cm_distance]) - Send a ping and call function to test if ping is complete. [max_cm_distance] allows you to optionally set a new max distance.
+sonar.check_timer() - Check if ping has returned within the set distance limit.
+NewPing::timer_us(frequency, function) - Call function every frequency microseconds.
+NewPing::timer_ms(frequency, function) - Call function every frequency milliseconds.
+NewPing::timer_stop() - Stop the timer.
+	
+
+__________________________________________________________________________________________________________________________________________________
+-- STRINGS, SERIAL MONITOR & SERIAL READ: INPUT BUFFER --
+---------------------------------------------------------
+
+• charArray != String
+	- String:
+		Is een object in C++ en Arduino code.
+		→ Wordt afgesloten met '\0' om het einde aan te duiden → automatisch
+		→ character opvragen met [index] zoals bij een array
+		
+		Declaratie: String naam = "This is a string.";
+					String naam[] = {"This one string in an array.", "this is another one"};
+		
+	- Char-array:
+		Declaratie: char name[] = "This is a char-array.";
+					char name[10]; name = "abcdefgxyz";
+
+• Serial Monitor:
+	Transmitter → sequence of 0s & 1s → Receiver
+	→ Transmission speed is very important
+	→ BAUD-rate = number of signal changes per second → Standaard 9600
+	→ Bit-rate = data speed in bits/s or bps
+	
+	Serial.begin(9600);
+	Serial.print("..");
+	Serial.println("..");
+
+• Serial input buffer → FIFO, beperkt = 64 bytes
+	Je weet niet wanneer of hoeveel chars je gaat ontvangen,
+	en je kan niet eeuwig wachten = code-blocking.
+	Oplossing = een input buffer die de chars opvangt als ze toekomen (soort char-array).
+	In je code check je herhaaldelijk of er iets in zit.
+	
+	→ Werkt FIFO = First In, First Out:
+		Inkomende char wordt opgeslagen op index 0 vooraan, en de vorige schuiven 1 plaats op naar achter.
+		Chars worden 1 per 1 uitgelezen van achter naar voor, dus de laatste char = de eerste die toegevoegd is,
+		en de char wordt verwijdert zodra het is uitgelezen.
+
+	Serial.available();						Returned hoeveelheid bytes er in gebruik zijn → kan je gebruiken voor .readBytes
+	Serial.read();							1 byte per keer uit de input buffer uitlezen, deze wordt verwijdert uit de buffer.
+												→ Non-blocking, zo kan de andere code ook blijven loopen, en de tekst komt letter per letter in de Serial Monitor.
+												→ met while-loop kan je heel de buffer uitlezen in één keer, vóórdat de code terug verder gaat = Blocking
+												
+	Serial.readBytes(storageVar, amount);	Bepaald aantal bytes uitlezen en in een variabele opslaan
+												→ amount komt van .available() die hoeveelheid bytes in de buffer returned.
+	
+	Serial.parseInt();						Int = 2 bytes, dus leest 2 bytes uit de buffer.
+												→ Best volgende code gebruiken:
+													if(Serial.available() > 1 { myint = Serial.parceInt(); }
+	
+	Serial.readStringUntil(endchar); 		String uitlezen met custom endchar.
+												→ default timeout van 1s als de endchar niet gevonden wordt.
+													→ eigen timeout instellen:
+														Serial.setTimeout(interval);
+	
+• ASCII:  http://www.asciitabel.be/
+	Text in de seriële monitor is in ASCII characters
+	ASCII characters → numerieke waarde, opslaan in "int" of "char" →! char = 1 byte, int = 2 bytes
+	voor cijfers "=- 48" doen.
+
+__________________________________________________________________________________________________________________________________________________
+-- POINTERS --	https://www.slideshare.net/AdilAslam4/pointer-in-c-72629868		https://www.youtube.com/watch?v=W0aE-w61Cb8		https://www.youtube.com/watch?v=CSVRA4_xOkw
+--------------	https://www.youtube.com/watch?v=DTxHyVn0ODg						https://www.youtube.com/watch?v=wJ1L2nSIV1s
+Why?
+	Variabelen kopiëren en dan bewerken neemt veel extra ruimte in beslag in de kleine SRAM van 2kB.
+	Het aanmaken en verwijderen van deze variabelen nadien kost ook veel CPU kracht en tijd = ongewenste delays.
+
+Pointer = variabele met adres = plaats van een variabele in het geheugen
+	→ zelfde datatypes als waar het naar verwijst, maar bewaard altijd een adres
+	→ in SRAM
+
+Declaratie: datatype *p;		→ Pointer aanmaken voor specifiek datatype
+Uitlezen:	p = &varName;		→ & geeft adres van de var
+			*p;					→ * geeft inhoud op het adres die in de pointer is bewaard
+	
+	Serial.println(int(p))	→ Print adres van de var waar de pointer naar verwijst
+	Serial.println(*p)		→ Print de inhoud op het adres waar de pointer naar verwijst
+	
+	Serial.print("0x0"); Serial.println(int(array), HEX);	→ Eerste/start adres van de array, hexadecimaal weergegeven, vb: 0x011E
+	Serial.print("0x0"); Serial.println(int(p), HEX); 		→ Adres waar de pointer naar verwijst, hexadecimaal
+	Serial.println(*p);										→ Inhoud op het adres waar de pointer naar verwijst, gewoon, vb: d
+	Serial.println(*p, HEX);								→ Zelfde, maar hexadecimaal = ASCII waarde voor chars		 vb: 64 (= d) http://www.asciitabel.be/
+	
+Voorbeeld: https://www.arduino.cc/reference/en/language/structure/pointer-access-operators/reference/
+	int *p;       // declare a pointer to an int data type
+	int i = 5;
+	int result = 0;
+	p = &i;       // now 'p' contains the address of 'i'
+	result = *p;  // 'result' gets the value at the address pointed by 'p'
+				  // i.e., it gets the value of 'i' which is 5
+
+• Operators:
+	p++		→ Naar volgende adres afhenkelijk van datatype! Byte =+ 1, int =+ 2, float =+ 4
+	*p++	→ Inhoud/data =+ 1
+	
+	*p+3    → Dit zal op de geheugenlocatie in de pointer, de 'inhoud plus drie' doen
+	*(p+3)  → Dit wijst naar de inhoud, op de 'geheugenlocatie plus drie'
+
+• Arrays:
+	De naam van de array = pointer die verwijst naar het startadres/eerste element in de array.
+	De volgende waarden volgen hierop.
+	Afhankelijk van het datatype van da array weten we hoeveel adressen we moeten opschuiven om de volgende waarde in de array te vinden.
+		vb: int = 2 bytes → volgende waarde ligt 2 adressen verder
+		
+	→ ipv "p = &a", moeten we dus gewoon "p = a" doen
+		
+• Functies:
+	Code vb:
+		// Schuift de inhoud van de array één plaats op.
+		void roteer(int *p){					// Pointer verwijst naar startadres van de array
+		  int pCopy = *p;   					// Start waarde van de array bewaren = inhoud op het adres waar de pointer naar verwijst
+		  for(byte i=0; i<arrLength-1; i++){  	// Doorloopt de array, -1 anders twee keer 0
+			*p = *(p+1);						// Neemt het huidige adres in de pointer, en steekt de inhoud op 'dat adres + 1' (het volgende adres), in het huidige
+			p++;								// Naar het volgende adres, adres + 1
+		  }
+		  *p = pCopy;							// Plaats de starwaarde van de array op het laatste adres van de array
+		  Serial.println(*p);
+		}
+		digitalWrite(led, *arr); 				// 0 = LOW, alles hoger (1-9 in dit geval) = HIGH
+		roteer(arr);
+		delay(100); 							// 1 seconde wachten
+
+
+__________________________________________________________________________________________________________________________________________________
+-- AVR-C TOOLCHAIN --
+---------------------
+Opeenvolging van stappen om code om te zetten en da hardware aan te sturen.
+
+• Onderdelen:
+   (- Arduino code + Arduino.h + Arduino Libraries → .ino files)
+   (- C++ → .cpp/.h files)
+   (- Pre-processor)
+	- Compiler → .o files
+	- Assembler → .as files
+	- Linker
+	- Standard C library
+	- Math libraries
+	- Simulator → Verify
+	- Debugger → Verify
+   (- Upload)
+	
+   (- Pre-processor: )
+		Possibility to:
+			- Add header-files
+			- Execute Macro Expansions
+			- Doing Conditional Compilation
+   
+	- Compiler:
+		Computer program that translates computer code written in a High Level Language source (vb. C++ code)
+		to a target Low Level Language, depending on the hardware architecture the compiler is installed on. (vb. Assembler code)
+		
+		De code in hogere programmeertaal moet worden omgezet in de specifieke instructie set van de Hardware Architectuur waarop het moet draaien.
+			(Waarvan de belangerijkste de CPU is.)
+			
+		→ Cross-compiler:
+			Vertaling naar een lower programming langauge dat niet de taal is van de hardware architectuur waarop de compiler geïnstalleerd is.
+			
+		→ AVR-C compiler = cross-compiler:
+			Deze is geïnstalleerd op onze computer als onderdeel van de Arduino IDE,
+			maar vertaald naar Atmel ATMega MCU instructies in Assembler code.
+			
+			→ Assembler code is heel moeilijk te begrijpen, maar nog steeds leesbaar voor mensen.
+	
+	- Assembler:
+		Converts Assembler code to Binary code (0 & 1),
+		but not only 1s & 0s → Object code: hexadecimal code mixed with "known standard functions" references in words
+		These words are references to Standard C library functions.
+		This mix = Object Code
+		
+		→ Some human readability.
+	
+	- Linker:
+		Takes the object code from the Assembler.
+		Links the references to the binary code in code libraries,
+		and replaces the "known standard functions" words with this binary code.
+		
+		→ Produces an executable or executable-file (usually)
+	
+	- Standard C library:
+		C function takes certain input and produces certain output.
+		Library of pre-compiled sequences of HEX-code linked with important C functions.
+	
+	- Math libraries
+	
+	- Simulator:
+		Imitates in software the complete operation of the MCU on the Arduino hardware.
+		
+		→ To test and Verify the correct functionality of the code.
+		
+	- Debugger:
+		Analyzes the code on bugs and tries to give usefull feedback in error messages.
+
+
+__________________________________________________________________________________________________________________________________________________
+-- PRE-PROCESSOR COMMANDO'S --
+------------------------------
+Commands which are added to the code to add functionality BEFORE the code is compiled.
+Start with # and don't end with ;
+	
+	#include	Inserts code from another file = libraries
+					vb.: #include <outputs.h> 
+	
+	#define		Hardcoded value without scope, cannot be detected by the compiler.
+				Soort van label.
+				De pre-processor vervangt de tekst label overal in de code door de waarde,
+				vooralleer de code gecompilleerd wordt. Compiler ziet dit als hardcoded values.
+					vb.: #define OUTPUT 3
+						 #define BOARD "nano"
+					
+	#ifdef .. #endif	→ if defined = true, then
+	#ifndef	.. #endif	→ if not defined = true, then
+		
+		→ De pre-processor zal eerst nagaan of er al een andere instructie is met hetzelfde doel.
+		→ Include guard: combinatie van #ifdef .. #endif samen met #include
+	
+Macros:
+	Piece of code made with pre-processor commands.
+	→ Only executed once before compile-time and never end up in the final executable.
+					
+					
+__________________________________________________________________________________________________________________________________________________
+-- Arduino OOP & THE DIFFERENCES BETWEEN C++ & C# --
+----------------------------------------------------
+• Classes:
+	class ClassName {					class MyCppClass {				vb:	class Flash {
+		Access specifier:				public/private/protected:			public:
+		Data members;						int a;								Flash(int pinNr);	→ Constructor
+		Member Functions(){}				myConstructor();					void fast():
+											~myDestrucctor();					void slow();
+	}																			~Flash();			→ Destructor
+																			private:
+	→ Class definition in header-file = public									int_pinNr;
+	→ Class definition in .cpp file = locally available						};
+	→ You can explicitly call the destructor yourself
+
+• Top 7 differences between C++ en C#
+	1) Size of Binaries
+	2) Performance: C++ is performanter
+	3) Garbage Collection: Geheugen allocatie moet in C++ door de programmeur gebeuren.
+	4) Platform target: C# = Microsoft
+	5) Types of Projects: C++ beter geschikt voor embedded, network, gaming. C# voor mobile, web en desktop apps
+	6) Compiler Warnings: C++ is powerfull and can cause issues to the OS, like with memory allocation
+	7) Standalone Apps: Met C++ kan je een .exe maken
+
+__________________________________________________________________________________________________________________________________________________
+-- Data communicatie --
+-----------------------
+• In embedded system: sensor data, ...
+		→ embedded system = microcontroller + andere electronica zoals sensors, hardware + software
+		
+• Data Transmission	→ Parallel	
+					→ Serial	→ Asynchronous
+								→ Synchronous
+						
+• Parallel VS Serial:
+	Multiple bits, buses of data acros multiple wires, transferred in waves VS single bit at a time on 1 to 4 wires
+
+• Asynchronous VS Synchronous:
+	- Without clock VS with clock signal
+	- Minimiszing wires and I/O pins VS more straightforward, faster serial transfer
+	
+• Serial protocols:
+	UART, USB=Universal Serial Bus, RS232, RS422, CAN, Microwire, RS485, SPI, I²C
+	
+	3 widely used serial protocols:
+	-------------------------------
+	- UART = Universal Asynchronous Receiver/Transmitter
+		• Asynchronous
+		• Serial communication
+		• One line for transmitting data TX, one line for receiving data RX
+		
+		• Rules:
+			1) Baud Rate				→ Nr of bits transmitted per second
+			2) Data length selection	→ 7-bit data sent from sender to receiver
+			3) Synchronization			→ Start bit = 0, Stop bit = 1
+			4) Error Checking 			→ Parity bit, even parity = 1, odd parity = 0
+			
+		→ Op Ardiuno: 1 UART COM poort + RX0 & TX1 PIN's
+		
+		→ In code gebruiken: S37
+			SoftwareSerial name (2, 3);
+			naam.begin(9600);
+			naam.println("");
+			naam.write(value);
+			if(naam.available())
+			naam.read();
+		
+			
+	- SPI = Serial Peripheral Interface
+		• Synchronous
+		• Master-slave(s) model → hierarchy, one device in control of others, specifies com speed
+		• More than two lines required
+	
+		• Connection diagram:
+			- MOSI = Master Out, Slave In:
+				Data from master to slave
+				→ 1 common transmiot line
+				
+			- SCK = Clock:
+				Clock line for transmission speed and transmission start/end.
+				→ 1 common clock
+				→ 2 specific feautures:
+					1) CPOL = Clock polarity: idle state is low/higher
+					2) CPHA = Clock phase: rising/falling
+			
+			- SS = Slave Select:
+				Line to select a slave (out of multiple).
+				→ Separate line for each slave → each slave requires a GPIO pin
+			
+			- MISO = Master In, Slave Out
+				Data from slave to master.
+				→ 1 common receive line
+				
+		• Full-duplex = communication bidirectionally
+				
+		→ Op Arduino:
+			- MOSI: GPIO 11 of ICSP 4
+			- SCK: 	GPIO 13 of ICSP 3
+			- SS: 	GPIO 10
+			- MISO: GPIO 12 of ICSP 1
+			
+		→ In code gebruiken: S50
+			SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE0));
+			digitalWrite(SLAVE_GPIO_PIN, LOW/HIGH); → HIGH=select, LOW=deselect
+			SPI.transfer(0x00);
+			SPI.endTransaction();
+
+	- I²C = Inter-Integrated Circuit
+		• Most complicated protocol
+		• Advantages:
+			- Multiple masters and multiple slaves
+			- Synchronicity is faster than SPI and I2C
+			- Simplicity in implementation:
+				- 2 wires: SDA & SCL
+				- Pull-up Resistors:
+					Pulled High in idle
+					Pulled low when sending data
+					→ Open-drain, de pull-up weerstanden moeten er zijn!
+		
+		55:51
+
+__________________________________________________________________________________________________________________________________________________
+-- DRIVING HIGH CURRENT LOADS -- S65
+--------------------------------		
+• Max current & voltages:
+	- 40 mA per I/O PIN
+	- 200 mA in totaal
+		→ 10 standaard LED's aan 20 mA
+	- -0.5 tot 5.5 V
+		→ Andere systemen kunnen andere voltages hebben, opgepast bij mixen!
+		
+		• LED strip:
+			- 12V / 0.48W per module van 2 LED's
+			- 0.48W / 12V = 40 mA per module
+			- 10 modules = 400 mA (→ 2x maximum van een Arduino)
+			
+		• Motor:
+			- 11.1V of 18.5V
+			- 6.6A  of 22.8A
+			
+		• Smart Home applicatie:
+			- 230V AC
+			- Tot 20A
+
+• Oplossingen:
+	- Transistor:
+		general purpose NPN transistor 2N4401, of MOSFET 2N7000
+	
+	- Relay of Relay module:
+		Gebruiken bij meer als 40mA
+	
+	- Optocoupler:
+		Active low
+		Bevat een diode → weerstand in serie nodig
