@@ -791,7 +791,8 @@ static returntype MethodeName(datatype parameterIdentifier = defaultValue) // Pa
 }
 ```
 
-Returntype: `void` or any datatype or object.
+Return type: `void` or any datatype or object.
+In `DataType?` the `?` indicates that the return is optional, meaning you allow it to be `null`.
 
 Parameters can be given:
 - by value: a copy is made of the current value.
@@ -954,3 +955,43 @@ namespace WiredBrainCoffee.DataProcessor.Parsing
 ---
 
 
+## Abstraction: Abstract Classes and Interfaces
+
+### Differences
+
+Abstract classes can have fields and properties, while interfaces can only have properties. Abstract classes are typically used for creating a base class for other classes to inherit from, while interfaces are used for defining a contract that classes must implement.
+
+The key differences between abstract classes and interfaces are as follows:
+- Abstract classes can contain implemented methods, while interfaces only contain method signatures.
+- Classes can implement multiple interfaces, but they can inherit from only one abstract class.
+- Abstract classes can have constructors, while interfaces cannot.
+- Abstract classes can have fields and properties, while interfaces can only have properties.
+- Abstract classes are typically used for creating a base class for other classes to inherit from, while interfaces are used for defining a contract that classes must implement.
+
+
+| Abstract Class                                                                                                   | Interface                                                                                                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| It contains both declaration and implementation parts.                                                           | It contains only the declaration of methods, properties, events, or indexers. Since C# 8, [default implementations](https://devblogs.microsoft.com/dotnet/default-implementations-in-interfaces/) can also be included in interfaces. |
+| Multiple inheritance is not achieved by abstract class.                                                          | Multiple inheritance is achieved by interface.                                                                                                                                                                                        |
+| It contain [constructor](https://www.geeksforgeeks.org/c-sharp-constructors/).                                   | It does not contain [constructor](https://www.geeksforgeeks.org/c-sharp-constructors/).                                                                                                                                               |
+| It can contain static members.                                                                                   | It does not contain static members.                                                                                                                                                                                                   |
+| It can contain different types of access modifiers like public, private, protected etc.                          | It only contains public access modifier because everything in the interface is public.                                                                                                                                                |
+| The performance of an abstract class is fast.                                                                    | The performance of interface is slow because it requires time to search actual method in the corresponding class.                                                                                                                     |
+| It is used to implement the core identity of class.                                                              | It is used to implement peripheral abilities of class.                                                                                                                                                                                |
+| A class can only use one abstract class.                                                                         | A class can use multiple interface.                                                                                                                                                                                                   |
+| If many implementations are of the same kind and use common behavior, then it is superior to use abstract class. | If many implementations only share methods, then it is superior to use Interface.                                                                                                                                                     |
+| Abstract class can contain methods, fields, constants, etc.                                                      | Interface can only contains methods, properties, indexers, events.                                                                                                                                                                    |
+| The keyword “:” can be used for implementing the Abstract class.                                                 | The keyword “:” and “,” can be used for implementing the Interface.                                                                                                                                                                   |
+| It can be fully, partially or not implemented.                                                                   | It should be fully implemented.                                                                                                                                                                                                       |
+| To declare abstract class , we use abstract keyword.                                                             | To declare interface, we use interface keyword.                                                                                                                                                                                       |
+| Example of Abstract class:-<br><br>public abstract class Fruits{  <br>public abstract void Mango();<br><br>}     | Example of Interface:-<br><br>public interface Readable{  <br>void read();  <br>}                                                                                                                                                     |
+
+### When To Use
+
+Abstract Class:
+- When creating a base class to be *inherited by subclasses*.
+- When all subclasses share the implemented behavior.
+
+Interface:
+- Define a behavior that can be implemented by *multiple unrelated classes*.
+- If you need to add behavior to a subclass and can't add it to its base class.
