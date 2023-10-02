@@ -1,4 +1,4 @@
-# SOLID
+# SOLID Principles
 
 ## Courses
 
@@ -208,7 +208,7 @@ class MovieFactory
 
 ## L – LSP – Liskov Substitution Principle  ![[Pasted image 20230927162016.png|20]]
 
-The Liskov Substitution Principle (_LSP_) tells us that objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program.
+The Liskov Substitution Principle (_LSP_) tells us that objects of a superclass or base class, should be replaceable with objects of its subclasses without affecting the correctness of the program.
 
 The OOP relation *“IS-A”* should be replaced with *“IS-REPLACABLE-WITH / IS-SUBSTITUTABLE-FOR”*.
 
@@ -309,7 +309,7 @@ Identify problems by looking for:
 ### Key Takeaways
 
 - Subtypes must be substitutable for their base types.
-- Ensure base type invariants are enforced. Make sure not the break them when implementing base types or interfaces.
+- Ensure base type invariants are enforced. Make sure not to break them when implementing base types or interfaces.
 - Identify problems by looking for:
 	- Type checking
 	- `null` checking
@@ -328,12 +328,10 @@ Identify problems by looking for:
 
 The Interface Segregation Principle (_ISP_) tells us that our classes should not be forced to implement interfaces it does not use.
 
-Clients should not be forced to depend on methods they do not use.
-Prefer small, cohesive interfaces to large *fat* ones.
-
-A *fat* interface is an interface that includes things the client doesn't need, or not all clients need.
-
-A *client,* in this context, is the code that is interacting with an instance of the interface. It's the calling code.
+- Clients should not be forced to depend on methods they do not use.
+- Prefer small, cohesive interfaces to large *fat* ones.
+	- A *fat* interface includes requirements the client doesn't need, or not *all* clients need.
+	- A *client,* in this context, is the code that is interacting with an instance of the interface. It's the calling code.
 
 Large interfaces with lots of methods have:
 - more coupling
@@ -540,9 +538,9 @@ Abstractions should not depend on details. Rather, details should depend on abst
 
 ### Abstraction and Details, High- and Low-Level
 
-*Abstractions*, like interfaces and abstract classes, describe *what* needs to happen, e.g., send a message, or store a customer record.
+***Abstractions***, like interfaces and abstract classes, is high-level code that describes ***what*** needs to happen, e.g., send a message, or store a customer record.
 
-*Details* specify how it happens, e.g., send an SMTP email over port 25, or serialize customer to JSON and store in a text file.
+***Details*** is low-level code that specifies ***how*** it happens, e.g., send an SMTP email over port 25, or serialize customer to JSON and store in a text file.
 
 High-level:
 - More abstract
@@ -555,7 +553,7 @@ Low-level:
 - “Plumbing” code
 - Interacts with specific external systems and hardware
 
-The following example shows an interface, an abstraction, which is dependent on a concrete class, the details. This is a violation of DIP. 
+The following example shows an interface – an abstraction – which is dependent on a concrete class – the details. This is a violation of DIP. 
 ```c#
 public interface IOrderDataAccess
 {
@@ -563,7 +561,7 @@ public interface IOrderDataAccess
 }
 ```
 
-The details should be hidden, making it independent of the *how*.
+The details should be hidden, making the interfac independent of the *how*.
 ```c#
 public interface IOrderDataAccess
 {
@@ -579,7 +577,7 @@ If you don't need a specific implementation, use an abstraction instead.
 
 ### Dependency Injection
 
-The constructor of a class should contain all dependencies the class needs. These are called *explicit dependencies*. Otherwise, they are *hidden* dependencies.
+***Dependency Injection*** is a technique to add dependencies to a class *when* the class requires it, but maintaining a *loose coupling*.
 
 Dependencies are:
 - References required to compile
@@ -591,8 +589,6 @@ Common dependencies:
 - File system
 - Web Service
 - New keyword
-
-*Dependency Injection* is a technique to add dependencies to a class when the class requires it, but maintaining a *loose coupling*.
 
 The following example is a violation of DIP, because the *high level module* `Printer` is dependent on the concrete `EventLogWriter` class.
 ```c#
@@ -630,6 +626,8 @@ Three types of Dependency Injection:
 
 An instance of the concrete class is passed to the dependent class via *the constructor*.
 Use this injection type if the concrete class is used during the whole lifecycle of the dependent class.
+
+The constructor of a class should contain all dependencies the class needs. These are called *explicit dependencies*. Otherwise, they are *hidden* dependencies.
 
 It is the preferred injection type, because it:
 - Follows the *Explicit Dependencies Principle*.

@@ -9,6 +9,20 @@
 
 ---
 
+## Introduction
+
+A design pattern is a default solution for common design problems.
+
+History:
+- Flow Based Design using Flow Charts to visualize the design.
+- Structured Programming says a structured code should have a single start- and end-point, with in between a set of modules.
+- Object-Oriented Programming divides the functionality into objects with relations such as composition, references, and inheritance. Resulting in reusable, better readable, and better maintainable code.
+- SOLID principles, largely by Robert C. Martin (uncle Bob).
+- Today, it is crucial to work Agile, in close cooperation with the customer, and with quick adaptability to market and business strategy changes.
+
+
+---
+
 ## Factory Pattern
 
 ### OCP Simple Factory Pattern
@@ -63,6 +77,81 @@ class MovieFactory
             return new NullMovie("null movie"); // Applying LSP
         }
     }
+}
+```
+
+---
+
+## Adapter Design Pattern
+
+The use of an abstract superclass to provide a base type, while the subclasses implement their own interfaces. This way, instances can be called by type.
+
+*Example:*
+```c#
+interface IWorker
+{  
+	void Work();         
+}  
+interface IBreaker  
+{  
+	void Break();  
+}  
+interface IHumanWorker: IWorker, IBreaker  
+{  
+}  
+  
+abstract class Workable  
+{  
+	public abstract void DoWork();  
+}  
+class Werkmier : Workable, IHumanWorker  
+{  
+	void Break()  
+	{  
+		Console.WriteLine("i take a break");  
+	}  
+	public override void DoWork()  
+	{  
+		Work();  
+		Console.WriteLine("...");  
+		Break();  
+	}  
+	public  void Work()  
+	{  
+		Console.WriteLine("i work");  
+	}  
+ 
+}  
+class Robot : Workable,  IWorker  
+{  
+	public override void DoWork()  
+	{  
+		Work();  
+	}  
+	public void Work()  
+	{  
+		Console.WriteLine("I Work non stop");  
+	}  
+}  
+
+class Manager  
+{  
+	List<Workable> werkers;  
+	public Manager()  
+	{  
+		werkers = new List<Workable>() {  
+			   new Werkmier(),  
+			   new Werkmier(),  
+			   new Robot()  
+		};  
+	}  
+	public void Start()  
+	{  
+		foreach (var worker in werkers)  
+		{  
+			worker.DoWork();  
+		}  
+	}  
 }
 ```
 
