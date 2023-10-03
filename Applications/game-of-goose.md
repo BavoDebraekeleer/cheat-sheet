@@ -57,50 +57,9 @@ The game would more often have been a gambling game in centuries past. At the be
 The winner takes the Pool at the end of the game. 
 
 
-### Components
-
-- Goose:
-	- Space position 0 to 63.
-	- isSkip flag for if player needs to skip a turn.
-	- Take x amount off steps.
-
-- Dice:
-	- Roll 2x 6-sided dice.
-	- Returns both numbers to be able to perform rule checks on both (2x int).
-
-- Rule:
-	- Dice Rule:
-		- Position is 0
-		- Logic
-	- Space Rule:
-		- Position
-		- Logic
-
-- Rule check 1: first dice roll:
-	- If your first throw is 6 and 3, move to space **26**.
-	- If your first throw is 5 and 4, move to space **53**.
-	- Takes throw (2x int), returns space (int).
-
-- Rule check 2: space occupied:
-	- If a piece lands on an enemy piece, the enemy piece is returned to the space that the piece started from in that turn (i.e. the two pieces swap places).
-
-- Rule check 3: space type:
-	- If a piece lands on a space with *a picture of a goose*, it moves forward by the same amount again. If this causes the piece to land on another goose, it moves forward again in the same way. These spaces are typically 5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, and 59.
-	- Hazard spaces (see [[game-of-goose#Rules#Play]])
+### Elements
 
 
-### Flow
-
-1. Select current turn Goose
-2. Dice roll
-3. Rule check 1 – Dice: 
-	1. If first dice roll / position is 0, check both numbers.
-4. Get all Goose's positions.
-5. Calculate current turn Goose's new position.
-6. Rule check 2 & 3 – Space: 
-	1. Check new position against all Goose's positions.
-	2. If space occupied, check if space is 31 or 52.
-	3. If not, swap both Goose's positions.
 
 
 ---
