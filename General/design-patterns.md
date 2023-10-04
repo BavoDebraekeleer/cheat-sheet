@@ -5,7 +5,7 @@
 - [dotNET academy: SOLID](https://learn.dotnetacademy.be/unit/view/id:8143)
 - [YouTube: Change Behaviors with the Strategy Pattern - Unity and C# by One Wheel Studio](https://www.youtube.com/watch?v=yjZsAl13trk)
 - [Pluralsight: Clean Architecture: Patterns, Practices, and Principles by Matthew Renze](https://app.pluralsight.com/library/courses/clean-architecture-patterns-practices-principles/table-of-contents)
-
+- [Article: Singleton Pattern in C# by Jallen Liao](https://medium.com/@lancelyao/singleton-pattern-in-c-b2bc4b1e0532)
 
 ---
 
@@ -332,4 +332,80 @@ If you want the ability to add multiple damage types per weapon, you can make th
 
 ---
 
+## Singleton Pattern
+
+The purpose of Singleton Pattern is to create only one common access to an object, which means the class can only have on instantiation.
+
+Singleton: Single instance shared across the application.
+
+A singleton object is created only once during the lifetime of an application, and the same instance is shared by all components that require it. Subsequent requests for the object will return the same instance. This pattern is useful for objects that should have a global and shared state across the application.
+
+_Example: Let’s say you have a logging service that needs to be accessed by multiple components in your application. By registering the logging service as a singleton, all components will share the same instance, ensuring consistent logging behavior across the application._
+
+*Singleton Pattern Diagram:*
+![](https://miro.medium.com/v2/resize:fit:382/1*546cgD2MFxHPKib3FFAZGw.png)
+
+Syntax:
+```c#
+Singleton instanceName = Singleton.GetInstance;
+```
+
+#### Implementing In Custom Class
+
+The **singleton [design pattern](https://www.educative.io/edpresso/design-patterns-in-java)** is used to restrict a class to only one instance at a time. This restriction is achieved by changing the accessibility of the constructor to `private` so that a new instance cannot be created using that constructor from outside the class. The **[static](https://www.educative.io/edpresso/how-to-use-static-keyword-in-java) method** **`GetInstance()`** (defined in the class) creates a new instance after checking if an instance already exists. If it does, the same instance is returned; otherwise, a new instance is created and returned. The **static variable** **`instance`** keeps track of the existing instance of the class.
+
+*Example:*
+```c#
+#include <iostream> 
+
+using namespace std; 
+
+class Singleton
+{ 
+	private static Singleton* _instance; // private static field
+	
+	private Singleton() // private Constructor
+	{ 
+		cout << "New instance created!" << endl; 
+	} 
+		
+	public static Singleton* GetInstance() // public static method
+	{
+		// Check if an instance already exists: 
+		if (_instance == nullptr)
+		{
+			_instance = new Singleton(); // Create a new instance
+		}
+		return _instance; 
+	} 
+}; 
+
+Singleton* Singleton::instance = nullptr; 
+
+int main()
+{ 
+	// Private default constructor can't be accessed: 
+	// Singleton* s = new Singleton(); 
+	
+	Singleton* s = Singleton::getInstance(); 
+	Singleton* t = Singleton::getInstance(); 
+	
+	// Print address of where 's' and 't' point 
+	// to make sure that it is the same object: 
+	cout << "'s' points to: " << s << endl 
+	<< "'t' points to: " << t << endl; 
+	
+	return 0; 
+}
+```
+
+---
+
+
+## Chain of Responsibility Pattern (Decoupling)
+
+- [Article: Decoupling with Chain of Responsibility Pattern in C# by Daniel Rusnok](https://medium.com/net-core/decoupling-with-chain-of-responsibility-pattern-in-c-1273329ed923)
+- [Article: Chain of Responsibility Design Pattern with C# Examples by Mohamed Hendawy](https://mohamed-hendawy.medium.com/chain-of-responsibility-design-pattern-in-c-with-examples-d87da6e5ead)
+
+---
 

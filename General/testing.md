@@ -274,7 +274,7 @@ public class BookFileHandler
 
 ```
 
-##### Decoupling using Interfaces
+##### Decoupling Using Interfaces
 
 Another method to decouple dependencies is to implement an Interface.
 The following class has two responsibilities, which makes testing the code impossible:
@@ -606,6 +606,7 @@ var today = SystemTime.Today();
 [Parse DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=net-7.0) for US format:
 `DateTime.Parse("10/27/2022 8:07:34 AM", CultureInfo.CreateSpecificCulture("en-US"))`
 
+---
 
 ### Running Unit Tests Automatically
 
@@ -626,7 +627,8 @@ Steps:
 2. Go to the GitHub repository > Actions
 3. Now the right Workflow needs to be selected. For the example project this is *.NET* under *Continuous Integration* > Configure.
 4. This creates a `.yml` file with the build instructions.
-5. Commit changes > Commit directly to the `main` branch.
+5. Specify the working-directory if the solution is not in the root folder. 
+6. Commit changes > Commit directly to the `main` branch.
 
 ![[Pasted image 20230926180030.png]]
 
@@ -661,8 +663,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 ```
 
-The resulting actions
-
+The resulting actions:
 ![[Pasted image 20230926180332.png]]
 ...
 ![[Pasted image 20230926180407.png]]
@@ -670,6 +671,62 @@ The resulting actions
 The `.yml` file in Visual Studio in Folder View:
 ![[Pasted image 20230926180904.png]]
 (Double Click on the `.sln` file to go back to Solution View)
+
+#### Working-directory
+
+If the solution is not in the root folder of your repository you need to specify in which folder/directory the solution is located for each step.
+
+Syntax:
+```yml
+jobs:
+  build:
+
+    runs-on: os-image
+
+    steps:
+    - uses: actions/version
+    - name: Step Name
+      run: command
+	  working-directory: folderOInRoot/folderInThatFolder
+```
+
+*Example:*
+```yml
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "MASTERBAV-3" ]
+  pull_request:
+    branches: [ "MASTERBAV-3" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: solid-fundamentals
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: solid-fundamentals
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: solid-fundamentals
+
+```
+
+---
 
 ### Front-end Testing
 

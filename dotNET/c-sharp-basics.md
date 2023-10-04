@@ -34,7 +34,7 @@ language: c#
 ## Naming Conventions
 
 [Best Practices for C# - Coding Standards by Christian Schou](https://blog.christian-schou.dk/best-practices-csharp/)
-
+[C#.NET Enum Naming Conventions With Examples by Bijah Kumar](https://aspdotnethelp.com/c-sharp-dot-net-enum-naming-conventions/)
 ### Class Names
 
 - PascalCasing
@@ -43,6 +43,60 @@ language: c#
 - Avoid using abbreviations, unless they are widely accepted and understood.
 
 Examples: `CustomerOrder`, `ShoppingCart`, `HttpRequest`, `XmlDocument`.
+
+### Enums
+
+- PascalCasing
+- Use singular names generally.
+- Use plural names for Flags, for enums that represent bit fields.
+- Do NOT prefix enum type names, e.g. DON'T use `E`-prefix, `ESeason`.
+- Do NOT prefix enum member values, e.g. `SeasonSpring`.
+- Some developers use UPPER_CASING, because enums can be seen as constants.
+
+Example:
+```c#
+// DayOfWeek.cs -> NOT EDay, EnumDay, or DayOfWeekTypes
+public enum DayOfWeek // NOT Days
+{ 
+	Monday,
+	Tuesday, 
+	Wednesday, 
+	Thursday, 
+	Friday, 
+	Saturday, 
+	Sunday, // Use trailing comma to make it easier to add members.
+}
+
+// Color.cs
+public enum Color // NOT Colors or EColor
+{
+	Red, // NOT ColorRed
+	Grren,
+	Blue,
+}
+
+// ErrorCode.cs
+public enum ErrorCode 
+{ 
+	None, 
+	Unknown, 
+	InvalidParameter, 
+	Timeout, 
+}
+```
+
+Example Flags:
+```c#
+[Flags]
+public enum FileAccess 
+{ 
+	None = 0, 
+	Read = 1, 
+	Write = 2, 
+	ReadWrite = Read | Write, 
+}
+```
+
 
 ---
 
@@ -954,9 +1008,73 @@ namespace WiredBrainCoffee.DataProcessor.Parsing
 
 ---
 
+## Classes
+
+A class represents an object with certain characteristics (fields) and functionality (methods).
+
+### Field
+
+A field is a variable (that can be of any type) that is defined inside a class. It can be used to define the characteristics of an object or a class.
+
+### [Property](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/using-properties)
+
+A property is a member of the class that provides an abstraction to set (write) and get (read) the value of a private field. Making those fields publicly accessible, but through a hidden method.
+
+*Example:*
+```c#
+class Person
+{
+  private string _name; // field
+
+  public string Name   // property
+  {
+    get { return _name; }   // get method
+    set { _name = value; }  // set method
+  }
+}
+```
+
+*Short hand, same as above:*
+```csharp
+class Person
+{
+  public string Name  // property with automatic hidden private field
+}
+```
+
+*Calling the property:*
+```c#
+class Program
+{
+  static void Main(string[] args)
+  {
+    Person myObj = new Person();
+    myObj.Name = "Liam"; // set
+    Console.WriteLine(myObj.Name); // get
+  }
+}
+```
+
+
+### Access Modifiers
+
+Access modifiers are used to set the accessibility level of types and type members.
+
+[W3Schools: Access Modifiers](https://www.w3schools.com/cs/cs_access_modifiers.php)
+[Microsoft Learn: Access Modifiers (C# Programming Guide)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers)
+
+- `public`: The code is accessible for all classes.
+- `private`: The code is only accessible within the same class.
+- `protected`: The code is accessible within the same class, or in a class that is inherited from that class. You will learn more about [inheritance](https://www.w3schools.com/cs/cs_inheritance.php) in a later chapter.
+- `internal`: The code is only accessible within its own assembly, but not from another assembly. You will learn more about this in a later chapter.
+- `sealed`: ensures the class can not be inherited and object instantiation is restricted in the derived class.
+- `static`: ensures the static member belongs to the class itself rather than to a specific object.
+
+
+---
+
 
 ## Abstraction: Abstract Classes and Interfaces
-
 ### Differences
 
 Abstract classes can have fields and properties, while interfaces can only have properties. Abstract classes are typically used for creating a base class for other classes to inherit from, while interfaces are used for defining a contract that classes must implement.
@@ -987,6 +1105,10 @@ The key differences between abstract classes and interfaces are as follows:
 | Example of Abstract class:-<br><br>public abstract class Fruits{  <br>public abstract void Mango();<br><br>}     | Example of Interface:-<br><br>public interface Readable{  <br>void read();  <br>}                                                                                                                                                     |
 
 ### When To Use
+
+Prefer interfaces to abstract classes. Unless you want to provide an implemented method that all subclasses require, or a base implementation of a method the subclasses should base their implementation on.
+
+#### Other usages
 
 Abstract Class:
 - When creating a base class to be *inherited by subclasses*.

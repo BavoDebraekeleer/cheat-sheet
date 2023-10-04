@@ -56,10 +56,28 @@ The game would more often have been a gambling game in centuries past. At the be
   
 The winner takes the Pool at the end of the game. 
 
+### Terminology
+
+- ***Turn***: a turn is complete once a player has gone through all his phases or passed his turn to the next player.
+- ***Round***: a round is complete once all players have had a turn. A round is divided into several phases. Each phase, all players get one turn to act.
+- ***Space***: a is an area on the game board with a specific position.
+- ***Position***: the position of a space indicates where it is on the game board. Consequently the position of the player/piece indicates on which space it is standing.
 
 ### Elements
 
+- Game
+	- Player (Piece, Goose)
+	- Dice
+	- Board (consisting of Spaces)
 
+-  Space
+	- Factory for Spaces
+
+- Processor
+
+- Frontend:
+	- Logger to Console
+	- Program (is Console App's front-end)
 
 
 ---
@@ -84,3 +102,22 @@ A 3D dice roll using physics in Unity.
 
 
 
+---
+
+## Vragen
+
+- In het voorbeeld zitten speciale spepregels zoals Eerste worp in `Processor` verspreid in twee methoden: `TurnLogic` en `HandleEdgeCasesOnFirstTurn` met hard-coded values.
+  Een andere regel, de overshoot op het einde, zit dan weer in `Piece` in methode `CalculateDestination` die aangeroepen wordt door `MovePiece` die enkel `int diceroll` meekrijgen.
+  Dit is toch niet echt Open/Closed?
+  
+- De `MovePiece`methode  van `Piece` beweegt de `Piece` mogelijks zelfs niet, dus dit hoort niet thuis in `Piece` lijkt mij?
+
+- Waarom zou je een Singleton gebruiken tegenover gewoon meegeven waar nodig?
+  Is een Singleton niet moeilijk om te testen?
+  In the Piece class word op verschillende plaatsen `GameBoard.GetInstance()` gedaan, voor  `GameBoard.GetInstance().GetAmountOfSpaces()` en `GameBoard.GetInstance().GetSpace(spaceNumber);`. 
+  Waarom niet meegeven met methode?
+  Zou het gebruik van een Singleton voor een Logger niet logischer zijn?
+
+- Processor:
+	- Hoe beslis je wat je van object instanties mee geeft aan de Constructor van de Processor, en welke je erin aanmaakt.
+	  In het voorbeeld wordt de Logger en GameBoard in Program aangemaakt en meegegeven aan de Processor. Maar de Dice en Piece instanties pas in methoden van de Processor.

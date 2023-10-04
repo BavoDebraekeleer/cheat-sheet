@@ -5,6 +5,7 @@
 - [dotNET academy: SOLID](https://learn.dotnetacademy.be/unit/view/id:8143)
 - [Pluralsight: SOLID Principles for C# Developers by Steve Smith](https://app.pluralsight.com/library/courses/csharp-solid-principles)
 - [Blog Post: What Are The SOLID Principles? The Art Of Writing Clean And Maintainable Code in C# by Christian Schou](https://blog.christian-schou.dk/what-are-the-solid-principles/)
+- [Talk: YOW! 2013 Kevlin Henney - The SOLID Design Principles Deconstructed](https://www.youtube.com/watch?v=tMW08JkFrBA)
 
 ---
 
@@ -21,9 +22,10 @@ SOLID is an acronym that represents five principles to write good software archi
 
 ---
 
-## Design Patterns
+## Patterns
 
-A design pattern is a default solution for common design problems.
+SOLID are not really *principles*, but rather *patterns*.
+A *design pattern* is a default solution for common design problems.
 
 History:
 - Flow Based Design using Flow Charts to visualize the design.
@@ -39,7 +41,9 @@ History:
 
 ## S – SRP – Single Responsibility Principle 🎯
 
-**Single Responsibility Principle** (_SRP_) states that a `class` should have only one reason to change, meaning it should have only one responsibility or job.
+**Single Responsibility Principle** (_SRP_) states that a `class` should have only one reason to change, meaning it should have only one - or 3-5 - responsibility or job.
+
+>*Cohesion* is a better term here than *responsibility*. Responsibility isn't a very clear term. Some say it should be 3-5 responsibilities, e.g. the `repl` function, meaning *"read–eval–print loop"* and often preceded by *prompt* as well in the same function. As long as the functionality has a strong cohesion. *"Gather together those things that change for the same reason, and seperate those things that change for different reasons."*
 
 A class should be able to use functionalities of other classes and be able to switch them out for others without having to know their inner workings. For example, if a class contains data it should be able to use different types of writing out that data, e.g. to a file, database, or Web API. So it doesn't implement the writing out itself, because that's another responsibility than having the data, but it can use other objects to do the writing, and change those out if needed.
 
@@ -209,6 +213,8 @@ class MovieFactory
 ## L – LSP – Liskov Substitution Principle  ![[Pasted image 20230927162016.png|20]]
 
 The Liskov Substitution Principle (_LSP_) tells us that objects of a superclass or base class, should be replaceable with objects of its subclasses without affecting the correctness of the program.
+
+>*Barbara Liskov* actually said that if you substitute each object instance of one type for that of another within an application and the behaviour of that application remains ***unchanged***, then the type you replaced it with is a subtype of the other.
 
 The OOP relation *“IS-A”* should be replaced with *“IS-REPLACABLE-WITH / IS-SUBSTITUTABLE-FOR”*.
 
@@ -753,4 +759,11 @@ Example folder structure:
 
 ---
 
+## Notes
 
+- Business logic should be separate from front-end. Never both in the same class.
+- Methods should get all the information they need through their parameters. This also counts for class properties, and makes it very easy to test only that method, without the need to set properties.
+- The single responsibility of a class is to hold the state of the object, and only have methods to manipulate that state. 
+- Always use private properties and methods, unless it is absolutely necessary to access them from outside that class.
+- Prefer interfaces to abstract classes. Unless you want to provide an implemented method that all subclasses require, or a base implementation of a method the subclasses should base their implementation on.
+- Prefer using methods to set fields, over using property accessors. Even if you only set a field, you probably want to validate the value first, and that functionality might also change in the future.
