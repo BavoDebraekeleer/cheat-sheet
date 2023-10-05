@@ -581,7 +581,7 @@ Using `new` to create dependencies glues your code to that dependency.
 `new` isn't bad, but be aware it creates coupling.
 If you don't need a specific implementation, use an abstraction instead.
 
-### Dependency Injection
+### Dependency Injection Pattern
 
 ***Dependency Injection*** is a technique to add dependencies to a class *when* the class requires it, but maintaining a *loose coupling*.
 

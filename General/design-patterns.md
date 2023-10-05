@@ -5,6 +5,8 @@
 - [dotNET academy: SOLID](https://learn.dotnetacademy.be/unit/view/id:8143)
 - [YouTube: Change Behaviors with the Strategy Pattern - Unity and C# by One Wheel Studio](https://www.youtube.com/watch?v=yjZsAl13trk)
 - [Pluralsight: Clean Architecture: Patterns, Practices, and Principles by Matthew Renze](https://app.pluralsight.com/library/courses/clean-architecture-patterns-practices-principles/table-of-contents)
+- [Article: Dependency Injection Pattern In C# - Short Tutorial by Mark Pelf](https://www.c-sharpcorner.com/article/dependency-injection-pattern-in-c-sharp-short-tutorial/)
+- [Microsoft Learn: .NET dependency injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
 - [Article: Singleton Pattern in C# by Jallen Liao](https://medium.com/@lancelyao/singleton-pattern-in-c-b2bc4b1e0532)
 
 ---
@@ -20,6 +22,14 @@ History:
 - SOLID principles, largely by Robert C. Martin (uncle Bob).
 - Today, it is crucial to work Agile, in close cooperation with the customer, and with quick adaptability to market and business strategy changes.
 
+
+---
+
+## Difference between a Pattern and a Principle
+
+A **_Software Design Pattern_** is called a *pattern* because it suggests *low-level specific* implementation to a specific problem.
+
+A **_Software Design Principle_** is called *principle* because it provides *high-level advice* on how to design software products.
 
 ---
 
@@ -328,6 +338,219 @@ If you want the ability to add multiple damage types per weapon, you can make th
 ![[Pasted image 20230929111335.png]]
 
 ![[Pasted image 20230929111359.png]]
+
+
+---
+
+## Dependency Injection Pattern
+
+***Dependency Injection*** is a technique to add dependencies to a class *when* the class requires it, but maintaining a *loose coupling*.
+
+Dependencies are:
+- References required to compile
+- References required to run
+
+Common dependencies:
+- Third party library
+- Database
+- File system
+- Web Service
+- New keyword
+
+The main problem this pattern aims to solve is how to create “loosely coupled” components. It does that by separating the creation of components from their dependencies.
+
+There are four main roles (classes) in this pattern:
+1. **Client.** The client is a component/class that wants to use services provided by another component, called a Service.
+2. **Service-Interface.** The service interface is an abstraction describing what kind of services the Service component is providing.
+3. **Service.** The Service component/class is providing services according to Service-Interface description.
+4. **Injector.** Is a component/class that is tasked with creating Client and Service components and assembling them together.
+
+The way it works is that the Client is dependent on Service-Interface IService. The client depends on the IService interface, but has no dependency on the Service itself. Service implements the IService interface and offers certain services that the Client needs. Injector creates both Client and Service objects and assembles them together. We say that Injector “injects” Service into Client.
+
+Class Diagram:
+![[Pasted image 20231005085829.png]]
+
+```c#
+public interface IService {
+    void UsefulMethod();
+}
+public class Service: IService {
+    void IService.UsefulMethod() {
+        //some usefull work
+        Console.WriteLine("Service-UsefulMethod");
+    }
+}
+public class Client {
+    public Client(IService injectedService = null) {
+        //Constructor Injection
+        _iService1 = injectedService;
+    }
+    private IService _iService1 = null;
+    public void UseService() {
+        _iService1?.UsefulMethod();
+    }
+}
+public class Injector {
+    public Client ResolveClient() {
+        Service s = new Service();
+        Client c = new Client(s);
+        return c;
+    }
+}
+internal class Program {
+    static void Main(string[] args) {
+        Injector injector = new Injector();
+        Client cli = injector.ResolveClient();
+        cli.UseService();
+        Console.ReadLine();
+    }
+}
+```
+
+Three types of Dependency Injection:
+- Constructor injection *(Preferred)*
+- Method injection
+- Property injection
+
+#### Example Case
+
+The following example is a violation of DIP, because the *high level module* `Printer` is dependent on the concrete `EventLogWriter` class.
+```c#
+class EventLogWriter  
+{  
+    public void Write(string message)  
+    {  
+        //Write to event log here  
+    }  
+}
+
+class Printer  
+{  
+    // Handle to EventLog writer to write to the logs.
+    EventLogWriter writer = null;
+    
+    // This function will be called when the app pool has a problem.
+    public void Notify(string message)  
+    {  
+        if (writer == null)  
+        {  
+            writer = new EventLogWriter(); // new keyword = dependency
+        }  
+        writer.Write(message);  
+    }  
+}
+```
+
+### Constructor Injection *(Preferred)*
+
+An instance of the concrete class is passed to the dependent class via *the constructor*.
+Use this injection type if the concrete class is used during the whole lifecycle of the dependent class.
+
+The constructor of a class should contain all dependencies the class needs. These are called *explicit dependencies*. Otherwise, they are *hidden* dependencies.
+
+It is the preferred injection type, because it:
+- Follows the *Explicit Dependencies Principle*.
+- Classes are never in an uninitialized state.
+- Can leverage special factory types, called IOC or DI container, to construct types and their dependencies.
+
+***Explicit Dependencies Principle***: dependencies listed in the constructor can't surprise clients.
+Compare it to ingredients in a recipe. You want to know all ingredients beforehand by them being listed in the ingredient list. You don't want to find out about *new* ones later on in the recipe text.
+
+An IOC (Inversion Of Control) container, is the same as a DI (Dependency Injection) container, or simply *services* container. This container is able to resolve the dependencies of your classes at runtime. ASP.NET Core has a built-in container. A third-party container is [Autofac](https://autofac.org/).
+
+
+```c#
+class Printer  
+{  
+	INotification writer;  
+	public Printer(INotification logger)  
+	{  
+		writer = logger;  
+	}  
+	  
+	public void Notify(string message)  
+	{              
+		writer.Notify(message);  
+	}  
+}
+```
+
+```c#
+static void Main(string[] args)  
+{  
+	EventLogWriter log = new EventLogWriter();  
+	Printer p = new Printer(log); // log instance injected in the constructor.
+	p.Notify("dit is een test");  
+	Console.ReadLine();  
+}
+```
+
+### Method Injection
+
+An instance of the concrete class is passed to the dependent class via a *method call*.
+Use this injection type if the dependent class uses multiple concrete classes for the same method.
+
+```c#
+class Printer  
+{  
+	INotification writer;  
+	public Printer()  
+	{  
+	}  
+	  
+	public void Notify(INotification logger, string message)  
+	{              
+		logger.Notify(message);  
+	}  
+}
+```
+
+```c#
+static void Main(string[] args)  
+{  
+	EventLogWriter log = new EventLogWriter();  
+	Printer p = new Printer();  
+	p.Notify(log,"dit is een test"); // log instance injected in a method.
+	Console.ReadLine();  
+}
+```
+
+### Property Injection
+
+An instance of the concrete class is passed to the dependent class via a *set property*.
+Use this injection type if the concrete class should be swappable, without having to be passed to a method every time.
+
+```c#
+class Printer  
+{  
+	// Handle to EventLog writer to write to the logs.
+	public INotification writer { get; set; }
+	
+	// This function will be called when the app pool has a problem.
+	public void Notify(string message)  
+	{  
+		writer.Notify(message);  
+	}  
+}
+```
+
+```c#
+ static void Main(string[] args)
+ {  
+	EventLogWriter log = new EventLogWriter();  
+	Printer p = new Printer();  
+	p.writer = log; // log instance is set to the property writer of the Printer.
+	p.Notify("dit is een test");  
+	Console.ReadLine();  
+}
+```
+
+
+---
+
+## Inversion of control – IoC
+
+
 
 
 ---
