@@ -248,7 +248,17 @@ Optionally, there's a boolean parameter to make the input case-sensitive.
 
 Syntax: `EnumName userInput = Enum.Parse<EnumName>(Console.ReadLine(), true);`
 
+#### Validating `enum`
 
+To check if the specific type is enum or not, use the IsEnum property of the Type class. It will return true if the type is enum. Otherwise, this property will return false:
+```c#
+typeof(TypeToCheck).IsEnum
+```
+
+To check if a variable is a value of a Enum type:
+```c#
+Enum.IsDefined(typeof(EnumTypeName), variableToCheck)
+```
 ### [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime?view=net-7.0)
 
 [Parse DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=net-7.0) for US format:
@@ -1069,6 +1079,10 @@ Access modifiers are used to set the accessibility level of types and type membe
 - `internal`: The code is only accessible within its own assembly, but not from another assembly. You will learn more about this in a later chapter.
 - `sealed`: ensures the class can not be inherited and object instantiation is restricted in the derived class.
 - `static`: ensures the static member belongs to the class itself rather than to a specific object.
+
+#### Static Classes and When To Use Them
+
+A static class can be used as a convenient container for *sets of methods that just operate on input parameters* and do not have to get or set any internal instance fields. For example, in the . NET Class Library, the static System.
 
 
 ---

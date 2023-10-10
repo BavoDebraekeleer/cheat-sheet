@@ -77,3 +77,20 @@ The commit type can include the following:
 - `chore: update npm dependency to latest version`
 - `Fix bug preventing users from submitting the subscribe form`
 - `Update incorrect client phone number within footer body per client request`
+
+
+## Branches
+
+### Switch Branches
+
+- *Default*: switches from current branch to specified branch. If there are uncommited changes to the current branch changing won't be allowed.
+- `-f`, `--force`, or `--discard-changes`: let's you discard any uncommited changes to the current branch before switching.
+- `-m`: triggers a three-way merge between the current branch, your working tree contents, and the new branch: you won't lose your work in progress that way.
+
+```git
+git switch <branch-name>
+
+git switch -f <branch-name> // --force or --discard-changes on current branch.
+
+git switch -m <branch-name> // Merges current branch, including changes, with specified branch.
+```

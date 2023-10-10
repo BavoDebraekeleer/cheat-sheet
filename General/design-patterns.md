@@ -568,14 +568,116 @@ _Example: Let’s say you have a logging service that needs to be accessed by mu
 *Singleton Pattern Diagram:*
 ![](https://miro.medium.com/v2/resize:fit:382/1*546cgD2MFxHPKib3FFAZGw.png)
 
-Syntax:
-```c#
-Singleton instanceName = Singleton.GetInstance;
-```
+### Why WOULD you use a Singleton?
 
-#### Implementing In Custom Class
+[Singleton Design Pattern in C# by Scott Lilly](https://scottlilly.com/c-design-patterns-the-singleton-pattern/)
+
+You might want to use the singleton pattern for classes that use an external resource, and there might be problems if multiple objects try to use that resource at the same time. For example, the file system, a database server, a web service, etc.
+
+If your program needs to do logging, you may want all output to be written to one log file. That could lead to resource conflicts and errors.
+
+![Without a singleton, each business object has its own logging object.](https://www.scottlilly.com/wp-content/uploads/2016/05/WithoutSingleton.png)
+
+With a singleton logger object, you don’t need to worry about several different objects trying to write to the same file, at the same time.
+
+![With a singleton, the business objects share a single logging object](https://www.scottlilly.com/wp-content/uploads/2016/05/WithSingleton.png)
+
+
+### Why WOULDN'T you use a Singleton?
+
+Another option is to use a global, or static, class. But that usually leads to bad programming practices. After a while, those classes tend to hold a lot of unrelated information and objects.
+
+This can still happen with singletons, which is why some programmers say singletons are an “*anti*-pattern” – a bad programming practice.
+
+There are times when singletons can be useful. However, like many programming decisions, you need to consider the positives and negatives.
+
+Plus, you can more easily create “mock” versions of your singleton class, for unit testing. This is difficult to do with static classes.
+
+
+### Implementation
 
 The **singleton [design pattern](https://www.educative.io/edpresso/design-patterns-in-java)** is used to restrict a class to only one instance at a time. This restriction is achieved by changing the accessibility of the constructor to `private` so that a new instance cannot be created using that constructor from outside the class. The **[static](https://www.educative.io/edpresso/how-to-use-static-keyword-in-java) method** **`GetInstance()`** (defined in the class) creates a new instance after checking if an instance already exists. If it does, the same instance is returned; otherwise, a new instance is created and returned. The **static variable** **`instance`** keeps track of the existing instance of the class.
+
+#### Static Initializer Singleton Pattern (C# Only!)
+
+Guarantees an instance gets created and multi-thread safe.
+
+Pattern:
+```c#
+class ClassName
+{ 
+	private static readonly ClassName _instance = new ClassName();
+	
+	private ClassName() { } // private Constructor
+		
+	public static ClassName GetInstance() // public static method
+	{
+		return _instance; 
+	}
+}; 
+```
+
+#### Multi-Thread Safe Method
+
+Pattern:
+```c#
+class ClassName
+{ 
+	private static ClassName _instance; // private static field
+	private static readonly object _syncLock = new object();
+	// _syncLock is just an object for the lock to hold on too, nothing special.
+	
+	private ClassName() { } // private Constructor
+		
+	public static ClassName GetInstance() // public static method
+	{
+		if (_instance == null) // Check if an instance already exists
+		{
+			lock(_syncLock) // The first thread call gets a lock on next code
+			{
+				_instance ??= new ConsoleMessengerSingleton();
+			}
+		}
+		return _instance; 
+	}
+}; 
+```
+
+#### NOT Multi-Thread Safe Method
+
+Pattern:
+```c#
+class ClassName
+{ 
+	private static ClassName _instance; // private static field
+	
+	private ClassName() { } // private Constructor
+		
+	public static ClassName GetInstance() // public static method
+	{
+		if (_instance == null) // Check if an instance already exists
+		{
+			_instance = new ClassName(); // Create a new instance
+		}
+		return _instance; 
+	}
+}; 
+```
+
+Shorter version:
+```c#
+class ClassName
+{ 
+	private static ClassName _instance; // private static field
+	
+	private ClassName() { } // private Constructor
+		
+	public static ClassName GetInstance() // public static method
+	{
+		return _instance ??= new ConsoleMessengerSingleton();
+	}
+}; 
+```
 
 *Example:*
 ```c#
