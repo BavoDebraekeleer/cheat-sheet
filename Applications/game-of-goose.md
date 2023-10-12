@@ -222,3 +222,20 @@ Etiquette and Rules: The Goose Game may have additional rules or variations depe
 Enjoyment and Social Interaction: The Goose Game is known for its simplicity and enjoyable gameplay, making it suitable for players of all ages. It provides opportunities for social interaction and friendly competition as players race to reach the finish space first.
 
 Remember, the specific rules and variations of the GooseGame can differ depending on cultural adaptations or specific editions. Always refer to the rules provided with the game set you're playing or agree upon rules before starting the game.Have fun playing the Goose Game and may your goose race swiftly to the finish! Instructionsusing mouse Discuss GooseGame
+
+---
+
+## Feedback
+
+Backend naar library project
+
+Geen position in Space
+The Board weet waar ze staan, de Spaces zelf hoeven dit niet te weten.
+
+TurnSkip en Stuck checks in game loop?
+
+Factory Keep It Simple Stupid met een switch loop. Niet met try-catch of Activator.
+Te complex voor veel developers.
+
+Core voor Frontend
+Library voor Backend
