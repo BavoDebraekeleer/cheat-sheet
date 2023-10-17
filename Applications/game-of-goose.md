@@ -228,14 +228,16 @@ Remember, the specific rules and variations of the GooseGame can differ dependin
 ## Feedback
 
 Backend naar library project
+Core voor Frontend
+Library voor Backend
 
 Geen position in Space
 The Board weet waar ze staan, de Spaces zelf hoeven dit niet te weten.
+-> Maar dan moet je board meegeven aan Spaces? Extra binding?
 
 TurnSkip en Stuck checks in game loop?
 
 Factory Keep It Simple Stupid met een switch loop. Niet met try-catch of Activator.
 Te complex voor veel developers.
 
-Core voor Frontend
-Library voor Backend
+---

@@ -6,6 +6,7 @@ dotNet:
 - [Pluralsight: Implementing C# 9 Unit Testing Using Visual Studio 2019 and .NET 5 by Paul D. Sheriff](https://app.pluralsight.com/library/courses/basic-unit-testing-csharp-developers/table-of-contents)
 - [Pluralsight: Test Driven Development in C# 8 by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/csharp-test-driven-development/table-of-contents)
 - [Pluralsight: C# 10 Unit Testing by Thomas Claudius Huber](https://app.pluralsight.com/library/courses/c-sharp-10-unit-testing/table-of-contents?aid=7010a000001xAKZAA2) - [My course files](https://github.com/BavoDebraekeleer/dotnet-unit-testing.git)
+- [Pluralsight: Clean Architecture: Patterns, Practices, and Principles by Matthew Renze](https://app.pluralsight.com/library/courses/clean-architecture-patterns-practices-principles/table-of-contents)
 
 JavaScript:
 - [YouTube: Introduction To Testing In JavaScript With Jest by Web Dev Simplified](https://www.youtube.com/watch?v=FgnxcUQ5vho)
@@ -39,6 +40,10 @@ Some examples of tests: 
 - The more high-level you get the fewer tests you should have
 
 Stick to the pyramid shape to come up with a healthy, fast and maintainable test suite: Write _lots_ of small and fast _unit tests_. Write _some_ more coarse-grained tests and _very few_ high-level tests that test your application from end to end.
+
+![[Pasted image 20231016200645.png]]
+![[Pasted image 20231016200752.png]]
+
 
 ---
 
@@ -1038,3 +1043,30 @@ module.exports = {
 ## Integration Test
 
 When testing integration of external systems, like writing to a file, or accessing a database.
+
+
+---
+
+## Acceptance Tests (Testable Architecture)
+
+![[Pasted image 20231016200928.png]]
+![[Pasted image 20231016201036.png]]
+![[Pasted image 20231016201020.png]]
+
+![[Pasted image 20231016201509.png]]
+
+### Example
+
+![[Pasted image 20231016201638.png]]
+
+#### SpecFlow
+
+Test written in business language, which SpecFlow generates code from.
+
+![[Pasted image 20231016202943.png]]
+![[Pasted image 20231016203042.png]]
+
+
+---
+
+

@@ -734,3 +734,8 @@ int main()
 
 ---
 
+## Railway Oriented Programming
+
+[Railway Oriented Programming : A powerful Functional Programming pattern by Naveen Muguda](https://naveenkumarmuguda.medium.com/railway-oriented-programming-a-powerful-functional-programming-pattern-ab454e467f31)
+
+![[Pasted image 20231013095033.png]]
