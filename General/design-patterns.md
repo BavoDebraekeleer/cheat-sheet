@@ -739,3 +739,14 @@ int main()
 [Railway Oriented Programming : A powerful Functional Programming pattern by Naveen Muguda](https://naveenkumarmuguda.medium.com/railway-oriented-programming-a-powerful-functional-programming-pattern-ab454e467f31)
 
 ![[Pasted image 20231013095033.png]]
+
+---
+
+## Inversion of Control (IoC)
+
+In [software engineering](https://en.wikipedia.org/wiki/Software_engineering "Software engineering"), **inversion of control** (**IoC**) is a [design pattern](https://en.wikipedia.org/wiki/Software_design_pattern "Software design pattern") in which custom-written portions of a [computer program](https://en.wikipedia.org/wiki/Computer_program "Computer program") receive the [flow of control](https://en.wikipedia.org/wiki/Control_flow "Control flow") from a generic [framework](https://en.wikipedia.org/wiki/Software_framework "Software framework"). The term "inversion" is historical: a [software architecture](https://en.wikipedia.org/wiki/Software_architecture "Software architecture") with this design "inverts" control as compared to [procedural programming](https://en.wikipedia.org/wiki/Procedural_programming "Procedural programming"). In procedural programming, a program's custom code [calls](https://en.wikipedia.org/wiki/Function_call#Main_concepts "Function call") reusable libraries to take care of generic tasks, but with inversion of control, it is the framework that calls the custom code.
+
+Simply put, a component designed according to IoC does not go off and get other components that it needs in order to do its job. It instead _declares_ these dependencies, and the container supplies them. Thus the name IoC/DIP/Hollywood Principle. The control of the dependencies for a given component is inverted. It is no longer the component itself that establishes its own dependencies, but something on the outside. That something could be a container like PicoContainer, but could easily be normal code instantiating the component in an embedded sense.
+
+![[Pasted image 20231017201232.png]]
+

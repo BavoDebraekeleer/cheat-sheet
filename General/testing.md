@@ -1069,4 +1069,150 @@ Test written in business language, which SpecFlow generates code from.
 
 ---
 
+# Outside-In Test-Driven Development
+
+## Courses
+
+- [Outside-In Test-Driven Development by Mark Seemann](https://app.pluralsight.com/course-player?clipId=fcb9aac1-0452-45cb-9fc2-ae610c5b45e6)
+
+## Introduction
+
+- Start testing at the boundaries of the system.
+- YAGNI Principle = You Aren't Gonna Need It.
+- Better business value.
+
+![[Pasted image 20231017223504.png]]
+
+High-level perspective of Outside-In Testing:
+![[Pasted image 20231017224006.png]]
+![[Pasted image 20231017224020.png]]
+![[Pasted image 20231017224042.png]]
+
+SUT = System Under Test
+
+Write just enough code in the SUT to make the test you are testing pass.
+Only test against external boundaries of the SUT, illustrated by the small box against the SUT in the diagram above.
+
+![[Pasted image 20231017224558.png]]
+
+![[Pasted image 20231017224727.png]]
+
+![[Pasted image 20231018104404.png]]
+![[Pasted image 20231018104454.png]]
+
+---
+
+## Walking Skeleton
+
+>"an implementation of the thinnest possible slice of real functionality that we can automatically build, deploy, and test end-to-end"
+
+This can be used to drive:
+- Infrastructure
+- Process
+
+Implementation order:
+1. GET request with HTTP respons status code 200 OK.
+	1. Write Test
+	2. Implement ApiController to handle GET
+2. POST request with HTTP respons status code 200 OK.
+3. Do POST followed by GET to test if they both actually work.
+
+Work with lists to fake a Database, but allows to test basic functionality.
+
+---
+
+## Spiking
+
+Spiking is going through the SUT from an external boundary all the way to an internal boundary, for example, from an API endpoint, to a persistent storage like a database.
+
+### FIRST
+
+FIRST principle on writing tests:
+- Fast
+- Isolated
+- Repeatable
+- Self-validating
+- Timely
+
+### Four-Phase Test
+
+The AAA (Arrange-Act-Assert) test pattern is a super set of the Four-Phase Test, but leaving out the 4th, because you don't have to write it.
+
+The Four-Phase Test:
+1. Ficture Setup (Arrange)
+2. Exercise SUT (Act)
+3. Result Verification (Assert)
+4. Fixture Teardown (Dispose of the client)
+
+### Backdoor Manipulation
+
+![[Pasted image 20231018100134.png]]
+
+---
+
+## Triangulation
+
+![[Pasted image 20231018102743.png]]
+
+Triangulation works by applying a *Stimulus* to the SUT, and then measuring the *Response*.
+The *Response* can be a *Return Value*, or an *Observable State* of the SUT. 
+The *Direct Output* is what you measure/assert at the end of the test.
+
+![[Pasted image 20231018100414.png]]
+
+The term *Triangulation* comes from geometry, where you can triangulate a position by measuering the distance to atleast two fixed reference points.
+In tests, the tests are the fixed reference points, and the SUT is what we want to measure, or sample.
+
+![[Pasted image 20231018101240.png]]
+![[Pasted image 20231018101219.png]]
+
+### When To Use
+
+![[Pasted image 20231018100344.png]]
+
+### Devil's Advocate and Ping Pong Techniques
+
+Implement code as naively as possible.
+To combat the tendency to keep implementing new features without writing new tests.
+De Devil's Advocate technique helps focus tests on their essence.
+
+Gollum Style when developing on your own.
+
+![[Pasted image 20231018102138.png]]
+
+![[Pasted image 20231018102302.png]]
+![[Pasted image 20231018102354.png]]
+
+---
+
+## Behavior Verification (Mockist)
+
+*Counterpart to Triangulation.*
+
+![[Pasted image 20231018104827.png]]
+
+![[Pasted image 20231018103052.png]]
+
+### Cyclomatic Complexity
+
+Counts the number of paths through the code.
+Meaning +1 for each `if, else, case, for, foreach, do, while, catch`.
+For each count there needs to be a test, to make sure the path works as expected.
+
+### Code Coverage
+
+Can be interesting to watch the trend of Code Coverage, for example, if it keeps decreasing, you want to look into it. But it is not a measure of quality.
+
+![[Pasted image 20231018103753.png]]
+
+### Componentization
+
+Less testing is necessary if splitting up functionality into different classes.
+
+![[Pasted image 20231018104030.png]]
+
+### Stubs and Mocks
+
+![[Pasted image 20231018104230.png]]
+
 
