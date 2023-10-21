@@ -1045,5 +1045,9 @@ Steps:
 
 ![[Pasted image 20231011131121.png]]
 
+---
 
+## Filtering
+
+Use `map` when performing `push` in a `foreach` loop.
 
