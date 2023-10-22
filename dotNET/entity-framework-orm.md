@@ -335,6 +335,6 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 Usage in the Controller:
 ```c#
-return Ok(_mapper.Map<ReturnType>(entity)); // Map Entity to DTO defined in Profile
+return Ok(_mapper.Map<ReturnTypeDTO>(entity)); // Map Entity to DTO defined in Profile
 //return Ok(_mapper.Map<List<TimeRegistration>>(entity)); 
 ```

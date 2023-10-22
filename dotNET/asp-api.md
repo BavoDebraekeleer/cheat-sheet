@@ -6,6 +6,8 @@
 - [Pluralsight: ASP.NET Core 6 Web API Fundamentals by Kevin Dockx](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-fundamentals/table-of-contents)
 - [Blog Post: Service Lifetimes in ASP.NET Core by Elisenda Gascon](https://endjin.com/blog/2022/09/service-lifetimes-in-aspnet-core)
 - [Dependency Injection and Service Lifetimes in .NET Core by Henrique Siebert Domareski](https://henriquesd.medium.com/dependency-injection-and-service-lifetimes-in-net-core-ab9189349420)
+- [Best Practices for Designing a Pragmatic RESTful API by Vinay Sahni](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+- [Microsoft Learn: Controller action return types in ASP.NET Core web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0)
 
 ---
 ## ASP .NET Core
@@ -287,12 +289,29 @@ The most important status codes:
 - 401 – Unauthorized
 - 403 – Forbidden (e.g. authenticated user has no access)
 - 404 – Not Found
-- 409 – Conflict (e.g. onlfict between two simultaneous updates)
+- 409 – Conflict (e.g. conflict between two simultaneous updates)
 - 410 – Gone
 
 - 500 – Internal Server Error
 - 503 – Service Unavailable
 
+The ones to definitely use in an API are:
+- 200 OK – Response to a successful GET, PUT, PATCH or DELETE. Can also be used for a POST that doesn't result in a creation.
+- 201 Created – Response to a POST that results in a creation. Should be combined with a [Location header](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30) pointing to the location of the new resource
+- 204 No Content – Response to a successful request that won't be returning a body (like a DELETE request)
+- 304 Not Modified – Used when HTTP caching headers are in play
+- 400 Bad Request – The request is malformed, such as if the body does not parse
+- 401 Unauthorized – When no or invalid authentication details are provided. Also useful to trigger an auth pop-up if the API is used from a browser
+- 403 Forbidden – When authentication succeeded but authenticated user doesn't have access to the resource
+- 404 Not Found – When a non-existent resource is requested
+- 405 Method Not Allowed – When an HTTP method is being requested that isn't allowed for the authenticated user
+- 410 Gone – Indicates that the resource at this end point is no longer available. Useful as a blanket response for old API versions
+- 415 Unsupported Media Type – If incorrect content type was provided as part of the request
+- 422 Unprocessable Entity – Used for validation errors
+- 429 Too Many Requests – When a request is rejected due to rate limiting.
+
+
+See [Microsoft Learn: Controller action return types in ASP.NET Core web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0) on how to set them up.
 
 ---
 ## Formatters and Content Negotiation
@@ -385,6 +404,31 @@ builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 ---
 
+## HTTP Actions
 
+### HTTP Post – Create
 
+### HTTP Put – Update
+### HTTP Patch – Partial Update
 
+For partially updating an entity, a JSON Patch (RFC 6902) Document is used.
+It is a document structure that describes a sequence of operations to apply to a JSON document.
+
+```json
+[
+	{
+		"op": "replace",
+		"path": "/name",
+		"value": "new name"
+	},
+	{
+		"op": "add",
+		"path": "/description",
+		"value": "new description"
+	}
+]
+```
+
+Needed packages: 
+- `Microsoft.AspNetCore.JsonPatch`
+- `Microsoft.AspNetCore.Mvc.NewtonsoftJson`
