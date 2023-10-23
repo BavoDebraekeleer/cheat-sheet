@@ -188,6 +188,8 @@ Using `Microsoft.entityFrameworkCore.Tools`.
 Available commands through the package manager console:
 ```cli
 Add-Migration NameInitialCreate -Context NameDbContext -OutputDir Migrations
+// Add-Migration DotNetApiAppDbInitialCreate -Context EntitiesDbContext -OutputDir Migrations
+
 ```
 
 Make sure the Default project at the top is set to the project that holds the entities and optional DbContext. This is also where the Migrations will be put in.
@@ -268,11 +270,13 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 Add the new Migration:
 ```cli
 add-migration DataSeed -Context NameDbContext -OutputDir Migrations
+// add-migration DataSeed -Context EntitiesDbContext -OutputDir Migrations
 ```
 
 And Update the Database with the new Migration:
 ```cli
 update-database -Context NameDbContext
+// update-database -Context EntitiesDbContext
 ```
 
 ---
