@@ -7,6 +7,8 @@
 - [Pluralsight: Testing in React 18 by Liam McLennan](https://app.pluralsight.com/library/courses/react-18-testing/table-of-contents)
 - [React Docs: Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)
 
+- [Blog Post: Data Fetching in React Using SWR and TypeScript by Alejo Boga](https://betterprogramming.pub/mastering-data-fetching-in-react-using-swr-and-typescript-648df3b15efa)
+
 ---
 
 ## Introduction
@@ -100,6 +102,48 @@ npm install @mui/icons-material
 ```
 
 [Available Components](https://mui.com/material-ui/react-button/)
+
+---
+
+## Data Fetching (from API)
+
+### SWR
+
+[Data Fetching in React Using SWR and TypeScript by Alejo Boga](https://betterprogramming.pub/mastering-data-fetching-in-react-using-swr-and-typescript-648df3b15efa)
+
+SWR, or Stale While Revalidate, is a data fetching library that handles data fetching, caching, and error handling in a performant manner.
+
+Uses TypeScript, providing an extra layer of type safety.
+
+#### Install alongside Axios
+
+```batch
+npm install swr axios
+```
+#### Usage
+
+To use SWR with React, we need to use a hook called `useSWR` which returns some variables depending on the state of the `fetcher` function.
+
+```ts
+const fetcher = (...args) => fetch(...args).then(res => res.json())  
+  
+const {data, error, isLoading, isValidating} = useSWR(key, fetcher);
+```
+
+We can define these variables as follows:
+- `data` –  This variable represents the book itself.
+- `error`– If for some reason you can not find the book, this variable will contain the reasons why.
+- `isLoading` – Thisvariable will have a boolean value of `true` when you are on your way to grab a book.
+- `isValidating` – Thisvariable will be similar to `isLoading` but it will have the value of `true` when you are checking your records if you already have the book next to you. From now on, the place next to you will be called `cache`.
+- `key` – Representsthe book the customer wants. It could be for example the title.
+
+We can see this clearly in the next diagram:
+![](https://miro.medium.com/v2/resize:fit:700/1*Asc71ccRQvHYYg6hL-zjTA.png)
+*How SWR Works Under the Hood.*
+
+Under the hood, SWR uses a cache to store data that has been previously fetched. In our example, this would be the closest bookshelf.
+
+When a user requests data, SWR first checks the cache to see if it already has the data. If it does, it returns the cached data immediately. If not, it sends a request to the server to fetch the data, and once the data is returned, it stores it in the cache for future use.
 
 ---
 
