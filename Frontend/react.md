@@ -101,6 +101,14 @@ npm install @mui/icons-material
 
 [Available Components](https://mui.com/material-ui/react-button/)
 
+---
+
+## Testing in React
+
+![[Pasted image 20231025205731.png]]
+
+
+
 
 ---
 ## [Vite](https://vitejs.dev/guide/)
@@ -113,6 +121,20 @@ Adding to a project:
 ```bash
 npm install -D vitest
 ```
+
+Adding npm script:
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test ui": "vitest --ui",
+    "coverage": "vitest run --coverage"
+  }
+}
+```
+
+[Vitest VS Code extension](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer)
+[How to make Vitest work in Visual Studio Code by Niclas Hummel](https://blog.stackademic.com/how-to-make-vitest-work-in-visual-studio-code-2e9e7fff274e)
 
 --- 
 
