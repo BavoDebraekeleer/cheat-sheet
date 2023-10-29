@@ -432,3 +432,134 @@ It is a document structure that describes a sequence of operations to apply to a
 Needed packages: 
 - `Microsoft.AspNetCore.JsonPatch`
 - `Microsoft.AspNetCore.Mvc.NewtonsoftJson`
+
+
+---
+
+## Filtering, Searching and Paging
+
+### Filtering
+
+Filtering a collection means *limiting* a collection by using a predicate.
+For example, `https://host/api/cities?name=Antwerp`.
+The *predicate* here is `?name=Antwerp`.
+
+Used for exact results, when you know what you want exactly.
+
+### Searching
+
+Searching a collection means *adding* matching items to the collection based on a predefined set of rules.
+For example, `https://host/api/cities?searchQuery=Tower`.
+Here, with the use of a query string.
+
+Used when you don't know exactly which items will be in the collection.
+
+### Deferred Execution
+
+Query execution occurs sometime after the query is constructed with Entity Framework.
+We build the query by chaining methods with EF. It only gets executes when calling an execution method, like `.ToListAsync()`.
+
+![[Pasted image 20231028155120.png]]
+
+### Paging
+
+Limit results to a certain amount, avoiding large queries that are heavy on performance.
+For example, `https://host/api/cities?pageNumber=1&pageSize=5`.
+Also via a query string, here `?pageNumber=1&pageSize=5`.
+
+Important:
+- Page size should be limited.
+- Return page one by default.
+- Page all the way through to the underlying database.
+
+#### Implementation
+
+1. Add parameters with default values on Controller function
+```c#
+int pageNumber = 1, int pageSize = 10, // Paging parameters
+```
+
+2. Add `pageSize` limit on Controller:
+```c#
+// Controller field
+private const int maxPageSize = 20;
+
+...
+
+// In function
+if (pageSize > maxPageSize) // Limit page size for Paging
+{
+    pageSize = maxPageSize;
+}
+```
+
+3. Add parameters on Repository and its Interface.
+```c#
+int pageNumber, int pageSize
+```
+
+4. In EF, add `.Skip(pageSize * (pageNumber - 1))` last, but before `.ToListAsync();`.
+```c#
+    public async Task<List<TimeRegistrationEntity>?> GetAllWithEF(
+	    int pageNumber, int pageSize)
+    {
+        return await _dbContext.TimeRegistration
+            .OrderBy(entity => entity.UserId) // Order by needs to happen first!
+            .Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize)
+            .ToListAsync();
+    }
+```
+
+Results in Query:
+```sql
+SELECT [t].[Id], [t].[Description], [t].[Start], [t].[Stop], [t].[UserId]
+FROM [TimeRegistration] AS [t]
+ORDER BY [t].[UserId]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+```
+
+4. In [SQL](https://www.sqlshack.com/pagination-in-sql-server/), with Dapper:
+```c#
+public async Task<List<TimeRegistrationEntity>?> GetAllWithDapper(
+	int pageNumber, int pageSize) // Read with Dapper
+{
+    var result = await _dbConnection.QueryAsync<TimeRegistrationEntity>(
+        """
+        SELECT 
+            Id, 
+            UserId, 
+            Description, 
+            Start, 
+            Stop 
+        FROM 
+            [dbo].[TimeRegistration] 
+        ORDER BY // Needs to happen before OFFSET
+            Id
+        OFFSET (@pageSize * (@pageNumber - 1)) ROWS
+        FETCH NEXT @pageSize ROWS ONLY;
+        """,
+        new { pageNumber, pageSize }
+    );
+    
+    if (result is not null)
+    {
+        return result.ToList();
+    }
+    return null;
+}
+```
+
+Example GET string:
+```bash
+https://localhost:7136/api/v1/time-registrations?pageNumber=1&pageSize=5
+```
+
+#### Pagination Metadata
+
+Use a custom header for Pagination Metadata, like `X-Pagination`.
+
+Steps:
+1. Make a class that describes `PaginationMetadata`.
+2. Implement in Repository and return the metadata object alongside the result in a tuple.
+3. Implement in Controller by serialize the metadata object to JSON and adding it to the response header, e.g., `Response.Headers.Add("HeaderName", JsonSerializer.Serialize(paginationMetadata));`
