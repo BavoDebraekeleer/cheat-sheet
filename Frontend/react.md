@@ -45,6 +45,12 @@ State changes cause apps to re-render with an updated UI.
 
 Can not use JavaScript `let` to update data.
 
+### Three Main Benefits
+
+1. Structure with components - reusability and have state.
+2. UIs declared in JavaScript - rendered ouput changes when state is updated.
+3. Reconciliation - only updates the parts of the UI that changed.
+
 ### Toolchains for React
 
 - Next.js
@@ -54,9 +60,46 @@ Can not use JavaScript `let` to update data.
 ---
 ## Components
 
+A component in React is a (arrow) function that return JSX code.
+
+JSX code looks like HTML, but isn't. It is an alternative way of writing JavaScript
+JSX = JavaScript eXtension.
+Translated to JavaScipt by a tool, e.g., Babel.
+
+### Component Function
+
 ![[Pasted image 20231024152342.png]]
 
 ![[Pasted image 20231024153638.png]]
+
+### Component Arrow Function
+
+```tsx
+const App = () => {
+	return (
+		<div>
+			<b>Hello World!</b>
+		</div>
+	)
+}
+```
+
+### Component Class
+
+Not recommended! Future additions will likeley only be supported with functions.
+
+Another way of writing a component is with a class that inherits from `React.Component`:
+```tsx
+class App extends React.Component {
+	render() {
+		return (
+			<div>
+				<b>Hello World!</b>
+			</div>
+		)
+	}
+}
+```
 
 ### Data between Parent and Child
 
