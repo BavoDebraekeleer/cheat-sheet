@@ -115,6 +115,15 @@ React Server Components (RCS) are components that run inside a Node Server.
 Components running on a server have (direct) access to different things:
 ![[Pasted image 20231024173623.png]]
 
+---
+
+## Styling
+
+There are 4 ways to style a component:
+- A CSS file for the whole application.
+- Loading a CSS file into the HTML root document `index.html` - not always accassible.
+- Applying a CSS file to a specific component.
+- Using the *style* attribute on a component.
 
 ---
 
@@ -124,6 +133,11 @@ A way to track data changes over the lifetime of a component.
 
 ![[Pasted image 20231024153519.png]]
 
+### Hook Form
+
+```bash
+npm install -D @hookform/devtools
+```
 
 ---
 
@@ -225,6 +239,16 @@ Adding npm script:
 
 --- 
 
+## Debugging
+
+With VS Code, go to Debug tab en press *Debug and Run* to go into debug mode to be able to use breakpoints. Going through the code can be done both in VS Code and the Chrome browser.
+
+Additionally, in Chrome there is a *React Developer Tools* extensions that adds extra tabs, Performance and Components.
+
+![[Pasted image 20231030073611.png]]
+
+
+---
 ## VS Code Extensions
 
 - [Simple React Snippets](https://github.com/burkeholland/simple-react-snippets)
