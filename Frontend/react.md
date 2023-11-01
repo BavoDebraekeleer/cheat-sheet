@@ -204,6 +204,22 @@ When a user requests data, SWR first checks the cache to see if it already has t
 
 ---
 
+### JSX
+
+### [Conditional Rendering](https://legacy.reactjs.org/docs/conditional-rendering.html)
+
+#### Inline If-Else with Conditional Operator
+
+```jsx
+<Component>
+	{condition ?
+		When true : When false
+	}
+</Component>
+```
+
+
+---
 ## Testing in React
 
 ![[Pasted image 20231025205731.png]]
