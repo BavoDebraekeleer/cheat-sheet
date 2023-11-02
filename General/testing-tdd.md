@@ -12,6 +12,7 @@ JavaScript:
 - [YouTube: Introduction To Testing In JavaScript With Jest by Web Dev Simplified](https://www.youtube.com/watch?v=FgnxcUQ5vho)
 - [YouTube: JavaScript testing: Jest mocks by Codete](https://www.youtube.com/watch?v=OS5mVVM5vAg)
 - [YouTube: REACT Testing Crash Course by Traversy Media](https://www.youtube.com/watch?v=OVNjsIto9xM)
+- [Teams: Middagsessie dotNet lab – Frontend testing with Jest and Playwright](https://bitconsult365.sharepoint.com/sites/dotNET-Academy-Bitconsult-IT4IT/_layouts/15/stream.aspx?id=%2Fsites%2FdotNET%2DAcademy%2DBitconsult%2DIT4IT%2FGedeelde%20documenten%2FSessions%20%40%20the%20Lab%2FMiddagsessie%5F%20Frontend%20Testing%2D20230417%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview)
 
 ---
 
@@ -1037,6 +1038,11 @@ module.exports = {
 ```
 
 *However, there are some [caveats](https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats) to using TypeScript with Babel. Because TypeScript support in Babel is purely transpilation, Jest will not type-check your tests as they are run. If you want that, you can use [ts-jest](https://github.com/kulshekhar/ts-jest) instead, or just run the TypeScript compiler [tsc](https://www.typescriptlang.org/docs/handbook/compiler-options.html) separately (or as part of your build process).*
+
+
+#### React Testing Library
+
+
 
 ---
 

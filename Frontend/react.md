@@ -127,7 +127,7 @@ There are 4 ways to style a component:
 
 ---
 
-## React Hook
+## React Hooks
 
 A way to track data changes over the lifetime of a component.
 
@@ -138,6 +138,146 @@ A way to track data changes over the lifetime of a component.
 ```bash
 npm install -D @hookform/devtools
 ```
+
+### [Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)
+
+When you extract logic into custom Hooks, you can hide the gnarly details of how you deal with some external system or a browser API. The code of your components expresses your intent, not the implementation.
+
+*Example:*
+```tsx
+function useOnlineStatus() {  
+	const [isOnline, setIsOnline] = useState(true);  
+	
+	useEffect(() => {  
+		function handleOnline() {  
+			setIsOnline(true);  
+		}  
+		function handleOffline() {  
+			setIsOnline(false);  
+		}  
+		
+		window.addEventListener('online', handleOnline);  
+		window.addEventListener('offline', handleOffline);  
+		
+		return () => {  
+			window.removeEventListener('online', handleOnline);  
+			window.removeEventListener('offline', handleOffline);  
+		};  
+	}, []);  
+	
+	return isOnline;  
+}
+```
+
+#### Extraction Example
+
+Original code:
+```js
+// App.js
+
+import { useState, useEffect } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return <h1>Seconds passed: {count}</h1>;
+}
+```
+
+Solution:
+```js
+// App.js
+import { useCounter } from './useCounter.js';
+
+export default function Counter() {
+  const count = useCounter();
+  return <h1>Seconds passed: {count}</h1>;
+}
+```
+
+```js
+// useCounter.js extracted Custom Hook
+import { useState, useEffect } from 'react';
+
+export function useCounter() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return count;
+}
+```
+
+When adding a state parameter, it needs to be added to the Effect’s dependencies, by adding it between the `[]` at the end of `useEffect`, like `delay` in the following example:
+```js
+// App.js
+import { useState } from 'react';
+import { useCounter } from './useCounter.js';
+
+export default function Counter() {
+  const [delay, setDelay] = useState(1000);
+  const count = useCounter();
+  return (
+    <>
+      <label>
+        Tick duration: {delay} ms
+        <br />
+        <input
+          type="range"
+          value={delay}
+          min="10"
+          max="2000"
+          onChange={e => setDelay(Number(e.target.value))}
+        />
+      </label>
+      <hr />
+      <h1>Ticks: {count}</h1>
+    </>
+  );
+}
+
+```
+
+```js
+// // useCounter.js Custom Hook
+import { useState, useEffect } from 'react';
+
+export function useCounter(delay) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCount(c => c + 1);
+    }, delay);
+    return () => clearInterval(id);
+  }, [delay]);
+  return count;
+}
+```
+
+#### Naming Conventions
+
+1. **React component names must start with a capital letter,** like `StatusBar` and `SaveButton`. React components also need to return something that React knows how to display, like a piece of JSX.
+2. **Hook names must start with `use` followed by a capital letter,** like [`useState`](https://react.dev/reference/react/useState) (built-in) or `useOnlineStatus` (custom). Hooks may return arbitrary values.
+
+#### Key Takeaways
+
+- Custom Hooks let you share logic between components.
+- Custom Hooks must be named starting with `use` followed by a capital letter.
+- Custom Hooks only share stateful logic, not state itself.
+- You can pass reactive values from one Hook to another, and they stay up-to-date.
+- All Hooks re-run every time your component re-renders.
+- The code of your custom Hooks should be pure, like your component’s code.
+- Wrap event handlers received by custom Hooks into Effect Events.
+- Don’t create custom Hooks like `useMount`. Keep their purpose specific.
+- It’s up to you how and where to choose the boundaries of your code.
 
 ---
 

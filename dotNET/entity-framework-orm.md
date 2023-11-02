@@ -205,6 +205,16 @@ update-database -Context NameDbContext
 // eg: update-database -Context EntitiesDbContext
 ```
 
+Or to target a specific migration:
+```cli
+update-database -migration <target-name>
+```
+
+Or by using [.NET Core CLI](https://learn.microsoft.com/en-us/ef/core/cli/dotnet):
+```cli
+dotnet ef database update <target>
+```
+
 If a login error occurs:
 ![[Pasted image 20231019083308.png]]
 `A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - De certificaatketen is verleend door een niet-vertrouwde instantie.)`
