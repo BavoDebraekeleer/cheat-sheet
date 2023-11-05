@@ -364,13 +364,21 @@ When a user requests data, SWR first checks the cache to see if it already has t
 </Component>
 ```
 
+---
+
+## [Lazy Loading](https://www.loginradius.com/blog/engineering/lazy-loading-in-react/)
+
+Lazy loading is not a new concept. It has been available for quite some time. In essence, lazy loading means that a component or a part of code must get loaded when it is required. It is also referred to as `code splitting` and `data fetching`.
+
+Talking about `React` specifically, it bundles the complete code and deploys all of it at the same time. Now, usually, that's not a bad idea, since React SPAs (Single page application) are quite small and do not affect the performance. But what if we have a gigantic application, like a content management system with a customer portal, admin portal etc. In such a case, it does not seem like a smart idea to load the complete application.
+
 
 ---
 ## Testing in React
 
 ![[Pasted image 20231025205731.png]]
 
-
+See `General/testing-tdd
 
 
 ---

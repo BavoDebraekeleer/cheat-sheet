@@ -1058,8 +1058,6 @@ For testing of:
 - Rendering
 - User Interactions
 
-![[Pasted image 20231104113925.png]]
-
 ![[Pasted image 20231104114053.png]]
 
 ##### Rendering a Component
@@ -1151,19 +1149,19 @@ Challenging, because the result may not be present yet.
 
 The test method must be `async` and the test function awaited, or the test will never fail.
 
-#### Interaction APIs
+##### Interaction APIs
 
 - `user-event`
 - `fireEvent` — simple, but not super accurate in the way an actual human would interact.
 
-##### `user-event` API
+###### `user-event` API
 
 - Asynchronous - use await.
 - Call `setup()` before rendering.
 
 ![[Pasted image 20231104110858.png]]
 
-##### `fireEvent` API
+###### `fireEvent` API
 
 - Thin wrapper around the browser's Despatch Event API.
 - Allows to trigger any event on any element, e.g. `change` on a form that triggers `onChange`of the form or field.
@@ -1172,22 +1170,348 @@ The test method must be `async` and the test function awaited, or the test will 
 
 ![[Pasted image 20231104111259.png]]
 
-#### Snapshot Testing
+##### Snapshot Testing
 
 - For detecting regressions - verifying that specific representations of the application do not change.
 - Verify specific implementation.
 - For testing application areas that are unlikely to change.
 - Not for areas in active development.
 
-#### Testing Components with State
+##### Testing Components with State
 
+Adds the context of time to your testing. You have to wait till a state change or effect has taken place.
+
+###### `useState`
+
+This way of testing is also applicable for other mechanisms like [`useReducer`](https://react.dev/reference/react/useReducer), [React Redux](https://react-redux.js.org/), or [MobX](https://mobx.js.org/getting-started).
+
+Make sure to refactor your components so that the handling of the State is wrapped in an outer component. All other logic can be put in a “pure” inner component that receives all it needs through props, from the stateful outer wrapper component. 
+This makes the code more testable, and applies SRP.
+
+
+![[Pasted image 20231104113925.png]]
+
+![[Pasted image 20231104114053.png]]
+
+Example Renedering tests:
+```tsx
+describe('FilterList', () => {
+  describe('rendering', () => {
+    it('should render a filter input', () => {
+      renderPlanets();
+      screen.getByPlaceholderText(/Filter/i);
+    });
+
+    it('should render planets', () => {
+      renderPlanets();
+      for (let planet of planets) {
+        screen.getByText(planet);
+      }
+      expect(screen.queryByText('Pluto')).toBeNull();
+    });
+
+    describe('filtered', () => {
+      it("should render no items when filter is `xqz`", () => {
+        const props = {
+          ...defaultProps,
+          items: planets,
+          filter: 'xqz',
+        }
+        render(<FilterListPure { ...props } />)
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const listItems = queryAllByRole(list, 'listitem');
+        expect(listItems).toHaveLength(0);;
+      });
+
+      it("should render 'Earth' and 'Mars' when filtered with 'ar'", () => {
+        const props = {
+          ...defaultProps,
+          items: planets,
+          filter: 'ar',
+        }
+
+        render(<FilterListPure {...props} />)
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const listItems = queryAllByRole(list, 'listitem');
+        expect(listItems).toHaveLength(2);
+        expect(getByText(list, /earth/i));
+        expect(getByText(list, /mars/i));
+      });
+    })
+
+    describe('selection', () => {
+      it("should render list items without the 'selected' class", () => {
+        renderPlanets();
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const listItems = queryAllByRole(list, 'listitem');
+        for (let listitem of listItems) {
+          expect(listitem.className).not.toMatch(/selected/);
+        }
+      })
+
+      it("should render 'Earth' with 'selected' class when 'Earth' is selected", () => {
+        const props = {
+          ...defaultProps,
+          items: planets,
+          selectedItems: ['Earth']
+        };
+        render(<FilterListPure {...props} />)
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const listItems = queryAllByRole(list, 'listitem');
+        for (let listitem of listItems) {
+          if (/earth/i.test(listitem.textContent || '')) {
+            expect(listitem).toHaveClass('selected');
+          } else {
+            expect(listitem).not.toHaveClass('selected');
+          }
+        }
+      })
+    })
+  });
+});
+
+export const planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+
+export const defaultProps = {
+  filter: '',
+  selectedItems: [],
+  onFilterChange: ()=>{},
+  onItemSelection: ()=>{},
+};
+
+export function renderPlanets() {  
+  render(<FilterListPure items={planets} {...defaultProps} />);
+}
+```
+
+Example Interaction Tests:
+```tsx
+describe('FilterList', () => {
+  describe('interaction - user-events', () => {
+    describe('filtering', () => {
+      it('should filter by parts of words', async () => {
+        const user = userEvent.setup();
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const filterInput = screen.getByPlaceholderText(/Filter/i);
+        await user.type(filterInput, 'mi');
+        expectOnlyItems([/Aluminium/i, /Chromium/i]);
+      });
+    });
+
+    describe('selection', () => {
+      it('should select unselected items that are clicked', async () => {
+        const user = userEvent.setup();
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const potassium = within(list).getByText(/Potassium/i);
+        await user.click(potassium);
+        expect(potassium).toHaveClass('selected');
+      });
+
+      it('should unselect selected items that are clicked', async () => {
+        const user = userEvent.setup();
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const beryllium = within(list).getByText(/Beryllium/i);
+        await user.click(beryllium); // select Beryllium
+        await user.click(beryllium); // unselect Beryllium
+        expect(beryllium).not.toHaveClass('selected');
+      });
+    });
+  });
+
+  describe('interaction - fireEvent', () => {
+    describe('filtering', () => {
+      it('should filter by parts of words', () => {
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const filterInput = screen.getByPlaceholderText(/Filter/i);
+        fireEvent.change(filterInput, {target: {value: 'mi'}});
+        expectOnlyItems([/Aluminium/i, /Chromium/i]);
+      });
+    });
+
+    describe('selection', () => {
+      it('should select unselected items that are clicked', () => {
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const potassium = within(list).getByText(/Potassium/i);
+        fireEvent.click(potassium);
+        expect(potassium).toHaveClass('selected');
+      });
+
+      it('should unselect selected items that are clicked', () => {
+        render(<FilterList items={listOfMetals} onChange={ ()=>{} }/>);
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const beryllium = within(list).getByText(/Beryllium/i);
+        fireEvent.click(beryllium); // select Beryllium
+        fireEvent.click(beryllium); // unselect Beryllium
+        expect(beryllium).not.toHaveClass('selected');
+      });
+    });
+  });
+});
+
+function expectOnlyItems(textMatches) {
+  const list = screen.getByRole('list', {name: /Filtered list/i});
+  const listItems = queryAllByRole(list, 'listitem');
+  expect(listItems.length).toBe(textMatches.length);
+  for (const tm of textMatches) {
+    getByText(list, tm);
+  }
+}
+```
+
+
+###### `useEffect`
+
+Requires waiting for changes to take effect, e.g. with a promise from an API call.
+When working with an asynchronous API call, the API needs to be mocked with `jest.mock()`.
+
+
+Interaction Tests
+
+The following example shows how to mock an API:
+```ts
+// api.ts
+export const planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+
+export function getPlanets(): Promise<string[]> {
+    return Promise.resolve(planets);
+}
+```
+
+```tsx
+// interactions.test.tsx
+import * as api from '../api';
+
+const listOfExoplanets = ['Kepler-22b', 'Kepler-452b', 'TrES-2b'];
+
+jest.mock('../api');
+api.getPlanets.mockResolvedValue(listOfExoplanets);
+```
+All the following tests will now use the mock when an API call happens.
+
+Next, the tests should have functions that wait, so the API promise is resolved when the asserts happen, for example:
+```tsx
+const user = userEvent.setup();
+render(<FilterList onChange={ ()=>{} }/>);
+
+// user.type is an async functions, so by the time it is resolved,
+// the API call will be resolved as well.
+const filterInput = screen.getByPlaceholderText(/Filter/i);
+await user.type(filterInput, '5');
+expectOnlyItems([/Kepler-452b/i, /Gliese 504 b/i]);
+```
+or:
+```tsx
+// Waits for up to 1s until it finds a Text element with the value "TrES"
+const tres = await within(list).findByText(/TrES/i);
+// The user.click waits till the previous line has resolved.
+await user.click(tres);
+```
+
+
+Rendering Tests
+
+Rendering test stay synchronous when the components are made pure - no use of `useState` or `useEffect` in them.
+
+```tsx
+// rendering.test.tsx
+import {planets} from '../api'
+
+export const defaultProps = {
+  filter: '',
+  selectedItems: [],
+  onFilterChange: ()=>{},
+  onItemSelection: ()=>{},
+};
+
+describe('filtered', () => {
+      it("should render no items when filter is `xqz`", () => {
+        const props = {
+          ...defaultProps,
+          items: planets,
+          filter: 'xqz',
+        }
+        render(<FilterListPure { ...props } />)
+
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        const listItems = queryAllByRole(list, 'listitem');
+        expect(listItems).toHaveLength(0);;
+      });
+ })
+```
+
+##### Testing Integrated Components and Feature Testing
+
+Testing at the application user level.
+
+Integrated components are components within other components within other components …
+
+When testing integration of external systems, like writing to a file, or accessing a database.
+
+Testing a tree of components from an outermost component.
+Steps:
+- Assemble the components into a tree.
+- Write tests against the outermost component.
+
+![[Pasted image 20231105211735.png]]
+
+Feature Testing is Behaviour-driven development that isn't interested in the implementation. You start with writing behaviour tests, and after that write the specific implementation.
+This also provides documentation on how the application should behave through the tests, and has to stay correct. Otherwise, the tests fail. Can be very useful with ageing applications.
+
+![[Pasted image 20231105213212.png]]
+
+Example:
+```tsx
+describe('Metals page', () => {
+    it('should initially show no metals', () => {
+        render(<Metals/>);
+        const container = screen.getByRole(
+	        'generic', { name: /Metals display/i });
+        const metals = within(container).queryAllByRole('
+	        generic', { name: /Metal/i });
+        expect(metals.length).toBe(0);
+    });
+
+    it('should show one selected metal', () => {
+        render(<Metals/>);
+        // select a metal
+        const list = screen.getByRole('list', { name: /Filtered list/i });
+        const potassium = within(list).getByText(/Potassium/i);
+        fireEvent.click(potassium);
+        const container = screen.getByRole(
+	        'generic', { name: /Metals display/i });
+        const metals = within(container).queryAllByRole(
+	        'generic', { name: /Metal/i });
+        expect(metals.length).toBe(1);
+        within(container).getByText(/Potassium/i);
+    });
+
+    it('should show multiple selected metals', () => {
+        const metalsToSelect = [
+	        /Beryllium/i, /Calcium/i, /Scandium/i, /Vanadium/i];
+        render(<Metals/>);
+        const list = screen.getByRole('list', {name: /Filtered list/i});
+        for (const metal of metalsToSelect) {
+            fireEvent.click(within(list).getByText(metal));
+        }
+        const container = screen.getByRole(
+	        'generic', { name: /Metals display/i });
+        const metals = within(container).queryAllByRole(
+	        'generic', { name: /Metal/i });
+        expect(metals.length).toBe(metalsToSelect.length);
+        for (const metal of metalsToSelect) {
+            within(container).getByText(metal);
+        }
+    });
+});
+```
 
 
 ---
 
 ## Integration Test
-
-When testing integration of external systems, like writing to a file, or accessing a database.
 
 
 ---
