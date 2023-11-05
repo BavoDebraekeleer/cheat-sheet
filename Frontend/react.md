@@ -66,6 +66,12 @@ JSX code looks like HTML, but isn't. It is an alternative way of writing JavaScr
 JSX = JavaScript eXtension.
 Translated to JavaScipt by a tool, e.g., Babel.
 
+![[Pasted image 20231103151744.png]]
+
+![[Pasted image 20231104113925.png]]
+
+![[Pasted image 20231104114053.png]]
+
 ### Component Function
 
 ![[Pasted image 20231024152342.png]]

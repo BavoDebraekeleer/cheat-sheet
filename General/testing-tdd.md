@@ -13,6 +13,8 @@ JavaScript:
 - [YouTube: JavaScript testing: Jest mocks by Codete](https://www.youtube.com/watch?v=OS5mVVM5vAg)
 - [YouTube: REACT Testing Crash Course by Traversy Media](https://www.youtube.com/watch?v=OVNjsIto9xM)
 - [Teams: Middagsessie dotNet lab – Frontend testing with Jest and Playwright](https://bitconsult365.sharepoint.com/sites/dotNET-Academy-Bitconsult-IT4IT/_layouts/15/stream.aspx?id=%2Fsites%2FdotNET%2DAcademy%2DBitconsult%2DIT4IT%2FGedeelde%20documenten%2FSessions%20%40%20the%20Lab%2FMiddagsessie%5F%20Frontend%20Testing%2D20230417%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview)
+- [Testing in React 18 (with Jest and React Testing Library) by Liam McLennan](https://app.pluralsight.com/library/courses/react-18-testing/table-of-contents)
+
 
 ---
 
@@ -1039,8 +1041,145 @@ module.exports = {
 
 *However, there are some [caveats](https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats) to using TypeScript with Babel. Because TypeScript support in Babel is purely transpilation, Jest will not type-check your tests as they are run. If you want that, you can use [ts-jest](https://github.com/kulshekhar/ts-jest) instead, or just run the TypeScript compiler [tsc](https://www.typescriptlang.org/docs/handbook/compiler-options.html) separately (or as part of your build process).*
 
+#### [`jest-dom`](https://testing-library.com/docs/ecosystem-jest-dom/)
+
+Provides better readable methods, e.g.:
+![[Pasted image 20231103164314.png]]
+
+![[Pasted image 20231103164347.png]]
 
 #### React Testing Library
+
+The React Testing Library is a React specific wrapper of the DOM Testing Library.
+
+![[Pasted image 20231103153359.png]]
+
+For testing of:
+- Rendering
+- User Interactions
+
+![[Pasted image 20231104113925.png]]
+
+![[Pasted image 20231104114053.png]]
+
+##### Rendering a Component
+
+```js
+import { render } from '@testing-library/react'
+
+render( <ComponentName /> )
+```
+
+##### Element Query Types
+
+![[Pasted image 20231103155541.png]]
+
+##### Element Selection Types
+
+Recommended is `..ByRole`.
+The following are in most (top) to least (bottom) desirable, so choose from top to bottom which one works for the test.
+
+![[Pasted image 20231103155755.png]]
+
+##### ARIA Role Types
+
+```js
+const heading = screen.getByRole('heading', {
+	name: "Filter List",
+})
+```
+
+In this example:
+- `'heading'` is the ARIA Role.
+- `get` will throw an error if there is more than one result.
+- further restricions are set between `{}`, here `{name: "Filter List"}` will restrict the result to an element with the accessible name of Filter List.
+- The `screen` object provides methods to search the rendered components.
+
+##### Finding Nested Elements
+
+```js
+import { render, screen, getByRole } from '@testing-library/react'
+import Home from '@/pages/index'
+
+test('Home renders a nested heading', () => {
+	render(<Home />);
+
+	// Home renders the heading element within a main element.
+	// The main element can be get from the screen:
+	const main = screen.getByRole('main');
+
+	// The heading element is within the main, not directly in screen,
+	// so a detached version of getByRole can be used where the element it
+	// has to search in is passed to it.
+	getByRole(main, 'heading', {
+		name: "Filter List"	
+	});
+});
+```
+
+![[Pasted image 20231103161439.png]]
+
+##### Debugging Components
+
+Use the following to receive the element in the console:
+```js
+screen.debug(screen.getByPlaceholderText("Filter"));
+```
+
+To identify the role of elements, use `logRoles()`:
+```js
+const list = screen.getByRole('list', {
+	name: /Filtered list/
+});
+logRoles(list);  // Logs the given element tree to the console.
+```
+
+![[Pasted image 20231103163210.png]]
+
+###### Log Playground URL
+
+![[Pasted image 20231103163309.png]]
+
+At the link:
+![[Pasted image 20231103163342.png]]
+
+##### Testing Asynchronous Rendering
+
+Challenging, because the result may not be present yet.
+
+![[Pasted image 20231103163651.png]]
+
+The test method must be `async` and the test function awaited, or the test will never fail.
+
+#### Interaction APIs
+
+- `user-event`
+- `fireEvent` — simple, but not super accurate in the way an actual human would interact.
+
+##### `user-event` API
+
+- Asynchronous - use await.
+- Call `setup()` before rendering.
+
+![[Pasted image 20231104110858.png]]
+
+##### `fireEvent` API
+
+- Thin wrapper around the browser's Despatch Event API.
+- Allows to trigger any event on any element, e.g. `change` on a form that triggers `onChange`of the form or field.
+- Doesn't interact exactly as a user would.
+- Synchronous and no setup required.
+
+![[Pasted image 20231104111259.png]]
+
+#### Snapshot Testing
+
+- For detecting regressions - verifying that specific representations of the application do not change.
+- Verify specific implementation.
+- For testing application areas that are unlikely to change.
+- Not for areas in active development.
+
+#### Testing Components with State
 
 
 
