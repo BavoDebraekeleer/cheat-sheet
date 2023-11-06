@@ -9,6 +9,11 @@
 
 - [Blog Post: Data Fetching in React Using SWR and TypeScript by Alejo Boga](https://betterprogramming.pub/mastering-data-fetching-in-react-using-swr-and-typescript-648df3b15efa)
 
+- [5 Different Techniques for Cross Micro Frontend Communication - by Vishal Sharma](https://sharvishi9118.medium.com/cross-micro-frontend-communication-techniques-a10fedc11c59)
+- [Event Bus for React - by Daw-Chih Liou](https://dawchihliou.github.io/articles/event-bus-for-react)
+- [Decoupling React Components with an Event Bus - by Radovan Stevanovic](https://javascript.plainenglish.io/decoupling-react-components-with-an-event-bus-9d86170e09d7)
+
+
 ---
 
 ## Introduction
@@ -395,6 +400,7 @@ npm install -D vitest
 
 Adding npm script:
 ```json
+// package.json
 {
   "scripts": {
     "test": "vitest",
@@ -411,12 +417,260 @@ Adding npm script:
 
 ## Debugging
 
+[The 2023 guide to React debugging - by Anna Monus](https://raygun.com/blog/react-debugging-guide/#:~:text=For%20React%20debugging%2C%20the%20most,one%20by%20one%2C%20and%20more.)
+
 With VS Code, go to Debug tab en press *Debug and Run* to go into debug mode to be able to use breakpoints. Going through the code can be done both in VS Code and the Chrome browser.
 
 Additionally, in Chrome there is a *React Developer Tools* extensions that adds extra tabs, Performance and Components.
 
 ![[Pasted image 20231030073611.png]]
 
+### Levels
+
+1. `console.log()` statements
+2. Debugger statement for debugging in the browser
+3. Breakpoints in the IDE (VS Code)
+	- Conditional Breakpoints
+	- Pause on exception breakpoint
+
+#### 1. Console Log
+
+##### Object parameters
+
+In code:
+![[Pasted image 20231106152409.png]]
+In browser Dev Tools:
+![[Pasted image 20231106152457.png]]
+
+##### Table for arrays
+
+In code:
+![[Pasted image 20231106152546.png]]
+In browser Dev Tool:
+![[Pasted image 20231106152715.png]]
+
+##### Time
+
+To measure how long it takes to trvale from one point in your code to another, with `console.time(label: labelName)` and `console.endTime(label: labelName)`.
+
+![[Pasted image 20231106201708.png]]
+
+![[Pasted image 20231106201605.png]]
+
+
+#### 2. Debugger Statement
+
+To debug in the browser, add the `debugger;` statement to add a code breakpoint.
+ESLint will by default disable the debugger, so add `/* eslint-disable no-debugger */` to the top of the file to use debugging in that file, or `// eslint-disable-next-line no-debugger` before the debugger statement to allow just this one.
+
+![[Pasted image 20231106152802.png]]
+
+
+#### 3. With IDE
+
+Go to the Debug tab and press play at the top:
+![[Pasted image 20231106153847.png]]
+
+Make sure the URL in `launch.json` matches the URL that is used withe the `dev` script.
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:5173/",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
+```
+
+##### Conditional Breakpoints
+
+Right click on breakpoint to add expression/condition:
+![[Pasted image 20231106154410.png]]
+
+![[Pasted image 20231106154435.png]]
+
+##### Pause on exception breakpoint
+
+Press the Pause on exceptions button in the Chrome Dev Tools - takes you to where an exception is thrown:
+![[Pasted image 20231106154727.png]]
+
+#### Network Tab
+
+##### Replay, and Edit and Resend API Calls
+
+Replay:
+![[Pasted image 20231106200810.png]]
+
+Edit and Resend:
+![[Pasted image 20231106200923.png]]
+
+Brings you to a Postman-esque interface:
+![[Pasted image 20231106200935.png]]
+
+---
+
+## [Cross Microservices Communication](https://sharvishi9118.medium.com/cross-micro-frontend-communication-techniques-a10fedc11c59)
+
+### Component Props
+
+Pros:
+- One of the very well-known techniques of data passing in component-based architecture.
+- Most of the frameworks support this way.
+- One can always use framework structs to avoid prop drilling issues e.g. React Context etc.
+
+Cons:
+- Adds a lot of coupling between the micro frontends and the container app.
+- Hard to achieve if two micro frontends are not using the same framework
+- It can impact the overall performance of the application as multiple unwanted layers will be re-rendered with every state change.
+
+### Platform Storage APIs
+
+Pros:
+- Available for browsers as well as mobile devices. Local storage for browsers and Async storage for mobile apps.
+- Less coupling compares to passing props between the App and micro frontend but hard to debug which micro frontend is setting the data.
+
+Cons:
+- Not a scalable solution for bigger applications. But can be used for a small set of data. It is always good to namespace the data set into platform storage according to the app name to avoid ambiguity.
+- Not a secure technique for saving protected data.
+
+### Custom Events
+
+Pros:
+- The inbuilt solution in-browser platform.
+- Very much close to asynchronous event-based architecture in the microservices world. Easy for the backend developers to understand as well.
+- High setup cost but easy to scale.
+- Build a generic mechanism that all the micro frontend teams can follow.
+
+Cons:
+- Not achievable in the case of mobile micro frontends
+
+### Event Bus Messaging
+
+The message bus library can expose methods to publish, subscribe and unsubscribe the events. The publish event needs to make sure that all the subscribed handlers are invoked once the event is published.
+
+> It is very important to make sure that all the micro frontends are using the same instance of the message bus, as an application should have only one registry for all the events published.
+
+Pros:
+- A custom-made solution equivalent to message bus in microservices implementation.
+- High setup cost but easy to scale.
+- Libraries like [Postal.js](https://github.com/postaljs/postal.js) are available in the market.
+
+Cons:
+- Similar to the custom events' technique, it can be hard to make all the micro frontends teams follow the same pattern.
+
+#### Event Bus Pattern
+
+An Event Bus is a design pattern that allows PubSub-style communication between components while the components remain loosely coupled.
+
+A component can send a message to an Event Bus without knowing where the message is sent to. On the other hand, a component can listen to a message on an Event Bus and decide what to do with the message without knowing where the message comes from. With this design, independent components can communicate without knowing each other.
+
+![[Pasted image 20231106210526.png]]
+
+Parts:
+- Event: The message being sent and received on an Event Bus.
+- Publisher: The sender that ***emits*** an event.
+- Subscriber: The receiver that ***listens*** to an event.
+
+### Libraries
+
+- `EventEmitter`
+- `rxjs` — with Typescript support.
+
+##### `rxjs`
+
+###### Setup
+
+```tsx
+import { Subject } from 'rxjs';  
+  
+const eventBus = new Subject();
+```
+That's it!
+
+###### Emitting Events
+
+Example, using an enum for Event types:
+```tsx
+enum EventTypes {  
+LOGIN = 'LOGIN',  
+LOGOUT = 'LOGOUT',  
+//... more events  
+}  
+  
+eventBus.next({ type: EventTypes.LOGIN, payload: { username: 'johndoe' } });
+```
+
+###### Subscribing to events
+
+```tsx
+eventBus.subscribe((event) => {  
+	switch (event.type) {  
+		case EventTypes.LOGIN:  
+			console.log(`User ${event.payload.username} has logged in`);  
+			break;  
+		case EventTypes.LOGOUT:  
+			console.log(`User ${event.payload.username} has logged out`);  
+			break;  
+		default:  
+			break;  
+	}  
+});
+```
+
+It’s recommended to handle the events in a separate service or store to avoid polluting the component with business logic and make it more testable.
+
+![[Pasted image 20231106212753.png]]
+
+###### Benefits of using an Event Bus in a React Application
+
+1. Decoupling: An event bus allows different parts of an application to communicate with each other without being tightly coupled. This can make it easier to manage shared states and make the application more testable.
+2. Centralized Event Handling: Having a central event bus makes it easier to manage and track the events happening in the application. This can be helpful for debugging and monitoring.
+3. Asynchronous Actions: An event bus can consistently handle asynchronous actions across different application parts, such as API calls.
+4. Improved Performance: By decoupling the components, they can be rendered independently. This can improve the overall performance of the application.
+5. Better Code organization: By separating the event handling logic from the components and putting it in a separate service or store and making abstraction using custom hooks like `useEvents` with a predicate function to filter the events of interest, the code becomes more organized and easier to maintain.
+
+###### Filter Events
+
+How to make abstractions using custom hooks to filter the events of interest:
+```tsx
+import { useState, useEffect } from 'react';  
+import { Subject } from 'rxjs';  
+  
+const eventBus = new Subject();  
+  
+const useEvents = (predicateFn) => {  
+	const [events, setEvents] = useState([]);  
+  
+	useEffect(() => {  
+		const subscription = eventBus
+			.pipe(filter(predicateFn))
+			.subscribe(setEvents);  
+		
+		return () => subscription.unsubscribe();  
+	}, [predicateFn]);  
+	  
+	const publish = (event) => eventBus.next(event);  
+	  
+	return { events, publish };  
+};
+```
+
+
+---
+
+## [Context](https://react.dev/learn/passing-data-deeply-with-context)
+
+TODO
+### Prop Drilling
 
 ---
 ## VS Code Extensions

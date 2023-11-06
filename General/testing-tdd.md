@@ -1508,6 +1508,15 @@ describe('Metals page', () => {
 });
 ```
 
+#### Q&A
+
+Q: Why would, or wouldn't, you test implementation details?
+A: You would, when rendering pure stateless components, to make sure what is rendered is expected with the given props. Not for stateful components. With the latter, we only want to test interactions.
+
+*Implementation details* are things which users of your code will not typically use, see, or even know about.
+
+Q: How do you interact with the component during testing.
+A: By using an Interactions API, like `user-event` or `fireEvent`, which have methods to mock user behaviour like clocking on a certain element.
 
 ---
 

@@ -1126,8 +1126,20 @@ Prefer interfaces to abstract classes. Unless you want to provide an implemented
 
 Abstract Class:
 - When creating a base class to be *inherited by subclasses*.
-- When all subclasses share the implemented behavior.
+- When all subclasses share the implemented behaviour.
 
 Interface:
-- Define a behavior that can be implemented by *multiple unrelated classes*.
-- If you need to add behavior to a subclass and can't add it to its base class.
+- Define a behaviour that can be implemented by *multiple unrelated classes*.
+- If you need to add behaviour to a subclass and can't add it to its base class.
+
+
+---
+
+## Debugging in Visual Studio
+
+### Conditional Breakpoint
+
+Hover over the breakpoint and press the gear icon for settings where you can define a condition for when to break:
+![[Pasted image 20231106151331.png]]
+
+
