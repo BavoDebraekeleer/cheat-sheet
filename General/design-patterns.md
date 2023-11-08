@@ -8,12 +8,15 @@
 - [Article: Dependency Injection Pattern In C# - Short Tutorial by Mark Pelf](https://www.c-sharpcorner.com/article/dependency-injection-pattern-in-c-sharp-short-tutorial/)
 - [Microsoft Learn: .NET dependency injection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
 - [Article: Singleton Pattern in C# by Jallen Liao](https://medium.com/@lancelyao/singleton-pattern-in-c-b2bc4b1e0532)
+- [Pluralsight: C# 10 Design Patterns - by Kevin Dockx](https://app.pluralsight.com/library/courses/c-sharp-10-design-patterns/table-of-contents)
+
 
 ---
 
 ## Introduction
 
-A design pattern is a default solution for common design problems.
+A design pattern is a default and reusable solution for common design problems.
+Should be viewed as a template to start from, not a rule.
 
 History:
 - Flow Based Design using Flow Charts to visualize the design.
@@ -22,14 +25,70 @@ History:
 - SOLID principles, largely by Robert C. Martin (uncle Bob).
 - Today, it is crucial to work Agile, in close cooperation with the customer, and with quick adaptability to market and business strategy changes.
 
+### Difference between a Pattern and a Principle
 
----
-
-## Difference between a Pattern and a Principle
-
-A **_Software Design Pattern_** is called a *pattern* because it suggests *low-level specific* implementation to a specific problem.
+A **_Software Design Pattern_** is called a *pattern* because it suggests *low-level specific* implementation to a specific issue.
 
 A **_Software Design Principle_** is called *principle* because it provides *high-level advice* on how to design software products.
+
+### Gang of Four
+
+Group of developers that published a book on Design Patterns in 1994 that is still relevant today. They are:
+- Erich Gamma
+- Richard Helm
+- Ralph Johnson
+- John Vlissides
+
+![[Pasted image 20231107103153.png]]
+
+### Pattern Types
+
+- Creational
+- Structural
+- Behavioural
+
+#### Creational
+
+Deal with object creation.
+Help with making the system independent of how objects are created.
+
+- Abstract Factory
+- Builder
+- Factory Method
+- Prototype
+- Singleton
+
+#### Structural
+
+Deal with ways to define relations between classes or objects.
+Concerned with how classes and objects are composed to form a larger structure.
+
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
+
+#### Behavioural
+
+Ways to communicate between classes or objects.
+Characterize complex control flow that is difficult to follow at runtime.
+Let you concentrate on the way objects are interconnected.
+
+- Chain of Responsibility
+- Command
+- Interpreter
+- Iterator
+- Mediator
+- Memento
+- Observer
+- State
+- Strategy
+- Template Method
+- Visitor
+
 
 ---
 
@@ -568,6 +627,10 @@ _Example: Let’s say you have a logging service that needs to be accessed by mu
 *Singleton Pattern Diagram:*
 ![](https://miro.medium.com/v2/resize:fit:382/1*546cgD2MFxHPKib3FFAZGw.png)
 
+![[Pasted image 20231107105512.png]]
+
+If managed by an IOC Container it no longer violates SRP because the instance doesn't manage the instance creation, but the container does.
+
 ### Why WOULD you use a Singleton?
 
 [Singleton Design Pattern in C# by Scott Lilly](https://scottlilly.com/c-design-patterns-the-singleton-pattern/)
@@ -724,13 +787,6 @@ int main()
 }
 ```
 
----
-
-
-## Chain of Responsibility Pattern (Decoupling)
-
-- [Article: Decoupling with Chain of Responsibility Pattern in C# by Daniel Rusnok](https://medium.com/net-core/decoupling-with-chain-of-responsibility-pattern-in-c-1273329ed923)
-- [Article: Chain of Responsibility Design Pattern with C# Examples by Mohamed Hendawy](https://mohamed-hendawy.medium.com/chain-of-responsibility-design-pattern-in-c-with-examples-d87da6e5ead)
 
 ---
 
@@ -750,3 +806,336 @@ Simply put, a component designed according to IoC does not go off and get other 
 
 ![[Pasted image 20231017201232.png]]
 
+---
+
+## Messaging Patterns
+
+Closely related to [CQRS - Command and Query Responsibility Segregation](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs).
+
+![[Pasted image 20231107140434.png]]
+
+
+### Command Pattern
+
+Encapsulating a request as an object. Letting you parameterize clients with different requests, queue or log requests, and support undoable operations.
+
+Decoupling the request of an action, with the receiver that executes the action.
+
+Example diagram:
+![[Pasted image 20231107135528.png]]
+
+The roles in the diagram in relation to the command pattern:
+![[Pasted image 20231107135717.png]]
+
+#### Consequences
+
+![[Pasted image 20231107140304.png]]
+
+
+### Mediator Pattern
+
+Behavioural pattern.
+
+Define a mediator object that encapsulates how a set of other objects interact, by forcing objects to communicate via that mediator.
+
+Creates loose coupling between the objects that need to communicate with each other, because they are not concerned with how those other objects are implemented.
+
+![[Pasted image 20231107110100.png]]
+
+![[Pasted image 20231107112720.png]]
+![[Pasted image 20231107112741.png]]
+
+#### Use Cases and Consequences
+
+![[Pasted image 20231107112353.png]]
+
+![[Pasted image 20231107112504.png]]
+
+
+#### Implementation Example
+
+Diagram:
+![[Pasted image 20231107110355.png]]
+
+How the diagram relates to the mediator pattern:
+![[Pasted image 20231107110412.png]]
+
+Code:
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Mediator
+{
+    /// <summary>
+    /// Mediator
+    /// </summary>
+    public interface IChatRoom
+    {
+        void Register(TeamMember teamMember);
+        void Send(string from, string message);
+        void Send(string from, string to, string message);
+        // Using generic type, but where it needs to be a subclass of TeamMeber
+        void SendTo<T>(string from, string message) where T : TeamMember;
+    }
+
+    /// <summary>
+    /// Colleague
+    /// </summary>
+    public abstract class TeamMember
+    {
+        public string Name { get; set; }
+        
+        private IChatRoom? _chatroom;
+
+        public TeamMember(string name)
+        {
+            Name = name; 
+        }
+
+		// internal makes the method inaccasible from outside this assembly
+        internal void SetChatroom(IChatRoom chatRoom)
+        {
+            _chatroom = chatRoom;
+        }
+
+        public void Send(string message)
+        {
+            _chatroom?.Send(Name, message);
+        }
+
+        public void Send(string to, string message)
+        {
+            _chatroom?.Send(Name, to, message);
+        }
+
+        public void SendTo<T>(string message) where T : TeamMember
+        {
+            _chatroom?.SendTo<T>(Name, message);
+        }
+
+		// virtual makes the method overridable with override in subcclasses
+        public virtual void Receive(string from, string message)
+        {
+            Console.WriteLine($"message from {from} to {Name}: {message}");
+        }
+    }
+
+    /// <summary>
+    /// ConcreteColleague
+    /// </summary>
+    public class Lawyer : TeamMember
+    {
+        private List<TeamMember> _teamMembersInChat = new();
+
+        public Lawyer(string name) : base(name)
+        {
+        }
+
+        public override void Receive(string from, string message)
+        {
+            Console.Write($"{nameof(Lawyer)} {Name} received: ");
+            base.Receive(from, message);
+        }
+    }
+
+    /// <summary>
+    /// ConcreteColleague
+    /// </summary>
+    public class AccountManager : TeamMember
+    {
+        public AccountManager(string name) : base(name)
+        {
+        }
+
+        public override void Receive(string from, string message)
+        {
+            Console.Write($"{nameof(AccountManager)} {Name} received: ");
+            base.Receive(from, message);
+        }
+    }
+
+    /// <summary>
+    /// ConcreteMediator
+    /// </summary>
+    public class TeamChatRoom : IChatRoom
+    {
+        private readonly Dictionary<string, TeamMember> teamMembers = new();
+
+        public void Register(TeamMember teamMember)
+        {
+            teamMember.SetChatroom(this);
+            if (!teamMembers.ContainsKey(teamMember.Name))
+            {
+                teamMembers.Add(teamMember.Name, teamMember);
+            }
+        }
+
+        public void Send(string from, string message)
+        {
+            foreach (var teamMember in teamMembers.Values)
+            {
+                teamMember.Receive(from, message);
+            }
+        }
+
+        public void Send(string from, string to, string message)
+        {
+            var teamMember = teamMembers[to];
+            teamMember?.Receive(from, message); 
+        }
+
+        public void SendTo<T>(string from, string message) where T : TeamMember
+        {
+            foreach (var teamMember in teamMembers.Values.OfType<T>())
+            {
+                teamMember.Receive(from, message);
+            }
+        }
+    }
+}
+ 
+```
+
+Usage:
+```c#
+using Mediator;
+
+TeamChatRoom teamChatroom = new();
+
+var sven = new Lawyer("Sven");
+var kenneth = new Lawyer("Kenneth");
+var ann = new AccountManager("Ann");
+var john = new AccountManager("John");
+var kylie = new AccountManager("Kylie");
+
+teamChatroom.Register(sven);
+teamChatroom.Register(kenneth);
+teamChatroom.Register(ann);
+teamChatroom.Register(john);
+teamChatroom.Register(kylie);
+
+ann.Send("Hi everyone, can someone have a look at file ABC123?  I need a compliance check.");
+sven.Send("On it!");
+sven.Send("Ann", "Could you join me in a Teams call?");
+sven.Send("Ann", "All good :)");
+ann.SendTo<AccountManager>("The file was approved!");
+```
+
+#### Using [MediatR](https://github.com/jbogard/MediatR)
+
+Developed by Jimmy Bogard, the same developer as AutoMapper.
+
+##### Web API Example
+
+![[Pasted image 20231107113051.png]]
+![[Pasted image 20231107113154.png]]
+
+Steps:
+1. Install the NuGet package.
+2. Add MediatR to services:
+```c#
+// Program.cs
+services.AddMediatR(typeof(Startup));
+```
+
+3. Add mediator property to the controller and inject the dependency: 
+```c#
+[Route("api/[controller]")]
+[ApiController]
+public class TypeNameController : ControllerBase
+{
+	private IMediator _mediator;
+
+	public TypeNameController(IMediator mediator)
+	{
+		_mediator = mediator;
+	}
+}
+```
+
+4. Define a Request
+```c#
+public class RequestName : IRequest<TypeName>
+{
+	public int Id { get; set; }
+}
+```
+
+5. Create a Handler for the Request and Type you want to use:
+```c#
+public class TypeNameHandler : IRequestHandler<RequestName, TypeName>
+{
+	private dbContextType _dbContext;
+
+	public TypeNameHandler(dbContextType dbContext) => _dbContext = dbContext;
+
+	public Task<TypeName> Handle(
+		RequestName request, CancellationToken cancellationToken)
+	{
+		// action, like a EF query
+	}
+}
+```
+
+6. Use Handler in the API method:
+```c#
+[HttpGet("{id}")]
+public async Task<TypeName> GetType([FromRoute]RequestName request)
+{
+	await _mediator.Send(request);
+}
+```
+
+
+##### [Beyond the Basics](https://medium.com/@cristian_lopes/mediatr-beyond-the-basics-8ab90841a732)
+
+TODO
+
+
+### Chain of Responsibility Pattern (Decoupling)
+
+- [Article: Decoupling with Chain of Responsibility Pattern in C# by Daniel Rusnok](https://medium.com/net-core/decoupling-with-chain-of-responsibility-pattern-in-c-1273329ed923)
+- [Article: Chain of Responsibility Design Pattern with C# Examples by Mohamed Hendawy](https://mohamed-hendawy.medium.com/chain-of-responsibility-design-pattern-in-c-with-examples-d87da6e5ead)
+
+![[Pasted image 20231107140723.png]]
+![[Pasted image 20231107141050.png]]
+
+Example: Request Pipeline and Middleware in ASP.NET Core.
+
+A Request Pipeline is what handles a HTTP Request when it comes in, to provide a Response. It is made up off Middleware that handle the request.
+
+Middleware are software components that are assembled into an application pipeline, 
+to handle requests and responses. For example, for authentication, or diagnostics.
+
+![[Pasted image 20231018121237.png]]
+
+#### Use Cases and Consequences
+
+![[Pasted image 20231107141239.png]]
+
+![[Pasted image 20231107141325.png]]
+
+### Observer Pattern
+
+When multiple services need to be notified of a change of state without adding coupling.
+
+![[Pasted image 20231107142228.png]]
+
+Example diagram:
+![[Pasted image 20231107142523.png]]
+
+Diagram in relation to the observer pattern:
+![[Pasted image 20231107142647.png]]
+
+#### Use Cases and Consequences
+
+![[Pasted image 20231107142822.png]]
+
+![[Pasted image 20231107142906.png]]
+
+
+---

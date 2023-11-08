@@ -563,3 +563,29 @@ Steps:
 1. Make a class that describes `PaginationMetadata`.
 2. Implement in Repository and return the metadata object alongside the result in a tuple.
 3. Implement in Controller by serialize the metadata object to JSON and adding it to the response header, e.g., `Response.Headers.Add("HeaderName", JsonSerializer.Serialize(paginationMetadata));`
+
+---
+
+## Security
+
+### [CORS Policy](https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-7.0#attr)
+
+```c#
+// Program.cs
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:????/"); // Fill in port nr
+            
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
+
+...
+
+app.UseCors();
+```
