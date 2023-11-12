@@ -1694,3 +1694,30 @@ Less testing is necessary if splitting up functionality into different classes.
 ![[Pasted image 20231018104230.png]]
 
 
+---
+
+## Workshop Notes
+
+### Unit Tests
+
+Use Mocking for external inputs with interfaces.
+
+Mocking with nSubstitute:
+![[Pasted image 20231109103344.png]]
+
+Give implementation for whatever input:
+![[Pasted image 20231109103516.png]]
+
+Stub by using an interface:
+![[Pasted image 20231109103957.png]]
+
+With Mock instead of Stub:
+![[Pasted image 20231109104147.png]]
+
+### Integration Tests
+
+With working with a database, make sure the state of the db at the beginning of the tests is known. Best with a clean slate with the db in a Docker container.
+
+![[Pasted image 20231109105625.png]]
+
+TODO: write integration test for adding a registration in the Timesheet.

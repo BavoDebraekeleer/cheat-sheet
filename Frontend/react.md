@@ -292,6 +292,32 @@ export function useCounter(delay) {
 
 ---
 
+## Context and Routing
+
+### Context
+
+Context is a way to provide data to multiple components without the need of passing it to each one individually via a prop.
+
+This can be used for routing, but also for other use cases.
+
+When the value of the context changes, all consumers will be re-rendered.
+
+![[Pasted image 20231109110559.png]]
+
+![[Pasted image 20231109111609.png]]
+
+### React Router
+
+Example with context:
+![[Pasted image 20231109111419.png]]
+
+
+
+#### [Breadcrumbs](https://reactrouter.com/en/main/hooks/use-matches#breadcrumbs)
+
+
+
+---
 ## React UI Library (Styling Library)
 
 Building UI components from scratch can be tedious and sometimes futile. This is why component libraries exist; they provide ready-to-use design elements, thereby allowing developers to focus on building the UI without building everything from scratch.
@@ -339,11 +365,11 @@ const {data, error, isLoading, isValidating} = useSWR(key, fetcher);
 ```
 
 We can define these variables as follows:
-- `data` –  This variable represents the book itself.
-- `error`– If for some reason you can not find the book, this variable will contain the reasons why.
-- `isLoading` – Thisvariable will have a boolean value of `true` when you are on your way to grab a book.
-- `isValidating` – Thisvariable will be similar to `isLoading` but it will have the value of `true` when you are checking your records if you already have the book next to you. From now on, the place next to you will be called `cache`.
-- `key` – Representsthe book the customer wants. It could be for example the title.
+- `data` – This variable represents the book itself.
+- `error`— If for some reason you can not find the book, this variable will contain the reasons why.
+- `isLoading` — This variable will have a boolean value of `true` when you are on your way to grab a book.
+- `isValidating` — This variable will be similar to `isLoading` but it will have the value of `true` when you are checking your records if you already have the book next to you. From now on, the place next to you will be called `cache`.
+- `key` — Represents the book the customer wants. It could be for example the title.
 
 We can see this clearly in the next diagram:
 ![](https://miro.medium.com/v2/resize:fit:700/1*Asc71ccRQvHYYg6hL-zjTA.png)
@@ -358,6 +384,17 @@ When a user requests data, SWR first checks the cache to see if it already has t
 ### JSX
 
 ### [Conditional Rendering](https://legacy.reactjs.org/docs/conditional-rendering.html)
+
+#### Inline If
+
+```jsx
+<Component>
+	{condition &&
+		When true
+		// When false it gets skipped.
+	}
+</Component>
+```
 
 #### Inline If-Else with Conditional Operator
 
@@ -676,3 +713,68 @@ TODO
 ## VS Code Extensions
 
 - [Simple React Snippets](https://github.com/burkeholland/simple-react-snippets)
+
+---
+
+## Alerts / Toasts
+
+[LogRocket article: React toast libraries compared](https://blog.logrocket.com/react-toast-libraries-compared/#react-toastify)
+
+### `React-toastify`
+
+[Official React-toastify documentation](https://fkhadra.github.io/react-toastify/introduction/)
+[GitHub: React-toastify](https://github.com/fkhadra/react-toastify)
+
+---
+
+## Date
+
+See JavaScript/Date.
+
+Localisation:
+- [react-intl](https://formatjs.io/docs/getting-started/installation/)
+- [HTML Language Codes](https://www.w3schools.com/tags/ref_language_codes.asp)
+- [HTML Country Codes](https://www.w3schools.com/tags/ref_country_codes.asp)
+- [Using react-intl](https://lokalise.com/blog/react-i18n-intl/#Adding_arguments/placeholders)
+
+
+### DateTime to and from Database
+
+#### To Db
+
+Combining separate Date and a Time from string:
+```tsx
+const utcDateTimeString = new Date(
+	workingDay.toDateString() + ' ' + data.startTime)
+	.toISOString(); // Accounts for GMT+1 so extracts an hour.
+```
+
+#### From Db
+
+```tsx
+function getLocaleStringFromUTCDateTimeString(
+	utcDateTimeString: string,
+	
+	isGetTimeOnly = false,
+	isGetDateOnly = false,
+
+	locales?: Intl.LocalesArgument,
+	options?: Intl.DateTimeFormatOptions | undefined,
+) {
+
+	const utcAsLocalDate = new Date(utcDateTimeString);
+	const actualLocaleDate = new Date(utcAsLocalDate.getTime()
+		- (utcAsLocalDate.getTimezoneOffset() * 60000)); 
+		// getTime return milliseconds.
+		// getTimezoneOffset returns minutes.
+		// *60.000 to go from minutes to milliseconds.
+	
+	if (isGetTimeOnly) 
+		return actualLocaleDate.toLocaleTimeString(locales, options);
+
+	if (isGetDateOnly) 
+	  return actualLocaleDate.toLocaleDateString(locales, options);
+	
+	actualLocaleDate.toLocaleString(locales, options);
+}
+```
