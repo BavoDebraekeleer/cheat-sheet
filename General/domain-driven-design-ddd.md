@@ -741,3 +741,9 @@ Usually sits on top of a Message Que.
 ![[Pasted image 20231025163852.png]]
 
 ---
+
+## Validation
+
+[Microsoft Learn: Design validations in the domain model layer](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-model-layer-validations)
+
+

@@ -8,6 +8,8 @@
 - [Dependency Injection and Service Lifetimes in .NET Core by Henrique Siebert Domareski](https://henriquesd.medium.com/dependency-injection-and-service-lifetimes-in-net-core-ab9189349420)
 - [Best Practices for Designing a Pragmatic RESTful API by Vinay Sahni](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 - [Microsoft Learn: Controller action return types in ASP.NET Core web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0)
+- [Pluralsight: ASP.NET Core 6 Web API Deep Dive by Kevin Dockx](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-deep-dive/table-of-contents)
+
 
 ---
 ## ASP .NET Core
@@ -406,10 +408,22 @@ builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 ## HTTP Actions
 
-### HTTP Post – Create
+### Creation
 
-### HTTP Put – Update
-### HTTP Patch – Partial Update
+#### HTTP Post – Create
+
+Creation with POST is not idempotent.
+When posting the same resource multiple times, a new one gets created each time, but with a different ID.
+
+### Upserting
+
+The principle that when updating a resource that does not exist yet, it is created.
+When it does exist it is only updated, it is idempotent.
+
+![[Pasted image 20231114150100.png]]
+
+#### HTTP Put – Update
+#### HTTP Patch – Partial Update
 
 For partially updating an entity, a JSON Patch (RFC 6902) Document is used.
 It is a document structure that describes a sequence of operations to apply to a JSON document.
@@ -589,3 +603,204 @@ builder.Services.AddCors(options =>
 
 app.UseCors();
 ```
+
+---
+
+## Validation
+
+Using built-in systems of ASP.NET `[ApiController]` like `IValidatableObject` and `ValidationAttribute`
+Or by using a library like `FluentValidation`.
+
+### Overview
+
+![[Pasted image 20231114133113.png]]
+
+#### Defining Validation Rules
+
+Using:
+- Data annotation, built-in or custom.
+- `IValidatableObject`
+
+#### Checking Validations
+
+Using:
+- `ModelState`:
+	- A dictionary containing both the:
+		- State of the model, and the
+		- Model Binding Validation
+	- Contains a collection of error messages for each property value submitted.
+- `ModelState.IsValid()`: for checking.
+
+#### Reporting Validation Errors
+
+The [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807) is the stander for reporting validation errors.
+It defines common error formats for those applications that need one, to provide a format that can be automatically parsed, read, and reacted to by the client-side app.
+
+A validation error is a client-side mistake, so 400 range status code.
+Response status code should be ***442 Unprocessable Entity***, meaning the syntax is correct, but there is a semantics error, like validation.
+Response body should contain validation errors.
+
+
+### `[ApiController]`
+
+By default, the  `ApiController` automatically sends a 400 Bad Request status code on validation errors, which is ok, but 442 Unprocessable Entity is better.
+
+400 example:
+![[Pasted image 20231114140056.png]]
+
+422 example:
+![[Pasted image 20231114140131.png]]
+
+#### Custom Error Messages
+
+```c#
+// In DTO
+[Required(ErrorMessage = "This property is required")]
+[MaxLength(100, ErrorMessage = "This string should be max 100 chars.")]
+public string PropertyName { get; set; } = String.Empty;
+```
+
+#### Setup for Custom Response Object
+
+
+```c#
+// Program startup
+builder.Services.AddControllers(configure =>
+{
+	configure.ReturnHttpNotAcceptable = true;
+})
+.ConfigureApiBehaviorOptions(setupAction =>
+{
+	setupAction.InvalidModelStateResponseFactory = context =>
+	{
+		// Create a validation problem details object:
+		var problemDetailsFactory = context.HttpContext.RequestServices
+			.GetRequiredService<ProblemDetailsFactory>();
+		var validationProblemDetails = problemDetailsFactory
+			.CreateValidationProblemDetails(
+				context.HttpContext,
+				context.ModelState
+			);
+
+		// Add additional info not added by default:
+		validationProblemDetails.Detail = 
+			"See the error field for details.";
+		validationProblemDetails.Instance = 
+			context.HttpContext.Request.Path;
+
+		// Report invalid model state responses as validation issues:
+		validationProblemDetails.Type = 
+			"url";
+		validationProblemDetails.Status = 
+			StatusCodes.Status422UnprocessableEntity;
+		validationProblemDetails.Title = 
+			"One or more validation errors occurred.";
+
+		return new UnprocessableEntityObjectResult(validationProblemDetails)
+		{
+			ContentTypes = { "application/problem+json" }
+		};
+	};
+});
+```
+
+#### `IValidatableObject`
+
+Interface to be used on DTOs to implement a Validation method for cross-property validation rules.
+
+First, the property validation rules get checked. By default, only if those are valid does the validation method get called.
+
+Example:
+```c#
+public abstract class CourseSaveDTO : IValidatableObject
+{
+	...
+
+    public IEnumerable<ValidationResult> Validate(
+	    ValidationContext validationContext)
+    {
+        if (Title == Description)
+        {
+	        yield return new ValidationResult(
+		        "The procided description should be different from title."
+		        new[] { "Course" }
+	        );
+        }
+    }
+}
+```
+
+
+#### `ValidationAttribute`
+
+Define new attributes as classes in a separate folder.
+
+![[Pasted image 20231114151313.png]]
+
+Example class implementation:
+```c#
+using System.ComponentModel.DataAnnotations;
+...
+
+public class RegistrationMaxHoursPerDayShouldNotExceed8 : ValidationAttribute
+{
+    protected override ValidationResult? IsValid(
+	    object? value, ValidationContext validationContext)
+    {
+        // Check if attribute is applied to the correct type.
+        if (validationContext.ObjectInstance is not 
+	        RegistrationSaveDTO registration)
+        {
+            throw new Exception($"Attribute {nameof(RegistrationMaxHoursPerDayShouldNotExceed8)} should be applied to a {nameof(RegistrationSaveDTO)} or derived type.");
+        }
+
+        // Validation business rules.
+        var timeSpan = registration.End.Subtract(registration.Start);
+        if (timeSpan.TotalHours > 8)
+        {
+            return new ValidationResult(
+                "Time exceeds max of 8h per day.",
+                new[] { nameof(RegistrationSaveDTO) }
+            );
+        }
+
+        return ValidationResult.Success;
+    }
+} 
+```
+
+Apply to a DTO class:
+```c#
+[RegistrationMaxHoursPerDayShouldNotExceed8]
+public abstract class RegistrationSaveDTO {..}
+```
+
+#### Override ValidationProblem in a Controller
+
+To make sure the 422 response configured in Program, by default only for models, is used instead of the default 400 when doing validation in the controller.
+
+```c#
+public override ActionResult ValidationProblem(
+	[ActionResultValueObject] ModelStateDictionary modelStateDictionary
+)
+{
+	var options = HttpContext.RequestServices
+		.GetRequiredService<IOptions<ApiBehaviorOptions>>();
+	return (ActionResult)options.Value
+		.InvalidModelStateResponseFactory(ControllerContext);
+}
+```
+
+Example usage:
+```c#
+if (!TryValidateModel(entityToPatch))
+{
+	return ValidationProblem(ModelState);
+}
+```
+
+
+### [`FluentValidation` Library](https://docs.fluentvalidation.net/en/latest/)
+
+
+
