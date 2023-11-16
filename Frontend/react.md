@@ -778,3 +778,10 @@ function getLocaleStringFromUTCDateTimeString(
 	actualLocaleDate.toLocaleString(locales, options);
 }
 ```
+
+
+---
+
+## Environment Varibales
+
+https://www.smashingmagazine.com/2023/05/safest-way-hide-api-keys-react/

@@ -1066,6 +1066,32 @@ class Program
 ```
 
 
+### Primary Constructors (C#12)
+
+C# 12 extends primary constructors to work on all classes and structs, not just records. Primary constructors let you define constructor parameters when you declare the class:
+
+```csharp
+public class BankAccount(string accountID, string owner)
+{
+    public string AccountID { get; } = accountID;
+    public string Owner { get; } = owner;
+
+    public override string ToString() => $"Account ID: {AccountID}, Owner: {Owner}";
+}
+```
+
+The most common uses for a primary constructor parameter are:
+
+- As an argument to a base() constructor invocation.
+- To initialize a member field or property.
+- Referencing the constructor parameter in an instance member.
+- To remove boilerplate in dependency injection.
+
+You can think of a primary constructor parameter as a parameter that is in scope for the entire class declaration.
+
+You can add primary constructors to any type: `class`, `struct`, `record class` and `record struct`. When used on `class` and `struct` types, primary constructor parameters are in scope in the entire `class` or `struct` definition. You can use the parameters to initialize fields or properties, or in the body of other members. When used on `record` types, the compiler generates a public property for each primary constructor parameter. Those properties are simply one of the many members automatically generated for `record` types.
+
+
 ### Access Modifiers
 
 Access modifiers are used to set the accessibility level of types and type members.
