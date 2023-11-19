@@ -748,6 +748,3 @@ Usually sits on top of a Message Que.
 [Microsoft Learn: Handle errors in ASP.NET Core web APIs](https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0)
 [DEPRECATED! Code Maze: Using the ProblemDetails Class in ASP.NET Core Web API](https://code-maze.com/using-the-problemdetails-class-in-asp-net-core-web-api/)
 
-Error 500 fixen
-
-![[Pasted image 20231116002550.png]]

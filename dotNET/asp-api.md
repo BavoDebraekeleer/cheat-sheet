@@ -615,6 +615,22 @@ Or by using a library like `FluentValidation`.
 
 ![[Pasted image 20231114133113.png]]
 
+#### Reporting Validation Errors
+
+A validation error is a client-side mistake, so 400 range status code.
+
+- ***400 'Bad Request'*** [RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231) can be used in any situation where the server perceives a client error, even if the request syntax is valid.
+
+- ***442 'Unprocessable Entity'*** [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807) is used when the server understands the content type of the request entity, and the syntax of the request entity is correct, but it is unable to process the contained instructions due to semantic errors. The request was semantically erroneous and should not be retried without modification.
+  It may be used for validation errors, business logic errors, authorization errors (user not authorized to perform action), and data conflicts (conflict with existing data).
+
+- ***409 'Conflict'*** indicates a conflict based on the current state of the target resource, which can be resolved by the user. The request from the client was fine, but there were issues on the server-side that prevents the request from being executed. In other words, the client was not able to successfully create or update a resource due to a conflict with the current state of the resource, for example, overlapping time registrations in a timesheet.
+
+[More info and explanations](https://www.abstractapi.com/http-status-codes/422#:~:text=The%20409%20status%20code%20indicates,not%20be%20retried%20without%20modification.)
+[And some more](https://www.webfx.com/web-development/glossary/http-status-codes/what-is-a-422-status-code/)
+
+
+### Validation on API Controller Level
 #### Defining Validation Rules
 
 Using:
@@ -633,7 +649,7 @@ Using:
 
 #### Reporting Validation Errors
 
-The [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807) is the stander for reporting validation errors.
+The [RFC7807](https://datatracker.ietf.org/doc/html/rfc7807) is the standard for reporting validation errors on Controller level.
 It defines common error formats for those applications that need one, to provide a format that can be automatically parsed, read, and reacted to by the client-side app.
 
 A validation error is a client-side mistake, so 400 range status code.
@@ -641,7 +657,7 @@ Response status code should be ***442 Unprocessable Entity***, meaning the synta
 Response body should contain validation errors.
 
 
-### `[ApiController]`
+#### `[ApiController]`
 
 By default, the  `ApiController` automatically sends a 400 Bad Request status code on validation errors, which is ok, but 442 Unprocessable Entity is better.
 
@@ -651,7 +667,7 @@ By default, the  `ApiController` automatically sends a 400 Bad Request status co
 422 example:
 ![[Pasted image 20231114140131.png]]
 
-#### Custom Error Messages
+##### Custom Error Messages
 
 ```c#
 // In DTO
@@ -660,7 +676,7 @@ By default, the  `ApiController` automatically sends a 400 Bad Request status co
 public string PropertyName { get; set; } = String.Empty;
 ```
 
-#### Setup for Custom Response Object
+##### Setup for Custom Response Object
 
 
 ```c#
@@ -704,7 +720,7 @@ builder.Services.AddControllers(configure =>
 });
 ```
 
-#### `IValidatableObject`
+##### `IValidatableObject`
 
 Interface to be used on DTOs to implement a Validation method for cross-property validation rules.
 
@@ -731,7 +747,7 @@ public abstract class CourseSaveDTO : IValidatableObject
 ```
 
 
-#### `ValidationAttribute`
+##### `ValidationAttribute`
 
 Define new attributes as classes in a separate folder.
 
@@ -775,7 +791,7 @@ Apply to a DTO class:
 public abstract class RegistrationSaveDTO {..}
 ```
 
-#### Override ValidationProblem in a Controller
+##### Override ValidationProblem in a Controller
 
 To make sure the 422 response configured in Program, by default only for models, is used instead of the default 400 when doing validation in the controller.
 
@@ -800,7 +816,161 @@ if (!TryValidateModel(entityToPatch))
 ```
 
 
-### [`FluentValidation` Library](https://docs.fluentvalidation.net/en/latest/)
+#### [`FluentValidation` Library](https://docs.fluentvalidation.net/en/latest/)
 
 
+### Domain Validation
+
+[Microsoft Learn: Design validations in the domain model layer](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-model-layer-validations)
+[Microsoft Learn: Handle errors in ASP.NET Core web APIs](https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0)
+[DEPRECATED! Code Maze: Using the ProblemDetails Class in ASP.NET Core Web API](https://code-maze.com/using-the-problemdetails-class-in-asp-net-core-web-api/)
+[YouTube: Domain Validation With .NET | DDD, .NET 6 — Milan Jovanović](https://www.youtube.com/watch?v=KgfzM0QWHrQ)
+[YouTube: How To Implement Validation With MediatR And FluentValidation — Milan Jovanović](https://www.youtube.com/watch?v=85dxwd8HzEk)
+
+Multiple approaches, all with their own benefits and problems:
+- Exception Throwing (easiest)
+- Result Objects with the Specification and Notification Patterns (better maintainable)
+
+### Exception Throwing
+
+#### Validation and Throwing the Exceptions
+
+Steps:
+1. Create a custom Exception for your needs:
+```c#
+// Domain/Exceptions/AppException.cs
+using System.Globalization;
+
+namespace TimesheetApp.Domain.Exceptions
+{
+    // custom exception class for throwing application specific exceptions (e.g. for validation)
+    // that can be caught and handled within the application
+    public class AppException : Exception
+    {
+        public AppException() : base() { }
+
+        public AppException(string message) : base(message) { }
+
+        public AppException(string message, params object[] args)
+            : base(string.Format(
+	            CultureInfo.CurrentCulture, message, args)) { }
+    }
+}
+
+```
+
+2. Throw this Exception, with a clear message of the problem, if a validation error occurs in the appropriate aggregate root domain model, for example:
+```c#
+public static bool ValidateDayHasMax8h(Registration registration)
+{
+    var timeSpan = registration.TimeSlot.End.Subtract(
+	    registration.TimeSlot.Start);
+    
+    if (timeSpan.TotalHours > 9) // 8h + 1h break
+    {
+        throw new BusinessRuleValidationAppException(
+            $"By adding this registration, the time span between start and end exceeds the maximum of 8 hours per day, plus an hour break, by {timeSpan.TotalHours - 8.5}.",
+            new[] { nameof(Registration) }
+        );
+    }
+    return true;
+}
+```
+
+#### Catching and Handling the Exceptions
+
+Steps:
+1. Defining an Error Handler:
+```c#
+// Application/ErrorHandler/ErrorHandlerMiddleware
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Text.Json;
+using TimesheetApp.Domain.Exceptions;
+
+namespace TimesheetApp.Application.ErrorHandler
+{
+    public class ErrorHandlerMiddleware
+    {
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlerMiddleware> _logger;
+
+        public ErrorHandlerMiddleware(
+	        RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
+        {
+            _next = next;
+            _logger = logger;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            try
+            {
+                await _next(context);
+            }
+            catch (Exception error)
+            {
+                var response = context.Response;
+                response.ContentType = "application/json";
+
+                switch (error)
+                {
+                    case BusinessRuleValidationAppException e:
+                        response.StatusCode = (int)HttpStatusCode.Conflict;
+                        _logger.LogError(e.ToString());
+                        break;
+                    case AppException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        _logger.LogError(e.ToString());
+                        break;
+                    case KeyNotFoundException e:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        _logger.LogInformation(e.ToString());
+                        break;
+                    case UnauthorizedAccessException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        _logger.LogInformation(e.ToString());
+                        break;
+                    default:
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        _logger.LogError(error.ToString());
+                        break;
+                }
+
+                var result = JsonSerializer.Serialize(new { message = error?.Message });
+                await response.WriteAsync(result);
+            }
+        }
+    }
+}
+
+```
+
+2. Setup using the Error Handler:
+```c#
+// API/Program.cs
+builder.Services.AddControllers(configure =>
+{
+    configure.ReturnHttpNotAcceptable = true;
+})
+.ConfigureApiBehaviorOptions(setupAction =>
+{
+    setupAction.SuppressMapClientErrors = true;
+});
+
+...
+
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+```
 
