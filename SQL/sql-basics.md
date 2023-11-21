@@ -70,3 +70,6 @@
 |`datetimeoffset`|Same as `datetime2` with the addition of a time zone offset. Default format is `YYYY-MM-DD hh:mm:ss[.nnnnnnn] [{+\|-}hh:mm]`. Valid range for time zone offset is from -14:00 to +14:00.|
 |`timestamp`|In SQL Server `timestamp` is the synonym for the `rowversion` data type which automatically generate, unique binary numbers within a database. The `rowversion` is generally used for version-stamping table rows.|
 
+
+---
+
