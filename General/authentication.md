@@ -1,10 +1,37 @@
 # Authentication
 
+## JWT
+
+- [Article: Using JWT for authentication in React](https://blog.openreplay.com/using-jwt-for-authentication-in-react/)
+
+![[Pasted image 20231122211708.png]]
+
+A JWT token consists of three parts:
+1. Header — JSON object containing info on the token, like the used algorithm and token type, `Base64Url` encoded. For example:
+```json
+{ "alg": "HS256", "typ": "JWT" }
+```
+
+2. Payload / claims / body — JSON object containing the data, like user info, permissions, and expiration time, `Base64Url` encoded. For example:
+```json
+{ "sub": "1234567890", "name": "John Doe", "iat": 1516239022 }
+```
+
+3. Signature — used to verify the integrity of the token, calculated using a secret key known only by the server. For example:
+```json
+HMAC256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret_key);
+```
+
+You can decode a JWT token in [this online debugger](https://jwt.io/) to read the token and see the different parts.
+
 ## Auth0
+
+Authorization server solution that works with JWT.
 
 - [Auth0 Developer: Hello World Full-Stack Security:React/JavaScript + ASP.NET Core/C#](https://developer.auth0.com/resources/code-samples/full-stack/hello-world/basic-access-control/spa/react-javascript/aspnet-core-csharp)
 - [Auth0: ASP.NET Core Web API: Authorization](https://auth0.com/docs/quickstart/backend/aspnet-core-webapi/01-authorization)
 - [Auth0 (short version of the above): Add Authorization to an ASP.NET Core Web API Application](https://auth0.com/docs/quickstart/backend/aspnet-core-webapi/interactive)
+
 ### Auth0 Dashboard
 
 Steps:
@@ -122,7 +149,24 @@ app.UseAuthorization();
 {
   "Auth0": {
     "Domain": "{yourDomain}", // tenant domain, dev-...
+    // !! without https:// at the start, and / at the end !!
     "Audience": "{yourApiIdentifier}" // Dasboard/Applications/APIs, is URL
+  }
+}
+```
+Example:
+```json
+"Auth0": {
+  "Domain": "dev-aaaaaaaaaaaaaa.eu.auth0.com",
+  "Audience": "https://localhost:5000"
+},
+"Authentication": {
+  "Schemes": {
+    "Bearer": {
+      "Authority": "https://dev-aaaaaaaaaaaaaa.eu.auth0.com/",
+      "ValidAudiences": [ "https://localhost:5000" ],
+      "ValidIssuer": "https://dev-aaaaaaaaaaaaaa.eu.auth0.com/"
+    }
   }
 }
 ```

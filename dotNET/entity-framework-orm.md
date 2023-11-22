@@ -228,6 +228,8 @@ Make sure the following is in your connection string:
 }
 ```
 
+If an error occurs mentioning a function not found, update dependency packages via NuGet.
+
 ### SQLite and SQL Server Compact Toolbox
 
 Install in: Extensions > Manage Extensions
