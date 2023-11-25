@@ -3,6 +3,7 @@
 ## JWT
 
 - [Article: Using JWT for authentication in React](https://blog.openreplay.com/using-jwt-for-authentication-in-react/)
+- [Article: Storing Tokens in Cookies with React — Ama Victor](https://medium.com/@amavictor/storing-tokens-in-cookies-with-react-93a5a818c3a8)
 
 ![[Pasted image 20231122211708.png]]
 
@@ -23,6 +24,14 @@ HMAC256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret_key);
 ```
 
 You can decode a JWT token in [this online debugger](https://jwt.io/) to read the token and see the different parts.
+
+### Using Cookies with `js-cookies`
+
+```
+npm install js-cookie
+npm i --save-dev @types/js-cookie
+```
+
 
 ## Auth0
 

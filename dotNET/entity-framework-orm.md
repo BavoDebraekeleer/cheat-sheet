@@ -189,6 +189,7 @@ Available commands through the package manager console:
 ```cli
 Add-Migration NameInitialCreate -Context NameDbContext -OutputDir Migrations
 // Add-Migration DotNetApiAppDbInitialCreate -Context EntitiesDbContext -OutputDir Migrations
+// Add-Migration AddedRegistrationFlags -Context AppDbContext -OutputDir Migrations
 
 ```
 

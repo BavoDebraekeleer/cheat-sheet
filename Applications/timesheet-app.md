@@ -17,3 +17,10 @@
             - Wat is het verschil tussen Entity Framework en Dapper? Wat zijn de voordelen?
     - Maak gebruik van interfaces en generics waar nodig
     - Outside in testing
+
+
+Feedback:
+DateTime in controllers
+DTO voor controllers
+Timesheet validatie refactoren, eventueel met extensions
+DeleteRegistrationHandler -> is await _employeeRepository.Update(employee); nodig?handleClickOnAddRegistration
