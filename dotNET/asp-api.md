@@ -974,3 +974,206 @@ if (app.Environment.IsDevelopment())
 }
 ```
 
+---
+
+## Events
+
+[Medium: Domain Events in .Net Core using the MediatR Library — Charles](https://medium.com/@cizu64/using-mediatr-for-domain-events-in-net-core-9750a3406444#:~:text=The%20domain%20event%20handler%20defines,defined%20in%20the%20application%20layer.) [GitHub source code for the above](https://github.com/cizu64/School)
+[Microsoft Learn: Handle and raise events](https://learn.microsoft.com/en-us/dotnet/standard/events/)
+[Microsoft Learn: How to Raise and Consume Events (Examples)](https://learn.microsoft.com/en-us/dotnet/standard/events/how-to-raise-and-consume-events)
+[Medium: Implementing Event Sourcing and CQRS with ASP.NET Core](https://medium.com/@craftingcode/implementing-event-sourcing-and-cqrs-with-asp-net-core-in-microservices-b2563f04fe13)
+
+### Events with MediatR
+
+![[Pasted image 20231129102333.png]]
+
+Messages should be sent from the aggregate root entity.
+
+#### Steps
+##### Domain Layer
+
+1. Create an abstract base class for aggregate roots that has an `INotification` list from MediatR to hold the Domain Events in `Domain/Models`:
+```cs
+using MediatR;
+
+namespace TimesheetApp.Domain.Models;
+
+public abstract class AggregateRoot
+{
+    private List<INotification> _domainEvents = new List<INotification>();
+    public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void AddDomainEvent(INotification eventItem)
+    {
+        _domainEvents.Add(eventItem);
+    }
+
+    public void RemoveDomainEvent(INotification eventItem)
+    {
+        _domainEvents.Remove(eventItem);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
+}
+```
+
+2. Create a Domain Event class in `Domain/Events`:
+```cs
+using MediatR;
+
+namespace TimesheetApp.Domain.Events;
+
+public class RegistrationSubmittedDomainEvent(string employeeId, int timesheetId, List<int> registrationIds) : INotification
+{
+    public string EmployeeId { get; private set; } = employeeId;
+    public int TimesheetId { get; private set; } = timesheetId;
+    public List<int> RegistrationIds { get; private set; } = registrationIds;
+}
+```
+
+3. Add the domain event where it needs to be raised in the Aggregate Root Entity class:
+```cs
+public void SubmitWeek(int timesheetYear, int timesheetMonth, List<int> registrationIds)
+{
+    var timesheet = GetTimesheet(timesheetYear, timesheetMonth);
+    timesheet.Submit(registrationIds);
+
+    AddDomainEvent(new RegistrationSubmittedDomainEvent(
+	    this.Id, timesheet.Id, registrationIds));
+}
+```
+
+##### Application Layer
+
+4. Define what needs to happen when the Domain Event is raised in an `INotificationHandler` class in `Application/DomainEventHandlers`:
+```cs
+using MediatR;
+using Microsoft.Extensions.Logging;
+using TimesheetApp.Application.ErrorHandler;
+using TimesheetApp.Domain.Events;
+
+namespace TimesheetApp.Application.EventHandler;
+
+public class RegistrationSubmittedDomainEventHandler(
+	ILogger<ErrorHandlerMiddleware> logger) : 
+	INotificationHandler<RegistrationSubmittedDomainEvent>
+{
+    private readonly ILogger<ErrorHandlerMiddleware> _logger = logger;
+
+    public async Task Handle(
+	    RegistrationSubmittedDomainEvent notification, 
+	    CancellationToken cancellationToken)
+    {
+        string logMessage = "Submitted Registrations [";
+        notification.RegistrationIds.ForEach(registrationId =>
+        {
+            logMessage += $"{registrationId}, ";
+        });
+        logMessage.Remove(logMessage.Length - 2);
+        logMessage += $"] from Timesheet {notification.TimesheetId} from Employee {notification.EmployeeId}.";
+
+        _logger.LogInformation(logMessage);
+    }
+}
+```
+
+##### Infrastructure Layer
+
+5. Create an extensions class for MediatR to dispatch the Domain Events in `Infrastructure/Extensions`:
+```cs
+using CSharpFunctionalExtensions;
+using MediatR;
+using System.Linq;
+using System.Threading.Tasks;
+using TimesheetApp.Domain.Models;
+using TimesheetApp.Infrastructure;
+
+namespace School.Infrastructure.Extensions
+{
+    static class MediatorExtensions
+    {
+        public static async Task DispatchDomainEventsAsync(
+	        this IMediator mediator, AppDbContext ctx)
+        {
+            var domainAggregateRoots = ctx.ChangeTracker
+                .Entries<AggregateRoot>()
+                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
+
+            var domainEvents = domainAggregateRoots
+                .SelectMany(x => x.Entity.DomainEvents)
+                .ToList();
+
+            domainAggregateRoots.ToList()
+                .ForEach(entity => entity.Entity.ClearDomainEvents());
+
+            foreach (var domainEvent in domainEvents)
+                await mediator.Publish(domainEvent);
+        }
+    }
+}
+```
+
+6. Call the mediator extension method on saving the state changes in the DbContext:
+```cs
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using School.Infrastructure.Extensions;
+using System.Reflection;
+using TimesheetApp.Domain.Models;
+
+namespace TimesheetApp.Infrastructure;
+
+public class AppDbContext(
+	DbContextOptions<AppDbContext> options, IMediator mediator) : 
+	DbContext(options)
+{
+    private readonly IMediator _mediator = mediator;
+
+    protected override void OnConfiguring(
+	    DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+	        Assembly.GetExecutingAssembly());
+    }
+
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Registration> Registrations { get; set; }
+
+    public async Task<bool> SaveAsync(
+	CancellationToken cancellationToken = default(CancellationToken))
+    {
+	    // Dispatch domain events from mediatorExtensions class 
+	    // to their respective event handlers
+        await _mediator.DispatchDomainEventsAsync(this); 
+
+        await base.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+}
+```
+
+7. Use new `SaveAsync` method instead of  `SaveChangesAsync` in repository.
+
+##### API Layer
+
+8. Make sure the necessary assemblies are added in `Program.cs`:
+```cs
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetEmployeesQuery>()); // for CQRS in Application Layer
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AggregateRoot>()); // for Domain Events in Domain Layer
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AppDbContext>()); // for Domain Events in Domain layer
+
+```
+
+
+---
+
+## Logging
+
+[Medium: Logging in ASP.NET Core 6 - Oguz Evrensel](https://medium.com/@oevrensel/logging-in-asp-net-core-17efca14d953)
+
+
