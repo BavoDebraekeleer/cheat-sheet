@@ -214,7 +214,7 @@ Does it *work* as expected?
 
 Answers the “How?” questions: how well, fast, stable, usable, secure?
 
-The ISO/IEC 25010 standard provides the following classification of the non-functional software quality characteristics:
+The [ISO/IEC 25010](https://www.iso.org/obp/ui/#iso:std:iso-iec:25010:ed-2:v1:en) standard provides the following classification of the non-functional software quality characteristics:
 - Performance efficiency
 - Compatibility
 - Usability
@@ -537,6 +537,138 @@ Ideal for when there is only limited documentation available, or there are time 
 
 ## Managing the Test Activities (Test Management)
 
+### The Test Manager
+
+Writes the testing plan, the test policy, and test strategy, that answer the following questions:
+
+Why test? — To avoid customer dissatisfaction, non-compliance to regulations, and damage to the organizations' reputation.
+What? — Focus on critical high risk parts of the product.
+When? — Start as early as possible. Manages scheduling and preparation.
+Where? — On a production equivalent test environment.
+How? — 
+
+![[Pasted image 20231203173510.png]]
+
+#### Test Policy
+
+A brief, concise document describing why you most test on organizational level.
+- Outlines the test process.
+- How testing will be evaluated.
+- Quality levels.
+- Process improvement.
+
+![[Pasted image 20231203174331.png]]
+
+#### Test Strategy
+
+A detailed document describing what you should test, and what not to test, depending on the context.
+- Scope — what is included and excluded for reasons of budget, difficulty to test, or low risk?
+- People — what is the team like? Special training needed? 
+- Approach — Risk based? Manual or automated?
+- Criteria — When is the testing done? What are the exit criteria?
+- Environment — Where will the tests be run?
+
+![[Pasted image 20231203174855.png]]
+*Examples: Space rockets and Bank*
+
+##### Test Strategies:
+- Analytical — risk based testing.
+- Model-based — based on a business or state model.
+- Methodical — ?
+- Process compliant — based on rules and standards.
+- Directed (or consultative) — driven by stakeholders or business experts.
+- Regression averse — uses extensive test automation.
+- Reactive — require test to be written during test execution, like exploratory testing.
+
+#### Test Environment
+
+In a production environment, or on a desk computer?
+Use live data, or a test data generator tool?
+Set a budget and agree with the product manager and/or owner.
+
+![[Pasted image 20231203180039.png]]
+
+![[Pasted image 20231203180156.png]]
+
+#### How Are Tests Carried Out?
+
+- Manual or automated
+- Acquire resources — select the right people for the job
+- Support tool selection
+
+- Defect management
+- Configuration management
+- Introduce metrics to monitor and control progress
+
+- Initiate the testing
+- Monitor progress
+- Check exit criteria
+- Report
+- Adapt plans
+
+### The Tester
+
+- Review and contribute to the test plan.
+- Analyse and review the test basis.
+- Document test conditions.
+- Capture traceability.
+
+- Design test environment.
+- Reserve test lab if necessary.
+- Co-ordinate with system administrators to provide necessary access to testers.
+
+- Identify test conditions.
+- Design and implement test cases and procedures.
+- Build the test data.
+- Prepare the test data.
+
+- Create the test execution schedule.
+- Execute tests.
+- Use appropriate tools.
+- Automate some tests.
+
+- Consider the non-functional requirements.
+  [ISO/IEC 25010](https://www.iso.org/obp/ui/#iso:std:iso-iec:25010:ed-2:v1:en) Classification of software product quality characteristics.
+  ![[Pasted image 20231203213738.png]]
+  
+#### Specialist Roles
+
+- Technical Test Analyst
+- Test Automation Engineer
+- Performance Tester
+- Security Specialist
+- Pen(-etration) Tester
+
+![[Pasted image 20231203213946.png]]
+
+#### Independent Testing
+
+- Can you find defects in your own work?
+- A degree of tester independence is useful.
+- Independence does not replace familiarity.
+
+![[Pasted image 20231203214233.png]]
+
+![[Pasted image 20231203214357.png]]
+
+[ISO/IEC 29119-1](https://www.iso.org/standard/81291.html) Information about software testing concepts.
+
+### Product Risk Analysis
+
+
+### Managing Defects
+
+
+
+### How to Write a Test Plan
+
+
+
+### Applying Estimation Techniques
+
+
+
+### Keeping Track of Progress
 
 
 
