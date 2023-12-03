@@ -1,10 +1,22 @@
 # Quality Assurance
 
-### Frontend
+## Introduction
 
-#### Selenium
+QA — Quality Assurance — is a process-oriented, preventive approach that focuses on the implementation and improvement of processes. It works on the basis that if a good process is followed correctly, then it will generate a good product. QA applies to both the development and testing processes, and is the responsibility of everyone on a project.
 
-#### Xpath
+While people often use the terms “testing” and “quality assurance” (QA) interchangeably, testing and QA are not the same. Testing is a form of quality control (QC).
+
+QC is a product-oriented, corrective approach that focuses on those activities supporting the achievement of appropriate levels of quality. Testing is a major form of quality control, while others include formal methods (model checking and proof of correctness), simulation and prototyping.
+
+Test results are used by QA and QC. In QC, they are used for fixing defects, while in QA they provide feedback on how well the development and test processes are performing.
+
+---
+
+## Frontend
+
+### Selenium
+
+### Xpath
 
 [Xpath _cheatsheet_](https://devhints.io/xpath)
 [W3schoold Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
@@ -15,7 +27,7 @@ It uses path like syntax to identify and navigate nodes in an XML document.
 
 ![[Pasted image 20231129213603.png]]
 
-##### Path Expressions
+#### Path Expressions
 
 Xpath uses path expressions, similar to the path in a file system, to select nodes or node-sets in an XML document.
 
@@ -26,7 +38,7 @@ An XPath expression returns either a node-set, a string, a Boolean, or a number.
 
 ![[Pasted image 20231129213833.png]]
 
-##### Nodes
+#### Nodes
 
 XML documents are treated as trees of nodes. The topmost element is the root element.
 
@@ -63,7 +75,7 @@ XML documents are treated as trees of nodes. The topmost element is the root ele
 - Ancestor: all parents, and parents of parents.
 - Descendants: all children, and children of children.
 
-##### Selecting Nodes
+#### Selecting Nodes
 
 A node is selected by following a path or steps.
 
@@ -79,7 +91,7 @@ Relative location path does not: `step/step`
 | ..         | Selects the parent of the current node                                                                |
 | @          | Selects attributes                                                                                    |
 
-###### Wildcards
+##### Wildcards
 
 |Wildcard|Description|
 |---|---|
@@ -87,7 +99,7 @@ Relative location path does not: `step/step`
 |@*|Matches any attribute node|
 |node()|Matches any node of any kind|
 
-###### Predicates
+##### Predicates
 
 Predicates are used to find a specific node or a node that contains a specific value, and are always embedded in square brackets `[predicate]`.
 
@@ -102,7 +114,7 @@ Predicates are used to find a specific node or a node that contains a specific v
 |/bookstore/book[price>35.00]|Selects all the book elements of the bookstore element that have a price element with a value greater than 35.00|
 |/bookstore/book[price>35.00]/title|Selects all the title elements of the book elements of the bookstore element that have a price element with a value greater than 35.00|
 
-###### Combining expressions
+##### Combining expressions
 
 |Path Expression|Result|
 |---|---|
@@ -110,7 +122,7 @@ Predicates are used to find a specific node or a node that contains a specific v
 |//title \| //price|Selects all the title AND price elements in the document|
 |/bookstore/book/title \| //price|Selects all the title elements of the book element of the bookstore element AND all the price elements in the document|
 
-###### Axes
+##### Axes
 
 An axis represents a relationship to the context (current) node, and is used to locate nodes relative to that node on the tree.
 
@@ -132,7 +144,7 @@ It defines the tree-relationship between the selected nodes and the current node
 |preceding-sibling|Selects all siblings before the current node|
 |self|Selects the current node|
 
-###### Step
+##### Step
 
 Consists of:
 - Axis — defines the tree-relationship between the selected nodes and the current node.
@@ -154,7 +166,7 @@ Syntax: `axisname::nodetest[predicate]`
 |ancestor-or-self::book|Selects all book ancestors of the current node - and the current as well if it is a book node|
 |child::*/child::price|Selects all price grandchildren of the current node|
 
-###### Operators
+##### Operators
 
 |Operator|Description|Example|
 |---|---|---|
@@ -173,7 +185,7 @@ Syntax: `axisname::nodetest[predicate]`
 |and|and|price>9.00 and price<9.90|
 |mod|Modulus (division remainder)|5 mod 2|
 
-###### Practical Steps
+##### Practical Steps
 
 1. Loading the XML document:
 ```js
@@ -237,17 +249,13 @@ function showResult(xml) {
 </script></body></html>
 ```
 
-### Backend
+## Backend
 
-#### SpecFlow and Gherkin
+### SpecFlow and Gherkin
 
-
-
-Gerkin
-Selenium
-SpecFlow
-Expath
 
 given
 when
 then
+
+---
