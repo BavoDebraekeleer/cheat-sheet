@@ -114,13 +114,15 @@ Assert is a hard stop if it fails. Later commands are not executed.
 
 ![[Pasted image 20231204134350.png]]
 
-### [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)
+#### [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)
 
 Benefits of scripting tests:
 - scalability
 - maintainability
 - range of possibilities
 - version control
+
+##### Selectors
 
 Selectors — ways of selecting elements:
 - By attribute: `By.TagName`, `By.ClassName`, `By.Id`, `By.Name`
@@ -136,12 +138,12 @@ Selecting elements must be simple, unambiguous, and future-proof.
 
 ![[Pasted image 20231204140510.png]]
 
-#### Relative Locators
+##### Relative Locators
 
 Not recommended.
 ![[Pasted image 20231204160322.png]]
 
-#### Assertions
+##### Assertions
 
 *Example:*
 ```cs
@@ -175,7 +177,12 @@ Assert current URL:
 Assert.Contains("https://local.auth/", driver.Url);
 ```
 
-#### Navigate
+Assert that previously hidden element is visible:
+```cs
+Assert.True(driver.FindElement(By.Id("validation-error")).Displayed);
+```
+
+##### Navigate
 
 ```cs
 driver.Navigate().GoToUrl("https://something.com");
@@ -184,11 +191,307 @@ driver.Navigate().GoToUrl("https://something.com");
 				 .Forward();
 ```
 
+##### Actions
 
+###### Mouse Actions
+
+Double-click an element:
+```cs
+var button = driver.FindElement(By.Id("btn"));
+var actions = new Actions(driver);
+actions.DoubleClick(button).Perform();
+```
+
+Move cursor to certain location and click:
+```cs
+actions.MoveByOffset(button.Location.X + 5, button.Location.Y + 5).Click().Perform();
+```
+
+Right click / Open Context Menu:
+```cs
+actions.ContextClick(); // Where the cursor is atm.
+actions.ContextClick(button); // On specific element.
+```
+
+###### Keyboard Actions
+
+Typing text:
+```cs
+var textArea = driver.FindElement(By.Id("text-area"));
+textArea.Clear();
+textArea.SendKeys("Text to type.");
+```
+
+Pressing Keys — Clearing text when `.Clear()` does not work:
+```cs
+// By selecting all text and deleting it.
+textArea.SendKeys(Keys.Control + "A"); // Select all text.
+textArea.SendKeys(Keys.Delete); // Delete selection.
+
+// Cross platform solution with Actions class:
+var actions = new Actions(driver);
+actions.Click(textArea)
+	   .SendKeys(Keys.End)
+	   .KeyDown(Keys.Shift)
+	   .SendKeys(Keys.Home)
+	   .SendKeys(Keys.Backspace)
+	   .Perform();
+```
+
+File input / upload:
+```cs
+var fileInput = driver.FindElement(By.Id("upload"));
+fileInput.SendKeys(Path.GetFullPath(Path.Join("DirName", "file.pdf")));
+
+// To clear the upload again.
+fileInput.Clear(); 
+Assert.Empty(fileInput.GetAttribute("value"));
+```
+
+1. In your project, make sure the file is there, right-click to go to Properties:
+![[Pasted image 20231205100352.png]]
+
+2. Change *Copy to Output Directory* to *Copy if newer*:
+![[Pasted image 20231205100119.png]]
+
+###### [Select Dropdown Option](https://www.selenium.dev/documentation/webdriver/support_features/select_lists/)
+
+Requires `Selenium.Support` NuGet package dependency.
+
+To select and option in a select element:
+![[Pasted image 20231205101603.png]]
+
+```cs
+var dropdown = driver.FindElement(By.Id("select-element"));
+var select = new SelectElement(dropdown); // Selenium.Support package
+
+// Get a list of all options in the `<select>` element:
+IList<IWebElement> optionList = select.Options;
+
+// Select an option:
+select.SelectByText("Four");
+select.SelectByValue("two");
+select.SelectByIndex(3);
+
+// De-select an option:
+select.DeselectByValue("eggs");
+
+// Assert selection:
+Assert.Equal("expected", select.SelectedOption.GetAttribute("value"));
+
+// Get all selected options, single select has one, multiple select has zero or more:
+IList<IWebElement> selectedOptionList = select.AllSelectedOptions;
+
+// Asserts values match the right text:
+select.SelectByValue("true");
+Assert.Equal("Yes", select.SelectedOption.Text);
+
+// Assert disabled option exception throw:
+Assert.ThrowsException<InvalidOperationException>(() => select.SelectByValue("disabled"));
+```
+
+###### Checkbox Selection
+
+Check state before clicking a checkbox:
+```cs
+var checkbox = driver.FindElement(By.Id("checkbox"));
+if(!checkbox.Selected) checkbox.Click();
+
+Assert.True(checkbox.Selected);
+```
+
+##### Reading Element Attributes and States
+
+![[Pasted image 20231205104356.png]]
+
+##### Using JavaScript Commands
+
+Sometimes, to perform an action like a click, there first needs to be scrolled down a page. This can be done with JavaScript:
+
+```cs
+protected void ScrollToElement(IWebElement element)
+{
+    ((IJavaScriptExecutor)Driver).ExecuteScript(
+	    "arguments[0].scrollIntoView(true)", element); 
+	    // JavaScript code as a string
+    
+    Thread.Sleep(500);
+}
+```
+
+
+
+### Page Object Model (POM)
+
+[What is Page Object Model — Selenium 4 Fundamentals with C#](https://app.pluralsight.com/course-player?clipId=0248a528-a452-4c44-aaa8-a0b865ae0e05)
+
+Page Object Model is a design pattern used in test automation:
+- to reduce code duplication,
+- to achieve better code maintainability,
+- easier scalability of testing projects.
+
+![[Pasted image 20231205135616.png]]
+
+Every web page or page fragment of the SUT gets its own Page Object Class. Tests (Test Classes) then use the methods and properties of the Page Objects to interact with the UI of the page the object represents.
+
+The Page Object Model hides the UI implementation details from the tests. Separating the test logic from the page details.
+
+When the UI implementation changes, only the Object Model needs to be updates. The tests themselves don't need to change.
+
+Abstraction in POM can range from only hiding selectors and web elements, to also hiding actions and assertions, so the tests don't even need to know Selenium is being used. The latter makes the tests more readable.
+The level of abstraction is a balance between readability, maintainability, and efficiency. Where consistency in implementation is very important.
+
+#### Tests Base Class and Configuration File
+
+##### Configuration File
+
+Steps:
+1. Install the `Microsoft.Extensions.Configuration.Json` NuGet package. ![[Pasted image 20231205150604.png]]
+
+2. Create a Configuration directory.
+3. Create a settings JSON file:
+```json
+{
+  "browser": "chrome"
+}
+```
+
+4. Create a `TestsConfigurationProvider` class:
+```cs
+using Microsoft.Extensions.Configuration;
+
+namespace TimesheetApp.SeleniumTests.Configuration;
+
+internal class TestsConfigurationProvider
+{
+    private static ConfigurationManager? config;
+
+    public static ConfigurationManager Config
+    {
+        get
+        {
+            if (config == null)
+            {
+                config = new ConfigurationManager();
+                config.AddJsonFile(
+	                "testsettings.local.json", false, false);
+            }
+            return config;
+        }
+    }
+}
+
+```
+
+##### Tests Base Class
+
+```cs
+public class TestsBase : IDisposable
+{
+    private IWebDriver Driver;
+
+    public TestsBase() // Setup
+    {
+        Driver = CreateDriver(
+	        TestsConfigurationProvider.Config["browser"]);
+
+        Driver.Manage().Timeouts().ImplicitWait
+	        = TimeSpan.FromSeconds(5);
+    }
+
+    public void Dispose()
+    {
+        Driver.Quit();
+    }
+
+    public IWebDriver GetDriver() => Driver;
+
+    private IWebDriver CreateDriver(string browserName)
+    {
+        switch (browserName.ToLowerInvariant())
+        {
+            case "chrome":
+                var chromeOptions = new ChromeOptions();
+
+                chromeOptions.AcceptInsecureCertificates = true;
+                //chromeOptions.AddArgument("--headless");
+                chromeOptions.AddArgument("--window-size=1000,800");
+
+                return new ChromeDriver(chromeOptions);
+
+            case "firefox":
+                var firefoxOptions = new FirefoxOptions();
+
+                firefoxOptions.AcceptInsecureCertificates = true;
+                //firefoxOptions.AddArgument("--headless");
+                firefoxOptions.AddArgument("--window-size=1000,800");
+
+                return new FirefoxDriver(firefoxOptions);
+
+            case "edge":
+                var edgeOptions = new EdgeOptions();
+
+                edgeOptions.AcceptInsecureCertificates = true;
+                //edgeOptions.AddArgument("--headless");
+                edgeOptions.AddArgument("--window-size=1000,800");
+
+                return new EdgeDriver(edgeOptions);
+
+            default:
+                throw new ArgumentException($"The provided browser name, {browserName}, is not a supported browser.");
+        }
+    }
+
+    public void NavigateToPage(string pageName)
+    {
+        Driver.Navigate().GoToUrl(
+	        $"{TestsConfigurationProvider.Config["baseURL"]}{pageName}");
+    }
+```
+
+
+### xUnit
+
+#### [Shared Context](https://xunit.net/docs/shared-context)
+
+```c#
+public class StackTests : IDisposable // Interface for context clean-up
+{
+    Stack<int> stack;
+
+    public StackTests() // Constructor
+    {
+        stack = new Stack<int>();
+    }
+
+    public void Dispose() // xUnit Dispose clean-up function
+    {
+        stack.Dispose();
+    }
+    
+	// The actual tests
+}
+```
+
+#### [Trait Attribute (Tagging)](https://www.brendanconnolly.net/organizing-tests-with-xunit-traits/)
+
+*Similar to Categories in NUnit and MSTest.*
+
+```cs
+[Trait("Category","MyCategoryName")]
+```
+
+*Example:*
+```cs
+[Fact]
+[Trait("Category","UI")]
+public void Test3(){
+    ...}
+```
 
 ### Xpath
 
-[Xpath _cheatsheet_](https://devhints.io/xpath)
+[Xpath _cheat sheet_](https://devhints.io/xpath)
 [SelectorsHub Xpath plugin](https://selectorshub.com/selectorshub/)
 [W3schoold Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
 [Udemy: XPath Tutorial from basic to advance level. The complete XPath course for Selenium — Sanjay Kumar](https://www.udemy.com/course/xpath-tutorial-from-basic-to-advance-level/?signupsuccess=1)
