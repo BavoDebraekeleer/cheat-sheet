@@ -782,6 +782,37 @@ function getLocaleStringFromUTCDateTimeString(
 
 ---
 
-## Environment Varibales
+## Environment Variables
 
 https://www.smashingmagazine.com/2023/05/safest-way-hide-api-keys-react/
+
+
+---
+
+## Extension Methods
+
+[How to Use Extension Methods in TypeScript? - Mohit Panchasara](https://www.tutorialspoint.com/how-to-use-extension-methods-in-typescript)
+
+Extension file:
+```ts
+// extentions/String.addSpacesToCamelCasing
+export {}
+
+declare global {
+    interface String {
+        addSpacesToCamelCasing(): string;
+    }
+}
+
+String.prototype.addSpacesToCamelCasing = function(): string {
+    return this.replace(/([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g, '$1$4 $2$3$5');
+}
+```
+
+Usage:
+```ts
+import '../extentions/String.addSpacesToCamelCasing'
+```
+
+Possible errors: [Augmentations for the global scope can only be directly nested in external modules or ambient module declarations](https://stackoverflow.com/questions/57132428/augmentations-for-the-global-scope-can-only-be-directly-nested-in-external-modul)
+

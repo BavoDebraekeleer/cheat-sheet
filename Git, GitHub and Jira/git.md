@@ -6,6 +6,7 @@
 
 [9 Best Practices for Writing Good Git Commit Messages by Kirinyet Brian](https://www.linkedin.com/pulse/7-best-practices-writing-good-git-commitmessages-kirinyet-brian/)
 [How to Write Better Git Commit Messages – A Step-By-Step Guide by Natalie Pina](https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/)
+[Best Practices for Naming Git Branches](https://tilburgsciencehub.com/building-blocks/collaborate-and-share-your-work/use-github/naming-git-branches/)
 
 Best Practices:
 1. Be Clear and Concise

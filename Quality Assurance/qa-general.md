@@ -14,11 +14,182 @@ Test results are used by QA and QC. In QC, they are used for fixing defects, whi
 
 ## Frontend
 
-### Selenium
+![[Pasted image 20231204094137.png]]
+![[Pasted image 20231204094200.png]]
+![[Pasted image 20231204094212.png]]
+
+
+
+### E2E/UI Test Automation with [Selenium](https://www.selenium.dev/)
+
+[Pluralsight: Selenium 4: The Big Picture — Andrejs Doronins](https://app.pluralsight.com/library/courses/selenium-4-big-picture/table-of-contents)
+[Pluralsight: Selenium 4 Fundamentals with C# — Marko Vajs](https://app.pluralsight.com/library/courses/selenium-4-fundamentals-c-sharp/table-of-contents)
+[YouTube: SeleniumConf Chicago 2023 playlist](https://www.youtube.com/playlist?list=PLRdSclUtJDYXDEsWI0vwBmJxW17NgsaAk)
+
+#### Overview
+
+Selenium automates the browser. Whatever the user can do, it can automate — a web crawler. Specifically, it is a free open-source software framework to automate end-to-end (E2E) tests.
+
+E2E —End-to-End or UI tests — should be kept as a minimum and should not replace Unit and Integration tests.
+
+Pros and Cons of Selenium:
+- Popular, widespread, long history.
+- Multiple language bindings.
+- Only E2E (UI) tests.
+- Runs outside the browser.
+- Multi-user, multi-tab scenarios.
+- All popular browsers supported.
+- Huge community, great documentation.
+
+Core Components:
+- Selenium IDE — record & playback, for quick bug reproduction scripts.
+- Selenium WebDriver — library to programmatically mimic user actions.
+- Selenium Grid — create nodes to run tests in parallel. This can also be done by splitting up your Test Suite over multiple Test Groups and CI jobs.
+
+![[Pasted image 20231204094848.png]]
+
+![[Pasted image 20231204081237.png]]
+
+Setup:
+- Test Runner and an Assertion Library
+- WebDriver Library (API)
+- Browser Binary Driver
+
+##### Alternatives
+
+- Cypress
+	- Newer.
+	- JavaScript only.
+	- Component and E2E tests.
+	- Runs in the browser, so can mimic a user less well.
+	- No multi-tabs.
+
+- Playwright
+	- New, maintained by Microsoft.
+	- Multiple language bindings, similar to Cypress in JavaScript.
+	- Component and E2E tests.
+	- Runs outside the browser.
+	- Multi-user and multi-tab scenarios.
+	- Browsers in “Browser Contexts”.
+	- Growing community, great documentation.
+
+- Robot Framework (Selenium wrapper)
+- applitools (uses visual AI)
+- Katalon (uses Selenium, but not just a wrapper)
+
+![[Pasted image 20231204081551.png]]
+
+##### Cloud Browser Test Environment Providers
+
+- LambdaTest
+- Sauce Labs
+- Browser Stack
+- CrossBrowserTesting
+- or use Docker for scalability.
+
+##### Don't Use For
+
+- Performance testing (use JMeter)
+- UX - User Experience testing. Is the app easy and intuitive to use, and fulfill the user's needs?
+- Test automation is not a replacement for all testing and the brain work. Working with Selenium is programming tests, not the testing itself.
+
+
+#### [Selenium IDE](https://www.selenium.dev/selenium-ide/docs/en/introduction/getting-started)
+
+Install through the browser of choice's plug-in/add-on installers.
+
+Steps:
+1. Create new project and input URL.
+2. Add new test (+)
+3. Record the actions in the browser (REC). Make sure they are repeatable for replay.
+4. Add an assert command.
+5. Run tests. You can set the speed and step through the actions like breakpoints.
+
+Add a Test Suite to organize and group tests.
+
+##### Assert vs. Verify
+
+Verify check if the value is correct, marks the command and test accordingly, but does not stop the test. The test keeps going.
+Assert is a hard stop if it fails. Later commands are not executed.
+
+![[Pasted image 20231204134350.png]]
+
+### [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/)
+
+Benefits of scripting tests:
+- scalability
+- maintainability
+- range of possibilities
+- version control
+
+Selectors — ways of selecting elements:
+- By attribute: `By.TagName`, `By.ClassName`, `By.Id`, `By.Name`
+- By link or text: `By.LinkTest`, `By.PartialLinkText`
+- With XPath: `By.XPath`
+
+Avoid being too specific, but also not too generic.
+Selecting elements must be simple, unambiguous, and future-proof.
+
+![[Pasted image 20231204140228.png]]
+
+![[Pasted image 20231204140415.png]]
+
+![[Pasted image 20231204140510.png]]
+
+#### Relative Locators
+
+Not recommended.
+![[Pasted image 20231204160322.png]]
+
+#### Assertions
+
+*Example:*
+```cs
+[Fact]
+public void A_EmployeeLogin()
+{
+    // Chrome driver setup
+    var driver = new ChromeDriver(_chromeOptions);
+    // Set max wait untill element is found.
+    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5); 
+
+	// Go to Homepage
+    driver.Navigate().GoToUrl("https://local.auth:5173/");
+
+    // Lgin Employee
+    driver.FindElement(By.XPath("//button[@id='login-button']")).Click();
+    driver.FindElement(By.XPath("//input[@id='username']")).SendKeys(_employeeUsername);
+    driver.FindElement(By.XPath("//input[@id='password']")).SendKeys(_employeePassword);
+    driver.FindElement(By.XPath("(to long to show, left out for example)")).Click();
+
+    // Assert that the Test Employee is logged in.
+    var activeUserId = driver.FindElement(By.XPath("//li[@id='activeUserId']")).Text;
+    Assert.Equal(_employeeId, activeUserId);
+
+    driver.Quit();
+}
+```
+
+Assert current URL:
+```cs
+Assert.Contains("https://local.auth/", driver.Url);
+```
+
+#### Navigate
+
+```cs
+driver.Navigate().GoToUrl("https://something.com");
+				 .Refesh();
+				 .Back();
+				 .Forward();
+```
+
+
 
 ### Xpath
 
 [Xpath _cheatsheet_](https://devhints.io/xpath)
+[SelectorsHub Xpath plugin](https://selectorshub.com/selectorshub/)
 [W3schoold Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
 [Udemy: XPath Tutorial from basic to advance level. The complete XPath course for Selenium — Sanjay Kumar](https://www.udemy.com/course/xpath-tutorial-from-basic-to-advance-level/?signupsuccess=1)
 
@@ -26,6 +197,12 @@ Xpath stands for XML Path Language, is part of the XSLT standard, and is used to
 It uses path like syntax to identify and navigate nodes in an XML document.
 
 ![[Pasted image 20231129213603.png]]
+
+#### [SelectorsHub](https://selectorshub.com/selectorshub/)
+
+Select the element you want with Inspect Page and it gives you selection options.
+
+![[Pasted image 20231204154535.png]]
 
 #### Path Expressions
 
@@ -251,7 +428,14 @@ function showResult(xml) {
 
 ## Backend
 
-### SpecFlow and Gherkin
+### Behavior-driven Development (BDD) with SpecFlow
+
+![[Pasted image 20231204150426.png]]
+
+
+### Gherkin
+
+![[Pasted image 20231204150412.png]]
 
 
 given
