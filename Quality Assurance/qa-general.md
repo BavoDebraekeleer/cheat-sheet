@@ -971,22 +971,264 @@ function showResult(xml) {
 
 ## Behaviour Driven Development (BDD)
 
+### Resources
+
 [Behaviour Driven Development: The Big Picture — Marko Vajs](https://app.pluralsight.com/library/courses/behavior-driven-development-big-picture/table-of-contents)
 [Behaviour Driven Development: Fundamentals — Kevin James](https://app.pluralsight.com/library/courses/behavior-driven-development-fundamentals/table-of-contents)
 [Behaviour Driven Development with SpecFlow — Eugene Niemand](https://app.pluralsight.com/library/courses/bdd-specflow/table-of-contents)
 
-### SpecFlow
+### Overview
 
-![[Pasted image 20231204150426.png]]
+Methodology to bridge the gap between the software product and the business requirements by making tests and test results business readable. Resulting in a shorter feedback loop.
 
+![[Pasted image 20231206131722.png]]
+
+The sooner bugs, or misinterpretations of the requirements, get found, the lower the cost to fix them.
+![[Pasted image 20231206104505.png]]
+
+![[Pasted image 20231206112024.png]]
+
+#### BDD vs. TDD
+
+![[Pasted image 20231206105338.png]]
+![[Pasted image 20231206105523.png]]![[Pasted image 20231206131650.png]]
+
+#### Benefits
+
+- Reduced time to complete tasks.
+- A lower number of production issues.
+- The delivery process costs less money.
+- Higher confidence in the quality of the product.
+- Increased individual productivity and motivation through better collaboration.
+- Increased knowledge of the product domain.
+
+- Improved communication:
+	- Clearer, more precise discussions.
+	- A shared understanding across roles.
+- Enhanced collaboration:
+	- Involves all stakeholders early on.
+	- Collective ownership ensures user-centric solutions.
+- User-centric development:
+	- Focus on user outcomes, not just features.
+	- Ensure the product fits the market need.
+	- Aligns team with user expectations.
+- Reduced ambiguity:
+	- Clear specifications minimize misinterpretations and reduce rework.
+- Faster feedback loops:
+	- Clearer scenarios and automation speeds up validation.
+	- Teams detect issues earlier.
+	- Encourages agile, iterative development.
+- Enhanced customer satisfaction:
+	- Ensures software meets user needs.
+	- Minimizes production bugs.
+	- Enhances end-user trust.
+- Continuous improvement:
+	- A mindset that encourages improvement.
+	- Facilitates iterative development.
+	- Encourages regular feedback.
+	- Teams constantly refine and improve.
+
+![[Pasted image 20231206111854.png]]
+
+#### Phases
+
+![[Pasted image 20231206105121.png]]
+
+1. Discovery of User Stories ![[Pasted image 20231206110103.png]]![[Pasted image 20231206110152.png]]![[Pasted image 20231206105020.png]]
+   
+2. Formulation of Scenarios (in Gherkin) ![[Pasted image 20231206110347.png]]
+
+3. Transforming Scenarios into Executable Specifications ![[Pasted image 20231206111138.png]]
+   
+   Automated scenarios have the dual purpose of serving as Tests, as well as being living, human-readable Documentation of how the software should work. Succeeding tests prove the Documentations correctness and vice versa. ![[Pasted image 20231206112805.png]]![[Pasted image 20231206113012.png]]
+
+#### Tools
+
+- Google Drawings, or Miro — for Example Mapping with collaborative boards and post-its.
+- Behave Pro (Jira extension) — integrating BDD into the Jira environment. [Vid](https://app.pluralsight.com/course-player?clipId=3d4e03c3-f895-47b3-a16e-a41e1e0e7dd0)
+
+#### BDD Frameworks
+
+![[Pasted image 20231206112709.png]]
+
+### Workflow
+
+![[Pasted image 20231206133038.png]]
+
+#### Roles — The Three Amigos
+
+![[Pasted image 20231206133142.png]]
+
+The roles collaborate, discuss, and refine. With the goal of having a shared understanding of the desired behavior.
+
+##### Product Owner
+
+Responsibilities:
+- The business representative.
+- Has a business or end-users' perspective.
+- Creates the user stories.
+- Brings clarity about what the business needs, and why.
+
+Sometimes a Business Analyst if the Product Owner isn't available.
+
+##### Developer
+
+Responsibilities:
+- Understands the described behavior, and implement it in code.
+- Ensure the technical feasibility of the requirements.
+- Can suggest alternative approaches based on technical constraints.
+- Translate the desired behaviors into functional software.
+
+##### Tester
+
+Responsibilities:
+- Validate that the implemented behaviors, by the developers, meet the acceptance criteria.
+- Find edge cases, pitfalls, and other scenarios to ensure robustness.
+- Collaborate closely with the Product Owner and Developers to clarify any ambiguities.
+- Ensures correct behavior across scenarios, catching issues before they reach production.
+
+
+#### User Story
+
+A user story is a concise description of a feature.
+They are the WHAT we want to achieve.
+
+BDD transforms user stories into validated experiences, through involving all stakeholder, and ensuring a shared understanding.
+
+Anatomy:
+1. Title — a concise descriptor.
+2. Role — who is the user?
+3. Feature — what do they want?
+4. Benefit — why do they want it?
+
+*Example:*
+![[Pasted image 20231206135126.png]]
+
+#### Acceptance Criteria
+
+Where user stories are the WHAT, acceptance criteria are the HOW we know it is achieved. They are the roadmap too success, by ensuring the user stories fulfill their promises. A tool for collaboration and building a shared understanding.
+
+Traits:
+- Clear and concise.
+- Testable and focused on outcomes.
+- Relevant to the user story.
+
+![[Pasted image 20231206135706.png]]
+
+*Example:*
+![[Pasted image 20231206135729.png]]
+
+*Example (more an epic than a user story though):*
+![[Pasted image 20231206135833.png]]
+
+#### Complete Workflow Example
+
+1. Identifying the Roles![[Pasted image 20231206140852.png]]
+   
+2. Writing User Story by collaborating ![[Pasted image 20231206140928.png]]![[Pasted image 20231206141001.png]]
+
+3. Deriving the Accpetance Criteria from the User Story ![[Pasted image 20231206141141.png]]
+   
+   Mockup of what this might look like: ![[Pasted image 20231206141315.png]]
+
+---
 
 ### Gherkin
 
-Given
-When
-Then
+Syntax designed to be a non-technical and human-readable way of describing use cases in software. It is the language of BDD, in plain English, that brings structure and predictability, and also serves as living documentation.
 
+#### Components
+
+![[Pasted image 20231206153028.png]]
+
+1. Feature:
+	- Describes a software feature.
+	- Offers a broader context of the feature.
+	- Sets the foundation for associated scenarios.
+
+2. Scenario: Represent specific user journeys or use-cases of witch the steps are a part of.
+
+3. Steps: A series of steps that detail the actions and outcomes.
+
+#### Syntax
+
+#####  Basis
+
+``Feature:`` — feature title, optionally followed by a describtion on the next line.
+
+``Scenario:`` — scenario title, optionally followed by a describtion on the next line.
+
+``Given`` — describes the context or initial state (and object page).
+``When`` — describes the (inter-)action that will cause a change in the system state.
+``Then`` — describes the expected outcome.
+
+``And`` / ``But`` — extends the previous description.
+
+*Examples:*
 ![[Pasted image 20231204150412.png]]
+![[Pasted image 20231206110952.png]]
+
+##### Comments \#
+![[Pasted image 20231206160601.png]]
+
+##### Tags @
+![[Pasted image 20231206160658.png]]
+
+##### Tables | |
+![[Pasted image 20231206160753.png]]
+
+##### Scenario Outline:
+![[Pasted image 20231206160906.png]]
+
+##### Examples:
+![[Pasted image 20231206161015.png]]
+
+##### Background: 
+![[Pasted image 20231206161109.png]]
+
+#### Scenario Best Practices
+
+- Use descriptive titles. Avoid generic phrases.
+- Prioritize business language. Use Ubiquitous Language with DDD.
+- Use Background sparingly. It adds complexity.
+	- Use only for common steps.
+	- Scenario independence reduces defect risk.
+- Utilize Scenario Outlines for repetitive scenarios to avoid duplication, and to enhance test coverage.
+- Use consistent formatting and style.
+	- Standardize scenarion structures.
+	- Use a consistent tense - preferably the present tense in Gherkin.
+
+*Bad example:* ![[Pasted image 20231206210135.png]]
+*Same example improved:* ![[Pasted image 20231206210228.png]]
+
+#### Writing Scenarios
+
+##### Happy Path
+
+*An already good example:* ![[Pasted image 20231206210618.png]]
+
+*Same example improved:* ![[Pasted image 20231206210709.png]]
+
+Steps to convert into code: ![[Pasted image 20231206214212.png]]
+
+Base for code: ![[Pasted image 20231206214308.png]]
+
+##### Unhappy Path (Negative)
+
+*Example:* ![[Pasted image 20231206211036.png]]
+
 
 
 ---
+
+### [SpecFlow](https://docs.specflow.org/projects/specflow/en/latest/)
+
+![[Pasted image 20231204150426.png]]
+
+![[Pasted image 20231206213920.png]]
+
+
+---
+
+### Automated Testing and CI / CD
+
