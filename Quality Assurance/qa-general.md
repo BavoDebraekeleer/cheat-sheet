@@ -12,7 +12,7 @@ Test results are used by QA and QC. In QC, they are used for fixing defects, whi
 
 ---
 
-## Frontend
+## E2E / UI Test Automation
 
 ![[Pasted image 20231204094137.png]]
 ![[Pasted image 20231204094200.png]]
@@ -20,7 +20,7 @@ Test results are used by QA and QC. In QC, they are used for fixing defects, whi
 
 
 
-### E2E/UI Test Automation with [Selenium](https://www.selenium.dev/)
+### [Selenium](https://www.selenium.dev/)
 
 [Pluralsight: Selenium 4: The Big Picture — Andrejs Doronins](https://app.pluralsight.com/library/courses/selenium-4-big-picture/table-of-contents)
 [Pluralsight: Selenium 4 Fundamentals with C# — Marko Vajs](https://app.pluralsight.com/library/courses/selenium-4-fundamentals-c-sharp/table-of-contents)
@@ -319,7 +319,241 @@ protected void ScrollToElement(IWebElement element)
 }
 ```
 
+##### Handling Pop-ups
 
+###### Alert
+
+```cs
+var alertWindow = driver.SwitchTo().Alert(); 
+alertWindow.Accept(); // Alert shows only information.
+```
+
+###### Confirmation
+
+```cs
+// In PageObject
+private List<IWebElement> OrderTableItems => driver
+	.FindElements(...).ToList();
+
+public void ClickOnRemoveButton(int index)
+{
+	OrderTableItems[index].FindElement(By.TagName("button")).Click();
+}
+
+public int GetOrderCount() => return OrderTableItems.Count;
+```
+
+```cs
+// In test
+orderPage.ClickOnRemoveButton(0);
+var confirmationWindow = driver.SwitchTo().Alert();
+confirmationWindow.Dismiss();
+```
+
+##### Windows and Tabs
+
+```cs
+// Get current Window or Tab:
+var windowOne = driver.CurrentWindowHandle;
+
+// Open new Window:
+driver.SwitchTo().NewWindow(WindowType.Window);
+var windowTwo = driver.CurrentWindowHandle;
+
+// Open new Tab:
+driver.SwitchTo().NewWindow(WindowType.Tab);
+var tabTwo = driver.CurrentWindowHandle;
+
+// Switch to a specific Window or Tab:
+driver.SwitchTo().Window(windowOne);
+```
+
+##### Waits
+
+Sets the time to wait for an element to be found. Making the Driver look for it continuously, or retry at a set polling interval, during the set timespan. If found, the test will continue. If it is not found within the set timespan, the test will fail.
+
+###### Implicit Wait
+
+Set on a driver level, so it is done on every driver method.
+```cs
+Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+```
+
+###### Explicit Wait
+
+Has to be created and invoked with a condition.
+```cs
+var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
+wait.Until(e => e.FindElement(By.Id("element-id")));
+```
+
+###### Fluent Wait
+
+Similar to the Explicit Wait, but adds a polling interval that makes the driver wait between retries:
+```cs
+var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5))
+{
+	PollingInterval = TimeSpan.FromSeconds(1)
+};
+wait.Until(e => e.FindElement(By.Id("element-id")));
+```
+
+###### Wait Helpers
+
+Not officially supported any more by Selenium for .NET, but available through an unofficial NuGet package `DotNetSeleniumExtras.WaitHelpers`, though not maintained anymore either. Can be used as a base for own implementation.
+
+![[Pasted image 20231205220646.png]]
+
+##### Chrome DevTools
+
+Setup:
+```cs
+public class ChromeDevToolsProtocolTests : TestsBase
+{
+    private readonly OpenQA.Selenium.DevTools.DevToolsSession Session;
+
+    public ChromeDevToolsProtocolTests()
+    {
+        var devTools = Driver as OpenQA.Selenium.DevTools.IDevTools;
+        Session = devTools.GetDevToolsSession();
+    }
+
+    // Tests
+}
+```
+
+###### Emulating Device Mode
+
+```cs
+[Fact]
+    public async Task EmulateDeviceModeTest()
+    {
+        var deviceSettings = new OpenQA.Selenium.DevTools.V119.Emulation.SetDeviceMetricsOverrideCommandSettings()
+        {
+            Width = 400,
+            Height = 600,
+            DeviceScaleFactor = 2,
+            Mobile = true,
+        };
+
+        await Session.GetVersionSpecificDomains<OpenQA.Selenium.DevTools.V119.DevToolsSessionDomains>()
+            .Emulation
+            .SetDeviceMetricsOverride(deviceSettings);
+
+        NavigateToPage("Home");
+
+        Thread.Sleep(5000);
+    }
+```
+
+###### Emulating Network Conditions
+
+You can set the network speed, though Selenium is not recommended for performance tests.
+
+```cs
+[Fact]
+public async Task EmulateNetworkConditionsTest()
+{
+    var networkConditions = new OpenQA.Selenium.DevTools.V119.Network.EmulateNetworkConditionsCommandSettings()
+    {
+        DownloadThroughput = 1000,
+
+    };
+
+    await Session.GetVersionSpecificDomains<OpenQA.Selenium.DevTools.V119.DevToolsSessionDomains>()
+        .Network
+        .EmulateNetworkConditions(networkConditions);
+
+    Driver.Navigate().GoToUrl("https://selenium.dev");
+}
+```
+
+###### Emulating Geolocation
+
+```cs
+[Fact]
+public async Task EmulateGeolocationTest()
+{
+    var geolocation = new OpenQA.Selenium.DevTools.V119.Emulation.SetGeolocationOverrideCommandSettings()
+    {
+        Latitude = 40,
+        Longitude = 0,
+        Accuracy = 1,
+    };
+
+    await Session.GetVersionSpecificDomains<OpenQA.Selenium.DevTools.V119.DevToolsSessionDomains>()
+        .Emulation
+        .SetGeolocationOverride(geolocation);
+
+    Driver.Navigate().GoToUrl("https://maps.google.com");
+    Driver.FindElement(By.CssSelector("#mylocation #sVuEFc")).Click();
+
+    Thread.Sleep(5000);
+}
+```
+
+###### Intercepting HTTP Requests
+
+[Video](https://app.pluralsight.com/course-player?clipId=d5d4d70d-f800-4bc0-97ef-827c9838ec04)
+
+```cs
+[Fact]
+public async Task InterceptNetworkRequestsTest()
+{
+    var fetch = Session.GetVersionSpecificDomains<OpenQA.Selenium.DevTools.V119.DevToolsSessionDomains>()
+        .Fetch;
+
+    var enableCommandSettings = new OpenQA.Selenium.DevTools.V119.Fetch.EnableCommandSettings();
+
+    var requestPattern = new OpenQA.Selenium.DevTools.V119.Fetch.RequestPattern
+    {
+        RequestStage = OpenQA.Selenium.DevTools.V119.Fetch.RequestStage.Request,
+        ResourceType = OpenQA.Selenium.DevTools.V119.Network.ResourceType.XHR,
+        UrlPattern = "*/workshops.json"
+    };
+
+    enableCommandSettings.Patterns = new OpenQA.Selenium.DevTools.V119.Fetch.RequestPattern[] { requestPattern };   
+
+    await fetch.Enable(enableCommandSettings);
+
+    async void requestIntercepted(object sender, OpenQA.Selenium.DevTools.V119.Fetch.RequestPausedEventArgs e)
+    {
+        await fetch.FulfillRequest(new OpenQA.Selenium.DevTools.V119.Fetch.FulfillRequestCommandSettings()
+        {
+            RequestId = e.RequestId,
+            Body = Convert.ToBase64String(Encoding.UTF8.GetBytes(
+                """
+                [
+                    { ... }
+                ]
+                """)),
+            ResponseCode = 200
+        });
+    }
+
+    fetch.RequestPaused += requestIntercepted;
+
+    Driver.Navigate().GoToUrl("");
+
+    Thread.Sleep(10000);
+}
+```
+
+
+#### [Selenium Grid](https://www.selenium.dev/documentation/grid/)
+
+[Videos](https://app.pluralsight.com/course-player?clipId=486bc230-c5e7-4b48-ba38-9c018256d96d)
+
+Three modes:
+- Distributed — each component is run and configured separately. Scales best.
+- Hub & Node — the Hub is composed of five orchestration components and acts as a single entry point, distributing task across multiple nodes. A Node acts as an environment where the tests are executed.
+- Standalone — used for simple continuous integration servers. Does not scale.
+
+![[Pasted image 20231205230018.png]]
+
+![[Pasted image 20231205230606.png]]
+
+[Grid Setup Video](https://app.pluralsight.com/course-player?clipId=fbc6b9eb-e94d-4fec-915c-0ea1522d6366)
 
 ### Page Object Model (POM)
 
@@ -489,6 +723,8 @@ public void Test3(){
     ...}
 ```
 
+
+
 ### Xpath
 
 [Xpath _cheat sheet_](https://devhints.io/xpath)
@@ -500,6 +736,8 @@ Xpath stands for XML Path Language, is part of the XSLT standard, and is used to
 It uses path like syntax to identify and navigate nodes in an XML document.
 
 ![[Pasted image 20231129213603.png]]
+
+![[Pasted image 20231205201115.png]]
 
 #### [SelectorsHub](https://selectorshub.com/selectorshub/)
 
@@ -729,20 +967,26 @@ function showResult(xml) {
 </script></body></html>
 ```
 
-## Backend
+---
 
-### Behavior-driven Development (BDD) with SpecFlow
+## Behaviour Driven Development (BDD)
+
+[Behaviour Driven Development: The Big Picture — Marko Vajs](https://app.pluralsight.com/library/courses/behavior-driven-development-big-picture/table-of-contents)
+[Behaviour Driven Development: Fundamentals — Kevin James](https://app.pluralsight.com/library/courses/behavior-driven-development-fundamentals/table-of-contents)
+[Behaviour Driven Development with SpecFlow — Eugene Niemand](https://app.pluralsight.com/library/courses/bdd-specflow/table-of-contents)
+
+### SpecFlow
 
 ![[Pasted image 20231204150426.png]]
 
 
 ### Gherkin
 
+Given
+When
+Then
+
 ![[Pasted image 20231204150412.png]]
 
-
-given
-when
-then
 
 ---

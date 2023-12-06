@@ -616,7 +616,7 @@ var today = SystemTime.Today();
 
 ---
 
-### Running Unit Tests Automatically
+### Running xUnit Tests Automatically
 
 #### .NET CLI
 
@@ -625,6 +625,12 @@ Steps:
 2. Run command: `dotnet test`
 
 ![[Pasted image 20230926174735.png]]
+##### Arguments
+
+- `--filter Name=TestName`
+- `--logger "console;verbosity=detailed"`
+- `--logger "html;logfilename=testResults.html"`
+
 
 #### GitHub Actions
 
