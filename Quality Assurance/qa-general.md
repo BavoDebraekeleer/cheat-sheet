@@ -973,9 +973,11 @@ function showResult(xml) {
 
 ### Resources
 
-[Behaviour Driven Development: The Big Picture — Marko Vajs](https://app.pluralsight.com/library/courses/behavior-driven-development-big-picture/table-of-contents)
-[Behaviour Driven Development: Fundamentals — Kevin James](https://app.pluralsight.com/library/courses/behavior-driven-development-fundamentals/table-of-contents)
-[Behaviour Driven Development with SpecFlow — Eugene Niemand](https://app.pluralsight.com/library/courses/bdd-specflow/table-of-contents)
+[Pluralsight: Behaviour Driven Development: The Big Picture — Marko Vajs](https://app.pluralsight.com/library/courses/behavior-driven-development-big-picture/table-of-contents)
+[Pluralsight: Behaviour Driven Development: Fundamentals — Kevin James](https://app.pluralsight.com/library/courses/behavior-driven-development-fundamentals/table-of-contents)
+[Pluralsight: Behaviour Driven Development with SpecFlow — Eugene Niemand](https://app.pluralsight.com/library/courses/bdd-specflow/table-of-contents)
+
+[YouTube: SpecFlow 2021 — Execute Automation](https://www.youtube.com/playlist?list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb)
 
 ### Overview
 
@@ -1135,7 +1137,9 @@ Traits:
 
 ### Gherkin
 
-Syntax designed to be a non-technical and human-readable way of describing use cases in software. It is the language of BDD, in plain English, that brings structure and predictability, and also serves as living documentation.
+Syntax designed to be a non-technical and human-readable way of describing use cases in software. It is the language of BDD, in plain English, and a lot of others as well, that brings structure and predictability, and also serves as living documentation.
+
+Try it out in the [SpecFlow Online Gherkin Editor](https://app.specflow.org/gherkin-editor/).
 
 #### Components
 
@@ -1160,7 +1164,7 @@ Syntax designed to be a non-technical and human-readable way of describing use c
 
 ``Given`` — describes the context or initial state (and object page).
 ``When`` — describes the (inter-)action that will cause a change in the system state.
-``Then`` — describes the expected outcome.
+``Then`` — describes the expected outcome, but only those observable by the user (not, for example, checking a database.)
 
 ``And`` / ``But`` — extends the previous description.
 
@@ -1184,6 +1188,16 @@ Syntax designed to be a non-technical and human-readable way of describing use c
 ![[Pasted image 20231206161015.png]]
 
 ##### Background: 
+
+- Keep it client focussed.
+- Avoid complex states, unless they are essential to the clients understanding. It is a section to put things in the spotlight.
+- Use higher steps for less important details.
+- Use decriptive names and storytelling. E.g., real names instead of User. Create a captivating setup, but brief.
+- Keep it concise.
+- Move recuring `Given` statements that repeat over multiple Scenarios within the same Feature, to the Background section.
+
+![[Pasted image 20231207081130.png]]
+
 ![[Pasted image 20231206161109.png]]
 
 #### Scenario Best Practices
@@ -1195,13 +1209,19 @@ Syntax designed to be a non-technical and human-readable way of describing use c
 	- Scenario independence reduces defect risk.
 - Utilize Scenario Outlines for repetitive scenarios to avoid duplication, and to enhance test coverage.
 - Use consistent formatting and style.
-	- Standardize scenarion structures.
-	- Use a consistent tense - preferably the present tense in Gherkin.
+	- Standardize scenario structures.
+	- Use a consistent tense — preferably the present tense in Gherkin.
 
 *Bad example:* ![[Pasted image 20231206210135.png]]
 *Same example improved:* ![[Pasted image 20231206210228.png]]
 
 #### Writing Scenarios
+
+Focus on user behavior. Write what the user does, not how it is implemented and achieved by the system. For example, use `When they add the product ...` instead of `When they click an the add button ...`. So, don't give any technical details.
+
+Use descriptive and explicit language. Use past tense instead of future tense, by using actions that have already taken place (reflects, adjusts, generated).
+
+Use realistic examples between `".."`, for example, `"smartphone"` instead of `product`.
 
 ##### Happy Path
 
@@ -1227,8 +1247,493 @@ Base for code: ![[Pasted image 20231206214308.png]]
 
 ![[Pasted image 20231206213920.png]]
 
+#### Getting Started
+
+1. Install the SpecFlow Extension for Visual Studio:
+   Extensions > Manage Extensions
+2. Creating a SpecFlow project. Select .NET 6.0 in the project creation. Once created, update it to .NET 8.0 in the project properties.
+3. Install the Selenium NuGet package. Optionally also the Support package.
+4. Download the latest Stable win64 version of the Chrome Driver from [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/) . ![[Pasted image 20231206233410.png]]
+
+5. Create a Web Driver Library to be used with Selenium.
+
+
+
+#### Linking / Binding Tests
+
+A step in PURPLE text highlights there is no definition for it.
+1. Right-click > Define Step (Ctrl+B, D) to create the Step Definition for it.
+2. Implement the step logic.
+3. Build the project if the Feature file does not link to the Step Definition.
+Once linked, the text should turn white, signaling the step definition is linked.
+
+
+Base setup of the Step Definitions class:
+```cs
+[Binding]
+public sealed class StepDefinitions
+{
+	private AutomationTestContext _ctx;
+
+	[BeforeScenario]
+	public void Init()
+	{
+		_ctx = new AutomationTestContext;
+	}
+
+	[Given(@"same text as in feature file")]
+	public void Given...() {...}
+
+	[When(@"same text as in feature file")]
+	public void When...() {...}
+
+	[Then(@"same text as in feature file")]
+	public void Then...() {...}
+}
+```
+
+#### Debugging
+
+Debug by placing breakpoints in the Feature file and Debug from the Test Explorer. You can then step through to see what code is being executed.
+
+You can also take a screenshot when a Test Error occurs through the  Scenario Context:
+```cs
+[AfterScenario]
+public void AfterScenario()
+{
+    if(_scenarioContext.TestError != null)
+    {
+        WebBrowser.Driver.CaptureScreenShot(_scenarioContext.ScenarioInfo.Title);
+    }
+}
+```
+
+#### Parameters
+
+To parameterize words in the Feature file, the word should simply be replaced with `(.*)` in the linked test. It is then automatically passed to the parameter(s) in the test function.
+Once linked, the parameter word turns RED.
+
+In the Feature file:
+```gherkin
+When there is motion in the kitchen
+```
+
+In the test:
+```cs
+[When(@"there is motion in the (.*)")]
+public void WhenThereIsMotionInTheKitchen(string roomName)
+{
+	_ctx.TriggerState(new MotionSensor($"motion.{roomName}", true));
+}
+```
+
+This `When` statement can be reused in different scenarios with different parameters, e.g.:
+``` gherkin
+When there is motion in the hallway
+```
+
+#### Step Argument Conversion
+
+Instead of showing implementation details in the test, `[StepArgumentTransformation]`'s can be defined and used instead.
+
+The given example shows the creation of a class instance:
+```cs
+[When(@"there is motion in the (.*)")]
+public void WhenThereIsMotionInTheKitchen(string roomName)
+{
+	_ctx.TriggerState(new MotionSensor($"motion.{roomName}", true));
+}
+```
+
+We can move this to a transformation (a `MotionSensorWithMotion` is a `MotionSensor` always set to `true` instead of a second parameter):
+```cs
+[Binding]
+public class Transforms
+{
+	[StepArgumentTransformation]
+	public MotionSensorWithMotion MotionSensorWithMotionTransform(string roomName)
+	{
+		return new MotionSensorWithMotion($"motion.{roomName}");
+	}
+}
+```
+
+We can then pass this as a parameter in the test function. Parameters passed from the Feature file will still be passed on, but now into the transformation function:
+```cs
+[When(@"there is motion in the (.*)")]
+public void WhenThereIsMotionInTheKitchen(MotionSensorWithMotion sensor)
+{
+	_ctx.TriggerState(sensor); // sensor created by the transform
+}
+```
+
+
+#### SpecFlow Data Tables
+
+##### Scenario Outlines
+
+Steps in the Feature file:
+1. Convert the Scenario into a Scenario Outline.
+2. Convert the parameter word into a table parameter by placing it between `<camelCase>`.
+3. Add an Examples section with a data table.
+
+``` gherkin
+Scenario Outline: no announcements during quiet time
+	Given it is before 5 AM
+	When there is motion in the <roomName>
+	Then there is no announcement
+
+	Examples:
+	| roomName |
+	| kitchen  |
+	| hallway  |
+```
+
+##### [Data Table Helpers](https://docs.specflow.org/projects/specflow/en/latest/Bindings/SpecFlow-Assist-Helpers.html)
+
+###### Use Data from a Table
+
+Example feature file:
+``` gherkin
+Scenario Outline: no announcements during quiet time
+	Given time range is
+	| StartTime | EndTime |
+	| 5 AM      | 7 AM    |
+	...
+```
+
+```cs
+// StepDefinitions.cs
+[Given]
+public void GivenTimeRangeIs(Table table)
+{
+	var tr = table.CreateInstance<TimeRange>(); // For one row
+	// OR
+	for each tr in table.CreateSet<TimeRange>() {...} // For multiple rows
+	...
+}
+```
+
+Most build in types are already supported, but you can also use your own types, like in this example. The properties must have a public getter and public setter, and the names must match the table column names, though not exactly. Whitespacing and casing is ignored.
+```cs
+// TimeRange.cs
+public class TimeRange
+{
+	public int StartTime { get; set; }
+	public int EndTime { get; set; }
+}
+```
+
+###### Dynamic
+
+To avoid having to create data types just to read a table, dynamic objects can be used.
+To use it with SpecFlow an additional NuGet package is needed: `SpecFlow.Assist.Dynamic`.
+
+```cs
+using SpecFlow.Assist.Dynamic;
+...
+dynamic data = table.CreateDynamicSet(); // Creates an list of the table data.
+```
+
+###### Comparing Table Data
+
+Comparing tables with `CompareToInstance<T>` and `CompareToSet<T>`.
+
+###### Aliasing
+
+Aliasing, giving test writers the ability to use other table column names next to the property name. Needs to be attributed in the type class:
+```cs
+public class Employee
+{
+    public string FirstName { get; set; }
+    public string MiddleName { get; set; }
+
+    [TableAliases("Last[]?Name", "Family[]?Name")] // []? ignores whitespaces
+    public string Surname { get; set; }
+}
+```
+
+###### Extensions
+
+If you have a custom type within a custom type you have to write your own conversion method, implementing the `IValueRetriever` or `IValueComparer` interfaces, that takes a string and converts it into the correct type, and call it within a `[BeforeTestRun]` hook:
+```cs
+public class ColorValueRetriever : IValueRetriever
+{
+	public virtual Color GetValue(string value)
+	... return color;
+```
+
+```cs
+[Binding]
+public static class Hooks1
+{
+    [BeforeTestRun]
+    public static void BeforeTestRun()
+    {
+        Service.Instance.ValueRetrievers.Register(new ColorValueRetriever());
+        Service.Instance.ValueComparers.Register(new ColorValueComparer());
+    }
+}
+```
+
+
+#### [Scenario Context](https://docs.specflow.org/projects/specflow/en/latest/Bindings/ScenarioContext.html)
+
+Gives access to extra functions, like setting a configuration in the Given step.
+``` gherkin
+Scenario: prompt on motion based on room and time of day
+	Given the following config
+		| Room Name | Time Of Day         |
+		| kitchen   | 2023-04-06 06:59:59 |
+		... more rows
+	When there is motion in room at specified time
+	Then my smart speaker prompted
+	| Speaker Name    | Message                                | Sent                |
+	| speaker.kitchen | Dishwasher is done, have you unloaded? | 2023-04-06 07:00:01 |
+	... more rows
+	And my smart speaker announced
+	| Speaker Name    | Message               | Sent                |
+	| speaker.bedroom | Remember to set alarm | 2023-04-06 21:00:01 |
+	... more rows
+	
+```
+
+In a Binding, you can access the Scenario Context via context injection.
+```cs
+[Binding]
+public sealed class StepDefinitions(ScenarioContext scenarioContext)
+{
+	private AutomationTestContext _ctx;
+	private readonly ScenarioContext _scenarioContext = scenarioContext;
+
+	[BeforeScenario]
+	public void Init()
+	{
+		_ctx = new AutomationTestContext;
+	}
+
+	[Given(@"the following config")]
+	public void GivenTheFollowingConfig(Table table)
+	{
+		_scenarioContext["configs"] = table.CreateSet<MotionTestConfig>();
+	}
+
+	[When(@"there is motion in room at specified time")]
+	public void WhenThereIsMotionInRoomAtSpecifiedTime()
+	{
+		foreach (var motionTestConfig in (
+			IEnumerable<MotionTestConfig>
+			)_scenarioContext["configs"])
+		{
+			_ctx.SetTime(motionTestConfig.TimeOfDay);
+			_ctx.TriggerState(new MotionSensorWithMotion(motionTestConfig.RoomName));
+		}
+	}
+
+	[Then(@"my smart speaker (.*)")]
+	public void ThenMySmartSpeakerPrompted(AnnouncementType type, Table table)
+	{
+		switch (type)
+		{
+			case AnnouncementType.Prompted:
+				table.CompareToSet(_ctx.Home.Prompts);
+				break;
+			case AnnouncementType.Announced:
+				table.CompareToSet(_ctx.Home.Announcements);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(type), type, null);
+		}
+	}
+}
+```
+
+```cs
+public sealed class BedroomAutomations
+{
+	public BedroomAutomations(MyHome home)
+	{
+		home.StateChanges.Where(s => s.Name == "motion.bedroom").Subscribe(_ =>
+		{
+			switch (home.CurrentTime.Hour)
+			{
+				case >= 23:
+					return;
+				case >= 21:
+					home.Announce(new Announcement(
+						"speaker.bedroom", "Remember to set alarm", home.CurrentTime));
+					break;
+			}
+		});
+	}
+}
+```
+
+```cs
+public class MotionTestConfig
+{
+	public string RoomName { get; set; }
+	public string TimeOfDay { get; set; }
+}
+```
+
+```cs
+public enum AnnouncementType
+{
+	Prompted,
+	Announced
+}
+```
+
+We can also call the Scenario Context to get more info of what is going on in the steps, for example for logging and debug purposes.
+```cs
+// Scenario Info
+var scenarioInfo = _scenarioContext.ScenarioInfo;
+scenarioInfo.Title;
+scenarioInfo.Tags;
+scenarioInfo.CombinedTags;
+scenarioInfo.Arguments;
+
+var error = scenarioInfo.TestError;
+error.Message;
+error.GetType().Name;
+
+// Step Info
+var stepType = _scenarioContext.CurrentScenarioBlock.ToString(); // Given, When or Then
+
+var stepInfo = _scenarioContext.StepContext.StepInfo;
+stepInfo.StepDefinitionType;
+stepInfo.Text;
+```
+
+#### [Hooks](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Hooks.html)
+
+Hooks (event bindings) can be used to perform additional automation logic at specific times, such as any setup required prior to executing a scenario.
+
+|Attribute|Tag filtering*|Description|
+|---|---|---|
+|[BeforeTestRun]/[AfterTestRun]|not possible|Automation logic that has to run before/after the entire test run.  <br>**Note: As most of the unit test runners do not provide a hook for executing logic once the tests have been executed, the [AfterTestRun] event is triggered by the test assembly unload event.  <br>The exact timing and thread of this execution may therefore differ for each test runner.**  <br>The method it is applied to must be static.|
+|[BeforeFeature]/[AfterFeature]|possible|Automation logic that has to run before/after executing each feature  <br>The method it is applied to must be static.|
+|[BeforeScenario] or [Before]  <br>[AfterScenario] or [After]|possible|Automation logic that has to run before/after executing each scenario or scenario outline example|
+|[BeforeScenarioBlock]  <br>[AfterScenarioBlock]|possible|Automation logic that has to run before/after executing each scenario block (e.g. between the "givens" and the "whens")|
+|[BeforeStep]  <br>[AfterStep]|possible|Automation logic that has to run before/after executing each scenario step|
+
+##### Parameter Injection
+
+SpecFlow Contexts or Interfaces can be automatically injected in the Hook class constructor, as well as in the Hook methods themselves. For example, `ScenarioContext`, `FeatureContext`, `ITestRunnerManager`, and `ITestRunner`.
+
+```cs
+[Binding]
+public class MyHooks
+{
+    [BeforeScenario]
+    public void SetupTestUsers(ScenarioContext scenarioContext)
+    {
+        //scenarioContext...
+    }
+}
+```
+
+Depending on the type of the hook the parameters are resolved from a container with the corresponding lifecycle.
+
+|Attribute|Container|
+|---|---|
+|[BeforeTestRun]  <br>[AfterTestRun]|TestThreadContainer|
+|[BeforeFeature]  <br>[AfterFeature]|FeatureContainer|
+|[BeforeScenario]  <br>[AfterScenario]  <br>[BeforeScenarioBlock]  <br>[AfterScenarioBlock]  <br>[BeforeStep]  <br>[AfterStep]|ScenarioContainer|
+
+##### Options: Filtering and Order
+
+```cs
+[BeforeScenario] // Unpredictable order execution.
+[BeforeScenario(Order = 0)] // Fixed order to be the first one executed.
+```
+
+```cs
+[BeforeScenario("tag")] // Only for tests with this tag.
+// OR
+[Scope(Tag = "tag")]
+[BeforeScenario]
+```
+
+#### Best Practices
+
+- Organize Step Definitions into logical folders and classes in separate files, for clarity and preventing code duplication.
+	- Keep steps separated by functionality.
+	- If the same step is used in different scenarios, move it to a separate class and file, so it can easily be used and reused by multiple scenarios.
+	- Use tagging for execution: ![[Pasted image 20231207131406.png]]
+
+
+#### LivingDoc
+
+##### Installation
+
+To install, run the following command in a terminal (user dir):
+```cli
+dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+```
+
+![[Pasted image 20231207083240.png]]
+
+##### Usage
+
+To use the tool in a project, `cd` to the `\bin\Debug\net8.0` directory within the project.
+
+There, use the following command to generate the documentation:
+```cli
+livingdoc test-assembly .\BddAndSpecFlow.dll -t .\TestExecution.json
+```
+
+To open it:
+```cli
+.\LivingDoc.html
+```
+
+
+
 
 ---
 
 ### Automated Testing and CI / CD
 
+#### Overview
+
+CI = Continuous Integration
+CD = Continuous Deployment
+
+Runs tests as part of the build.
+This makes sure potentially problematic code, that makes a test fail, doesn't get deployed.
+
+Common tools: Jenkins, Travis CI, CircleCI, GitHub Actions, and GitLab CI.
+
+![[Pasted image 20231206221355.png]]
+![[Pasted image 20231206221424.png]]
+
+![[Pasted image 20231206221445.png]]
+
+#### Regression Testing
+
+![[Pasted image 20231206221614.png]]
+
+![[Pasted image 20231206223133.png]]
+
+![[Pasted image 20231206223317.png]]
+
+#### SpecFlow + LivingDocs on Azure DevOps
+
+[Video with demo setup](https://app.pluralsight.com/course-player?clipId=97290b99-0678-4592-ae84-064588f61419)
+
+
+
+https://www.youtube.com/watch?v=8tNlF6y00Zc&list=PL6tu16kXT9Pp3wrsaYyNRnK1QkvVv6qdI&index=42
+
+https://www.youtube.com/watch?v=HrYUzzKXpTs&list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb&index=7
+
+
+https://medium.com/capgemini-microsoft-team/specflow-a-few-tips-n-tricks-856aad261a25
+
+https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+
+https://www.nuget.org/packages/SolidToken.SpecFlow.DependencyInjection#readme-body-tab
+
+https://docs.specflow.org/en/latest/Examples.html
