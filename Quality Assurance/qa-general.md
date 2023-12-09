@@ -129,6 +129,13 @@ Selectors — ways of selecting elements:
 - By link or text: `By.LinkTest`, `By.PartialLinkText`
 - With XPath: `By.XPath`
 
+In order of speed:
+- `Id` (fastest and recommended)
+- `ClassName`
+- `Name`
+- `CssSelector`
+- `xPath` (slowest, but most versatile)
+
 Avoid being too specific, but also not too generic.
 Selecting elements must be simple, unambiguous, and future-proof.
 
