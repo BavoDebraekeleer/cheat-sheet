@@ -16,13 +16,15 @@
 - [YouTube: SpecFlow 2021 — Execute Automation](https://www.youtube.com/playlist?list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb)
 
 - [A Beginner’s Guide to Behavior-Driven Development with SpecFlow - Enes Khun](https://medium.com/@enesku/a-beginners-guide-to-behavior-driven-development-with-specflow-83428ff78f0d)
-
+- [SpecFlow Docs: Selenium with Page Object Model Pattern](https://docs.specflow.org/projects/specflow/en/latest/ui-automation/Selenium-with-Page-Object-Pattern.html)
+- [SpecFlow with .NET 8.0](https://github.com/SpecFlowOSS/SpecFlow.VS/releases/tag/v2022.1.93-net8)
 ### Selenium
 - [Pluralsight: Selenium 4: The Big Picture — Andrejs Doronins](https://app.pluralsight.com/library/courses/selenium-4-big-picture/table-of-contents)
 - [Pluralsight: Selenium 4 Fundamentals with C# — Marko Vajs](https://app.pluralsight.com/library/courses/selenium-4-fundamentals-c-sharp/table-of-contents)
 - [YouTube: SeleniumConf Chicago 2023 playlist](https://www.youtube.com/playlist?list=PLRdSclUtJDYXDEsWI0vwBmJxW17NgsaAk)
 
 ### Xpath
+- [Xpather Online Editor](http://xpather.com/)
 - [Xpath _cheat sheet_](https://devhints.io/xpath)
 - [SelectorsHub Xpath plugin](https://selectorshub.com/selectorshub/)
 - [W3schoold Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
@@ -487,7 +489,7 @@ public void GivenTimeRangeIs(Table table)
 {
 	var tr = table.CreateInstance<TimeRange>(); // For one row
 	// OR
-	for each tr in table.CreateSet<TimeRange>() {...} // For multiple rows
+	foreach (var tr in table.CreateSet<TimeRange>()) {...} // For multiple rows
 	...
 }
 ```
