@@ -12,10 +12,15 @@
 - [Pluralsight: Behaviour Driven Development: The Big Picture — Marko Vajs](https://app.pluralsight.com/library/courses/behavior-driven-development-big-picture/table-of-contents)
 - [Pluralsight: Behaviour Driven Development: Fundamentals — Kevin James](https://app.pluralsight.com/library/courses/behavior-driven-development-fundamentals/table-of-contents)
 - [Pluralsight: Behaviour Driven Development with SpecFlow — Eugene Niemand](https://app.pluralsight.com/library/courses/bdd-specflow/table-of-contents)
-
 - [YouTube: SpecFlow 2021 — Execute Automation](https://www.youtube.com/playlist?list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb)
 
 - [A Beginner’s Guide to Behavior-Driven Development with SpecFlow - Enes Khun](https://medium.com/@enesku/a-beginners-guide-to-behavior-driven-development-with-specflow-83428ff78f0d)
+
+- https://www.youtube.com/watch?v=8tNlF6y00Zc&list=PL6tu16kXT9Pp3wrsaYyNRnK1QkvVv6qdI&index=42
+- https://www.youtube.com/watch?v=HrYUzzKXpTs&list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb&index=7
+- https://medium.com/capgemini-microsoft-team/specflow-a-few-tips-n-tricks-856aad261a25
+- https://www.nuget.org/packages/SolidToken.SpecFlow.DependencyInjection#readme-body-tab
+- https://docs.specflow.org/en/latest/Examples.html
 
 ### Selenium
 - [Pluralsight: Selenium 4: The Big Picture — Andrejs Doronins](https://app.pluralsight.com/library/courses/selenium-4-big-picture/table-of-contents)
@@ -25,21 +30,17 @@
 ### Xpath
 - [Xpath _cheat sheet_](https://devhints.io/xpath)
 - [SelectorsHub Xpath plugin](https://selectorshub.com/selectorshub/)
-- [W3schoold Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
+- [W3schools: Xpath Tutorial](https://www.w3schools.com/xml/xpath_intro.asp)
 - [Udemy: XPath Tutorial from basic to advance level. The complete XPath course for Selenium — Sanjay Kumar](https://www.udemy.com/course/xpath-tutorial-from-basic-to-advance-level/?signupsuccess=1)
 
-https://www.youtube.com/watch?v=8tNlF6y00Zc&list=PL6tu16kXT9Pp3wrsaYyNRnK1QkvVv6qdI&index=42
+### Manual Testing
+- [Article: Manual Testing Tutorial for Beginners - Jash Unadkat](https://www.browserstack.com/guide/manual-testing-tutorial)
 
-https://www.youtube.com/watch?v=HrYUzzKXpTs&list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb&index=7
+### Others
+- [Article: Website Accessibility Testing Checklist](https://www.browserstack.com/guide/website-accessibility-testing-checklist) 
+- [Axe by deque - Accessibility Test Automation Tools](https://www.deque.com/axe/)
+- https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
 
-
-https://medium.com/capgemini-microsoft-team/specflow-a-few-tips-n-tricks-856aad261a25
-
-https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
-
-https://www.nuget.org/packages/SolidToken.SpecFlow.DependencyInjection#readme-body-tab
-
-https://docs.specflow.org/en/latest/Examples.html
 
 ---
 
@@ -1758,4 +1759,26 @@ function showResult(xml) {
 ```
 
 ---
+
+## Manual Testing
+
+Manual Testing prevails when cognitive and behavioral abilities are required to test the software.
+
+It mainly works well for testing:
+- Functionalities
+- User Interface (UI)
+- User Experience (UX)
+- Website & App Behavior
+- Features
+- User Acceptance
+
+![[Pasted image 20231213201810.png]]
+
+### Manual Testing VS Automation Testing
+
+![[Pasted image 20231213201702.png]]
+
+### Tools
+
+[Testing Tools by Testing Category](https://testomat.io/blog/top-15-manual-testing-tools-to-know/)
 

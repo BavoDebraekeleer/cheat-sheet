@@ -658,6 +658,8 @@ Set a budget and agree with the product manager and/or owner.
 
 ### Managing Defects
 
+A *Defect* is a manifestation of an error in the software.
+#### Defect / Incident Report
 
 
 ### How to Write a Test Plan
