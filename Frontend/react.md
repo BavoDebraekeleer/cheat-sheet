@@ -311,9 +311,12 @@ When the value of the context changes, all consumers will be re-rendered.
 Example with context:
 ![[Pasted image 20231109111419.png]]
 
+#### [Protected Routes](https://blog.logrocket.com/complete-guide-authentication-with-react-router-v6/)
 
+For authentication purposes some routes need to be protected.
 
 #### [Breadcrumbs](https://reactrouter.com/en/main/hooks/use-matches#breadcrumbs)
+
 
 
 
@@ -358,7 +361,7 @@ npm install swr axios
 
 To use SWR with React, we need to use a hook called `useSWR` which returns some variables depending on the state of the `fetcher` function.
 
-```ts
+```tsx
 const fetcher = (...args) => fetch(...args).then(res => res.json())  
   
 const {data, error, isLoading, isValidating} = useSWR(key, fetcher);
@@ -378,6 +381,72 @@ We can see this clearly in the next diagram:
 Under the hood, SWR uses a cache to store data that has been previously fetched. In our example, this would be the closest bookshelf.
 
 When a user requests data, SWR first checks the cache to see if it already has the data. If it does, it returns the cached data immediately. If not, it sends a request to the server to fetch the data, and once the data is returned, it stores it in the cache for future use.
+
+#### [Error Handling](https://swr.vercel.app/docs/error-handling)
+
+In component with JSX:
+```tsx
+const { data, error, isLoading, mutate } = useSWR<EmployeeDTO>(`Employees/`, fetcher);
+
+return (
+        <div>
+            <RegistrationSaveDialog {...registrationSaveDialogProps} />
+            <Header { ...headerProps } />
+            <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
+                <Calendar { ...calendarProps } />
+                {(isLoading && !error) &&
+                    <MessageOnPage 
+	                    message={`Loading registrations for day ${..}`} />
+                }
+                {(!isLoading && error) &&
+                    <MessageOnPage message={logAxiosErrorRegistrationsByDate(error, workingDay)} />
+                }
+                {(!isLoading && !error && data) &&
+                    <RegistrationsTable
+                        date={workingDay}
+                        registrations={data.timesheets[0].registrations}
+                        onEditClick={handleClickOnEdit}
+                        onDeleteClick={handleClickOnDelete}
+                    />
+                }
+            </div>
+        </div>
+    );
+```
+
+Axios:
+```tsx
+api.delete(`Employees/${getActiveUserId()}/Registrations/${data.id}`)
+	.then(response => {
+		if (response.status == 204) {
+			alertSuccess(`Registration with ID ${data.id} successfully deleted (Satus Code ${response.status}).`);
+		}
+	})
+	.catch(error => {
+		if (error.response.status == 404) {
+			alertError(`Registration to delete with ID ${data.id} was not found (Satus Code ${error.response.status}): ${error.response.data?.message}.`);
+			// Or the user wasn't found, but this should be handled by login/authentication.
+		}
+		else {
+			alertError(`${error.response.status}: ${error.data?.message}`);
+		}
+	})
+	.finally(() => mutate());
+```
+
+Global:
+```ts
+<SWRConfig
+  value={{ fetcher, onError: (error) => {
+	console.log("Global SWR error occured:", error);
+	if (error.code === "ERR_NETWORK") {
+	  alertError("An network error occured.");
+	}
+  } }}
+>
+  <RouterProvider router={router} />
+</SWRConfig>
+```
 
 ---
 

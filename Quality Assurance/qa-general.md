@@ -2,8 +2,10 @@
 
 ## Courses and Resources
 
-[Zhimin Zhan - Test Automation coach](https://medium.com/@zhiminzhan)
-[JSON to C# converter](https://json2csharp.com/)
+- [Zhimin Zhan - Test Automation coach](https://medium.com/@zhiminzhan)
+- [JSON to C# converter](https://json2csharp.com/)
+- [Ministry of Testing](https://www.ministryoftesting.com/search?q=test+heuristics+cheat+sheet
+- [Testing Demo Websites](https://automationpanda.com/2021/12/29/want-to-practice-test-automation-try-these-demo-sites/)
 
 ### DDD & SpecFlow
 - [API and Webpage for learning testing (refreshed every 10min.)](https://automationintesting.online/)
@@ -43,6 +45,7 @@
 - [Article: Website Accessibility Testing Checklist](https://www.browserstack.com/guide/website-accessibility-testing-checklist) 
 - [Axe by deque - Accessibility Test Automation Tools](https://www.deque.com/axe/)
 - https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+- [Software Testing QA Best Practives](https://www.altexsoft.com/blog/software-testing-qa-best-practices/)
 
 
 ---
@@ -1777,11 +1780,133 @@ It mainly works well for testing:
 
 ![[Pasted image 20231213201810.png]]
 
+Manual techniques are further divided into:
+- Functional testing - giving a Yes or No answer.
+	- Positive flow/path
+	- Negative flow/path
+- Non-functional testing - answering with a number.
+
+- Reproducing a defect is very important, so the developper can try it as well, and to be able to pinpoint its cause.
+
 ### Manual Testing VS Automation Testing
 
 ![[Pasted image 20231213201702.png]]
 
+### Exploratory Testing
+
+[YouTube: Explore It? Explore It! - Elisabeth Hendrickson](https://www.youtube.com/watch?v=9FKY1Is0lgs)
+[Book: Explore It! - Elisabeth Hendrickson](https://pragprog.com/titles/ehxta/explore-it/)
+
+![[Pasted image 20231218081729.png]]
+
+#### Methodical exploration in Sessions
+
+![[Pasted image 20231218082208.png]]
+
+![[Pasted image 20231218082233.png]]
+![[Pasted image 20231218082414.png]]
+
+![[Pasted image 20231218082505.png]]
+![[Pasted image 20231218082609.png]]
+![[Pasted image 20231218082745.png]]
+
+#### Heuristics
+
+Heuristics are test design techniques, a pre-planned problem-solving technique derived from past experiences, to explore for risk.
+
+- Play with boundaries and constraints. ![[Pasted image 20231218083420.png]]
+  
+- Experimenting with sequences. ![[Pasted image 20231218083528.png]]
+  
+-  Exploit States and Events. While ... ![[Pasted image 20231218083626.png]]
+  
+- Analyze Entities & Relationships. ![[Pasted image 20231218092440.png]]
+  
+#### Oracles
+
+Oracles is a way to recognize what might be a problem.
+
+> An oracle is a special kind of heuristic which helps you identify and describe a problem. Yet no oracle is definitive, and they should only ever be thought of as providing you with a pointer to a possible problem.
+
+> For example, I often use a consistency heuristic where I expect each element of a product to be consistent with comparable elements of the same product – one such approach from Michael Bolton’s [FEW HICCUPPS heuristic](https://www.developsense.com/blog/2012/07/few-hiccupps/).
+
+>Using Trello recently to manage a couple of side projects, I noticed that there is an inconsistency in the way fields on cards can be edited. Clicking in the Description or Tasks fields puts the field straight into Edit mode, whereas to edit a Comment requires an explicit click on the “Edit” action. This is a good example of the Trello product being inconsistent with itself in terms of editing fields on a card – and note that the oracle in this case is the product itself.
+
+##### [FEW HICCUPS](https://developsense.com/blog/2012/07/few-hiccupps)
+
+Expectations about a product revolve around _desirable consistencies between related things_.
+
+- **History.** We expect the present version of the system to be consistent with past versions of it.
+- **Image.** We expect the system to be consistent with an image that the organization wants to project, with its brand, or with its reputation.
+- **Comparable Products.** We expect the system to be consistent with systems that are in some way comparable. This includes other products in the same product line; competitive products, services, or systems; or products that are not in the same category but which process the same data; or alternative processes or algorithms.
+- **Claims.** We expect the system to be consistent with things important people say about it, whether in writing (references specifications, design documents, manuals, whiteboard sketches…) or in conversation (meetings, public announcements, lunchroom conversations…).
+- **Users’ Desires.** We believe that the system should be consistent with ideas about what reasonable users might want. _(Update, 2014-12-05: We used to call this “user expectations”, but those expectations are typically based on the other oracles listed here, or on quality criteria that are rooted in_ desires_; so, “user desires” it is. More on that [here](http://www.developsense.com/blog/2014/01/not-so-great-expectations/ "Not-So-Great Expectations").)_
+- **Product.** We expect each element of the system (or product) to be consistent with comparable elements in the same system.
+- **Purpose.** We expect the system to be consistent with the explicit and implicit uses to which people might put it.
+- **Statutes *and Standards*.** We expect a system to be consistent with laws or regulations that are relevant to the product or its use.
+
+Extended:
+- **Explainability.** Any kind of confusion in the product is an issue and bound to create bugs.
+- **World.** We expect the product to be consistent with things that we know about, or can observe, in the world.
+- **Familiarity.** We expect the SUT to be inconsistent with patterns of familiar problems. You can start by looking for bugs you found in other products, but they may not be important for the product you are testing now.
+
+
+#### Kolb Learing Cycle
+
+![[Pasted image 20231218093118.png]]
+
+#### Other Testing Methods
+
+##### Product Value and Risks
+
+Steps:
+1. Understand the value of the product to test.
+2. Come up with possible risks — what can take away the value, or make it fail to deliver its value.
+3. Create questions from the risks.
+4. Perform a test session to answer your questions.
+5. Share your findings.
+
+
+##### Strategic Testing Model
+
+[A new model for test strategies… (An update to the Heuristic Test Strategy Model) — Dan Ashby](https://danashby.co.uk/2017/12/13/a-new-model-for-test-strategies/)
+
+![[Pasted image 20231218162647.png]]
+
+Simplified:
+![[Pasted image 20231218161131.png]]
+
+
+### Tips & Tricks
+
+- Combine test cases.
+- Think of Error states? Transition states? Empty states? Characters limits? File size limits?
+- [Quality Tree Software - Test Heuristics Cheat Sheet - Data Type Attacks & Web Tests](https://goritskov.com/media/files/testheuristicscheatsheetv1.pdf)
+- [Michael Hunter's You Are Not Done Yet checklist](https://www.thebraidytester.com/downloads/YouAreNotDoneYet.pdf)
+- [Ministry of Testing](https://www.ministryoftesting.com/search?q=test+heuristics+cheat+sheet)
+- [Big List of Naughty Strings](https://github.com/minimaxir/big-list-of-naughty-strings)
+
+
 ### Tools
 
-[Testing Tools by Testing Category](https://testomat.io/blog/top-15-manual-testing-tools-to-know/)
+- [Testing Tools by Testing Category](https://testomat.io/blog/top-15-manual-testing-tools-to-know/)
+- [Perlclip - String generator to Clipboard](https://www.satisfice.com/download/perlclip)
+- [Bug Magnet - Exploratory testing assistant for Chrome](https://chromewebstore.google.com/detail/bug-magnet/efhedldbjahpgjcneebmbolkalbhckfi?hl=en)
+- [Fake (Form) Filler](https://chromewebstore.google.com/detail/fake-filler/bnjjngeaknajbdcgpfkgnonkmififhfo?hl=en)
+- [TestBuddy](https://www.youtube.com/watch?v=Wu4xTnoreLY)
+
+
+### Ad-hoc / Monkey / Fuzz / Gremlin Testing
+
+[Medium: Monkey Testing - let's break things](https://medium.com/@qa.gary.parker/monkey-testing-lets-break-things-b3e8efb63fda)
+
+Bombarding a web application with JavaScript Gremlins doing all sorts of random interactions to test the robustness / resilience of the app.
+
+[GitHub: gremlins.js](https://github.com/marmelab/gremlins.js)
+[Bookmarklet of gremlins.js](https://marmelab.com/gremlins.js/)
+
+
+### API Testing with Postman
+
+[Learning Postman: Test Examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)
 

@@ -572,13 +572,13 @@ A detailed document describing what you should test, and what not to test, depen
 *Examples: Space rockets and Bank*
 
 ##### Test Strategies:
-- Analytical — risk based testing.
+- Analytical — risk based testing. More risk means more tests.
 - Model-based — based on a business or state model.
-- Methodical — ?
+- Methodical — systematic use of pre-defined tests. With common failure types, checklist of quality characteristics (reliability, portability, maintainability), standards for web pages and apps.
 - Process compliant — based on rules and standards.
-- Directed (or consultative) — driven by stakeholders or business experts.
+- Directed (or consultative) — driven by stakeholders or business experts' advice.
 - Regression averse — uses extensive test automation.
-- Reactive — require test to be written during test execution, like exploratory testing.
+- Reactive — requires tests to be written during test execution, like exploratory testing.
 
 #### Test Environment
 
@@ -655,26 +655,151 @@ Set a budget and agree with the product manager and/or owner.
 
 ### Product Risk Analysis
 
+...
 
 ### Managing Defects
 
 A *Defect* is a manifestation of an error in the software.
 #### Defect / Incident Report
 
+Contains:
+- ID
+- Title
+- Summary
+- Date
+- Organization
+- Author
+- Identification of the test item.
+- Status, e.g., new, open, fixing, reject, deferred, ready, retest, reopen, closed.
+- Lifecycle phase
+- Test environment
+- Detailed description of how to reproduce the problem, logging the expected and actual result.
+- Change history and references.
+- Global issues
+- Conclusions, recommendations, and approvals.
+
+Standard ISO/IEC/IEEE 29119-3
 
 ### How to Write a Test Plan
 
+Test Plan — How is testing carried out?
 
+![[Pasted image 20231214102924.png]]
+UAT = User Acceptance Testing
+
+#### Test planning activities
+
+1. Determine the scope.
+2. Choose an approach.
+3. Integration and coordination.
+4. Make decisions about whom, what, and how.
+5. Scheduling.
+6. Metrics.
+7. Budgeting.
+8. Templates.
+
+Test Planning ISO/IEC/IEEE 29119-3
+
+#### Entry and Exit Criteria
+
+![[Pasted image 20231214104556.png]]
+
+Test Entry Criteria examples:
+- Availability of requirements, user stories, and models.
+- Availability of test items, a test database, and test data.
+- Test environments set up and ready.
+- Test tools installed and available for use.
+
+Test Exit Criteria examples:
+- Planned tests have been run.
+- Coverage level achieved.
+- Unresolved defects.
+- Remaining defects low.
+- Level of quality characteristics.
 
 ### Applying Estimation Techniques
 
+Account for dependencies between tests.
+For example, if one test creates a database entry, and another test deletes it, the former should run first.
 
+You must balance efficiency of test execution with the test priority.
+
+Hofstadter's Law — It always takes longer than you expect, even when you take into account Hofstadter's Law.
+
+Estimation Techniques:
+- Metrics-based estimation
+	- Planning Poker: whole team votes with 1, 2, 3, 5, 8, 13, or 21.
+	- Wideband Delphi: experts meet till a consensus is reached.
+- Expert-based estimation.
 
 ### Keeping Track of Progress
 
+#### Test Monitoring
+
+Test Monitoring — collecting information about test activities in order to provide feedback to all stakeholders on how testing is progressing.
+Test Control — taking decisive action if progress isn't going according to plan.
+
+Metrics are sets of numbers that give information about a particular process or activity.
+Gather metrics and make them visible.
+
+Common Test Metrics:
+- Planned work done percentage.
+- Test case execution, and amount of tests run, failed, passed, and rerun.
+- Defect information — total defects found, fixed, failure rate, defect density, and confirmation test results.
+- Coverage — percentage of features covered, user stories covered, acceptance criteria met, and code coverage.
+- Task completion.
+- Costs.
+- Resource consumption.
+
+Metrics can assess:
+- Test approach.
+- Quality of testing.
+- Progress compared to schedule and budget.
+
+#### Test Reporting
+
+Two types:
+- Test Progress Report — during testing.
+- Test Summary Report — when exit criteria have been met.
+
+Typical contents:
+- Summary of testing performed.
+- Information on what occurred during a test period.
+- Deviations from the plan.
+- Status of testing and product quality.
+- Factors that block progress.
+- Metrics.
+- Residual risks.
+- Reusable test work products produced that may be reused later or on other projects.
+
+![[Pasted image 20231214113752.png]]
+
+Standard for Testing Reports ISO/IEC/IEEE 29119-3
 
 
 ---
 
 ## Test Tools (Tool Support for Testing)
+
+### Tool Types
+
+![[Pasted image 20231214174257.png]]
+
+#### Test Harness
+
+Collection of Stubs, Drivers, and other supporting tools, for Component and Component Integration testing.
+
+![[Pasted image 20231214173845.png]]
+
+### Challenges and Benefits
+
+![[Pasted image 20231214174852.png]]
+
+### Potential Automation Risks
+
+![[Pasted image 20231214175159.png]]
+![[Pasted image 20231214175234.png]]
+![[Pasted image 20231214175256.png]]
+
+
 
