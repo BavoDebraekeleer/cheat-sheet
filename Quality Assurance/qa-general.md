@@ -18,7 +18,7 @@
 
 - [A Beginner’s Guide to Behavior-Driven Development with SpecFlow - Enes Khun](https://medium.com/@enesku/a-beginners-guide-to-behavior-driven-development-with-specflow-83428ff78f0d)
 - [SpecFlow Docs: Selenium with Page Object Model Pattern](https://docs.specflow.org/projects/specflow/en/latest/ui-automation/Selenium-with-Page-Object-Pattern.html)
-- [SpecFlow with .NET 8.0](https://github.com/SpecFlowOSS/SpecFlow.VS/releases/tag/v2022.1.93-net8)
+- [SpecFlow Update with .NET 8.0 support](https://github.com/SpecFlowOSS/SpecFlow.VS/releases/tag/v2022.1.93-net8)
 
 - https://www.youtube.com/watch?v=8tNlF6y00Zc&list=PL6tu16kXT9Pp3wrsaYyNRnK1QkvVv6qdI&index=42
 - https://www.youtube.com/watch?v=HrYUzzKXpTs&list=PL6tu16kXT9Po4w7VVPh6VGU7G7nm3fxZb&index=7
@@ -763,10 +763,15 @@ dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
 ##### Usage
 
 To use the tool in a project, `cd` to the `\bin\Debug\net8.0` directory within the project.
+```cli
+cd '.\dotNet Lab\bavo-masterclass\timesheet-app\qa-testing\TimesheetApp.QATesting.SpecFlowTests\bin\Debug\net8.0\'
+```
 
 There, use the following command to generate the documentation:
 ```cli
 livingdoc test-assembly .\BddAndSpecFlow.dll -t .\TestExecution.json
+
+livingdoc test-assembly .\TimesheetApp.QATesting.AcceptanceTests.dll -t .\TestExecution.json
 ```
 
 To open it:
@@ -774,7 +779,48 @@ To open it:
 .\LivingDoc.html
 ```
 
+##### Add Text and Screenshots Output
 
+[SpecFlow Output API](https://docs.specflow.org/projects/specflow/en/latest/outputapi/outputapi.html)
+
+Create a hook provides extra outputs at certain points during testing. These will automatically be added to the LivingDoc on generation.
+
+The following hook takes a screenshot after every step:
+```cs
+using OpenQA.Selenium;
+using TechTalk.SpecFlow.Infrastructure;
+using TimesheetApp.QATesting.AcceptanceTests.Drivers;
+using TimesheetApp.QATesting.AcceptanceTests.PageObjects;
+
+namespace TimesheetApp.QATesting.AcceptanceTests.Hooks;
+
+[Binding]
+public class LoggingHooks(
+    BrowserDriver browserDriver, ISpecFlowOutputHelper outputHelper)
+{
+    private readonly BrowserDriver _browserDriver = browserDriver;
+    private readonly ISpecFlowOutputHelper _outputHelper = outputHelper;
+
+    [AfterStep]
+    public void TakeScreenshotAfterEachStep()
+    {
+        if (_browserDriver.Current is ITakesScreenshot screenshotTaker)
+        {
+            var filename = Path.ChangeExtension(
+	            Path.GetRandomFileName(), "png");
+
+            screenshotTaker.GetScreenshot().SaveAsFile(filename);
+
+            _outputHelper.AddAttachment(filename);
+        }
+    }
+}
+
+```
+
+###### Screenshot on Exception
+
+[Generating screen capture on exception](https://darrellgrainger.blogspot.com/2011/02/generating-screen-capture-on-exception.html?m=1) using the `WebDriverEventListener`.
 
 
 ---
@@ -916,6 +962,15 @@ Benefits of scripting tests:
 - maintainability
 - range of possibilities
 - version control
+
+##### Arguments / Options
+
+###### ChromeOption Arguments
+
+- [Chromium command line switches](https://peter.sh/experiments/chromium-command-line-switches/)
+- List of common switches: [/master/chrome/common/chrome_switches.cc](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/chrome_switches.cc)
+- To search other switches: [https://source.chromium.org/search?q=file:switches.cc&ss=chromium%2Fchromium%2Fsrc](https://source.chromium.org/search?q=file:switches.cc&ss=chromium%2Fchromium%2Fsrc)
+
 
 ##### Selectors
 
