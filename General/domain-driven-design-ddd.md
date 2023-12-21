@@ -32,7 +32,7 @@
 
 It is about really understanding the problem the client is having, and solving it with code, by interaction with *domain experts*.
 
->You really need to cultivate tour ability to communicate with business people to free up people's creative modelling. — *Eric Evans*
+>You really need to cultivate your ability to communicate with business people to free up people's creative modelling. — *Eric Evans*
 
 >While DDD provides many technical benefits, such as maintainability, it should be applied **only to complex domains** where the model and the linguistic processes **provide clear benefits** in the **communication of complex information**, and in the formulation of a **common understanding of the domain**. — *Eric Evans*
 
