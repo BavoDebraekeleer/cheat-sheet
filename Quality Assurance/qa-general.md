@@ -61,6 +61,12 @@ QC is a product-oriented, corrective approach that focuses on those activities s
 Test results are used by QA and QC. In QC, they are used for fixing defects, while in QA they provide feedback on how well the development and test processes are performing.
 
 ---
+## Terminology
+
+- ***Smoke Testing*** — the initial testing of a new build, either manual or automated, to verify that the main functionalities appear to work correctly. It aims to quickly determine whether the application is so badly broken as to make further immediate testing unnecessary. Can be functional and/or unit tests, and regression tests as part of a Continuous Integration (CI) pipeline. These tests must cover the core responsibilities of the system. If the smoke testing passes, the test team can further test the build. *Also known as confidence, sanity, build verification (BVT), build acceptance, or intake testing, or pre-test.*
+
+
+---
 
 ## Behaviour Driven Development (BDD)
 

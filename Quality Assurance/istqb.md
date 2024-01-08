@@ -70,7 +70,7 @@ A ***model*** that describes the types of ***activity*** performed at each ***st
 ![[Pasted image 20231130081015.png]]
 
 Cons:
-- Slow and inefficien —  waiting on others to finish their part.
+- Slow and inefficient —  waiting on others to finish their part.
 - Any stage can become a bottleneck.
 - (Very) late feedback.
 
